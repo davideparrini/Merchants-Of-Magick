@@ -1,0 +1,18 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  
+}
+
+
+/* body{
+  background-image: url(./background.png);
+  background-size: cover;
+  background-position: center;
+} */
+
+
+
+

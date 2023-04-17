@@ -1,0 +1,81 @@
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    position: relative;
+    background: rgb(247, 165, 13);
+    max-width: 400px;
+    height: 180px;
+    margin: 0 auto 100px;
+    padding: 50px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+  
+.title{
+    position: relative;
+    margin: 75px auto 100px;
+}
+
+.inputBox{
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #ebeaea;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  height: 50px;
+  border-radius: 5px;
+}
+.nicknameInput{
+  width: 100%;
+  align-self: flex-start;
+}
+.idRoomInput{
+  width: 50%;
+  align-self: flex-start;
+}
+
+
+.buttonLobby{  
+ font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: linear-gradient(0deg, rgb(245, 103, 9) 0%, rgb(190, 94, 16) 100%);
+  height: 50px;
+  width: 100%;
+  border: 0;
+  border-radius: 5px;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0 0 15px;
+}
+
+.createRoombtn{
+  background-color: linear-gradient(0deg, rgb(245, 103, 9) 0%, rgb(190, 94, 16) 100%);
+}
+
+.createRoombtn:hover, .button-CreateRoom:active, .button-CreateRoom:focus{
+    background: rgb(155, 73, 6);
+}
+.createRoombtn:hover, .button-CreateRoom:active, .button-CreateRoom:focus{
+  background: rgb(155, 73, 6);
+}
+
+.joinRoombtn{
+  background: linear-gradient(0deg, rgb(245, 25, 9) 0%, rgb(190, 16, 16) 100%);
+  width: 45%;
+  margin-left: auto;
+}
+
+.joinRoombtn:hover, .button-CreateRoom:active, .button-CreateRoom:focus{
+  background: rgb(128, 9, 9);
+}

@@ -1,0 +1,55 @@
+
+.skill{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background: rgb(221, 207, 124);
+    max-width: 400px;
+    height: 45px;
+    border-radius: 15px;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+  
+  
+  .numberCircle{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    font: 20px Arial, sans-serif;
+  }
+  
+  .gold{
+    background-color: gold;
+    color: #fff;
+  }
+  .grey{
+    background-color: rgb(143, 126, 40);
+    color: #fff;
+  }
+  .skillName{
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .noButton{
+    visibility: hidden;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .upgraded{
+    background: rgb(60, 60, 60);
+    color: rgb(60, 60, 60);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .cappuccio{
+    position: relative;
+
+  }
+  

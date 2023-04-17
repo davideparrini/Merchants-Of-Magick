@@ -1,0 +1,22 @@
+.card{
+
+    background: rgba(146, 58, 0, 0.781);
+    max-width: 200px;
+    height: 200px;
+    border-radius: 15px;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    
+
+}
+
+
+.imgCard{
+    background-image: url(./image/warhammer.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    opacity: 0.6;
+}
