@@ -9,7 +9,7 @@ function ButtonTurnDone() {
   }
   
   return (
-    <div className={text==="Finish turn" ? "button-turn not-done" : "button-turn done"} onClick={handleClick}><span>{text}</span></div>
+    <div className={text==="Finish turn" ? "btnTurn not-done" : "bntTurn done"} onClick={handleClick}><span>{text}</span></div>
   )
 }
 

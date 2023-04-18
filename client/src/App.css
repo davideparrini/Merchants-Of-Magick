@@ -1,18 +1,157 @@
 .App {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  
+    display: grid;
+    grid-template-areas: 
+        'extraDices extraDices skillTable skillTable skillTable skillTable skillTable skillTable skillTable tablePlayers tablePlayers tablePlayers'
+        'extraDices extraDices skillTable skillTable skillTable skillTable skillTable skillTable skillTable tablePlayers tablePlayers tablePlayers'
+        'diceNum diceNum skillTable skillTable skillTable skillTable skillTable skillTable skillTable tablePlayers tablePlayers tablePlayers'
+        'd6img d6 skillTable skillTable skillTable skillTable skillTable skillTable skillTable tablePlayers tablePlayers tablePlayers'
+        'd8img d8 skillTable skillTable skillTable skillTable skillTable skillTable skillTable tablePlayers tablePlayers tablePlayers'
+        'd10img d10 skillTable skillTable skillTable skillTable skillTable skillTable skillTable . quest1 quest1'
+        'd12img d12 skillTable skillTable skillTable skillTable skillTable skillTable skillTable . quest2 quest2'
+        '. . order1 order2 order3 card1 card1 card2 card2 card3 card3 .'
+        '. . order1 order2 order3 card1 card1 card2 card2 card3 card3 .'
+        '. . nPotions . nTurn . btnTurn . btnShop . . .'; 
+
 }
 
 
-/* body{
-  background-image: url(./background.png);
-  background-size: cover;
-  background-position: center;
-} */
+body{
+    background-image: url(./background.png);
+    background-size: cover;
+    background-position: center; 
+} 
+
+.diceBtn{
+    position: relative;
+    color: #666;
+    font: 18px Arial, sans-serif;
+    font-weight: 700;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
+
+.extraDices{
+    grid-area: extraDices;
+}
+.diceLabel{
+    grid-area: diceNum;
+}
+
+.diceImg{
+    width: 70px;
+    height: 70px;
+    justify-self: center;
+    align-self: center;
+}
+.d6img{
+    grid-area: d6img;
+}
+
+.d8img{
+    grid-area: d8img;
+}
+
+.d10img{
+    grid-area: d10img;    
+}
+
+.d12img{
+    grid-area: d12img;
+
+}
+
+.d6{
+    grid-area: d6;
+    
+}
+
+.d8{
+    grid-area: d8;
+}
+
+.d10{
+    grid-area: d10;
+
+}
+
+.d12{
+    grid-area: d12;
+ 
+}
+
+.potionLabel{
+    grid-area: nPotions;
+}
+
+.btnTurn{
+    grid-area: btnTurn;
+}
+
+.btnShop{
+    grid-area: btnShop;
+}
+
+.card1{
+    grid-area: card1;
+}
+.card2{
+    grid-area: card2;
+}
+
+.card3{
+    grid-area: card3;
+}
+
+.quest1{
+    grid-area: quest1;
+}
+.quest2{
+    grid-area: quest2;
+}
+
+.order1{
+    grid-area: order1;
+}
+.order2{
+    grid-area: order2;
+}
+.order3{
+    grid-area: order3;
+}
 
 
+.playerTable{
+    grid-area: tablePlayers;
+}
 
+.skillsTable{
+    grid-area: skillTable;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-areas: 
+        'title1 title1 title2 title2'
+        'skill skill skill skill'
+        'skill skill skill skill'
+        'skill skill skill skill'
+        'skill skill skill skill'
+        'skill skill skill skill'
+        'skill skill skill skill';
+    align-items: center;
+    justify-items: center;
+    gap: 20px;
+    background: rgb(161, 112, 226);
+    padding: 10px;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.titleCraftingSkills{
+    grid-area: title1;
+    padding-top: 5px;
+}
+.titleMagicResearch{
+    grid-area: title2;
+    padding-top: 5px;
 
+}
