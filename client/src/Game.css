@@ -213,13 +213,13 @@ body{
     text-align: center;
     font-size: 26px;
     letter-spacing: 3px;
-    color: rgb(45, 240, 240);
+    color: rgb(255, 255, 255);
     background-color: #8a2771;
     height: min-content;
     width: 300px;
     padding: auto;
     align-self: flex-end;
-    text-shadow: rgb(0, 0, 0) 6px 2px 2px;
+    text-shadow: rgb(0, 0, 0) 3px 1px 1px;
     border-radius: 10px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     text-align: center;
@@ -233,7 +233,7 @@ body{
     padding: 5px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2,1fr);
-    background-color: rgb(86, 163, 207);
+    background-color: rgb(224, 194, 211);
     border-radius: 15px;
     border: 5px solid #8a2771;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -251,8 +251,8 @@ body{
     font-weight: 700;
     text-align: center;
     font-size: 18px;
-    color: rgb(231, 196, 24);
-    text-shadow: rgb(0, 0, 0) 1px 1px 9px;
+    color: rgb(46, 43, 43);
+    text-shadow: rgb(145, 142, 142) 1px 1px 1px ;
     margin: auto;
 }
 .imgAttributeLegenda{

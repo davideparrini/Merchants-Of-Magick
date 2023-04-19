@@ -16,7 +16,7 @@ import d10img from './images/d10.png'
 import d12img from './images/d12.png'
 
 import steelImg from './components/Skill/iconsAttribute/steel.png'
-import woodImg from './components/Skill/iconsAttribute/wood.png'
+import woodImg from './components/Skill/iconsAttribute/wood7.png'
 import leatherImg from './components/Skill/iconsAttribute/leather.png'
 import elementalImg from './components/Skill/iconsAttribute/elemental.png'
 import arcaneImg from './components/Skill/iconsAttribute/arcane.png'

@@ -16,11 +16,11 @@
 
 
 .crafting{
-    background: #ffc58b;
+    background: #e2c2a2;
 }
 
 .magic{
-    background: #ffa492;
+    background: #fdb7a9;
 }
 
 
@@ -58,14 +58,11 @@
     visibility: hidden;
 }
 .attributeImg{
-    height: 20px;
-    width: 20x;
+    height: 24px;
+    width: 24x;
     z-index: 1;
     justify-self: end;
     margin-right: -10px;
-    /* position: absolute;
-    left: -16px;
-    margin-left: 3px; */
 }
 .img1{
     grid-area: img1;

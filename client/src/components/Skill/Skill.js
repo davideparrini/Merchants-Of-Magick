@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Skill.css'
 import steelImg from './iconsAttribute/steel.png'
-import woodImg from './iconsAttribute/wood.png'
+import woodImg from './iconsAttribute/wood7.png'
 import leatherImg from './iconsAttribute/leather.png'
 import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
