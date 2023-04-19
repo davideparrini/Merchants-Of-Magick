@@ -21,14 +21,21 @@ body{
     background-position: center; 
 } 
 
-.diceBtn{
+.diceRolled{
     position: relative;
-    color: #666;
+    background: #74aff3;
+    height: 30px;
+    width: 30px;
+    border-radius: 10px;
+    padding-top: 6px;
+    margin: 10px;
+    color: black;
     font: 18px Arial, sans-serif;
     font-weight: 700;
     justify-self: center;
     align-self: center;
     text-align: center;
+    
   }
 
 .extraDices{
@@ -37,12 +44,48 @@ body{
 .diceLabel{
     grid-area: diceNum;
 }
+.incBtn:active,.decBtn:active{
+    opacity: 0.7;
+}
+.incBtn{
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    align-self: self-end;
+    justify-self: self-start;
+    margin: 7px;
+    background: url("./images/plus.png");
+    background-size: cover;
+    border: 3px;
+}
+.decBtn{
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    align-self: self-end;
+    justify-self: self-end;
+    margin: 7px;
+    background: url("./images/menus.png");
+    background-size: cover;
+    border: 3px;
+}
+
+
 
 .diceImg{
     width: 70px;
     height: 70px;
     justify-self: center;
     align-self: center;
+    
+}
+.diceImg:active,.diceImg:focus{
+    background: rgb(255,0,0);
+    background: radial-gradient(circle, rgba(255,0,0,1) 0%, rgba(233,191,16,1) 65%, rgba(238,255,0,1) 100%);
+    border-radius: 50%;
+    border: none;
+    -webkit-box-shadow: #FFF 0 -1px 4px, #ff0 0 -2px 10px, #ff8000 0 -10px 20px, red 0 -18px 40px, 0px 0px 30px 2px rgba(0,0,0,0); 
+    box-shadow: #FFF 0 -1px 4px, #ff0 0 -2px 10px, #ff8000 0 -10px 20px, red 0 -18px 40px, 0px 0px 30px 2px rgba(0,0,0,0);  
 }
 .d6img{
     grid-area: d6img;
@@ -148,10 +191,9 @@ body{
 }
 .titleCraftingSkills{
     grid-area: title1;
-    padding-top: 5px;
+
 }
 .titleMagicResearch{
     grid-area: title2;
-    padding-top: 5px;
 
 }

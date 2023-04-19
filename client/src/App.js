@@ -3,15 +3,45 @@ import './App.css';
 import CreateLobby from './components/LobbyComponents/CreateLobby';
 import './components/LobbyComponents/lobbyComponents.css'
 import Skill from './components/Skill/Skill';
-import Dice from './components/Dice';
+import Dice from './components/Dice/Dice';
 import CardOrder from './components/Order/CardOrder';
-import titleCraftingSkills from './imagine/craftingSkillTitle.png'
-import titleMagicResearch from './imagine/magicResearchTitle.png'
+import titleCraftingSkills from './images/craftingSkillTitle.png'
+import titleMagicResearch from './images/magicResearchTitle.png'
 import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
-import d6img from './imagine/d6.png'
-import d8img from './imagine/d8.png'
-import d10img from './imagine/d10.png'
-import d12img from './imagine/d12.png'
+import d6img from './images/d6.png'
+import d8img from './images/d8.png'
+import d10img from './images/d10.png'
+import d12img from './images/d12.png'
+
+import backpack from './components/Skill/skillsJson/backpack.json'
+import scroll from './components/Skill/skillsJson/scroll.json'
+import ring from './components/Skill/skillsJson/ring.json'
+import grimore from './components/Skill/skillsJson/grimore.json'
+import staff from './components/Skill/skillsJson/staff.json'
+import sword from './components/Skill/skillsJson/sword.json'
+import crossbow from './components/Skill/skillsJson/crossbow.json'
+import warhammer from './components/Skill/skillsJson/warhammer.json'
+import bracers from './components/Skill/skillsJson/bracers.json'
+import helmet from './components/Skill/skillsJson/helmet.json'
+import greaves from './components/Skill/skillsJson/greaves.json'
+import plateArmor from './components/Skill/skillsJson/plateArmor.json'
+import fiery from './components/Skill/skillsJson/fiery.json'
+import shocking from './components/Skill/skillsJson/shocking.json'
+import everlasting from './components/Skill/skillsJson/everlasting.json'
+import divine from './components/Skill/skillsJson/divine.json'
+import elves from './components/Skill/skillsJson/elves.json'
+import dwarves from './components/Skill/skillsJson/dwarves.json'
+import orcs from './components/Skill/skillsJson/orcs.json'
+import dragons from './components/Skill/skillsJson/dragons.json'
+import glamorPotionSupplier from './components/Skill/skillsJson/glamorPotionSupplier.json'
+import renownedAccessories from './components/Skill/skillsJson/renownedAcc.json'
+import weaponPrestige from './components/Skill/skillsJson/weaponPrestige.json'
+import eliteArmor from './components/Skill/skillsJson/eliteArmor.json'
+import { useState } from 'react';
+
+
+
+
 
 function App() {
     const d6 = 3;
@@ -19,18 +49,47 @@ function App() {
     const d10 = 9;
     const d12 = 11;
 
+    const [nPotion,setnPotion] = useState(11);
+
+
+    function incrDice(dice){
+        if(nPotion >=0){
+            
+        }
+    }
+
+    function decDice(){
+        if(nPotion >=0){
+
+        }
+    }
+
     return (
-        <div className="App">
+        <div className="App">   
+            
             <div className='extraDices'>Dices</div>
             <div className='diceLabel'>DicesNum</div>
+
             <img src={d6img} className='diceImg d6img'></img>
-            <button className='diceBtn d6'>{d6}</button>
+            <div className='diceRolled d6'>{d6}</div>
+            <button className='incBtn d6' onClick={incrDice}></button>
+            <button className='decBtn d6' onClick={decDice}></button>
+
             <img src={d8img} className='diceImg d8img'></img>
-            <button className='diceBtn d8'>{d8}</button>
+            <div className='diceRolled d8'>{d8}</div>
+            <button className='incBtn d8'onClick={incrDice}></button>
+            <button className='decBtn d8' onClick={decDice}></button>
+
             <img src={d10img} className='diceImg d10img'></img>
-            <button className='diceBtn d10'>{d10}</button>
+            <div className='diceRolled d10'>{d10}</div>
+            <button className='incBtn d10' onClick={incrDice}></button>
+            <button className='decBtn d10' onClick={decDice}></button>
+
             <img src={d12img} className='diceImg d12img'></img>
-            <button className='diceBtn d12'>{d12}</button>
+            <div className='diceRolled d12'>{d12}</div>
+            <button className='incBtn d12' onClick={incrDice}></button>
+            <button className='decBtn d12' onClick={decDice}></button>
+
             <div className='potionLabel'>nPotions</div>
             <ButtonTurnDone></ButtonTurnDone>
             <div className='btnShop'>btnShop</div>
@@ -45,31 +104,31 @@ function App() {
             <div className='order3'>order3</div>
             <div className='skillsTable'>
                 <img src={titleCraftingSkills} className='titleCraftingSkills'></img>
-                <Skill gold = {1} name = {'BACKPACK'} attribute1 = {0}  attribute2 = {0} attribute3 = {3} typeItem = {'Accessories'}></Skill> 
-                <Skill gold = {1} name = {'SCROLL'} attribute1 = {0}  attribute2 = {3} attribute3 = {0} typeItem = {'Accessories'}></Skill> 
-                <Skill gold = {2} name = {'RING'} attribute1 = {2}  attribute2 = {0} attribute3 = {6} typeItem = {'Accessories'}></Skill> 
-                <Skill gold = {3} name = {'GRIMORE'} attribute1 = {5}  attribute2 = {4} attribute3 = {4} typeItem = {'Accessories'}></Skill>                
-                <Skill gold = {1} name = {'STAFF'} attribute1 = {0}  attribute2 = {6} attribute3 = {0} typeItem = {'Weapons'}></Skill> 
-                <Skill gold = {2} name = {'SWORD'} attribute1 = {4}  attribute2 = {0} attribute3 = {0} typeItem = {'Weapons'}></Skill> 
-                <Skill gold = {3} name = {'CROSSBOW'} attribute1 = {0}  attribute2 = {9} attribute3 = {6} typeItem = {'Weapons'}></Skill> 
-                <Skill gold = {4} name = {'WARHAMMER'} attribute1 = {6}  attribute2 = {5} attribute3 = {4} typeItem = {'Weapons'}></Skill> 
-                <Skill gold = {1} name = {'BRACERS'} attribute1 = {0}  attribute2 = {0} attribute3 = {9} typeItem = {'Armor'}></Skill> 
-                <Skill gold = {2} name = {'HELMET'} attribute1 = {5}  attribute2 = {0} attribute3 = {0} typeItem = {'Armor'}></Skill> 
-                <Skill gold = {4} name = {'GREAVES'} attribute1 = {7}  attribute2 = {0} attribute3 = {5} typeItem = {'Armor'}></Skill> 
-                <Skill gold = {5} name = {'PLATE ARMOR'} attribute1 = {8}  attribute2 = {2} attribute3 = {8} typeItem = {'Armor'}></Skill> 
+                <Skill skill = {backpack}></Skill> 
+                <Skill skill = {scroll}></Skill> 
+                <Skill skill = {ring}></Skill> 
+                <Skill skill = {grimore}></Skill>                
+                <Skill skill = {staff}></Skill> 
+                <Skill skill = {sword}></Skill> 
+                <Skill skill = {crossbow}></Skill> 
+                <Skill skill = {warhammer}></Skill> 
+                <Skill skill = {bracers}></Skill> 
+                <Skill skill = {helmet}></Skill> 
+                <Skill skill = {greaves}></Skill> 
+                <Skill skill = {plateArmor}></Skill> 
                 <img src={titleMagicResearch}  className='titleMagicResearch'></img>
-                <Skill gold = {1} name = {'FIERY'} attribute1 = {6}  attribute2 = {0} attribute3 = {11} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {2} name = {'SHOCKING'} attribute1 = {2}  attribute2 = {7} attribute3 = {0} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {2} name = {'EVERLASTING'} attribute1 = {0}  attribute2 = {1} attribute3 = {9} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {3} name = {'DIVINE'} attribute1 = {9}  attribute2 = {2} attribute3 = {7} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {1} name = {'of the ELVES'} attribute1 = {0}  attribute2 = {8} attribute3 = {10} typeItem = {'Enchantments'}></Skill>
-                <Skill gold = {2} name = {'of the DWARVES'} attribute1 = {8}  attribute2 = {4} attribute3 = {0} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {3} name = {'of the ORCS'} attribute1 = {7}  attribute2 = {0} attribute3 = {4} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {4} name = {'of the DRAGONS'} attribute1 = {5}  attribute2 = {6} attribute3 = {2} typeItem = {'Enchantments'}></Skill> 
-                <Skill gold = {1} name = {'GLAMOR POTION SUPPLIER'} attribute1 = {4}  attribute2 = {0} attribute3 = {0} typeItem = {'Charms'}></Skill> 
-                <Skill gold = {1} name = {'RENOWNED ACCESSORIES'} attribute1 = {3}  attribute2 = {5} attribute3 = {0} typeItem = {'Charms'}></Skill> 
-                <Skill gold = {2} name = {'WEAPON PRESTIGE'} attribute1 = {0}  attribute2 = {3} attribute3 = {5} typeItem = {'Charms'}></Skill> 
-                <Skill gold = {3} name = {'ELITE ARMOR'} attribute1 = {1}  attribute2 = {0} attribute3 = {3} typeItem = {'Charms'}></Skill>  
+                <Skill skill = {fiery}></Skill> 
+                <Skill skill = {shocking}></Skill> 
+                <Skill skill = {everlasting}></Skill> 
+                <Skill skill = {divine}></Skill> 
+                <Skill skill = {elves}></Skill>
+                <Skill skill = {dwarves}></Skill> 
+                <Skill skill = {orcs}></Skill> 
+                <Skill skill = {dragons}></Skill> 
+                <Skill skill = {glamorPotionSupplier}></Skill> 
+                <Skill skill = {renownedAccessories}></Skill> 
+                <Skill skill = {weaponPrestige}></Skill> 
+                <Skill skill = {eliteArmor}></Skill>  
 
             </div>
           </div>
