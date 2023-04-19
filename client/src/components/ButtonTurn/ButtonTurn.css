@@ -9,9 +9,8 @@
     background: rgb(0,172,238);
     background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
     line-height: 42px;
-    padding: 0;
-    border: none;
     cursor: pointer;
+    
     transition: all 0.3s ease;
     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
     7px 7px 20px 0px rgba(0,0,0,.1),
@@ -29,13 +28,11 @@
     
   }
   .not-done span {
-    display: block;
     width: 100%;
     height: 100%;
   }
   .not-done:before,
   .not-done:after {
-    content: "";
     right: 0;
     top: 0;
     background: rgba(2,126,251,1);
