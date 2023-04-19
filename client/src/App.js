@@ -70,22 +70,22 @@ function App() {
             <div className='extraDices'>Dices</div>
             <div className='diceLabel'>DicesNum</div>
 
-            <img src={d6img} className='diceImg d6img'></img>
+            <img src={d6img} alt='D6' className='diceImg d6img'></img>
             <div className='diceRolled d6'>{d6}</div>
             <button className='incBtn d6' onClick={incrDice}></button>
             <button className='decBtn d6' onClick={decDice}></button>
 
-            <img src={d8img} className='diceImg d8img'></img>
+            <img src={d8img} alt='D8' className='diceImg d8img'></img>
             <div className='diceRolled d8'>{d8}</div>
             <button className='incBtn d8'onClick={incrDice}></button>
             <button className='decBtn d8' onClick={decDice}></button>
 
-            <img src={d10img} className='diceImg d10img'></img>
+            <img src={d10img} alt='D10' className='diceImg d10img'></img>
             <div className='diceRolled d10'>{d10}</div>
             <button className='incBtn d10' onClick={incrDice}></button>
             <button className='decBtn d10' onClick={decDice}></button>
 
-            <img src={d12img} className='diceImg d12img'></img>
+            <img src={d12img} alt='D12' className='diceImg d12img'></img>
             <div className='diceRolled d12'>{d12}</div>
             <button className='incBtn d12' onClick={incrDice}></button>
             <button className='decBtn d12' onClick={decDice}></button>
@@ -103,7 +103,7 @@ function App() {
             <div className='order2'>order2</div>
             <div className='order3'>order3</div>
             <div className='skillsTable'>
-                <img src={titleCraftingSkills} className='titleCraftingSkills'></img>
+                <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleCraftingSkills'></img>
                 <Skill skill = {backpack}></Skill> 
                 <Skill skill = {scroll}></Skill> 
                 <Skill skill = {ring}></Skill> 
@@ -116,7 +116,7 @@ function App() {
                 <Skill skill = {helmet}></Skill> 
                 <Skill skill = {greaves}></Skill> 
                 <Skill skill = {plateArmor}></Skill> 
-                <img src={titleMagicResearch}  className='titleMagicResearch'></img>
+                <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleMagicResearch'></img>
                 <Skill skill = {fiery}></Skill> 
                 <Skill skill = {shocking}></Skill> 
                 <Skill skill = {everlasting}></Skill> 

@@ -58,7 +58,7 @@
       transform: skewX(0) scale(1);
     }
     50% {
-      transform: skewX(5deg) scale(0.8);
+      transform: skewX(5deg) scale(1.2);
     }
   }
 
@@ -74,7 +74,7 @@
     transform: scale(1.1);
     color: #b65a5a;
     grid-area: goldArea;
-    animation: shake 3s ease-out 0;
+    animation: shake 2s ease-out 0;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
   }
