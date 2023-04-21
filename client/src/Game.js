@@ -38,7 +38,7 @@ import warhammer from './components/Skill/skillsJson/warhammer.json'
 import bracers from './components/Skill/skillsJson/bracers.json'
 import helmet from './components/Skill/skillsJson/helmet.json'
 import greaves from './components/Skill/skillsJson/greaves.json'
-import plateArmor from './components/Skill/skillsJson/plateArmor.json'
+import plotarmor from './components/Skill/skillsJson/plotarmor.json'
 import fiery from './components/Skill/skillsJson/fiery.json'
 import shocking from './components/Skill/skillsJson/shocking.json'
 import everlasting from './components/Skill/skillsJson/everlasting.json'
@@ -53,25 +53,38 @@ import weaponPrestige from './components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from './components/Skill/skillsJson/eliteArmor.json'
 
 import { useEffect, useRef, useState } from 'react';
-
-
-
+import Timer from './components/Timer/Timer';
 
 
 function Game() {
     
+    const mapDice_Skills = new Map();
+
     const [openShop,setOpenShop] = useState(false);
     const [shop,setShop] = useState([]);
 
     const [clockWork,setClockWork] = useState(false);
     const [nPotion,setnPotion] = useState(11);
 
-    const [d6,setD6]=useState(1);
+    const [d6,setD6]=useState(5);
     const [d8,setD8]=useState(1);
-    const [d10,setD10]=useState(1);
-    const [d12,setD12]=useState(1);
+    const [d10,setD10]=useState(8);
+    const [d12,setD12]=useState(11);
+
+    const [d6Start,setD6Start]=useState(d6);
+    const [d8Start,setD8Start]=useState(d8);
+    const [d10Start,setD10Start]=useState(d10);
+    const [d12Start,setD12Start]=useState(d12);
 
     const [nActions,setnActions] = useState(2);
+    const [nTurn,setNTurn] = useState(1);
+
+    // const [card1,setCard1] = useState(null);
+    // const [card2,setCard2] = useState(null);
+    // const [card3,setCard3] = useState(null);
+    const card1 ={item:'sword',gold: 5,enchantment: 'fiery' , origin:'of the Dragons'};
+    const card2 ={item:'plotarmor',gold: 3,enchantment: 'everlasting' , origin:'of the Elves'};
+    const card3 ={item:'warhammer',gold: 7,enchantment: 'divine' , origin: 'of the Dwarves'};
 
     const nPotion_extraDice4 = 2;
     const nPotion_extraDice5 = 3;
@@ -88,52 +101,67 @@ function Game() {
         }
         setShop((s) => [...s, item])
       }
+    
+    function updateStartValueTurnDice(){
+        setD6Start(d6);
+        setD8Start(d8);
+        setD10Start(d10);
+        setD12Start(d12);
+    }
 
-
+    
     function incrDice6(){
-        if(nPotion >=0 && d6 < 6){
+        if(nPotion >0 && d6 < 9){
+            setnPotion(nPotion+((d6+1) > d6Start ? -1 : 1));
             setD6(1+d6);
         }
     }
 
     function decD6(){
-        if(nPotion >=0 && d6 > 1){
+        if(nPotion >0 && d6 > 1){
+            setnPotion(nPotion+((d6-1) < d6Start ? -1 : 1));
             setD6(d6-1);
         }
     }
 
     function incrD8(){
-        if(nPotion >=0 && d8 < 8){
+        if(nPotion >0 && d8 < 9){
+            setnPotion(nPotion+((d8+1) > d8Start ? -1 : 1));
             setD8(1+d8);
         }
     }
 
     function decD8(){
-        if(nPotion >=0 && d8 > 1){
+        if(nPotion >0 && d8 > 1){
+            setnPotion(nPotion+((d8-1) < d8Start ? -1 : 1));
             setD8(d8-1);
         }
     }
 
     function incrD10(){
-        if(nPotion >=0 && d10 < 10){
+        if(nPotion >0 && d10 < 10){
+            setnPotion(nPotion+((d10+1) > d10Start ? -1 : 1));
             setD10(1+d10);
         }
     }
 
     function decD10(){
-        if(nPotion >=0 && d10 > 1){
+        if(nPotion >0 && d10 > 1){
+            setnPotion(nPotion+((d10-1) < d10Start ? -1 : 1));
             setD10(d10-1);
         }
     }
 
     function incrD12(){
-        if(nPotion >=0 && d12 < 12){
+        if(nPotion >0 && d12 < 12){
+            setnPotion(nPotion+((d12+1) > d12Start ? -1 : 1));
             setD12(1+d12);
         }
     }
 
     function decD12(){
-        if(nPotion >=0 && d12 > 1){
+        if(nPotion >0 && d12 > 1){
+            setnPotion(nPotion+((d12-1) < d12Start ? -1 : 1));
             setD6(d12-1);
         }
     }
@@ -144,6 +172,11 @@ function Game() {
         return 0;
     }
 
+
+    function fetchCard(){
+    }
+
+    //Shop useEffect
     useEffect(()=>{
         let handlerShop = (e)=>{
             if(!shopRef.current.contains(e.target)){
@@ -156,12 +189,15 @@ function Game() {
             document.removeEventListener("mousedown", handlerShop);
           }
     });
+
+
+    
     return (
         <div className="Game">   
             
             <img src={potionImg} className='potionImg' alt='POTION'></img>
             <label className='potionLabel'>{nPotion}</label>
-            <div className={`game-clock ${clockWork ? 'clockWorking' : 'clockNoWorking'}`}>{time}</div>
+            <div className='timerContainer'><Timer countdown={5}></Timer></div>
             <div className='btnTurn' ></div>
             <div className='shopContainer' ref={shopRef}>
                 <img src={shopImg} className='btnShop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
@@ -180,7 +216,7 @@ function Game() {
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
             <div className='diceLeftLabel'>{nActions}</div>
             <img src={titleNTurn} alt='NTURN TITLE' className='nTurnTitle' ></img>
-            <div className='nTurnLabel'>{nActions}</div>
+            <div className='nTurnLabel'>{nTurn}</div>
             <img src={d6img} alt='D6' className='diceImg d6img'></img>
             <div className='diceContenitor d6'>
                 <div className='diceRolled'>{d6}</div>
@@ -210,9 +246,9 @@ function Game() {
                 <button className='decBtn' onClick={decD12}></button>
             </div>
             
-            <div className='cardContainer card1'><Card></Card></div>
-            <div className='cardContainer card2'><Card></Card></div>
-            <div className='cardContainer card3'><Card></Card></div>
+            <div className='cardContainer card1'><Card order = {card1}></Card></div>
+            <div className='cardContainer card2'><Card order = {card2}></Card></div>
+            <div className='cardContainer card3'><Card order = {card3}></Card></div>
             <div className='playerTable'>playerTable</div>
             <div className='quest1'>quest1</div>
             <div className='quest2'>quest2</div>
@@ -232,7 +268,7 @@ function Game() {
                 <Skill skill = {bracers}></Skill> 
                 <Skill skill = {helmet}></Skill> 
                 <Skill skill = {greaves}></Skill> 
-                <Skill skill = {plateArmor}></Skill> 
+                <Skill skill = {plotarmor}></Skill> 
                 <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleMagicResearch'></img>
                 <Skill skill = {fiery}></Skill> 
                 <Skill skill = {shocking}></Skill> 

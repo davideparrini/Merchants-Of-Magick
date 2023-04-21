@@ -75,30 +75,10 @@ body{
     }
   }
   
-.game-clock{
+.timerContainer{ 
     grid-area: counterTimer;
-    background-image: url('./images/clock.png');
-    background-size: cover;
-    height: 120px;
-    width: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(0, 0, 0);
-    text-shadow: 2px 2px 1px #b1b1b1;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 50px;
-    font-weight: 700;
-  }
-  .clockWorking{
-    animation: shakeClock 1s ease-out 0;
-    animation-iteration-count: infinite;
-  }
-  .clockNoWorking{
-    -webkit-animation: rotate-scale-up 1s linear both;
-	animation: rotate-scale-up 1s linear both;
-    animation-iteration-count: 3;
-  }
+   
+}
 
   .extraDices{
     grid-area: extraDices;
@@ -475,7 +455,8 @@ body{
 }
 .btnShop{
     grid-area: btnShop;
-    background: rgba(211, 207, 207, 0.527);
+    background: rgb(255, 255, 255);
+    border: 4px solid $legend-color;
     border-radius: 50%;
     height: 80px;
     width: 80px;

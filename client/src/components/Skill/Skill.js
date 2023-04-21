@@ -12,6 +12,7 @@ function Skill({skill}) {
     const[att1,setAtt1] = useState(checkAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(checkAttribute(skill.attribute2));
     const[att3,setAtt3] = useState(checkAttribute(skill.attribute3));
+    const id = skill.id;
     const craftingItem = ['Accessories','Weapons','Armor']
     const magicResearch = ['Enchantments' , 'Charms']
 

@@ -1,10 +1,10 @@
 
 .card{
     display: grid;
-    grid-template-columns: 90px 30px 90px;
+    grid-template-columns: 90px 40px 90px;
     grid-template-rows: min-content;
     grid-template-areas: 
-        'imgE t1 .'
+        'imgE t1 goldItem'
         '. t2 .'
         '. t3 imgO';
 
@@ -49,6 +49,24 @@
 .t3{
     grid-area: t3;
 }
+.goldItem{
+    grid-area: goldItem;
+    background-image: url(./image/gold3.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 3;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-self: flex-end;
+    align-self: flex-start;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 0 -1px 5px #000000, 0 -2px 15px rgb(223, 208, 0), 0 -10px 20px #f7b500, 0 -18px 40px rgb(214, 43, 43), 2px 2px 20px;
+    font-weight: 700;
+    font-size: x-large;
+    color: #e0e0e0;
+}
 .imgCard{
     grid-area: t2;
     position: absolute;
@@ -64,11 +82,16 @@
 
 .imgOriginCard{
     grid-area: imgO;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-self: center;
+    justify-items: center;
     height: 100px;
     width: 100px;
     opacity: 1;
     z-index: 1;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 
@@ -83,7 +106,7 @@
 }
 
 .backpack{
-    background-image: url(./image/backpack2.png);
+    background-image: url(./image/backpack3.png);
 }
 
 .scroll{
@@ -115,7 +138,7 @@
 }
 
 .bracers{
-    background-image: url(./image/bracers.png);
+    background-image: url(./image/bracers2.png);
 }
 
 .helmet{
@@ -126,15 +149,15 @@
     background-image: url(./image/greaves.png);
 }
 
-.platearmor{
-    background-image: url(./image/plotarmor.png);
+.plotarmor{
+    background-image: url(./image/plotarmor2.png);
 }
 
 .fiery{
      background-image:url(./image/fiery1.png); 
 }
 .shocking{
-    background-image: url(./image/shocking2.png);
+    background-image: url(./image/shocking3.png);
 }
 
 .everlasting{
@@ -149,8 +172,8 @@
     background-image: url(./image/elves2.png);
 }
 
-.dwavers{
-    background-image: url(./image/dwarves3.png);
+.dwarves{
+    background-image: url(./image/dwarves4.png);
 }
 
 .orcs{

@@ -1,0 +1,23 @@
+.timer{
+    background-image: url('./clock.png');
+    background-size: contain;
+    height: 120px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    text-shadow: 2px 2px 1px #b1b1b1;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 50px;
+    font-weight: 700;
+  }
+  .working{
+    animation: shakeClock 1s ease-out 0;
+    animation-iteration-count: infinite;
+  }
+  .noWorking{
+    -webkit-animation: rotate-scale-up 1s linear both;
+	animation: rotate-scale-up 1s linear both;
+    animation-iteration-count: 3;
+  }
