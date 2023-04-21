@@ -79,10 +79,17 @@ function Game() {
     const [nActions,setnActions] = useState(2);
     const [nTurn,setNTurn] = useState(1);
 
+    const [eDice1,seteDice1] = useState(false);
+    const [eDice2,seteDice2] = useState(false);
+    const [eDice3,seteDice3] = useState(false);
+    const [eDice4,seteDice4] = useState(false);
+    const [eDice5,seteDice5] = useState(false);
+    const [eDice6,seteDice6] = useState(false);
+
     // const [card1,setCard1] = useState(null);
     // const [card2,setCard2] = useState(null);
     // const [card3,setCard3] = useState(null);
-    const card1 ={item:'sword',gold: 5,enchantment: 'fiery' , origin:'of the Dragons'};
+    const card1 ={item:'crossbow',gold: 5,enchantment: 'divine' , origin:'of the Dragons'};
     const card2 ={item:'plotarmor',gold: 3,enchantment: 'everlasting' , origin:'of the Elves'};
     const card3 ={item:'warhammer',gold: 7,enchantment: 'divine' , origin: 'of the Dwarves'};
 
@@ -206,12 +213,12 @@ function Game() {
             </div>
 
             <div className='extraDices'>
-                <div className='eDice ed1'></div>
-                <div className='eDice ed2'></div>
-                <div className='eDice ed3'></div>
-                <div className='eDice ed4'><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
-                <div className='eDice ed5'><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
-                <div className='eDice ed6'><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
+                <div className={`eDice ed1 ${eDice1 ? 'used-extra-dice' : ''}`}></div>
+                <div className={`eDice ed2 ${eDice2 ? 'used-extra-dice' : ''}`}></div>
+                <div className={`eDice ed3 ${eDice3 ? 'used-extra-dice' : ''}`}></div>
+                <div className={`eDice ed4 ${eDice4 ? 'used-extra-dice' : ''}`}><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
+                <div className={`eDice ed5 ${eDice5 ? 'used-extra-dice' : ''}`}><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
+                <div className={`eDice ed6 ${eDice6 ? 'used-extra-dice' : ''}`}><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
             </div>
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
             <div className='diceLeftLabel'>{nActions}</div>

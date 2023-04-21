@@ -1,3 +1,28 @@
+@keyframes shakeClock {
+  0%,100% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes rotate-scale-up {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
+      
+  }
+  50% {
+    -webkit-transform: scale(1.3) rotateZ(180deg);
+    transform: scale(1.3) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
+  }
+}
+
 .timer{
     background-image: url('./clock.png');
     background-size: contain;
@@ -18,6 +43,8 @@
   }
   .noWorking{
     -webkit-animation: rotate-scale-up 1s linear both;
-	animation: rotate-scale-up 1s linear both;
+    animation: rotate-scale-up 1s linear both;
     animation-iteration-count: 3;
   }
+  
+  
