@@ -1,20 +1,25 @@
 
-import './Game.css';
+import './Game.scss';
+import { v4 as uuid } from 'uuid';
 
 import CreateLobby from './components/LobbyComponents/CreateLobby';
 import Skill from './components/Skill/Skill';
 import Dice from './components/Dice/Dice';
-import CardOrder from './components/Order/CardOrder';
+import Card from './components/Order/Card';
 import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
 
 import titleCraftingSkills from './images/craftingSkillTitle.png'
 import titleMagicResearch from './images/magicResearchTitle.png'
+import titleDiceLeft from './images/diceLeftTitle2.png'
+import titleNTurn from './images/turnNTitle.png'
 
 import d6img from './images/d6.png'
 import d8img from './images/d8.png'
 import d10img from './images/d10.png'
 import d12img from './images/d12.png'
 
+import shopImg from './images/shop.png'
+import potionImg from './images/potion4.png'
 import steelImg from './components/Skill/iconsAttribute/steel.png'
 import woodImg from './components/Skill/iconsAttribute/wood7.png'
 import leatherImg from './components/Skill/iconsAttribute/leather.png'
@@ -25,7 +30,7 @@ import wildImg from './components/Skill/iconsAttribute/wild.png'
 import backpack from './components/Skill/skillsJson/backpack.json'
 import scroll from './components/Skill/skillsJson/scroll.json'
 import ring from './components/Skill/skillsJson/ring.json'
-import grimore from './components/Skill/skillsJson/grimore.json'
+import grimoire from './components/Skill/skillsJson/grimoire.json'
 import staff from './components/Skill/skillsJson/staff.json'
 import sword from './components/Skill/skillsJson/sword.json'
 import crossbow from './components/Skill/skillsJson/crossbow.json'
@@ -47,78 +52,135 @@ import renownedAccessories from './components/Skill/skillsJson/renownedAcc.json'
 import weaponPrestige from './components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from './components/Skill/skillsJson/eliteArmor.json'
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 
 
 
 
 function Game() {
-    const d6es = 3;
-    const d8es = 6;
-    const d10es = 9;
-    const d12es = 11;
+    
+    const [openShop,setOpenShop] = useState(false);
+    const [shop,setShop] = useState([]);
 
+    const [clockWork,setClockWork] = useState(false);
     const [nPotion,setnPotion] = useState(11);
-    const [d6,setD6]=useState(0);
-    const [d8,setD8]=useState(0);
-    const [d10,setD10]=useState(0);
-    const [d12,setD12]=useState(0);
+
+    const [d6,setD6]=useState(1);
+    const [d8,setD8]=useState(1);
+    const [d10,setD10]=useState(1);
+    const [d12,setD12]=useState(1);
+
+    const [nActions,setnActions] = useState(2);
+
+    const nPotion_extraDice4 = 2;
+    const nPotion_extraDice5 = 3;
+    const nPotion_extraDice6 = 4;
+    const time = 120;
+
+
+    let shopRef = useRef();
+
+    const addItemShop = (card) => {
+        const item = {
+          id: uuid(),
+          card,
+        }
+        setShop((s) => [...s, item])
+      }
+
 
     function incrDice6(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d6 < 6){
             setD6(1+d6);
         }
     }
 
     function decD6(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d6 > 1){
             setD6(d6-1);
         }
     }
 
     function incrD8(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d8 < 8){
             setD8(1+d8);
         }
     }
 
     function decD8(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d8 > 1){
             setD8(d8-1);
         }
     }
 
     function incrD10(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d10 < 10){
             setD10(1+d10);
         }
     }
 
     function decD10(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d10 > 1){
             setD10(d10-1);
         }
     }
 
     function incrD12(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d12 < 12){
             setD12(1+d12);
         }
     }
 
     function decD12(){
-        if(nPotion >=0){
+        if(nPotion >=0 && d12 > 1){
             setD6(d12-1);
         }
     }
+    
 
+    
+    function timer(){
+        return 0;
+    }
+
+    useEffect(()=>{
+        let handlerShop = (e)=>{
+            if(!shopRef.current.contains(e.target)){
+                setOpenShop(false);
+            }   
+        };
+        document.addEventListener("mousedown", handlerShop);
+
+        return() =>{
+            document.removeEventListener("mousedown", handlerShop);
+          }
+    });
     return (
         <div className="Game">   
             
-            <div className='extraDices'>Dices</div>
-            <div className='diceLabel'>DicesNum</div>
+            <img src={potionImg} className='potionImg' alt='POTION'></img>
+            <label className='potionLabel'>{nPotion}</label>
+            <div className={`game-clock ${clockWork ? 'clockWorking' : 'clockNoWorking'}`}>{time}</div>
+            <div className='btnTurn' ></div>
+            <div className='shopContainer' ref={shopRef}>
+                <img src={shopImg} className='btnShop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
+                <div className={`dropdownShop ${openShop? 'active' : 'inactive'}`} >
+                </div>
+            </div>
 
+            <div className='extraDices'>
+                <div className='eDice ed1'></div>
+                <div className='eDice ed2'></div>
+                <div className='eDice ed3'></div>
+                <div className='eDice ed4'><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
+                <div className='eDice ed5'><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
+                <div className='eDice ed6'><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
+            </div>
+            <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
+            <div className='diceLeftLabel'>{nActions}</div>
+            <img src={titleNTurn} alt='NTURN TITLE' className='nTurnTitle' ></img>
+            <div className='nTurnLabel'>{nActions}</div>
             <img src={d6img} alt='D6' className='diceImg d6img'></img>
             <div className='diceContenitor d6'>
                 <div className='diceRolled'>{d6}</div>
@@ -148,12 +210,9 @@ function Game() {
                 <button className='decBtn' onClick={decD12}></button>
             </div>
             
-            <div className='potionLabel'>nPotions</div>
-            <div className='btnTurn' ></div>
-            <div className='btnShop'>btnShop</div>
-            <div className='card1'>card1</div>
-            <div className='card2'>card2</div>
-            <div className='card3'>card3</div>
+            <div className='cardContainer card1'><Card></Card></div>
+            <div className='cardContainer card2'><Card></Card></div>
+            <div className='cardContainer card3'><Card></Card></div>
             <div className='playerTable'>playerTable</div>
             <div className='quest1'>quest1</div>
             <div className='quest2'>quest2</div>
@@ -165,7 +224,7 @@ function Game() {
                 <Skill skill = {backpack}></Skill> 
                 <Skill skill = {scroll}></Skill> 
                 <Skill skill = {ring}></Skill> 
-                <Skill skill = {grimore}></Skill>                
+                <Skill skill = {grimoire}></Skill>                
                 <Skill skill = {staff}></Skill> 
                 <Skill skill = {sword}></Skill> 
                 <Skill skill = {crossbow}></Skill> 
@@ -192,40 +251,40 @@ function Game() {
             <div className='titleLegenda'>Legend</div>
             <div className='legenda'>
                 <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Steel</p>
-                    <img src={steelImg} className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d6img} className='imgLegenda diceLegenda1'></img>
+                    <p className='attributeLegenda'>Steel➔</p>
+                    <img src={steelImg}  alt='STEEL' className='imgLegenda imgAttributeLegenda'></img>
+                    <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
                 </div>
                 <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Wood</p>
-                    <img src={woodImg} className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d6img} className='imgLegenda diceLegenda1'></img>
-                    <img src={d8img} className='imgLegenda diceLegenda2'></img>
+                    <p className='attributeLegenda'>Wood➔</p>
+                    <img src={woodImg}  alt='WOOD'  className='imgLegenda imgAttributeLegenda'></img>
+                    <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
+                    <img src={d8img} alt='D8'  className='imgLegenda diceLegenda2'></img>
                 </div>
                 <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Leather</p>
-                    <img src={leatherImg} className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d6img} className='imgLegenda diceLegenda1'></img>
-                    <img src={d8img} className='imgLegenda diceLegenda2'></img>
-                    <img src={d10img} className='imgLegenda diceLegenda3'></img>
+                    <p className='attributeLegenda'>Leather➔</p>
+                    <img src={leatherImg}  alt='LEATHER' className='imgLegenda imgAttributeLegenda'></img>
+                    <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
+                    <img src={d8img}  alt='D8'  className='imgLegenda diceLegenda2'></img>
+                    <img src={d10img}  alt='D10'  className='imgLegenda diceLegenda3'></img>
                 </div>
                 <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Elemental</p>
-                    <img src={elementalImg} className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d8img} className='imgLegenda diceLegenda1'></img>
-                    <img src={d10img} className='imgLegenda diceLegenda2'></img>
-                    <img src={d12img} className='imgLegenda diceLegenda3'></img>
+                    <p className='attributeLegenda'>Elemental➔</p>
+                    <img src={elementalImg}  alt='ELEMENTAL' className='imgLegenda imgAttributeLegenda'></img>
+                    <img src={d8img}  alt='8'  className='imgLegenda diceLegenda1'></img>
+                    <img src={d10img} alt='D10' className='imgLegenda diceLegenda2'></img>
+                    <img src={d12img}  alt='D12' className='imgLegenda diceLegenda3'></img>
                 </div>
                 <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Arcane</p>
-                    <img src={arcaneImg} className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d10img} className='imgLegenda diceLegenda2'></img>
-                    <img src={d12img} className='imgLegenda diceLegenda3'></img>
+                    <p className='attributeLegenda'>Arcane➔</p>
+                    <img src={arcaneImg} alt='ARCANE' className='imgLegenda imgAttributeLegenda'></img>
+                    <img src={d10img} alt='D10' className='imgLegenda diceLegenda2'></img>
+                    <img src={d12img} alt='D12' className='imgLegenda diceLegenda3'></img>
                 </div> 
                 <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Wild</p>
-                    <img src={wildImg} className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d12img} className='imgLegenda diceLegenda3'></img>
+                    <p className='attributeLegenda'>Wild➔</p>
+                    <img src={wildImg} alt='WILD' className='imgLegenda imgAttributeLegenda'></img>
+                    <img src={d12img} alt='D12' className='imgLegenda diceLegenda3'></img>
                 </div> 
             
             </div>
