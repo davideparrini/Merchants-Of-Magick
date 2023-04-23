@@ -7,7 +7,7 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
-function Skill({skill}) {
+function Skill({skill, setNAttribute}) {
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(checkAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(checkAttribute(skill.attribute2));
@@ -26,8 +26,10 @@ function Skill({skill}) {
         }
         else{
             if(!boolAtt) 
-                return 'numberCircle'
-            else return 'numberCircle upgraded'
+                return 'numberCircle';
+            else {
+                return 'numberCircle upgraded';
+            }
         }
     }
     function checkNoImg(att){
@@ -44,6 +46,10 @@ function Skill({skill}) {
    }
 
 
+   function upgradeAtt(){
+        setNAttribute((n)=>(n+1));
+   }
+
     useEffect(()=>{
         if(att1 && att2 && att3) 
             setHasSkill(true);
@@ -54,15 +60,15 @@ function Skill({skill}) {
             <button className={hasSkill ? 'numberCircle gold' : 'numberCircle grey'}>{skill.gold}</button>
             <p className='skillName'>{skill.name}</p>
             <img src={checkTypeItem() === 'ᨈ'? steelImg : elementalImg} alt='Wood' className={checkNoImg(skill.attribute1) + ' img1'}></img>
-            <button className={checkNoButton(skill.attribute1,att1) + ' btn1'} onClick={() => {setAtt1(true)}}>{skill.attribute1}
+            <button className={checkNoButton(skill.attribute1,att1) + ' btn1'} onClick={() => { upgradeAtt(); setAtt1(true)}}>{skill.attribute1}
                 <div className={checkTypeItem() === 'ᨈ'? 'cappuccioSu' : 'cappuccioGiu'}>{checkTypeItem()}</div>
             </button>
             <img src={checkTypeItem() === 'ᨈ'? woodImg : arcaneImg} alt='Wood' className={checkNoImg(skill.attribute2) + ' img2'}></img>
-            <button className={checkNoButton(skill.attribute2,att2)+ ' btn2'} onClick={() => {setAtt2(true)}}>{skill.attribute2}
+            <button className={checkNoButton(skill.attribute2,att2)+ ' btn2'} onClick={() => { upgradeAtt(); setAtt2(true)}}>{skill.attribute2}
                 <div className={checkTypeItem() === 'ᨈ'? 'cappuccioSu' : 'cappuccioGiu'}>{checkTypeItem()}</div>
             </button>
             <img src={checkTypeItem() === 'ᨈ'? leatherImg : wildImg} alt='Wood' className={checkNoImg(skill.attribute3) + ' img3'}></img>
-            <button className={checkNoButton(skill.attribute3,att3) + ' btn3'} onClick={() => {setAtt3(true)}}>{skill.attribute3}
+            <button className={checkNoButton(skill.attribute3,att3) + ' btn3'} onClick={() => { upgradeAtt(); setAtt3(true)}}>{skill.attribute3}
                 <div className= {checkTypeItem() === 'ᨈ'? 'cappuccioSu' : 'cappuccioGiu'}>{checkTypeItem()}</div>
             </button>
         </div>

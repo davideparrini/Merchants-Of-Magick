@@ -49,51 +49,83 @@ import Container_dice_diceValue from './components/Container_Dice/Container_dice
 
 function Game() {
     
+    //Ref al area dello shop, Close on out-click
     let shopRef = useRef();
+
+    //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
-    let typeTouchedDiceRef = useRef('d6');
+
+    //Ref per mantenere il dado toccato
+    let typeTouchedDiceRef = useRef();
 
 
-
+    //bool openShop
     const [openShop,setOpenShop] = useState(false);
+    //lista items dentro lo shop
     const [shop,setShop] = useState([]);
 
    
+    //monitor del timer, finito countDown -> true
+    const [timerEnd,setTimerEnd] = useState(false);
+    
+    //durata di un turno
+    const countdownTurn = 10;
 
-    const [clockWork,setClockWork] = useState(false);
+    //numero pozioni
     const [nPotion,setnPotion] = useState(11);
 
+    //Tipi dado
+    const TYPE_D6 = 'd6';
+    const TYPE_D8 = 'd8';
+    const TYPE_D10 = 'd10';
+    const TYPE_D12 = 'd12';
+
+    //valori dei dadi
     const [d6Value,setD6Value]=useState(5);
     const [d8Value,setD8Value]=useState(1);
     const [d10Value,setD10Value]=useState(8);
     const [d12Value,setD12Value]=useState(11);
 
+    //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
     const [d6startValue,setD6startValue]=useState(d6Value);
     const [d8startValue,setD8startValue]=useState(d8Value);
     const [d10startValue,setD10startValue]=useState(d10Value);
     const [d12startValue,setD12startValue]=useState(d12Value);
 
+    //monitor se i dadi sono stati toccati, diceTouched(true) -> focused 
     const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
-    const [diceTouchedD8 ,setDiceToucheD8] = useState(false);
+    const [diceTouchedD8 ,setDiceTouchedD8] = useState(false);
     const [diceTouchedD10 ,setDiceTouchedD10] = useState(false);
     const [diceTouchedD12 ,setDiceTouchedD12] = useState(false);
 
+    //monitor dadi usati, diceUsed(true) -> non più disponibile
     const[diceUsedD6,setDiceUsedD6] = useState(false);
     const[diceUsedD8,setDiceUsedD8] = useState(false);
     const[diceUsedD10,setDiceUsedD10] = useState(false);
     const[diceUsedD12,setDiceUsedD12] = useState(false);
 
+    //monitor se un attributo è stato upgradato
     const[attributeUpgraded,setAttributeUpgraded] = useState(true);
 
-    const [nActions,setnActions] = useState(2);
+    //numero di dadi rimanenti da usare
+    const [diceLeft_toUse,setDiceLeft_toUse] = useState(2);
+    //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
 
+    //bool extra-dice, eDice(true) -> eDice usato e non più disponibile per tutta la partita
     const [eDice1,seteDice1] = useState(false);
     const [eDice2,seteDice2] = useState(false);
     const [eDice3,seteDice3] = useState(false);
     const [eDice4,seteDice4] = useState(false);
     const [eDice5,seteDice5] = useState(false);
     const [eDice6,seteDice6] = useState(false);
+    
+    //numero pozioni necessarie per usare gl'eDice
+    const nPotion_extraDice4 = 2;
+    const nPotion_extraDice5 = 3;
+    const nPotion_extraDice6 = 4;
+    
+    //carte di gioco durante il turno
 
     // const [card1,setCard1] = useState(null);
     // const [card2,setCard2] = useState(null);
@@ -102,18 +134,14 @@ function Game() {
     const card2 ={item:'scroll',gold: 3,enchantment: 'everlasting' , origin:'of the Elves'};
     const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the Dwarves'};
 
-    const[showedCard1,setshowedCard1] = useState(true);
-    const[showedCard2,setshowedCard2] = useState(true);
-    const[showedCard3,setshowedCard3] = useState(true);
+    //bool carta girata, showCard(false) -> carta girata
+    const[showCard1,setShowCard1] = useState(true);
+    const[showCard2,setShowCard2] = useState(true);
+    const[showCard3,setShowCard3] = useState(true);
     
-
+    //numero di attributi_skill acquisiti
+    const[nAttribute,setNAttribute] = useState(0);
     
-    const nPotion_extraDice4 = 2;
-    const nPotion_extraDice5 = 3;
-    const nPotion_extraDice6 = 4;
-    const time = 10;
-
-
     const craftingItemType = ['Accessories','Weapons','Armor']
 
     const listD6_id_Skills = new Array(1,2,3,4,5,6,7,8,9,10,11,12);
@@ -184,44 +212,44 @@ function Game() {
         
         if(craftingItemType.includes(skill.typeItem) ){
             switch(typeDice){
-                case 'd6':{
+                case TYPE_D6:{
                     attBool1 = diceValue >= skill.attribute1;
                     attBool2 = diceValue >= skill.attribute2;
                     attBool3 = diceValue >= skill.attribute3;
                 }
                     break;  
-                case 'd8':{
+                case TYPE_D8:{
                     attBool2 = diceValue >= skill.attribute2;
                     attBool3 = diceValue >= skill.attribute3;
                 }
                     break;
-                case 'd10':{
+                case TYPE_D10:{
                     attBool3 = diceValue >= skill.attribute3;
                 }
                     break;
-                case 'd12':{
+                case TYPE_D12:{
                 }
                     break;
             }
         }
         else{
             switch(typeDice){
-                case 'd6':{
+                case TYPE_D6 :{
                     attBool1 = diceValue <= skill.attribute1;
                     attBool2 = diceValue <= skill.attribute2;
                     attBool3 = diceValue <= skill.attribute3;
                 }
                     break;  
-                case 'd8':{
+                case TYPE_D8:{
                     attBool1 = diceValue <= skill.attribute1;
                 }
                     break;
-                case 'd10':{
+                case TYPE_D10:{
                     attBool1 = diceValue <= skill.attribute1;
                     attBool2 = diceValue <= skill.attribute2;
                 }
                     break;
-                case 'd12':{
+                case TYPE_D12:{
                     attBool1 = diceValue <= skill.attribute1;
                     attBool2 = diceValue <= skill.attribute2;
                     attBool3 = diceValue <= skill.attribute3;
@@ -258,10 +286,23 @@ function Game() {
     //         break;
     //     }
     // }
+
     function timer(){
         return 0;
     }
 
+    //predicato per vedere se un dado è stato toccato
+    function isDiceToouched(){ return diceTouchedD6 && diceTouchedD8 && diceTouchedD10 && diceTouchedD12; }
+
+    //funzione che setta tutti i dadi come non toccati diceTouched -> false
+    function setAllDiceNoTouched(){
+            setDiceTouchedD6(false);
+            setDiceTouchedD8(false)
+            setDiceTouchedD10(false);
+            setDiceTouchedD12(false);
+    }
+
+    ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
     //Shop useEffect
     useEffect(()=>{
@@ -277,33 +318,30 @@ function Game() {
           }
     });
 
-    //Skilltable useEffect, se tocco un Dice rimanee attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
+    //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
     useEffect(()=>{
         let handlerSkillTable = (e)=>{
             if(!skillTableRef.current.contains(e.target)){
-                setDiceTouchedD6(false);
-                setDiceToucheD8(false);
-                setDiceTouchedD10(false);
-                setDiceTouchedD12(false);
+                setAllDiceNoTouched();
             }
             else{
                 if(attributeUpgraded){
                     switch(typeTouchedDiceRef.current){
-                        case 'd6': 
+                        case TYPE_D6: 
                             setDiceUsedD6(true);
-                            setnActions((n)=>(n-1));
+                            setDiceLeft_toUse((n)=>(n-1));
                             break;
-                        case 'd8': 
+                        case TYPE_D8: 
                             setDiceUsedD8(true);
-                            setnActions((n)=>(n-1));
+                            setDiceLeft_toUse((n)=>(n-1));
                             break;
-                        case 'd10': 
+                        case TYPE_D10: 
                             setDiceUsedD10(true);
-                            setnActions((n)=>(n-1));
+                            setDiceLeft_toUse((n)=>(n-1));
                         break;
-                        case 'd12': 
+                        case TYPE_D12: 
                             setDiceUsedD12(true);
-                            setnActions((n)=>(n-1));
+                            setDiceLeft_toUse((n)=>(n-1));
                             break;     
                     }
                     setAttributeUpgraded(false);
@@ -315,22 +353,19 @@ function Game() {
         return() =>{
             document.removeEventListener("mousedown", handlerSkillTable);
           }
-    });
+    },[typeTouchedDiceRef]);
 
 
-    //use
+    //DA SISTEMARE
     useEffect(()=>{
-        let handlerDiceTouched = (e)=>{
-            
-        }
-
-    });
+        setAttributeUpgraded(true);
+    },[nAttribute]);
 
 
     return (
         <div className="Game">   
             
-            <div className='timerContainer'><Timer countdown={time}></Timer></div>
+            <div className='timerContainer'><Timer countdown={countdownTurn}></Timer></div>
             
             <div className='extraDices'>
                 <div className={`eDice ed1 ${eDice1 ? 'no-active' : ''}`}></div>
@@ -342,7 +377,7 @@ function Game() {
             </div>
 
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
-            <div className='diceLeftLabel'>{nActions}</div>
+            <div className='diceLeftLabel'>{diceLeft_toUse}</div>
 
             <img src={titleNTurn} alt='NTURN TITLE' className='nTurnTitle' ></img>
             <div className='nTurnLabel'>{nTurn}</div>
@@ -353,20 +388,78 @@ function Game() {
                     <img src={potionImg} className='potionImg' alt='POTION'></img>
                     <label className='potionLabel'>{nPotion}</label>
                 </div>
-                <Container_dice_diceValue typeDice={'d6'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d6startValue} diceValue={d6Value} setDiceValue={setD6Value} usedDice={diceUsedD6} diceTouched={diceTouchedD6} nActions={nActions} onClickImgHandler={setDiceTouchedD6}></Container_dice_diceValue>
-                <Container_dice_diceValue typeDice={'d8'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d8startValue} diceValue={d8Value} setDiceValue={setD8Value} usedDice={diceUsedD8} diceTouched={diceTouchedD8} nActions={nActions} onClickImgHandler={setDiceToucheD8}></Container_dice_diceValue>
-                <Container_dice_diceValue typeDice={'d10'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d10startValue} diceValue={d10Value} setDiceValue={setD10Value} usedDice={diceUsedD10} diceTouched={diceTouchedD10} nActions={nActions} onClickImgHandler={setDiceTouchedD10}></Container_dice_diceValue>
-                <Container_dice_diceValue typeDice={'d12'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d12startValue} diceValue={d12Value} setDiceValue={setD12Value} usedDice={diceUsedD12} diceTouched={diceTouchedD12} nActions={nActions} onClickImgHandler={setDiceTouchedD12}></Container_dice_diceValue>
+                <Container_dice_diceValue 
+                    typeDice={TYPE_D6} 
+                    nPotion={nPotion} 
+                    setnPotion={setnPotion} 
+                    startTurnDiceValue={d6startValue} 
+                    diceValue={d6Value} 
+                    setDiceValue={setD6Value} 
+                    usedDice={diceUsedD6} 
+                    diceTouched={diceTouchedD6} 
+                    nActions={diceLeft_toUse} 
+                    onClickImgHandler={()=>{
+                        typeTouchedDiceRef.current = TYPE_D6;
+                        setAllDiceNoTouched(); 
+                        setDiceTouchedD6(true);
+                    }}
+                ></Container_dice_diceValue>
+                <Container_dice_diceValue 
+                    typeDice={TYPE_D8} 
+                    nPotion={nPotion} 
+                    setnPotion={setnPotion} 
+                    startTurnDiceValue={d8startValue} 
+                    diceValue={d8Value} 
+                    setDiceValue={setD8Value} 
+                    usedDice={diceUsedD8} 
+                    diceTouched={diceTouchedD8} 
+                    nActions={diceLeft_toUse} 
+                    onClickImgHandler={()=>{
+                        typeTouchedDiceRef.current = TYPE_D8;
+                        setAllDiceNoTouched(); 
+                        setDiceTouchedD8(true);
+                    }}
+                    ></Container_dice_diceValue>
+                <Container_dice_diceValue 
+                    typeDice={TYPE_D10} 
+                    nPotion={nPotion} 
+                    setnPotion={setnPotion} 
+                    startTurnDiceValue={d10startValue} 
+                    diceValue={d10Value} 
+                    setDiceValue={setD10Value} 
+                    usedDice={diceUsedD10} 
+                    diceTouched={diceTouchedD10} 
+                    nActions={diceLeft_toUse} 
+                    onClickImgHandler={()=>{
+                        typeTouchedDiceRef.current = TYPE_D10;
+                        setAllDiceNoTouched(); 
+                        setDiceTouchedD10(true);
+                    }}
+                ></Container_dice_diceValue>
+                <Container_dice_diceValue 
+                    typeDice={TYPE_D12} 
+                    nPotion={nPotion} 
+                    setnPotion={setnPotion} 
+                    startTurnDiceValue={d12startValue} 
+                    diceValue={d12Value} setDiceValue={setD12Value} 
+                    usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
+                    nActions={diceLeft_toUse} 
+                    onClickImgHandler={()=>{
+                        typeTouchedDiceRef.current = TYPE_D12;
+                        setAllDiceNoTouched(); 
+                        setDiceTouchedD12(true);
+                    }}
+                ></Container_dice_diceValue>
             </div>
 
 
             <div className='cardContainer'>
-                <Card order = {card1} isShowed={showedCard1}></Card>
-                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card1)) setshowedCard1(false) }}></button>
-                <Card order = {card2} isShowed={showedCard2} ></Card>
-                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card2)) setshowedCard2(false) }}></button>
-                <Card order = {card3} isShowed={showedCard3}></Card>
-                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card3)) setshowedCard3(false) }}></button>
+                <Card order = {card1} isShowed={showCard1}></Card>
+                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card1)) setShowCard1(false) }}></button>
+                <Card order = {card2} isShowed={showCard2} ></Card>
+                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card2)) setShowCard2(false) }}></button>
+                <Card order = {card3} isShowed={showCard3}></Card>
+                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card3)) setShowCard3(false) }}></button>
             </div>
             <div className='playerTable'>playerTable</div>
             <div className='quest1'>quest1</div>
@@ -376,31 +469,79 @@ function Game() {
             <div className='order3'>order3</div>
             <div className='skillsTable' ref={skillTableRef}>
                 <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleCraftingSkills'></img>
-                <Skill skill = {backpack}></Skill> 
-                <Skill skill = {scroll}></Skill> 
-                <Skill skill = {ring}></Skill> 
-                <Skill skill = {grimoire}></Skill>                
-                <Skill skill = {staff}></Skill> 
-                <Skill skill = {sword}></Skill> 
-                <Skill skill = {crossbow}></Skill> 
-                <Skill skill = {warhammer}></Skill> 
-                <Skill skill = {bracers}></Skill> 
-                <Skill skill = {helmet}></Skill> 
-                <Skill skill = {greaves}></Skill> 
-                <Skill skill = {plotarmor}></Skill> 
+                <Skill skill = {backpack} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {scroll} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {ring} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {grimoire} 
+                    setNAttribute={setNAttribute}
+                ></Skill>                
+                <Skill skill = {staff} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {sword} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {crossbow} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {warhammer}
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {bracers}
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {helmet} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {greaves} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {plotarmor} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
                 <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleMagicResearch'></img>
-                <Skill skill = {fiery}></Skill> 
-                <Skill skill = {shocking}></Skill> 
-                <Skill skill = {everlasting}></Skill> 
-                <Skill skill = {divine}></Skill> 
-                <Skill skill = {elves}></Skill>
-                <Skill skill = {dwarves}></Skill> 
-                <Skill skill = {orcs}></Skill> 
-                <Skill skill = {dragons}></Skill> 
-                <Skill skill = {glamorPotionSupplier}></Skill> 
-                <Skill skill = {renownedAccessories}></Skill> 
-                <Skill skill = {weaponPrestige}></Skill> 
-                <Skill skill = {eliteArmor}></Skill>  
+                <Skill skill = {fiery} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {shocking} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {everlasting} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {divine} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {elves} 
+                    setNAttribute={setNAttribute}
+                ></Skill>
+                <Skill skill = {dwarves} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {orcs} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {dragons} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {glamorPotionSupplier} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {renownedAccessories} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {weaponPrestige} 
+                    setNAttribute={setNAttribute}
+                ></Skill> 
+                <Skill skill = {eliteArmor} 
+                    setNAttribute={setNAttribute}
+                ></Skill>  
 
             </div>
             <div className='legend-container'><Legend></Legend></div>
