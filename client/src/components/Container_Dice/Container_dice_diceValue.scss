@@ -1,0 +1,68 @@
+@use '../../variables' as v;
+
+.diceContenitor{
+    display: grid;
+    grid-template-columns: 1fr repeat(2,0.5fr);
+    grid-template-areas: 
+        'imgDice labelD labelD'
+        'imgDice btnInc btnDec';
+}
+.diceImg{
+    grid-area: imgDice;
+    width: 100px;
+    height: 100px;
+    justify-self: center;
+    align-self: center;
+    position: relative;
+    top: -10px;
+}
+
+.no-active{
+    filter: grayscale(1);  
+    pointer-events: none;
+}
+.touched-dice{
+    filter: drop-shadow(0px 0px 20px #fa0202); 
+}
+
+.diceRolled{
+    grid-area: labelD;
+    align-self: end;
+    justify-self: center;
+    background: #ddd88c;
+    height:v.$label-height;
+    width: v.$label-width;
+    border-radius: v.$label-border-radius;
+    color: v.$primary-color;
+    font: 24px Arial, sans-serif;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;  
+    
+  }
+
+.incBtn:active,.decBtn:active{
+    opacity: 0.7;
+}
+.incBtn,.decBtn{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 3px;
+}
+.incBtn{
+    grid-area: btnInc;
+    background: url("./plus.png");
+    background-size: cover;
+    justify-self: self-end;
+    
+}
+.decBtn{
+    grid-area: btnDec;
+    background: url("./menus.png");
+    background-size: cover;
+    justify-self: self-start;
+}
+
+

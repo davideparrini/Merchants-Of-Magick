@@ -1,26 +1,24 @@
-$label-height: 50px;
-$label-width: 50px;
-$label-border-radius: 10px;
-$label-background-color: #ddd88c;
-$legend-color:#741313;
-
+@use 'variables' as v;
 
 .Game {
     display: grid;
     grid-template-areas:
-    'potionImg nPotions . extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer .  quest1 quest1 quest1 quest2 quest2 quest2'
-    'd6img d6 skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable titleLegenda titleLegenda titleLegenda'
-    'd8img d8 skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
-    'd10img d10 skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
-    'd12img d12 card1 card1 card1 card2 card2 card2 card3 card3 card3 . order1 order2 . . . . btnShop . btnTurn .'
-    '. . card1 card1 card1 card2 card2 card2 card3 card3 card3 . order1 order2 . . . . .  . . .';
+    'containerDices_Potion containerDices_Potion . extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer .  quest1 quest1 quest1 quest2 quest2 quest2'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable btnTurn btnTurn btnShop'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer orderContainer orderContainer orderContainer . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer orderContainer orderContainer orderContainer . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 3px;
+    
 }
 
 body{
     background-image: url('./images/background6.png');
+    overflow: hidden;
+    overscroll-behavior: none;
     
 } 
 
@@ -41,7 +39,7 @@ body{
    
 }
 
-  .extraDices{
+.extraDices{
     grid-area: extraDices;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -119,11 +117,11 @@ body{
     align-content: center;
     justify-items: center;
     justify-content: center;
-    background-color: $label-background-color;
-    height: $label-height;
-    width: $label-width;
-    border-radius: $label-border-radius;
-    color: #850000;
+    background-color: v.$label-color;
+    height: v.$label-height;
+    width: v.$label-width;
+    border-radius: v.$label-border-radius;
+    color: v.$primary-color;
     font: 35px Arial, sans-serif;
     font-weight: 700;
 }
@@ -147,112 +145,32 @@ body{
     align-content: center;
     justify-items: center;
     justify-content: center;
-    background-color: $label-background-color;
-    height: $label-height;
-    width: $label-width;
-    border-radius: $label-border-radius;
-    color: #850000;
+    background-color: v.$label-color;
+    height: v.$label-height;
+    width: v.$label-width;
+    border-radius: v.$label-border-radius;
+    color: v.$primary-color;
     font: 35px Arial, sans-serif;
     font-weight: 700;
 }
 
-
-.diceContenitor{
-    display: grid;
-    grid-template-areas: 
-        'labelD labelD'
-        'btnInc btnDec';
+.containerDices_Potion{
+    grid-area: containerDices_Potion; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
-.diceRolled{
-    grid-area: labelD;
-    align-self: end;
-    justify-self: center;
-    background: #ddd88c;
-    height: 50px;
-    width: 50px;
-    border-radius: 10px;
-    color: rgb(133, 0, 0);
-    font: 24px Arial, sans-serif;
-    font-weight: 700;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;  
+
+.container-potion{
+    display: flex;
+    justify-content: space-between;
     
-  }
+    flex-direction: row;
+    margin: 7px;
+    margin-left: 22px;
+    margin-bottom: 50px;
+    margin-top: 10px;
 
-.incBtn:active,.decBtn:active{
-    opacity: 0.7;
-}
-.incBtn,.decBtn{
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    border: 3px;
-}
-.incBtn{
-    background: url("./images/plus.png");
-    background-size: cover;
-    grid-area: btnInc;
-    justify-self: self-end;
-    
-}
-.decBtn{
-    background: url("./images/menus.png");
-    background-size: cover;
-    grid-area: btnDec;
-    justify-self: self-start;
-}
-
-
-
-.diceImg{
-    width: 100px;
-    height: 100px;
-    justify-self: center;
-    align-self: center;
-    position: relative;
-    top: -10px;
-}
-.diceImg:active,.diceImg:focus{
-    background:transparent;
-    border-radius: 50%;
-    border: none;
-    -webkit-box-shadow: 5px 5px 10px 10px #FF8080, -9px 5px 10px 10px #FFE488, -7px -5px 10px 10px #8CFF85, 12px -5px 10px 10px #80C7FF, 12px 10px 10px 10px #E488FF, -10px 10px 10px 10px #FF616B, -10px -7px 10px 10px #8E5CFF, 0px 0px 10px 10px rgba(242,255,83,0); 
-    box-shadow: 5px 5px 10px 10px #FF8080, -9px 5px 10px 10px #FFE488, -7px -5px 10px 10px #8CFF85, 12px -5px 10px 10px #80C7FF, 12px 10px 10px 10px #E488FF, -10px 10px 10px 10px #FF616B, -10px -7px 10px 10px #8E5CFF, 0px 0px 10px 10px rgba(242,255,83,0);
-}
-.d6img{
-    grid-area: d6img;
-}
-
-.d8img{
-    grid-area: d8img;
-}
-
-.d10img{
-    grid-area: d10img;    
-}
-
-.d12img{
-    grid-area: d12img;
-
-}
-
-.d6{
-    grid-area: d6;
-}
-
-.d8{
-    grid-area: d8;
-}
-
-.d10{
-    grid-area: d10;
-
-}
-
-.d12{
-    grid-area: d12;
- 
 }
 
 .potionImg{
@@ -268,30 +186,47 @@ body{
     align-items: center;
     align-self: center;
     justify-self: center;
-    background-color: $label-background-color;
-    height: $label-height;
-    width: $label-width;
-    border-radius: $label-border-radius;
-    color: #850000;
+    background-color: v.$label-color;
+    height: v.$label-height;
+    width: v.$label-width;
+    border-radius: v.$label-border-radius;
+    color: v.$primary-color;
     font: 23px Arial, sans-serif;
     font-weight: 700;
 }
 
 .btnTurn{
     grid-area: btnTurn;
+    justify-self: center;
+    align-self: center;
+    height: 70px;
+    width: 150px;
+    border-radius: 10px;
+
 }
 
-.card1{
-    grid-area: card1;
+.cardContainer{
+    grid-area: cardContainer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    
 }
-.card2{
-    grid-area: card2;
+.btn-crafting{
+    position: relative;
+    right: 14px;
+    align-self: flex-end;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 5px solid v.$primary-color;
+    background-image: url(./images/craftingIcon1.png);
+    background-size: cover;
 }
-
-.card3{
-    grid-area: card3;
+.orderContainer{
+    grid-area: orderContainer;
 }
-
 .quest1{
     grid-area: quest1;
 }
@@ -331,81 +266,17 @@ body{
     align-items: center;
     justify-items: center;
     gap: 20px;
-    background: #a37a41;
+    background: v.$skill-table-color;
     // background: rgb(161, 112, 226);
     padding: 10px;
     margin: 5px;
     border-radius: 15px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-.legenda{
+.legend-container{
     grid-area: legenda;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    max-height: 270px;
 }
-.titleLegenda{
-    grid-area: titleLegenda;
-    font-family: "Ubuntu Mono", monospace;
-    text-align: center;
-    font-size: 26px;
-    letter-spacing: 3px;
-    color: rgb(255, 255, 255);
-    background-color: $legend-color;
-    height: min-content;
-    width: 305px;
-    padding: auto;
-    align-self: flex-end;
-    text-shadow: rgb(0, 0, 0) 3px 1px 1px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    text-align: center;
-}
-.rowLegenda{
-    width: 135px;
-    display: grid;
-    grid-template-areas: 
-        'attributeLegenda attributeLegenda imgAttributeLegenda'
-        'diceLegenda1 diceLegenda2 diceLegenda3';
-    padding: 5px;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2,1fr);
-    background-color: rgb(224, 195, 194);
-    border-radius: 15px;
-    border: 5px solid $legend-color;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    
-    
-}
-.imgLegenda{
-    width: 35px;
-    height: 35px;
-    margin: auto;
-}
-.attributeLegenda{
-    grid-area: attributeLegenda;
-    font-family: "Ubuntu Mono", monospace;
-    font-weight: 700;
-    text-align: center;
-    font-size: 18px;
-    color: rgb(46, 43, 43);
-    text-shadow: rgb(145, 142, 142) 1px 1px 1px ;
-    margin: auto;
-}
-.imgAttributeLegenda{
-    
-    grid-area: imgAttributeLegenda;
-}
-.diceLegenda1{
-    grid-area: diceLegenda1;
-}
-.diceLegenda2{
-    grid-area: diceLegenda2;
-}
-.diceLegenda3{
-    grid-area: diceLegenda3;
-}
+
 .titleCraftingSkills{
     grid-area: title1;
 
@@ -421,7 +292,7 @@ body{
 .btnShop{
     grid-area: btnShop;
     background: rgb(255, 255, 255);
-    border: 4px solid $legend-color;
+    border: 4px solid v.$primary-color;
     border-radius: 50%;
     height: 80px;
     width: 80px;
@@ -438,8 +309,8 @@ body{
     padding: 10px 20px;
     width: 200px;
   }
-  
-  .dropdownShop::before{
+
+.dropdownShop::before{
     content: '';
     top: -5px;
     right: 20px;
@@ -447,18 +318,18 @@ body{
     width: 20px;
     background:#741313;
     transform: rotate(45deg);
-  }
-  
-  .dropdownShop.active{
+}
+
+.dropdownShop.active{
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     transition: 500ms ease;
-  }
-  
-  .dropdownShop.inactive{
+}
+
+.dropdownShop.inactive{
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
     transition: 500ms ease;
-  }
+}

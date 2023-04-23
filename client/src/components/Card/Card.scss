@@ -1,0 +1,202 @@
+@use '../../variables' as v;
+
+.card{
+    display: grid;
+    grid-template-columns: 90px 40px 90px;
+    grid-template-rows: min-content;
+    grid-template-areas: 
+        'imgE t1 goldItem'
+        '. t2 .'
+        '. t3 imgO';
+
+    /* background: #aa683b; */
+    
+    width: 220px;
+    height: 270px;
+    border: 6px solid v.$primary-color;
+    background: #7e6868;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
+}
+
+
+.showed{
+    background: transparent;
+}
+.no-showed{
+    position: relative;
+    bottom:107px;
+    right: 6px;
+    filter: blur(1);
+    z-index: 100;
+    width: 220px;
+    height: 270px;
+    border: 6px solid v.$primary-color;
+    border-radius: 15px;
+    background: #242220;
+}
+.textCard{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    justify-self: center;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    color: #ffffff;
+    /* text-shadow: 0 0 4px #2c2c2c, 0 0 10px #000000, 0 0 15px #FFF, 0 0 20px #1861ff, 0 0 30px #1c18ff, 0 0 40px #183bff, 0 0 55px #4a18ff, 0 0 75px #181cff, 2px 2px 2px rgba(206,89,55,0); */
+    /* text-shadow: 0 0 4px #2c2c2c, 0 0 10px #000000, 0 0 15px #FFF, 0 0 20px #ff1818, 0 0 30px #ff1818, 0 0 40px #ff1818, 0 0 55px #ff1818, 0 0 75px #ff1818, 2px 2px 2px rgba(206,89,55,0); */
+    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    font-weight: 700;
+    font-variant: small-caps;
+    width: 200px;
+    padding: 10px;
+    margin-top: 25px;
+    z-index: 3;
+}
+.t1{
+    grid-area: t1;
+}
+.t2{
+    grid-area: t2;
+}
+.t3{
+    grid-area: t3;
+}
+.goldItem{
+    grid-area: goldItem;
+    background-image: url(./image/gold4.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    z-index: 3;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-self: flex-end;
+    align-self: flex-start;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 0 -1px 5px #000000, 0 -2px 15px rgb(223, 208, 0), 0 -10px 20px #f7b500, 0 -18px 40px rgb(214, 43, 43), 2px 2px 20px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: x-large;
+    color: #e0e0e0;
+}
+.imgCard{
+    grid-area: t2;
+    position: absolute;
+    justify-self: center;
+    align-self: center;
+    height: 200px;
+    width: 200px;
+    opacity: 1;
+    z-index: 2;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.imgOriginCard{
+    grid-area: imgO;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-self: center;
+    justify-items: center;
+    height: 90px;
+    width: 90px;
+    opacity: 1;
+    z-index: 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.imgEnchantmentsCard{
+    grid-area: imgE;
+    height: 100px;
+    width: 100px;
+    opacity: 1;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.backpack{
+    background-image: url(./image/backpack3.png);
+}
+
+.scroll{
+    background-image: url(./image/scroll1.png);
+}
+
+.ring{
+    background-image: url(./image/ring2.png);
+}
+
+.grimoire{
+    background-image: url(./image/grimoire3.png);
+}
+
+.sword{
+    background-image: url(./image/sword3.png);
+}
+
+.staff{
+    background-image: url(./image/staff.png); 
+}
+
+.crossbow{
+    background-image: url(./image/crossbow2.png);
+}
+
+.warhammer{
+    background-image: url(./image/warhammer.png);
+}
+
+.bracers{
+    background-image: url(./image/bracers2.png);
+}
+
+.helmet{
+    background-image: url(./image/helmet.png);
+}
+
+.greaves{
+    background-image: url(./image/greaves.png);
+}
+
+.plotarmor{
+    background-image: url(./image/plotarmor2.png);
+}
+
+.fiery{
+     background-image:url(./image/fiery1.png); 
+}
+.shocking{
+    background-image: url(./image/shocking3.png);
+}
+
+.everlasting{
+    background-image: url(./image/everlasting4.png);
+}
+
+.divine{
+    background-image: url(./image/divine.png); 
+}
+
+.elves{
+    background-image: url(./image/elves2.png);
+}
+
+.dwarves{
+    background-image: url(./image/dwarves4.png);
+}
+
+.orcs{
+    background-image: url(./image/orcs2.png); 
+}
+.dragons{
+   background-image: url(./image/dragons.png);
+}

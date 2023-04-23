@@ -1,0 +1,16 @@
+$label-height: 50px;
+$label-width: 50px;
+$label-border-radius: 10px;
+$label-color: hsl(56, 54%, 70%);
+$label-color-2:hsl(56, 54%, 30%);
+$primary-color:hsl(0, 72%, 25%);
+$primary-color-2:hsl(0, 72%, 60%);
+$primary-color-2:hsl(0, 72%, 80%);
+$skill-table-color:hsl(35, 65%, 30%);
+$bg-color:hsl(35, 65%, 15%);
+$bg-color-2:hsl(35, 65%, 40%);
+$skill-craft-item: hsl(35, 50%, 75%);
+
+body{
+    background-color: $bg-color;
+}

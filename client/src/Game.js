@@ -4,28 +4,18 @@ import { v4 as uuid } from 'uuid';
 
 import CreateLobby from './components/LobbyComponents/CreateLobby';
 import Skill from './components/Skill/Skill';
-import Dice from './components/Dice/Dice';
-import Card from './components/Order/Card';
+
+import Card from './components/Card/Card';
 import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
+import Legend from './components/Legend/Legend';
 
 import titleCraftingSkills from './images/craftingSkillTitle.png'
 import titleMagicResearch from './images/magicResearchTitle.png'
 import titleDiceLeft from './images/diceLeftTitle2.png'
 import titleNTurn from './images/turnNTitle.png'
 
-import d6img from './images/d6.png'
-import d8img from './images/d8.png'
-import d10img from './images/d10.png'
-import d12img from './images/d12.png'
-
 import shopImg from './images/shop.png'
 import potionImg from './images/potion4.png'
-import steelImg from './components/Skill/iconsAttribute/steel.png'
-import woodImg from './components/Skill/iconsAttribute/wood7.png'
-import leatherImg from './components/Skill/iconsAttribute/leather.png'
-import elementalImg from './components/Skill/iconsAttribute/elemental.png'
-import arcaneImg from './components/Skill/iconsAttribute/arcane.png'
-import wildImg from './components/Skill/iconsAttribute/wild.png'
 
 import backpack from './components/Skill/skillsJson/backpack.json'
 import scroll from './components/Skill/skillsJson/scroll.json'
@@ -54,27 +44,46 @@ import eliteArmor from './components/Skill/skillsJson/eliteArmor.json'
 
 import { useEffect, useRef, useState } from 'react';
 import Timer from './components/Timer/Timer';
+import Container_dice_diceValue from './components/Container_Dice/Container_dice_diceValue';
 
 
 function Game() {
     
-    const mapDice_Skills = new Map();
+    let shopRef = useRef();
+    let skillTableRef = useRef();
+    let typeTouchedDiceRef = useRef('d6');
+
+
 
     const [openShop,setOpenShop] = useState(false);
     const [shop,setShop] = useState([]);
 
+   
+
     const [clockWork,setClockWork] = useState(false);
     const [nPotion,setnPotion] = useState(11);
 
-    const [d6,setD6]=useState(5);
-    const [d8,setD8]=useState(1);
-    const [d10,setD10]=useState(8);
-    const [d12,setD12]=useState(11);
+    const [d6Value,setD6Value]=useState(5);
+    const [d8Value,setD8Value]=useState(1);
+    const [d10Value,setD10Value]=useState(8);
+    const [d12Value,setD12Value]=useState(11);
 
-    const [d6Start,setD6Start]=useState(d6);
-    const [d8Start,setD8Start]=useState(d8);
-    const [d10Start,setD10Start]=useState(d10);
-    const [d12Start,setD12Start]=useState(d12);
+    const [d6startValue,setD6startValue]=useState(d6Value);
+    const [d8startValue,setD8startValue]=useState(d8Value);
+    const [d10startValue,setD10startValue]=useState(d10Value);
+    const [d12startValue,setD12startValue]=useState(d12Value);
+
+    const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
+    const [diceTouchedD8 ,setDiceToucheD8] = useState(false);
+    const [diceTouchedD10 ,setDiceTouchedD10] = useState(false);
+    const [diceTouchedD12 ,setDiceTouchedD12] = useState(false);
+
+    const[diceUsedD6,setDiceUsedD6] = useState(false);
+    const[diceUsedD8,setDiceUsedD8] = useState(false);
+    const[diceUsedD10,setDiceUsedD10] = useState(false);
+    const[diceUsedD12,setDiceUsedD12] = useState(false);
+
+    const[attributeUpgraded,setAttributeUpgraded] = useState(true);
 
     const [nActions,setnActions] = useState(2);
     const [nTurn,setNTurn] = useState(1);
@@ -89,18 +98,68 @@ function Game() {
     // const [card1,setCard1] = useState(null);
     // const [card2,setCard2] = useState(null);
     // const [card3,setCard3] = useState(null);
-    const card1 ={item:'crossbow',gold: 5,enchantment: 'divine' , origin:'of the Dragons'};
-    const card2 ={item:'plotarmor',gold: 3,enchantment: 'everlasting' , origin:'of the Elves'};
-    const card3 ={item:'warhammer',gold: 7,enchantment: 'divine' , origin: 'of the Dwarves'};
+    const card1 ={item:'crossbow',gold: 5,enchantment: 'fiery' , origin:'of the Dragons'};
+    const card2 ={item:'scroll',gold: 3,enchantment: 'everlasting' , origin:'of the Elves'};
+    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the Dwarves'};
 
+    const[showedCard1,setshowedCard1] = useState(true);
+    const[showedCard2,setshowedCard2] = useState(true);
+    const[showedCard3,setshowedCard3] = useState(true);
+    
+
+    
     const nPotion_extraDice4 = 2;
     const nPotion_extraDice5 = 3;
     const nPotion_extraDice6 = 4;
-    const time = 120;
+    const time = 10;
 
 
-    let shopRef = useRef();
+    const craftingItemType = ['Accessories','Weapons','Armor']
 
+    const listD6_id_Skills = new Array(1,2,3,4,5,6,7,8,9,10,11,12);
+    const listD8_id_Skills = new Array(1,2,3,4,5,7,8,9,11,12,13,14,16,18,20,21,22,24);
+    const listD10_id_Skills = new Array(1,3,4,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
+    const listD12_id_Skills = new Array(13,15,16,17,18,20,21,23,24);
+
+    const map_id_Skill = new Map();
+    map_id_Skill.set(1,backpack);
+    map_id_Skill.set(2,scroll);
+    map_id_Skill.set(3,ring);
+    map_id_Skill.set(4,grimoire);
+    map_id_Skill.set(5,staff);
+    map_id_Skill.set(6,sword);
+    map_id_Skill.set(7,crossbow);
+    map_id_Skill.set(8,warhammer);
+    map_id_Skill.set(9,bracers);
+    map_id_Skill.set(10,helmet);
+    map_id_Skill.set(11,greaves);
+    map_id_Skill.set(12,plotarmor);
+    map_id_Skill.set(13,fiery);
+    map_id_Skill.set(14,shocking);
+    map_id_Skill.set(15,everlasting);
+    map_id_Skill.set(16,divine);
+    map_id_Skill.set(17,elves);
+    map_id_Skill.set(18,dwarves);
+    map_id_Skill.set(19,orcs);
+    map_id_Skill.set(20,dragons);
+    map_id_Skill.set(21,glamorPotionSupplier);
+    map_id_Skill.set(22,renownedAccessories);
+    map_id_Skill.set(23,weaponPrestige);
+    map_id_Skill.set(24,eliteArmor);
+
+
+    // const map0 = new Map([
+    //     ['a', 1],
+    //     ['b', 2],
+    //     ['c', 3]
+    //   ]);
+      
+    //   const map1 = new Map(
+    //     [...map0]
+    //     .filter(([k, v]) => v < 3 )
+    //   );
+
+    
     const addItemShop = (card) => {
         const item = {
           id: uuid(),
@@ -109,79 +168,100 @@ function Game() {
         setShop((s) => [...s, item])
       }
     
+
+
     function updateStartValueTurnDice(){
-        setD6Start(d6);
-        setD8Start(d8);
-        setD10Start(d10);
-        setD12Start(d12);
+        setD6startValue(d6Value);
+        setD8startValue(d8Value);
+        setD10startValue(d10Value);
+        setD12startValue(d12Value);
+    }
+
+    function checkAttribute_Dice(typeDice, diceValue, skill){
+        let attBool1 = false;
+        let attBool2 = false;
+        let attBool3 = false;
+        
+        if(craftingItemType.includes(skill.typeItem) ){
+            switch(typeDice){
+                case 'd6':{
+                    attBool1 = diceValue >= skill.attribute1;
+                    attBool2 = diceValue >= skill.attribute2;
+                    attBool3 = diceValue >= skill.attribute3;
+                }
+                    break;  
+                case 'd8':{
+                    attBool2 = diceValue >= skill.attribute2;
+                    attBool3 = diceValue >= skill.attribute3;
+                }
+                    break;
+                case 'd10':{
+                    attBool3 = diceValue >= skill.attribute3;
+                }
+                    break;
+                case 'd12':{
+                }
+                    break;
+            }
+        }
+        else{
+            switch(typeDice){
+                case 'd6':{
+                    attBool1 = diceValue <= skill.attribute1;
+                    attBool2 = diceValue <= skill.attribute2;
+                    attBool3 = diceValue <= skill.attribute3;
+                }
+                    break;  
+                case 'd8':{
+                    attBool1 = diceValue <= skill.attribute1;
+                }
+                    break;
+                case 'd10':{
+                    attBool1 = diceValue <= skill.attribute1;
+                    attBool2 = diceValue <= skill.attribute2;
+                }
+                    break;
+                case 'd12':{
+                    attBool1 = diceValue <= skill.attribute1;
+                    attBool2 = diceValue <= skill.attribute2;
+                    attBool3 = diceValue <= skill.attribute3;
+                }
+                    break;
+            }
+        }
+        return {attBool1,attBool2,attBool3};
+    }
+
+    function checkDice_Skill(typeDice,diceValue){
+        map_id_Skill.forEach()
+    }
+
+    function checkSkillCard(card){
+        return true;
     }
 
     
-    function incrDice6(){
-        if(nPotion >0 && d6 < 9){
-            setnPotion(nPotion+((d6+1) > d6Start ? -1 : 1));
-            setD6(1+d6);
-        }
-    }
-
-    function decD6(){
-        if(nPotion >0 && d6 > 1){
-            setnPotion(nPotion+((d6-1) < d6Start ? -1 : 1));
-            setD6(d6-1);
-        }
-    }
-
-    function incrD8(){
-        if(nPotion >0 && d8 < 9){
-            setnPotion(nPotion+((d8+1) > d8Start ? -1 : 1));
-            setD8(1+d8);
-        }
-    }
-
-    function decD8(){
-        if(nPotion >0 && d8 > 1){
-            setnPotion(nPotion+((d8-1) < d8Start ? -1 : 1));
-            setD8(d8-1);
-        }
-    }
-
-    function incrD10(){
-        if(nPotion >0 && d10 < 10){
-            setnPotion(nPotion+((d10+1) > d10Start ? -1 : 1));
-            setD10(1+d10);
-        }
-    }
-
-    function decD10(){
-        if(nPotion >0 && d10 > 1){
-            setnPotion(nPotion+((d10-1) < d10Start ? -1 : 1));
-            setD10(d10-1);
-        }
-    }
-
-    function incrD12(){
-        if(nPotion >0 && d12 < 12){
-            setnPotion(nPotion+((d12+1) > d12Start ? -1 : 1));
-            setD12(1+d12);
-        }
-    }
-
-    function decD12(){
-        if(nPotion >0 && d12 > 1){
-            setnPotion(nPotion+((d12-1) < d12Start ? -1 : 1));
-            setD6(d12-1);
-        }
-    }
-    
-
-    
+    // function upgradeAttribute(typeDice){
+    //     switch(typeDice){
+    //         case 'd6':
+    //             if(true){
+    //                 setnActions((n)=>(n-1));
+    //                 setDiceUsedD6(true);
+    //                 setAttributeUpgraded(true);
+    //             }
+    //             break;
+    //         case 'd8':
+    //             break;
+    //         case 'd10':
+    //             break;
+    //         case 'd12':
+    //         break;
+    //     }
+    // }
     function timer(){
         return 0;
     }
 
-
-    function fetchCard(){
-    }
 
     //Shop useEffect
     useEffect(()=>{
@@ -197,72 +277,104 @@ function Game() {
           }
     });
 
+    //Skilltable useEffect, se tocco un Dice rimanee attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
+    useEffect(()=>{
+        let handlerSkillTable = (e)=>{
+            if(!skillTableRef.current.contains(e.target)){
+                setDiceTouchedD6(false);
+                setDiceToucheD8(false);
+                setDiceTouchedD10(false);
+                setDiceTouchedD12(false);
+            }
+            else{
+                if(attributeUpgraded){
+                    switch(typeTouchedDiceRef.current){
+                        case 'd6': 
+                            setDiceUsedD6(true);
+                            setnActions((n)=>(n-1));
+                            break;
+                        case 'd8': 
+                            setDiceUsedD8(true);
+                            setnActions((n)=>(n-1));
+                            break;
+                        case 'd10': 
+                            setDiceUsedD10(true);
+                            setnActions((n)=>(n-1));
+                        break;
+                        case 'd12': 
+                            setDiceUsedD12(true);
+                            setnActions((n)=>(n-1));
+                            break;     
+                    }
+                    setAttributeUpgraded(false);
+                }
+            }   
+        };
+        document.addEventListener("mousedown", handlerSkillTable);
 
-    
+        return() =>{
+            document.removeEventListener("mousedown", handlerSkillTable);
+          }
+    });
+
+
+    //use
+    useEffect(()=>{
+        let handlerDiceTouched = (e)=>{
+            
+        }
+
+    });
+
+
     return (
         <div className="Game">   
             
-            <img src={potionImg} className='potionImg' alt='POTION'></img>
-            <label className='potionLabel'>{nPotion}</label>
-            <div className='timerContainer'><Timer countdown={5}></Timer></div>
-            <div className='btnTurn' ></div>
-            <div className='shopContainer' ref={shopRef}>
-                <img src={shopImg} className='btnShop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
-                <div className={`dropdownShop ${openShop? 'active' : 'inactive'}`} >
-                </div>
+            <div className='timerContainer'><Timer countdown={time}></Timer></div>
+            
+            <div className='extraDices'>
+                <div className={`eDice ed1 ${eDice1 ? 'no-active' : ''}`}></div>
+                <div className={`eDice ed2 ${eDice2 ? 'no-active' : ''}`}></div>
+                <div className={`eDice ed3 ${eDice3 ? 'no-active' : ''}`}></div>
+                <div className={`eDice ed4 ${eDice4 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
+                <div className={`eDice ed5 ${eDice5 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
+                <div className={`eDice ed6 ${eDice6 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
             </div>
 
-            <div className='extraDices'>
-                <div className={`eDice ed1 ${eDice1 ? 'used-extra-dice' : ''}`}></div>
-                <div className={`eDice ed2 ${eDice2 ? 'used-extra-dice' : ''}`}></div>
-                <div className={`eDice ed3 ${eDice3 ? 'used-extra-dice' : ''}`}></div>
-                <div className={`eDice ed4 ${eDice4 ? 'used-extra-dice' : ''}`}><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
-                <div className={`eDice ed5 ${eDice5 ? 'used-extra-dice' : ''}`}><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
-                <div className={`eDice ed6 ${eDice6 ? 'used-extra-dice' : ''}`}><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
-            </div>
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
             <div className='diceLeftLabel'>{nActions}</div>
+
             <img src={titleNTurn} alt='NTURN TITLE' className='nTurnTitle' ></img>
             <div className='nTurnLabel'>{nTurn}</div>
-            <img src={d6img} alt='D6' className='diceImg d6img'></img>
-            <div className='diceContenitor d6'>
-                <div className='diceRolled'>{d6}</div>
-                <button className='incBtn' onClick={incrDice6}></button>
-                <button className='decBtn' onClick={decD6}></button>
-            </div>
-            
 
-            <img src={d8img} alt='D8' className='diceImg d8img'></img>
-            <div className='diceContenitor d8'>
-                <div className='diceRolled'>{d8}</div>
-                <button className='incBtn' onClick={incrD8}></button>
 
-                <button className='decBtn' onClick={decD8}></button>
-            </div>
-            <img src={d10img} alt='D10' className='diceImg d10img'></img>
-
-            <div className='diceContenitor d10'>
-                <div className='diceRolled'>{d10}</div>
-                <button className='incBtn' onClick={incrD10}></button>
-                <button className='decBtn' onClick={decD10}></button>
+            <div className='containerDices_Potion'>
+                <div className='container-potion'>
+                    <img src={potionImg} className='potionImg' alt='POTION'></img>
+                    <label className='potionLabel'>{nPotion}</label>
+                </div>
+                <Container_dice_diceValue typeDice={'d6'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d6startValue} diceValue={d6Value} setDiceValue={setD6Value} usedDice={diceUsedD6} diceTouched={diceTouchedD6} nActions={nActions} onClickImgHandler={setDiceTouchedD6}></Container_dice_diceValue>
+                <Container_dice_diceValue typeDice={'d8'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d8startValue} diceValue={d8Value} setDiceValue={setD8Value} usedDice={diceUsedD8} diceTouched={diceTouchedD8} nActions={nActions} onClickImgHandler={setDiceToucheD8}></Container_dice_diceValue>
+                <Container_dice_diceValue typeDice={'d10'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d10startValue} diceValue={d10Value} setDiceValue={setD10Value} usedDice={diceUsedD10} diceTouched={diceTouchedD10} nActions={nActions} onClickImgHandler={setDiceTouchedD10}></Container_dice_diceValue>
+                <Container_dice_diceValue typeDice={'d12'} nPotion={nPotion} setnPotion={setnPotion} startTurnDiceValue={d12startValue} diceValue={d12Value} setDiceValue={setD12Value} usedDice={diceUsedD12} diceTouched={diceTouchedD12} nActions={nActions} onClickImgHandler={setDiceTouchedD12}></Container_dice_diceValue>
             </div>
 
-            <img src={d12img} alt='D12' className='diceImg d12img'></img>
-            <div className='diceContenitor d12'><div className='diceRolled'>{d12}</div>
-                <button className='incBtn' onClick={incrD12}></button>
-                <button className='decBtn' onClick={decD12}></button>
+
+            <div className='cardContainer'>
+                <Card order = {card1} isShowed={showedCard1}></Card>
+                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card1)) setshowedCard1(false) }}></button>
+                <Card order = {card2} isShowed={showedCard2} ></Card>
+                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card2)) setshowedCard2(false) }}></button>
+                <Card order = {card3} isShowed={showedCard3}></Card>
+                <button className='btn-crafting' onClick={()=>{if(checkSkillCard(card3)) setshowedCard3(false) }}></button>
             </div>
-            
-            <div className='cardContainer card1'><Card order = {card1}></Card></div>
-            <div className='cardContainer card2'><Card order = {card2}></Card></div>
-            <div className='cardContainer card3'><Card order = {card3}></Card></div>
             <div className='playerTable'>playerTable</div>
             <div className='quest1'>quest1</div>
             <div className='quest2'>quest2</div>
             <div className='order1'>order1</div>
             <div className='order2'>order2</div>
             <div className='order3'>order3</div>
-            <div className='skillsTable'>
+            <div className='skillsTable' ref={skillTableRef}>
                 <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleCraftingSkills'></img>
                 <Skill skill = {backpack}></Skill> 
                 <Skill skill = {scroll}></Skill> 
@@ -291,47 +403,14 @@ function Game() {
                 <Skill skill = {eliteArmor}></Skill>  
 
             </div>
-            <div className='titleLegenda'>Legend</div>
-            <div className='legenda'>
-                <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Steel➔</p>
-                    <img src={steelImg}  alt='STEEL' className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
-                </div>
-                <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Wood➔</p>
-                    <img src={woodImg}  alt='WOOD'  className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
-                    <img src={d8img} alt='D8'  className='imgLegenda diceLegenda2'></img>
-                </div>
-                <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Leather➔</p>
-                    <img src={leatherImg}  alt='LEATHER' className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
-                    <img src={d8img}  alt='D8'  className='imgLegenda diceLegenda2'></img>
-                    <img src={d10img}  alt='D10'  className='imgLegenda diceLegenda3'></img>
-                </div>
-                <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Elemental➔</p>
-                    <img src={elementalImg}  alt='ELEMENTAL' className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d8img}  alt='8'  className='imgLegenda diceLegenda1'></img>
-                    <img src={d10img} alt='D10' className='imgLegenda diceLegenda2'></img>
-                    <img src={d12img}  alt='D12' className='imgLegenda diceLegenda3'></img>
-                </div>
-                <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Arcane➔</p>
-                    <img src={arcaneImg} alt='ARCANE' className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d10img} alt='D10' className='imgLegenda diceLegenda2'></img>
-                    <img src={d12img} alt='D12' className='imgLegenda diceLegenda3'></img>
-                </div> 
-                <div className='rowLegenda'>
-                    <p className='attributeLegenda'>Wild➔</p>
-                    <img src={wildImg} alt='WILD' className='imgLegenda imgAttributeLegenda'></img>
-                    <img src={d12img} alt='D12' className='imgLegenda diceLegenda3'></img>
-                </div> 
-            
+            <div className='legend-container'><Legend></Legend></div>
+            <button className='btnTurn'></button>
+
+            <div className='shopContainer' ref={shopRef}>
+                <img src={shopImg} className='btnShop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
+                <div className={`dropdownShop ${openShop? 'active' : 'inactive'}`}></div>
             </div>
-          </div>
+        </div>
     );
 }
 
