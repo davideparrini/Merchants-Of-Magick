@@ -40,11 +40,11 @@ function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValu
     function emptyfun(){}
 
     return (
-        <div className={`diceContenitor`}>
-            <img src={chooseImg()} alt={typeDice} className={`diceImg ${usedDice ? 'no-active' : ''} ${diceTouched && !usedDice ? 'touched-dice' : ''}`}onClick={nActions > 0 ? onClickImgHandler : emptyfun} ></img>
-            <div className='diceRolled'>{diceValue}</div>
-            <button className='incBtn' onClick={incDice}></button>
-            <button className='decBtn' onClick={decDice}></button>
+        <div className={`dice-contenitor`}>
+            <img src={chooseImg()} alt={typeDice} className={`dice-img ${usedDice ? 'no-active' : ''} ${diceTouched && !usedDice ? 'touched-dice' : ''}`}onClick={nActions > 0 ? onClickImgHandler : emptyfun} ></img>
+            <div className='dice-rolled'>{diceValue}</div>
+            <button className='inc-btn' onClick={incDice}></button>
+            <button className='dec-btn' onClick={decDice}></button>
         </div>
     )
 }

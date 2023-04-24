@@ -7,7 +7,7 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
-function Skill({skill, setNPotion, fun_passSkillGained, diceValue, typeDice, isDiceTouched,setDiceLeft_toUse, setDiceUsed}) {
+function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setDiceLeft_toUse, setDiceUsed}) {
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
@@ -80,13 +80,13 @@ function Skill({skill, setNPotion, fun_passSkillGained, diceValue, typeDice, isD
    }
 
    function isAttributeUpgradable(attValue,typeAtt){
-        if(!matchTypeDice_Attribute(typeAtt , typeDice)) return false;
+        if(!matchTypeDice_Attribute(typeAtt , typeTouchedDiceRef.current)) return false;
         if(typeCraftingItem.includes(skill.typeItem)){
-            if(diceValue >= attValue){
+            if(valueTouchedDiceRef.current >= attValue){
                 return true;
             }
         }else{
-            if(diceValue <= attValue){
+            if(valueTouchedDiceRef.current <= attValue){
                 return true
             }
         }
@@ -94,19 +94,25 @@ function Skill({skill, setNPotion, fun_passSkillGained, diceValue, typeDice, isD
    }
    
    function upgradeAttribute(attValue,typeAtt,setAtt){
-        if(!matchTypeDice_Attribute(typeAtt , typeDice)) return ;
-        console.log(typeDice + " " +diceValue)
+        if(!matchTypeDice_Attribute(typeAtt , typeTouchedDiceRef.current)) return ;
+        console.log(typeTouchedDiceRef.current + " " + valueTouchedDiceRef.current)
         if(typeCraftingItem.includes(skill.typeItem)){
-            if(diceValue >= attValue){
+            if(valueTouchedDiceRef.current >= attValue){
                 setAtt(true);
                 setDiceUsed(true);
                 setDiceLeft_toUse((n)=>(n-1));
+                setAllDicesNoTouched();
+                typeTouchedDiceRef.current = '';
+                valueTouchedDiceRef.current = null;
             }
         }else{
-            if(diceValue <= attValue){
+            if(valueTouchedDiceRef.current <= attValue){
                 setAtt(true);
                 setDiceUsed(true);
                 setDiceLeft_toUse((n)=>(n-1));
+                setAllDicesNoTouched();
+                typeTouchedDiceRef.current = '';
+                valueTouchedDiceRef.current = null;
             }
         }
    }

@@ -34,71 +34,28 @@ body{
 }
 
   
-.timerContainer{ 
+.timer-container{ 
     grid-area: counterTimer;
    
 }
 
-.extraDices{
+.extra-dices{
     grid-area: extraDices;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2,1fr);
-    grid-template-areas:
-        'ed1 ed2 ed3'
-        'ed4 ed5 ed6';
-}
-.eDice{
-    background-image: url('./images/extraDice.png');
-    background-size: cover;
-    height: 60px;
-    width: 60px;
     display: flex;
-    align-items: center;
-    justify-items: center;
-    justify-content: center;
-    align-content: center;
-}
-.ed1{
-    grid-area: ed1;
-}
-.ed2{
-    grid-area: ed2;
-}
-.ed3{
-    grid-area: ed3;
-}
-.ed4{
-    grid-area: ed4;
-}
-.ed5{
-    grid-area: ed5;
-}
-.ed6{
-    grid-area: ed6;
-}
-.eDicePotion{
-    background-image: url(./images/potion4.png);
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    align-self: center;
-    align-content: center;
-    justify-items: center;
-    justify-content: center;
-    
-    color: rgb(247, 242, 242);
-    text-shadow: 0px 0px 15px #000000;
-    font-weight: 600;
-    font-size: large;
-    height: 30px;
-    width: 25px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 80%;
 }
 
-.used-extra-dice{
-    filter: grayscale(1);
+
+.no-active{
+    filter: grayscale(1);  
+    pointer-events: none;
 }
-.diceLeftTitle{
+
+
+.dice-left-title{
     grid-area: diceLeftTitle;
     height: 50px;
     display: flex;
@@ -109,7 +66,7 @@ body{
     justify-content: center;
     justify-self: flex-end;
 }
-.diceLeftLabel{
+.dice-left-label{
     grid-area: diceNum;
     display: flex;
     align-items: center;
@@ -126,7 +83,7 @@ body{
     font-weight: 700;
 }
 
-.nTurnTitle{
+.n-turn-title{
     grid-area: nTurnTitle;
     height: 50px;
     display: flex;
@@ -137,7 +94,7 @@ body{
     justify-content: center;
     justify-self: flex-end;
 }
-.nTurnLabel{
+.n-turn-label{
     grid-area: nTurn;
     display: flex;
     align-items: center;
@@ -154,7 +111,7 @@ body{
     font-weight: 700;
 }
 
-.containerDices_Potion{
+.container-dices-potion{
     grid-area: containerDices_Potion; 
     display: flex;
     flex-direction: column;
@@ -173,13 +130,13 @@ body{
 
 }
 
-.potionImg{
+.potion-img{
     grid-area: potionImg;
     height: 70px;
     align-self: center;
     justify-self: center;
 }
-.potionLabel{
+.potion-label{
     grid-area: nPotions;
     display: flex;
     justify-content: center;
@@ -195,7 +152,7 @@ body{
     font-weight: 700;
 }
 
-.btnTurn{
+.btn-turn{
     grid-area: btnTurn;
     justify-self: center;
     align-self: center;
@@ -205,7 +162,7 @@ body{
 
 }
 
-.cardContainer{
+.card-container{
     grid-area: cardContainer;
     display: flex;
     flex-direction: row;
@@ -224,7 +181,7 @@ body{
     background-image: url(./images/craftingIcon1.png);
     background-size: cover;
 }
-.orderContainer{
+.order-container{
     grid-area: orderContainer;
 }
 .quest1{
@@ -245,11 +202,11 @@ body{
 }
 
 
-.playerTable{
+.player-table{
     grid-area: tablePlayers;
 }
 
-.skillsTable{
+.skills-table{
     min-width: max-content;
     grid-area: skillTable;
     display: grid;
@@ -277,19 +234,19 @@ body{
     grid-area: legenda;
 }
 
-.titleCraftingSkills{
+.title-crafting-skills{
     grid-area: title1;
 
 }
-.titleMagicResearch{
+.title-magic-research{
     grid-area: title2;
 }
 
 
-.shopContainer{
+.shop-container{
     grid-area: btnShop;
 }
-.btnShop{
+.btn-shop{
     grid-area: btnShop;
     background: rgb(255, 255, 255);
     border: 4px solid v.$primary-color;
@@ -302,7 +259,7 @@ body{
 }
 
 
-.dropdownShop{
+.dropdown-shop{
     position: absolute;
     background-color: #fff;
     border-radius: 8px;
@@ -310,7 +267,7 @@ body{
     width: 200px;
   }
 
-.dropdownShop::before{
+.dropdown-shop::before{
     content: '';
     top: -5px;
     right: 20px;
@@ -320,14 +277,14 @@ body{
     transform: rotate(45deg);
 }
 
-.dropdownShop.active{
+.dropdown-shop.active{
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     transition: 500ms ease;
 }
 
-.dropdownShop.inactive{
+.dropdown-shop.inactive{
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);

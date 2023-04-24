@@ -3,11 +3,11 @@
 import './Game.scss';
 import { v4 as uuid } from 'uuid';
 
-import CreateLobby from './components/LobbyComponents/CreateLobby';
+
 import Skill from './components/Skill/Skill';
 
 import Card from './components/Card/Card';
-import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
+
 import Legend from './components/Legend/Legend';
 
 import titleCraftingSkills from './images/craftingSkillTitle.png'
@@ -46,9 +46,18 @@ import eliteArmor from './components/Skill/skillsJson/eliteArmor.json'
 import { useEffect, useRef, useState } from 'react';
 import Timer from './components/Timer/Timer';
 import Container_dice_diceValue from './components/Container_Dice/Container_dice_diceValue';
+import ExtraDice from './components/ExtraDice/ExtraDice';
 
 
 function Game() {
+
+    //CONFIGURAZIONI GIOCO
+
+    const DICE_PER_TURN = 100;
+    const N_POTION_TEST = 100;
+    const TIMER_COUNTDOWN = 10;
+
+
     
     //Ref al area dello shop, Close on out-click
     let shopRef = useRef();
@@ -60,7 +69,7 @@ function Game() {
     let typeTouchedDiceRef = useRef();
 
     //Ref per mantenere il valore del dado toccato
-    let valueTouchedDiceRed = useRef();
+    let valueTouchedDiceRef = useRef();
 
     //bool openShop
     const [openShop,setOpenShop] = useState(false);
@@ -72,7 +81,7 @@ function Game() {
     const [timerEnd,setTimerEnd] = useState(false);
     
     //durata di un turno
-    const countdownTurn = 10;
+    const countdownTurn = TIMER_COUNTDOWN;
 
     //numero pozioni
     const [nPotion,setNPotion] = useState(100);
@@ -107,25 +116,24 @@ function Game() {
     const[diceUsedD10,setDiceUsedD10] = useState(false);
     const[diceUsedD12,setDiceUsedD12] = useState(false);
 
-    //bool se un attributo è stato upgradato
-    //const[attributeUpgraded,setAttributeUpgraded] = useState(false);
-
-    let attributeUpgradedRef = useRef(false);
-
     //numero di dadi rimanenti da usare
-    const [diceLeft_toUse,setDiceLeft_toUse] = useState(2);
+    const [diceLeft_toUse,setDiceLeft_toUse] = useState(DICE_PER_TURN);
     //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
 
+
     //bool extra-dice, eDice(true) -> eDice usato e non più disponibile per tutta la partita
-    const [extraDice1,setExtraDice1] = useState(false);
-    const [extraDice2,setExtraDice2] = useState(false);
-    const [extraDice3,setExtraDice3] = useState(false);
-    const [extraDice4,setExtraDice4] = useState(false);
-    const [extraDice5,setExtraDice5] = useState(false);
-    const [extraDice6,setExtraDice6] = useState(false);
+    const [extraDiceUsed1,setExtraDiceUsed1] = useState(false);
+    const [extraDiceUsed2,setExtraDice2] = useState(false);
+    const [extraDiceUsed3,setExtraDice3] = useState(false);
+    const [extraDiceUsed4,setExtraDice4] = useState(false);
+    const [extraDiceUsed5,setExtraDice5] = useState(false);
+    const [extraDiceUsed6,setExtraDice6] = useState(false);
     
     //numero pozioni necessarie per usare gl'eDice
+    const nPotion_extraDice1 = 0;
+    const nPotion_extraDice2 = 0;
+    const nPotion_extraDice3 = 0;
     const nPotion_extraDice4 = 2;
     const nPotion_extraDice5 = 3;
     const nPotion_extraDice6 = 4;
@@ -167,11 +175,13 @@ function Game() {
 
     
 
-
-    function getSkillFromCard(skillGained){
+    //funzione da passare al component child Skill per aggiungere la skill alla lista delle skill del giocatore
+    function getSkillGained(skillGained){
         setSkillsGained((l)=>[...l,skillGained]);
     }
     
+
+    //Controllo se il giocatore possiede le skill necessarie per craftare la carta
     function checkSkillCard(card){
         const hasItemSkill = skillsGained.includes(card.item);
         const hasEnchantmentSkill = card.enchantment == null || card.enchantment === '' ? true : skillsGained.includes(card.origin);
@@ -198,10 +208,8 @@ function Game() {
         setDiceTouchedD12(false);
     }
 
-    function setUpgradeAttributeRef(){
-        attributeUpgradedRef.current = true;
-    }
-
+    
+    //funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
     function choose_fun_setDiceUsed(){
         switch(typeTouchedDiceRef.current){
             case TYPE_D6: return setDiceUsedD6;
@@ -212,6 +220,25 @@ function Game() {
         }
     }
 
+
+    
+
+    function onClickHandlerExtraDice(requireNPots,extraDiceUsed){
+        if(nPotion >= requireNPots && !extraDiceUsed){
+            setNPotion((n)=>(n-requireNPots));
+            setDiceLeft_toUse((n)=>(n+1));
+        }
+        else{
+            setNPotion((n)=>(n+requireNPots));
+            setDiceLeft_toUse((n)=>(n-1));
+        }
+    }
+
+
+
+
+
+    
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
     //Shop useEffect
@@ -219,6 +246,7 @@ function Game() {
         let handlerShop = (e)=>{
             if(!shopRef.current.contains(e.target)){
                 setOpenShop(false);
+                console.log(shop);
             }   
         };
         document.addEventListener("mousedown", handlerShop);
@@ -230,80 +258,76 @@ function Game() {
 
     //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
     useEffect(()=>{
-        let handlerSkillTable = (e)=>{
+        let whileDiceTouched = (e)=>{
             if(!skillTableRef.current.contains(e.target)){
                 setAllDiceNoTouched();
                 typeTouchedDiceRef.current = "";
-                valueTouchedDiceRed.current = null;
-                
+                valueTouchedDiceRef.current = null;
             }
-            // else{
-            //     if(attributeUpgradedRef.current){
-            //         switch(typeTouchedDiceRef.current){
-            //             case TYPE_D6: 
-            //                 setDiceUsedD6(true);
-            //                 setDiceLeft_toUse((n)=>(n-1));
-            //                 break;
-            //             case TYPE_D8: 
-            //                 setDiceUsedD8(true);
-            //                 setDiceLeft_toUse((n)=>(n-1));
-            //                 break;
-            //             case TYPE_D10: 
-            //                 setDiceUsedD10(true);
-            //                 setDiceLeft_toUse((n)=>(n-1));
-            //             break;
-            //             case TYPE_D12: 
-            //                 setDiceUsedD12(true);
-            //                 setDiceLeft_toUse((n)=>(n-1));
-            //                 break;     
-            //             default: return;
-            //         }
-            //         attributeUpgradedRef.current = false;
-            //         typeTouchedDiceRef.current = null;
-            //         valueTouchedDiceRed.current = null;
-            //     }
-            // }   
         };
-        document.addEventListener("mousedown", handlerSkillTable);
+        document.addEventListener("mousedown", whileDiceTouched);
 
         return() =>{
-            document.removeEventListener("mousedown", handlerSkillTable);
+            document.removeEventListener("mousedown", whileDiceTouched);
           }
     },[typeTouchedDiceRef]);
 
 
-    //DA SISTEMARE
-    // useEffect(()=>{
-    //     //setAttributeUpgraded(true);
-    //     console.log(nAttribute);  
-    // },[nAttribute]);
 
 
+
+
+
+////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div className="Game">   
             
-            <div className='timerContainer'><Timer countdown={countdownTurn}></Timer></div>
+            <div className='timer-container'><Timer countdown={countdownTurn}></Timer></div>
             
-            <div className='extraDices'>
-                <div className={`eDice ed1 ${extraDice1 ? 'no-active' : ''}`}></div>
-                <div className={`eDice ed2 ${extraDice2 ? 'no-active' : ''}`}></div>
-                <div className={`eDice ed3 ${extraDice3 ? 'no-active' : ''}`}></div>
-                <div className={`eDice ed4 ${extraDice4 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
-                <div className={`eDice ed5 ${extraDice5 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
-                <div className={`eDice ed6 ${extraDice6 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
+            <div className='extra-dices'>
+                <ExtraDice
+                    nPotion_extraDice={nPotion_extraDice1}
+                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice1,extraDiceUsed1)}
+                    definitelyExtraDiceUsed={extraDiceUsed1}                
+                ></ExtraDice>
+                <ExtraDice
+                    nPotion_extraDice={nPotion_extraDice2}
+                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice2,extraDiceUsed2)}
+                    definitelyExtraDiceUsed={extraDiceUsed2}                
+                ></ExtraDice>
+                <ExtraDice
+                    nPotion_extraDice={nPotion_extraDice3}
+                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice3,extraDiceUsed3)}
+                    definitelyExtraDiceUsed={extraDiceUsed3}                
+                ></ExtraDice>
+                <ExtraDice
+                    nPotion_extraDice={nPotion_extraDice4}
+                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice4,extraDiceUsed4)}
+                    definitelyExtraDiceUsed={extraDiceUsed4}                
+                ></ExtraDice>
+                <ExtraDice
+                    nPotion_extraDice={nPotion_extraDice5}
+                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice5,extraDiceUsed5)}
+                    definitelyExtraDiceUsed={extraDiceUsed5}                
+                ></ExtraDice>
+                <ExtraDice
+                    nPotion_extraDice={nPotion_extraDice6}
+                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice6,extraDiceUsed6)}
+                    definitelyExtraDiceUsed={extraDiceUsed6}                
+                ></ExtraDice>  
             </div>
 
-            <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
-            <div className='diceLeftLabel'>{diceLeft_toUse}</div>
+            <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='dice-left-title' ></img>
+            <div className='dice-left-label'>{diceLeft_toUse}</div>
 
-            <img src={titleNTurn} alt='NTURN TITLE' className='nTurnTitle' ></img>
-            <div className='nTurnLabel'>{nTurn}</div>
+            <img src={titleNTurn} alt='NTURN TITLE' className='n-turn-title' ></img>
+            <div className='n-turn-label'>{nTurn}</div>
 
 
-            <div className='containerDices_Potion'>
+            <div className='container-dices-potion'>
                 <div className='container-potion'>
-                    <img src={potionImg} className='potionImg' alt='POTION'></img>
-                    <label className='potionLabel'>{nPotion}</label>
+                    <img src={potionImg} className='potion-img' alt='POTION'></img>
+                    <label className='potion-label'>{nPotion}</label>
                 </div>
                 <Container_dice_diceValue 
                     typeDice={TYPE_D6} 
@@ -317,7 +341,7 @@ function Game() {
                     nActions={diceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D6;
-                        valueTouchedDiceRed.current = d6Value;
+                        valueTouchedDiceRef.current = d6Value;
                         setAllDiceNoTouched(); 
                         setDiceTouchedD6(true);
                     }}
@@ -334,7 +358,7 @@ function Game() {
                     nActions={diceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D8;
-                        valueTouchedDiceRed.current = d8Value;
+                        valueTouchedDiceRef.current = d8Value;
                         setAllDiceNoTouched(); 
                         setDiceTouchedD8(true);
                     }}
@@ -351,7 +375,7 @@ function Game() {
                     nActions={diceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D10;
-                        valueTouchedDiceRed.current = d10Value;
+                        valueTouchedDiceRef.current = d10Value;
                         setAllDiceNoTouched(); 
                         setDiceTouchedD10(true);
                     }}
@@ -366,7 +390,7 @@ function Game() {
                     nActions={diceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D12;
-                        valueTouchedDiceRed.current = d12Value;
+                        valueTouchedDiceRef.current = d12Value;
                         setAllDiceNoTouched(); 
                         setDiceTouchedD12(true);
                     }}
@@ -374,7 +398,7 @@ function Game() {
             </div>
 
 
-            <div className='cardContainer'>
+            <div className='card-container'>
                 <Card order = {card1} 
                     isShowed={showCard1}>
                 </Card>
@@ -382,16 +406,19 @@ function Game() {
                     onClick={()=>{
                         if(checkSkillCard(card1)){
                             setShowCard1(false);
+                            addItemShop(card1);
                         }
                     }}
                 ></button>
                 <Card order = {card2} 
                     isShowed={showCard2} 
+
                 ></Card>
                 <button className='btn-crafting' 
                     onClick={()=>{
                         if(checkSkillCard(card2)){ 
-                            setShowCard2(false) 
+                            setShowCard2(false);
+                            addItemShop(card2);
                         }
                     }}
                 ></button>
@@ -401,244 +428,269 @@ function Game() {
                 <button className='btn-crafting' 
                     onClick={()=>{
                         if(checkSkillCard(card3)){ 
-                            setShowCard3(false)
+                            setShowCard3(false);
+                            addItemShop(card3);
                         } 
                     }}
                 ></button>
             </div>
-            <div className='playerTable'>playerTable</div>
+            <div className='player-table'>playerTable</div>
             <div className='quest1'>quest1</div>
             <div className='quest2'>quest2</div>
             <div className='order1'>order1</div>
             <div className='order2'>order2</div>
             <div className='order3'>order3</div>
-            <div className='skillsTable' ref={skillTableRef}>
-                <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleCraftingSkills'></img>
+            <div className='skills-table' ref={skillTableRef}>
+                <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-crafting-skills'></img>
                 <Skill skill = {backpack} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {scroll} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {ring} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {grimoire} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill>                
                 <Skill skill = {staff} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {sword} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {crossbow} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {warhammer}
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {bracers}
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {helmet} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {greaves} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {plotarmor} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
-                <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleMagicResearch'></img>
+                <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='title-magic-research'></img>
                 <Skill skill = {fiery} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}      
                 ></Skill> 
                 <Skill skill = {shocking} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {everlasting} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {divine} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {elves} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill>
                 <Skill skill = {dwarves} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {orcs} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {dragons} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {glamorPotionSupplier} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {renownedAccessories} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {weaponPrestige} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
                 <Skill skill = {eliteArmor} 
                     setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillFromCard}
-                    diceValue={valueTouchedDiceRed.current}
-                    typeDice={typeTouchedDiceRef.current}
+                    fun_passSkillGained={getSkillGained}
+                    valueTouchedDiceRef={valueTouchedDiceRef}
+                    typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
                     setDiceLeft_toUse={setDiceLeft_toUse}
                     setDiceUsed={choose_fun_setDiceUsed()}
+                    setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill>  
 
             </div>
             <div className='legend-container'><Legend></Legend></div>
-            <button className='btnTurn'></button>
+            <button className='btn-turn'></button>
 
-            <div className='shopContainer' ref={shopRef}>
-                <img src={shopImg} className='btnShop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
-                <div className={`dropdownShop ${openShop? 'active' : 'inactive'}`}></div>
+            <div className='shop-container' ref={shopRef}>
+                <img src={shopImg} className='btn-shop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
+                <div className={`dropdown-shop ${openShop? 'active' : 'inactive'}`}></div>
             </div>
         </div>
     );

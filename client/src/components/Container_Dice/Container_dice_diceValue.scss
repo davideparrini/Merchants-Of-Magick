@@ -1,13 +1,13 @@
 @use '../../variables' as v;
 
-.diceContenitor{
+.dice-contenitor{
     display: grid;
     grid-template-columns: 1fr repeat(2,0.5fr);
     grid-template-areas: 
         'imgDice labelD labelD'
         'imgDice btnInc btnDec';
 }
-.diceImg{
+.dice-img{
     grid-area: imgDice;
     width: 100px;
     height: 100px;
@@ -21,11 +21,23 @@
     filter: grayscale(1);  
     pointer-events: none;
 }
+@keyframes strech {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
 .touched-dice{
     filter: drop-shadow(0px 0px 20px #fa0202); 
+    animation: strech  1s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+
 }
 
-.diceRolled{
+.dice-rolled{
     grid-area: labelD;
     align-self: end;
     justify-self: center;
@@ -42,23 +54,23 @@
     
   }
 
-.incBtn:active,.decBtn:active{
+.inc-btn:active,.dec-btn:active{
     opacity: 0.7;
 }
-.incBtn,.decBtn{
+.inc-btn,.dec-btn{
     height: 30px;
     width: 30px;
     border-radius: 50%;
     border: 3px;
 }
-.incBtn{
+.inc-btn{
     grid-area: btnInc;
     background: url("./plus.png");
     background-size: cover;
     justify-self: self-end;
     
 }
-.decBtn{
+.dec-btn{
     grid-area: btnDec;
     background: url("./menus.png");
     background-size: cover;
