@@ -12,10 +12,10 @@ function Card({order, isShowed}) {
 
     function orginWrap(){
         switch(orgin){
-            case 'of the Elves': return 'elves';
-            case 'of the Dwarves': return 'dwarves';
-            case 'of the Orcs': return 'orcs';
-            case 'of the Dragons': return 'dragons';
+            case 'of the elves': return 'elves';
+            case 'of the dwarves': return 'dwarves';
+            case 'of the orcs': return 'orcs';
+            case 'of the dragons': return 'dragons';
            default: return '';
         }
       

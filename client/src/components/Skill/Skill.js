@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './Skill.css'
+import './Skill.scss'
 import steelImg from './iconsAttribute/steel.png'
 import woodImg from './iconsAttribute/wood7.png'
 import leatherImg from './iconsAttribute/leather.png'
@@ -7,69 +7,136 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
-function Skill({skill, setNAttribute}) {
+function Skill({skill, setNAttribute, fun_passSkillGained,diceValue,typeDice, isDiceTouched}) {
     const[hasSkill, setHasSkill] = useState(false);
-    const[att1,setAtt1] = useState(checkAttribute(skill.attribute1));
-    const[att2,setAtt2] = useState(checkAttribute(skill.attribute2));
-    const[att3,setAtt3] = useState(checkAttribute(skill.attribute3));
+    const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
+    const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
+    const[att3,setAtt3] = useState(isThereAttribute(skill.attribute3));
     const id = skill.id;
-    const craftingItem = ['Accessories','Weapons','Armor']
-    const magicResearch = ['Enchantments' , 'Charms']
+    const typeCraftingItem = ['Accessories','Weapons','Armor'];
 
-    function checkAttribute(att){
-        return (att === 0 || att == null);
+    //Tipi dado
+    const TYPE_D6 = 'd6';
+    const TYPE_D8 = 'd8';
+    const TYPE_D10 = 'd10';
+    const TYPE_D12 = 'd12';
+
+    //Tipi attributi
+
+    const TYPE_STEEL = 'steel';
+    const TYPE_WOOD = 'wood';
+    const TYPE_LEATHER = 'leather';
+    const TYPE_ELEMENTAL = 'elemental';
+    const TYPE_ARCANE = 'arcane';
+    const TYPE_WILD = 'wild';
+    
+    
+
+    function isThereAttribute(attValue){
+        return (attValue === 0 || attValue == null);
     }
 
-    function checkNoButton(att, boolAtt){
-        if(att === 0 || att == null){
+    function checkNoButton(attValue, boolAtt, typeAtt){
+        if(attValue === 0 || attValue == null){
             return 'noButton';
         }
         else{
-            if(!boolAtt) 
-                return 'numberCircle';
+            if(!boolAtt){
+                if(isDiceTouched() && isAttributeUpgradable(attValue,typeAtt)){
+                    return 'numberCircle upgradable'
+                }
+                else return 'numberCircle';
+            }
+                
             else {
                 return 'numberCircle upgraded';
             }
         }
     }
-    function checkNoImg(att){
-        if(att === 0 || att == null){
+    function checkNoImg(attValue){
+        if(attValue === 0 || attValue == null){
             return 'noImg';
         }
         else return 'attributeImg';
     }
 
-   function checkTypeItem(){
-        if(craftingItem.includes(skill.typeItem))
+   function getCappuccio(){
+        if(typeCraftingItem.includes(skill.typeItem))
             return 'ᨈ'
         else return 'ᨆ'
    }
 
-
-   function upgradeAtt(){
-        setNAttribute((n)=>(n+1));
+   
+   function matchTypeDice_Attribute(typeAtt,typeDice){
+        switch(typeAtt){
+            case TYPE_STEEL: return typeDice === TYPE_D6;
+            case TYPE_WOOD: return typeDice === TYPE_D6 || typeDice === TYPE_D8;
+            case TYPE_LEATHER: return typeDice === TYPE_D6 || typeDice === TYPE_D8 || typeDice === TYPE_D10;
+            case TYPE_ELEMENTAL: return typeDice === TYPE_D8 || typeDice === TYPE_D10 || typeDice === TYPE_D12;
+            case TYPE_ARCANE: return typeDice === TYPE_D10 || typeDice === TYPE_D12;
+            case TYPE_WILD: return  typeDice === TYPE_D12;
+            default: return false;
+        }
    }
 
+   function isAttributeUpgradable(attValue,typeAtt){
+        if(!matchTypeDice_Attribute(typeAtt , typeDice)) return false;
+        if(typeCraftingItem.includes(skill.typeItem)){
+            if(attValue <= diceValue){
+                return true;
+            }
+        }else{
+            if(attValue <= diceValue){
+                return true
+            }
+        }
+        return false;
+   }
+   
+   function upgradeAttribute(attValue,typeAtt,setAtt){
+        if(!matchTypeDice_Attribute(typeAtt , typeDice)) return ;
+        console.log(typeDice + " " +diceValue)
+        if(typeCraftingItem.includes(skill.typeItem)){
+            if(attValue <= diceValue){
+                setAtt(true);
+                setNAttribute((n)=>(n+1));
+            }
+        }else{
+            if(attValue <= diceValue){
+                setAtt(true);
+                setNAttribute((n)=>(n+1));
+            }
+        }
+   }
+
+   //useEffect di check, se tutti gli attributi sono stati acquisiti allora ottengo la Skill
     useEffect(()=>{
-        if(att1 && att2 && att3) 
+        if(att1 && att2 && att3){
             setHasSkill(true);
+            fun_passSkillGained(skill.name);
+        }   
     },[att1,att2,att3])
 
+    
+
     return (
-        <div className= {craftingItem.includes(skill.typeItem) ? 'skill crafting' : 'skill magic'}>
+        <div className= {typeCraftingItem.includes(skill.typeItem) ? 'skill crafting' : 'skill magic'}>
             <button className={hasSkill ? 'numberCircle gold' : 'numberCircle grey'}>{skill.gold}</button>
             <p className='skillName'>{skill.name}</p>
-            <img src={checkTypeItem() === 'ᨈ'? steelImg : elementalImg} alt='Wood' className={checkNoImg(skill.attribute1) + ' img1'}></img>
-            <button className={checkNoButton(skill.attribute1,att1) + ' btn1'} onClick={() => { upgradeAtt(); setAtt1(true)}}>{skill.attribute1}
-                <div className={checkTypeItem() === 'ᨈ'? 'cappuccioSu' : 'cappuccioGiu'}>{checkTypeItem()}</div>
+            <img src={typeCraftingItem.includes(skill.typeItem) ? steelImg : elementalImg} alt='Wood' className={checkNoImg(skill.attribute1) + ' img1'}></img>
+            <button className={checkNoButton(skill.attribute1,att1,(typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL)) + ' btn1'} onClick={()=>upgradeAttribute(skill.attribute1,(typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL), setAtt1)}>
+                {skill.attribute1}
+                <div className={getCappuccio()}>{getCappuccio()}</div>
             </button>
-            <img src={checkTypeItem() === 'ᨈ'? woodImg : arcaneImg} alt='Wood' className={checkNoImg(skill.attribute2) + ' img2'}></img>
-            <button className={checkNoButton(skill.attribute2,att2)+ ' btn2'} onClick={() => { upgradeAtt(); setAtt2(true)}}>{skill.attribute2}
-                <div className={checkTypeItem() === 'ᨈ'? 'cappuccioSu' : 'cappuccioGiu'}>{checkTypeItem()}</div>
+            <img src={typeCraftingItem.includes(skill.typeItem) ? woodImg : arcaneImg} alt='Wood' className={checkNoImg(skill.attribute2) + ' img2'}></img>
+            <button className={checkNoButton(skill.attribute2,att2,(typeCraftingItem.includes(skill.typeItem) ? TYPE_WOOD : TYPE_ARCANE))+ ' btn2'} onClick={()=>upgradeAttribute(skill.attribute2,(typeCraftingItem.includes(skill.typeItem) ? TYPE_WOOD : TYPE_ARCANE), setAtt2)}>
+                {skill.attribute2}
+                <div className={getCappuccio()}>{getCappuccio()}</div>
             </button>
-            <img src={checkTypeItem() === 'ᨈ'? leatherImg : wildImg} alt='Wood' className={checkNoImg(skill.attribute3) + ' img3'}></img>
-            <button className={checkNoButton(skill.attribute3,att3) + ' btn3'} onClick={() => { upgradeAtt(); setAtt3(true)}}>{skill.attribute3}
-                <div className= {checkTypeItem() === 'ᨈ'? 'cappuccioSu' : 'cappuccioGiu'}>{checkTypeItem()}</div>
+            <img src={typeCraftingItem.includes(skill.typeItem) ? leatherImg : wildImg} alt='Wood' className={checkNoImg(skill.attribute3) + ' img3'}></img>
+            <button className={checkNoButton(skill.attribute3,att3,(typeCraftingItem.includes(skill.typeItem) ? TYPE_LEATHER : TYPE_WILD)) + ' btn3'} onClick={() => upgradeAttribute(skill.attribute3,(typeCraftingItem.includes(skill.typeItem) ? TYPE_LEATHER : TYPE_WILD), setAtt3)}>
+                {skill.attribute3}
+                <div className= {getCappuccio()}>{getCappuccio()}</div>
             </button>
         </div>
     )

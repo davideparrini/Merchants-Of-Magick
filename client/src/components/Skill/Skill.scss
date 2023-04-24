@@ -1,3 +1,4 @@
+@use '../../variables' as v;
 
 .skill{
     display: grid;
@@ -37,14 +38,14 @@
     font-weight: 700;
 }
 
-.cappuccioSu{
+.ᨈ{
     position: absolute;
     font-size: small;
     top: -8.5px;
     left: 9.5px;
 
 }
-.cappuccioGiu{
+.ᨆ{
     position: absolute;
     font-size: small;
     top: 13px;
@@ -74,6 +75,7 @@
 .img3{
     grid-area: img3;
 }
+
 @keyframes shake {
     0%,100% {
         transform: skewX(0) scale(1);
@@ -105,7 +107,7 @@
 }
 .skillName{
     font-family: 'Yu Gothic UI';
-    font-variant: small-caps;
+    text-transform: uppercase;
     font-weight: 700;
     font-size: medium;
     text-align: center;
@@ -146,4 +148,24 @@
     color: rgb(60, 60, 60);
     cursor: not-allowed;
     pointer-events: none;
+}
+
+@keyframes strech {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.upgradable{
+    -webkit-box-shadow: 0px 0px 10px 5px rgba(255,149,5,1);
+    box-shadow: 0px 0px 10px 5px rgba(255,149,5,1);
+    border: 1px solid v.$primary-color;
+    color: white;
+    background: v.$primary-color-2;
+    animation: strech 2s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
 }

@@ -8,12 +8,18 @@ import './Container_dice_diceValue.scss'
 
 function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValue, diceValue ,setDiceValue, usedDice ,diceTouched, onClickImgHandler, nActions}) {
 
+    //Tipi dado
+    const TYPE_D6 = 'd6';
+    const TYPE_D8 = 'd8';
+    const TYPE_D10 = 'd10';
+    const TYPE_D12 = 'd12';
+
     function chooseImg(){
         switch(typeDice){
-			case 'd6': return d6img;
-			case 'd8': return d8img;
-			case 'd10': return d10img;
-			case 'd12': return d12img;
+			case TYPE_D6: return d6img;
+			case TYPE_D8: return d8img;
+			case TYPE_D10: return d10img;
+			case TYPE_D12: return d12img;
 		}
 	}
 
