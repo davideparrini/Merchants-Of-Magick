@@ -7,7 +7,7 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
-function Skill({skill, setNAttribute, fun_passSkillGained,diceValue,typeDice, isDiceTouched}) {
+function Skill({skill, setNPotion, fun_passSkillGained, diceValue, typeDice, isDiceTouched,setDiceLeft_toUse, setDiceUsed}) {
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
@@ -82,11 +82,11 @@ function Skill({skill, setNAttribute, fun_passSkillGained,diceValue,typeDice, is
    function isAttributeUpgradable(attValue,typeAtt){
         if(!matchTypeDice_Attribute(typeAtt , typeDice)) return false;
         if(typeCraftingItem.includes(skill.typeItem)){
-            if(attValue <= diceValue){
+            if(diceValue >= attValue){
                 return true;
             }
         }else{
-            if(attValue <= diceValue){
+            if(diceValue <= attValue){
                 return true
             }
         }
@@ -97,23 +97,28 @@ function Skill({skill, setNAttribute, fun_passSkillGained,diceValue,typeDice, is
         if(!matchTypeDice_Attribute(typeAtt , typeDice)) return ;
         console.log(typeDice + " " +diceValue)
         if(typeCraftingItem.includes(skill.typeItem)){
-            if(attValue <= diceValue){
+            if(diceValue >= attValue){
                 setAtt(true);
-                setNAttribute((n)=>(n+1));
+                setDiceUsed(true);
+                setDiceLeft_toUse((n)=>(n-1));
             }
         }else{
-            if(attValue <= diceValue){
+            if(diceValue <= attValue){
                 setAtt(true);
-                setNAttribute((n)=>(n+1));
+                setDiceUsed(true);
+                setDiceLeft_toUse((n)=>(n-1));
             }
         }
    }
+
+
 
    //useEffect di check, se tutti gli attributi sono stati acquisiti allora ottengo la Skill
     useEffect(()=>{
         if(att1 && att2 && att3){
             setHasSkill(true);
             fun_passSkillGained(skill.name);
+            setNPotion((n)=>(n+1));
         }   
     },[att1,att2,att3])
 

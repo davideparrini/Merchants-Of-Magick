@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 
 import './Game.scss';
 import { v4 as uuid } from 'uuid';
@@ -74,7 +75,7 @@ function Game() {
     const countdownTurn = 10;
 
     //numero pozioni
-    const [nPotion,setnPotion] = useState(11);
+    const [nPotion,setNPotion] = useState(100);
 
     //Tipi dado
     const TYPE_D6 = 'd6';
@@ -117,12 +118,12 @@ function Game() {
     const [nTurn,setNTurn] = useState(1);
 
     //bool extra-dice, eDice(true) -> eDice usato e non più disponibile per tutta la partita
-    const [eDice1,seteDice1] = useState(false);
-    const [eDice2,seteDice2] = useState(false);
-    const [eDice3,seteDice3] = useState(false);
-    const [eDice4,seteDice4] = useState(false);
-    const [eDice5,seteDice5] = useState(false);
-    const [eDice6,seteDice6] = useState(false);
+    const [extraDice1,setExtraDice1] = useState(false);
+    const [extraDice2,setExtraDice2] = useState(false);
+    const [extraDice3,setExtraDice3] = useState(false);
+    const [extraDice4,setExtraDice4] = useState(false);
+    const [extraDice5,setExtraDice5] = useState(false);
+    const [extraDice6,setExtraDice6] = useState(false);
     
     //numero pozioni necessarie per usare gl'eDice
     const nPotion_extraDice4 = 2;
@@ -131,9 +132,6 @@ function Game() {
     
     //carte di gioco durante il turno
 
-    // const [card1,setCard1] = useState(null);
-    // const [card2,setCard2] = useState(null);
-    // const [card3,setCard3] = useState(null);
     const card1 ={item:'crossbow',gold: 5,enchantment: 'fiery' , origin:'of the dragons'};
     const card2 ={item:'scroll',gold: 3,enchantment: 'everlasting' , origin:'of the elves'};
     const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves'};
@@ -143,56 +141,9 @@ function Game() {
     const[showCard2,setShowCard2] = useState(true);
     const[showCard3,setShowCard3] = useState(true);
     
-    //numero di attributi_skill acquisiti
-    const[nAttribute,setNAttribute] = useState(0);
 
     //lista skill acquisite
     const[skillsGained,setSkillsGained] = useState([]);
-    
-    const craftingItemType = ['Accessories','Weapons','Armor']
-
-    const listD6_id_Skills = new Array(1,2,3,4,5,6,7,8,9,10,11,12);
-    const listD8_id_Skills = new Array(1,2,3,4,5,7,8,9,11,12,13,14,16,18,20,21,22,24);
-    const listD10_id_Skills = new Array(1,3,4,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
-    const listD12_id_Skills = new Array(13,15,16,17,18,20,21,23,24);
-
-    const map_id_Skill = new Map();
-    map_id_Skill.set(1,backpack);
-    map_id_Skill.set(2,scroll);
-    map_id_Skill.set(3,ring);
-    map_id_Skill.set(4,grimoire);
-    map_id_Skill.set(5,staff);
-    map_id_Skill.set(6,sword);
-    map_id_Skill.set(7,crossbow);
-    map_id_Skill.set(8,warhammer);
-    map_id_Skill.set(9,bracers);
-    map_id_Skill.set(10,helmet);
-    map_id_Skill.set(11,greaves);
-    map_id_Skill.set(12,plotarmor);
-    map_id_Skill.set(13,fiery);
-    map_id_Skill.set(14,shocking);
-    map_id_Skill.set(15,everlasting);
-    map_id_Skill.set(16,divine);
-    map_id_Skill.set(17,elves);
-    map_id_Skill.set(18,dwarves);
-    map_id_Skill.set(19,orcs);
-    map_id_Skill.set(20,dragons);
-    map_id_Skill.set(21,glamorPotionSupplier);
-    map_id_Skill.set(22,renownedAccessories);
-    map_id_Skill.set(23,weaponPrestige);
-    map_id_Skill.set(24,eliteArmor);
-
-
-    // const map0 = new Map([
-    //     ['a', 1],
-    //     ['b', 2],
-    //     ['c', 3]
-    //   ]);
-      
-    //   const map1 = new Map(
-    //     [...map0]
-    //     .filter(([k, v]) => v < 3 )
-    //   );
 
     
 ////////////////////////////////////FUCTIONS//////////////////////////////////////////////////////////////////////////////////////
@@ -214,64 +165,8 @@ function Game() {
         setD12startValue(d12Value);
     }
 
-    function checkAttribute_Dice(typeDice, diceValue, skill){
-        let attBool1 = false;
-        let attBool2 = false;
-        let attBool3 = false;
-        
-        if(craftingItemType.includes(skill.typeItem) ){
-            switch(typeDice){
-                case TYPE_D6:{
-                    attBool1 = diceValue >= skill.attribute1;
-                    attBool2 = diceValue >= skill.attribute2;
-                    attBool3 = diceValue >= skill.attribute3;
-                }
-                    break;  
-                case TYPE_D8:{
-                    attBool2 = diceValue >= skill.attribute2;
-                    attBool3 = diceValue >= skill.attribute3;
-                }
-                    break;
-                case TYPE_D10:{
-                    attBool3 = diceValue >= skill.attribute3;
-                }
-                    break;
-                case TYPE_D12:{
-                }
-                    break;
-            }
-        }
-        else{
-            switch(typeDice){
-                case TYPE_D6 :{
-                    attBool1 = diceValue <= skill.attribute1;
-                    attBool2 = diceValue <= skill.attribute2;
-                    attBool3 = diceValue <= skill.attribute3;
-                }
-                    break;  
-                case TYPE_D8:{
-                    attBool1 = diceValue <= skill.attribute1;
-                }
-                    break;
-                case TYPE_D10:{
-                    attBool1 = diceValue <= skill.attribute1;
-                    attBool2 = diceValue <= skill.attribute2;
-                }
-                    break;
-                case TYPE_D12:{
-                    attBool1 = diceValue <= skill.attribute1;
-                    attBool2 = diceValue <= skill.attribute2;
-                    attBool3 = diceValue <= skill.attribute3;
-                }
-                    break;
-            }
-        }
-        return {attBool1,attBool2,attBool3};
-    }
+    
 
-    function checkDice_Skill(typeDice,diceValue){
-        map_id_Skill.forEach()
-    }
 
     function getSkillFromCard(skillGained){
         setSkillsGained((l)=>[...l,skillGained]);
@@ -285,23 +180,6 @@ function Game() {
     }
 
     
-    // function upgradeAttribute(typeDice){
-    //     switch(typeDice){
-    //         case 'd6':
-    //             if(true){
-    //                 setnActions((n)=>(n-1));
-    //                 setDiceUsedD6(true);
-    //                 setAttributeUpgraded(true);
-    //             }
-    //             break;
-    //         case 'd8':
-    //             break;
-    //         case 'd10':
-    //             break;
-    //         case 'd12':
-    //         break;
-    //     }
-    // }
 
     function timer(){
         return 0;
@@ -320,13 +198,20 @@ function Game() {
         setDiceTouchedD12(false);
     }
 
-    function print_Dice_status(){
-        console.log("Dado : " + TYPE_D6 +" Value : "+ d6Value+ " isTouched: " + diceTouchedD6  + " isUsed : " + diceUsedD6);
-        console.log("Dado : " + TYPE_D8 +" Value : "+ d8Value+ " isTouched: " + diceTouchedD8  + " isUsed : " + diceUsedD8);
-        console.log("Dado : " + TYPE_D10 +" Value : "+ d10Value+ " isTouched: " + diceTouchedD10  + " isUsed : " + diceUsedD10);
-        console.log("Dado : " + TYPE_D12 +" Value : "+ d12Value+ " isTouched: " + diceTouchedD12  + " isUsed : " + diceUsedD12);
-        console.log(typeTouchedDiceRef);
+    function setUpgradeAttributeRef(){
+        attributeUpgradedRef.current = true;
     }
+
+    function choose_fun_setDiceUsed(){
+        switch(typeTouchedDiceRef.current){
+            case TYPE_D6: return setDiceUsedD6;
+            case TYPE_D8: return setDiceUsedD8;
+            case TYPE_D10: return setDiceUsedD10;
+            case TYPE_D12: return setDiceUsedD12;     
+            default: return;
+        }
+    }
+
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
     //Shop useEffect
@@ -352,31 +237,32 @@ function Game() {
                 valueTouchedDiceRed.current = null;
                 
             }
-            else{
-                if(attributeUpgradedRef.current){
-                    switch(typeTouchedDiceRef.current){
-                        case TYPE_D6: 
-                            setDiceUsedD6(true);
-                            setDiceLeft_toUse((n)=>(n-1));
-                            break;
-                        case TYPE_D8: 
-                            setDiceUsedD8(true);
-                            setDiceLeft_toUse((n)=>(n-1));
-                            break;
-                        case TYPE_D10: 
-                            setDiceUsedD10(true);
-                            setDiceLeft_toUse((n)=>(n-1));
-                        break;
-                        case TYPE_D12: 
-                            setDiceUsedD12(true);
-                            setDiceLeft_toUse((n)=>(n-1));
-                            break;     
-                    }
-                    attributeUpgradedRef.current = false;
-                    typeTouchedDiceRef.current = null;
-                    valueTouchedDiceRed.current = null;
-                }
-            }   
+            // else{
+            //     if(attributeUpgradedRef.current){
+            //         switch(typeTouchedDiceRef.current){
+            //             case TYPE_D6: 
+            //                 setDiceUsedD6(true);
+            //                 setDiceLeft_toUse((n)=>(n-1));
+            //                 break;
+            //             case TYPE_D8: 
+            //                 setDiceUsedD8(true);
+            //                 setDiceLeft_toUse((n)=>(n-1));
+            //                 break;
+            //             case TYPE_D10: 
+            //                 setDiceUsedD10(true);
+            //                 setDiceLeft_toUse((n)=>(n-1));
+            //             break;
+            //             case TYPE_D12: 
+            //                 setDiceUsedD12(true);
+            //                 setDiceLeft_toUse((n)=>(n-1));
+            //                 break;     
+            //             default: return;
+            //         }
+            //         attributeUpgradedRef.current = false;
+            //         typeTouchedDiceRef.current = null;
+            //         valueTouchedDiceRed.current = null;
+            //     }
+            // }   
         };
         document.addEventListener("mousedown", handlerSkillTable);
 
@@ -399,12 +285,12 @@ function Game() {
             <div className='timerContainer'><Timer countdown={countdownTurn}></Timer></div>
             
             <div className='extraDices'>
-                <div className={`eDice ed1 ${eDice1 ? 'no-active' : ''}`}></div>
-                <div className={`eDice ed2 ${eDice2 ? 'no-active' : ''}`}></div>
-                <div className={`eDice ed3 ${eDice3 ? 'no-active' : ''}`}></div>
-                <div className={`eDice ed4 ${eDice4 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
-                <div className={`eDice ed5 ${eDice5 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
-                <div className={`eDice ed6 ${eDice6 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
+                <div className={`eDice ed1 ${extraDice1 ? 'no-active' : ''}`}></div>
+                <div className={`eDice ed2 ${extraDice2 ? 'no-active' : ''}`}></div>
+                <div className={`eDice ed3 ${extraDice3 ? 'no-active' : ''}`}></div>
+                <div className={`eDice ed4 ${extraDice4 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice4}</div></div>
+                <div className={`eDice ed5 ${extraDice5 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice5}</div></div>
+                <div className={`eDice ed6 ${extraDice6 ? 'no-active' : ''}`}><div className='eDicePotion'>{nPotion_extraDice6}</div></div>
             </div>
 
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='diceLeftTitle' ></img>
@@ -422,7 +308,7 @@ function Game() {
                 <Container_dice_diceValue 
                     typeDice={TYPE_D6} 
                     nPotion={nPotion} 
-                    setnPotion={setnPotion} 
+                    setnPotion={setNPotion} 
                     startTurnDiceValue={d6startValue} 
                     diceValue={d6Value} 
                     setDiceValue={setD6Value} 
@@ -439,7 +325,7 @@ function Game() {
                 <Container_dice_diceValue 
                     typeDice={TYPE_D8} 
                     nPotion={nPotion} 
-                    setnPotion={setnPotion} 
+                    setnPotion={setNPotion} 
                     startTurnDiceValue={d8startValue} 
                     diceValue={d8Value} 
                     setDiceValue={setD8Value} 
@@ -456,7 +342,7 @@ function Game() {
                 <Container_dice_diceValue 
                     typeDice={TYPE_D10} 
                     nPotion={nPotion} 
-                    setnPotion={setnPotion} 
+                    setnPotion={setNPotion} 
                     startTurnDiceValue={d10startValue} 
                     diceValue={d10Value} 
                     setDiceValue={setD10Value} 
@@ -473,7 +359,7 @@ function Game() {
                 <Container_dice_diceValue 
                     typeDice={TYPE_D12} 
                     nPotion={nPotion} 
-                    setnPotion={setnPotion} 
+                    setnPotion={setNPotion} 
                     startTurnDiceValue={d12startValue} 
                     diceValue={d12Value} setDiceValue={setD12Value} 
                     usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
@@ -529,173 +415,221 @@ function Game() {
             <div className='skillsTable' ref={skillTableRef}>
                 <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleCraftingSkills'></img>
                 <Skill skill = {backpack} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {scroll} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {ring} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {grimoire} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill>                
                 <Skill skill = {staff} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {sword} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {crossbow} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {warhammer}
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {bracers}
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {helmet} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {greaves} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {plotarmor} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleMagicResearch'></img>
                 <Skill skill = {fiery} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {shocking} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {everlasting} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {divine} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {elves} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill>
                 <Skill skill = {dwarves} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {orcs} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {dragons} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {glamorPotionSupplier} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {renownedAccessories} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {weaponPrestige} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill> 
                 <Skill skill = {eliteArmor} 
-                    setNAttribute={setNAttribute}
+                    setNPotion={setNPotion}
                     fun_passSkillGained={getSkillFromCard}
                     diceValue={valueTouchedDiceRed.current}
                     typeDice={typeTouchedDiceRef.current}
                     isDiceTouched={isDiceTouched}
+                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setDiceUsed={choose_fun_setDiceUsed()}
                 ></Skill>  
 
             </div>
