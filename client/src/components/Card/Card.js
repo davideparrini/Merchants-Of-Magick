@@ -9,6 +9,13 @@ function Card({order, isShowed}) {
     const gold = order.gold;
 
    
+    function itemWrap(){
+        switch(item){
+            case 'plot armor': return 'plotarmor';
+            default: return item;
+        }
+      
+    }
 
     function orginWrap(){
         switch(orgin){
@@ -29,7 +36,7 @@ function Card({order, isShowed}) {
                 <div className='textCard t2' >{item}</div>
                 <div className='textCard t3'>{orgin}</div>
                 <div className='goldItem'>{gold}</div>
-                <div className={'imgCard ' + item}></div>
+                <div className={'imgCard ' + itemWrap()}></div>
                 <div className={'imgEnchantmentsCard ' + enchantment}></div>
                 <div className={'imgOriginCard ' + orginWrap()}></div>
             </div>

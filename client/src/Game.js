@@ -53,8 +53,9 @@ function Game() {
 
     //CONFIGURAZIONI GIOCO
 
-    const DICE_PER_TURN = 100;
-    const N_POTION_TEST = 100;
+    const DICE_PER_TURN = 2;
+    const MAX_N_EXTRA_DICE_PER_TURN = 2;
+    const N_POTION_TEST = 0;
     const TIMER_COUNTDOWN = 10;
 
 
@@ -71,8 +72,15 @@ function Game() {
     //Ref per mantenere il valore del dado toccato
     let valueTouchedDiceRef = useRef();
 
+    let queueSetExtraDiceUsedRef = [useRef(null), useRef(null)];
+    
+
+    let funSetExtraDiceUsedRef1 = useRef(null);
+    let funSetExtraDiceUsedRef2 = useRef(null);
+
     //bool openShop
     const [openShop,setOpenShop] = useState(false);
+
     //lista items dentro lo shop
     const [shop,setShop] = useState([]);
 
@@ -91,6 +99,14 @@ function Game() {
     const TYPE_D8 = 'd8';
     const TYPE_D10 = 'd10';
     const TYPE_D12 = 'd12';
+
+    //Tipi dado
+    const TYPE_EXTRADICE1 = 'ed1';
+    const TYPE_EXTRADICE2 = 'ed2';
+    const TYPE_EXTRADICE3 = 'ed3';
+    const TYPE_EXTRADICE4 = 'ed4';
+    const TYPE_EXTRADICE5 = 'ed5';
+    const TYPE_EXTRADICE6 = 'ed6';
 
     //valori dei dadi
     const [d6Value,setD6Value]=useState(5);
@@ -116,19 +132,31 @@ function Game() {
     const[diceUsedD10,setDiceUsedD10] = useState(false);
     const[diceUsedD12,setDiceUsedD12] = useState(false);
 
-    //numero di dadi rimanenti da usare
-    const [diceLeft_toUse,setDiceLeft_toUse] = useState(DICE_PER_TURN);
-    //numero turno attuale
-    const [nTurn,setNTurn] = useState(1);
+    //n dadi usati
+    const [nDiceUsed, setNDiceUsed]  = useState(0);
+
+
+
+    //numero di dadi rimanenti da usare (variabile incrementabile e decrementabile usando un extra dice(temporanamente), E decrementata ogni volta che usiamo un dado)
+    const [nDiceLeft_toUse,setNDiceLeft_toUse] = useState(DICE_PER_TURN);
+
+    //numero dadi che sono possibili giocare nel turno attuale (variabile incrementabile e decrementabile usando  un extra dice(temporanamente))
+    const [totalPossibleDice_toUse,setTotalPossibleDice_toUse] = useState(DICE_PER_TURN);
+
+    //numero dadi usati
+    const [nDiceLeft_Used,setNDiceLeft_Used] = useState(0);
+
+    //numero di extra-dice usati temporaneamente
+    const [nExtraDiceUsedTemp,setnExtraDiceUsedTemp] = useState(0);
 
 
     //bool extra-dice, eDice(true) -> eDice usato e non più disponibile per tutta la partita
     const [extraDiceUsed1,setExtraDiceUsed1] = useState(false);
-    const [extraDiceUsed2,setExtraDice2] = useState(false);
-    const [extraDiceUsed3,setExtraDice3] = useState(false);
-    const [extraDiceUsed4,setExtraDice4] = useState(false);
-    const [extraDiceUsed5,setExtraDice5] = useState(false);
-    const [extraDiceUsed6,setExtraDice6] = useState(false);
+    const [extraDiceUsed2,setExtraDiceUsed2] = useState(false);
+    const [extraDiceUsed3,setExtraDiceUsed3] = useState(false);
+    const [extraDiceUsed4,setExtraDiceUsed4] = useState(false);
+    const [extraDiceUsed5,setExtraDiceUsed5] = useState(false);
+    const [extraDiceUsed6,setExtraDiceUsed6] = useState(false);
     
     //numero pozioni necessarie per usare gl'eDice
     const nPotion_extraDice1 = 0;
@@ -138,10 +166,16 @@ function Game() {
     const nPotion_extraDice5 = 3;
     const nPotion_extraDice6 = 4;
     
+
+    
+
+    //numero turno attuale
+    const [nTurn,setNTurn] = useState(1);
+
     //carte di gioco durante il turno
 
-    const card1 ={item:'crossbow',gold: 5,enchantment: 'fiery' , origin:'of the dragons'};
-    const card2 ={item:'scroll',gold: 3,enchantment: 'everlasting' , origin:'of the elves'};
+    const card1 ={item:'plot armor',gold: 5,enchantment: 'divine' , origin:'of the dragons'};
+    const card2 ={item:'crossbow',gold: 3,enchantment: 'everlasting' , origin:'of the elves'};
     const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves'};
 
     //bool carta girata, showCard(false) -> carta girata
@@ -220,17 +254,66 @@ function Game() {
         }
     }
 
+    // funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
+    function choose_fun_setExtraDiceUsed(typeExtraDice){
+        switch(typeExtraDice){
+            case TYPE_EXTRADICE1: return setExtraDiceUsed1;
+            case TYPE_EXTRADICE2: return setExtraDiceUsed2;
+            case TYPE_EXTRADICE3: return setExtraDiceUsed3;
+            case TYPE_EXTRADICE4: return setExtraDiceUsed4;
+            case TYPE_EXTRADICE5: return setExtraDiceUsed5;
+            case TYPE_EXTRADICE6: return setExtraDiceUsed6;  
+            default: return;
+        }
+    }
+
+    // function choose_ref_setExtraDiceUsed(){
+    //     if(funSetExtraDiceUsedRef2.current == null) re
+    // }
 
     
+    //funzione passata al component per la gestione logica del extra-dice
+    function onClickHandlerExtraDice(requireNPots,extraDiceUsedTemporarily, definitelyExtraDiceUsed,setExtraDiceUsedTemporarily, setIsPlayble,typeExtraDice){
+        //se l extra-dice è usato definitivamente non puoi fare niente
+        if(definitelyExtraDiceUsed) return;
 
-    function onClickHandlerExtraDice(requireNPots,extraDiceUsed){
-        if(nPotion >= requireNPots && !extraDiceUsed){
-            setNPotion((n)=>(n-requireNPots));
-            setDiceLeft_toUse((n)=>(n+1));
+        //se l extra-dice non è stato usato (in modo temporaneo) (quindi è utilizzabile/"buono")
+        if(!extraDiceUsedTemporarily){
+            //controllo che si possano usare massimo 2 extra-dice per turno, in caso lo setto setIsPlayeble a false per far diventare gl'extra dice non usati Unclickable
+            if(nExtraDiceUsedTemp >= 2) {
+                setIsPlayble(false);
+                return;
+            }
+            // se i req delle pozioni e incremento i dice disponibili, 
+            // i dice che al massimo usero in quel turno (non sono la stessa cosa, dice disponibili vengono decrementati quando uso un dado, i totalPossibleDice_toUse no )
+            //quindi faccio una serie di incrementi e decrementi per implementare la logica del gioco e metto a true lo stato del diceUsedTemporarily
+            if(nPotion >= requireNPots){ 
+                setNPotion((n)=>(n-requireNPots));
+                setNDiceLeft_toUse((n)=>(n+1));
+                setnExtraDiceUsedTemp((n)=>(n+1));
+                setTotalPossibleDice_toUse((n)=>(n+1));
+                setExtraDiceUsedTemporarily(true);
+                if(funSetExtraDiceUsedRef1.current == null) funSetExtraDiceUsedRef1.current = choose_fun_setExtraDiceUsed(typeExtraDice);
+                else funSetExtraDiceUsedRef2.current = choose_fun_setExtraDiceUsed(typeExtraDice);
+            } 
         }
         else{
-            setNPotion((n)=>(n+requireNPots));
-            setDiceLeft_toUse((n)=>(n-1));
+            //questo controllo evita di avere valori negativi su DiceLeft_toUse
+            if(totalPossibleDice_toUse - nDiceLeft_Used > 0){
+                setNPotion((n)=>(n+requireNPots));
+                setNDiceLeft_toUse((n)=>(n-1));
+                setnExtraDiceUsedTemp((n)=>(n-1));
+                setTotalPossibleDice_toUse((n)=>(n-1));
+                setExtraDiceUsedTemporarily(false);
+                setIsPlayble(true);
+                if(funSetExtraDiceUsedRef2.current == null) funSetExtraDiceUsedRef1.current = null;
+                else funSetExtraDiceUsedRef2.current = null;
+            }
+            
+            // if(nDiceLeft_Used > 2){
+            //     choose_fun_setExtraDiceUsed(typeExtraDice)(true);
+            // }
+            
         }
     }
 
@@ -246,7 +329,6 @@ function Game() {
         let handlerShop = (e)=>{
             if(!shopRef.current.contains(e.target)){
                 setOpenShop(false);
-                console.log(shop);
             }   
         };
         document.addEventListener("mousedown", handlerShop);
@@ -264,6 +346,7 @@ function Game() {
                 typeTouchedDiceRef.current = "";
                 valueTouchedDiceRef.current = null;
             }
+
         };
         document.addEventListener("mousedown", whileDiceTouched);
 
@@ -287,38 +370,44 @@ function Game() {
             <div className='extra-dices'>
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice1}
-                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice1,extraDiceUsed1)}
-                    definitelyExtraDiceUsed={extraDiceUsed1}                
+                    onClickHandlerExtraDice={onClickHandlerExtraDice}
+                    definitelyExtraDiceUsed={extraDiceUsed1}   
+                    typeExtraDice={TYPE_EXTRADICE1}        
                 ></ExtraDice>
                 <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice2}
-                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice2,extraDiceUsed2)}
-                    definitelyExtraDiceUsed={extraDiceUsed2}                
+                    nPotion_extraDice={nPotion_extraDice2} 
+                    onClickHandlerExtraDice={onClickHandlerExtraDice}
+                    definitelyExtraDiceUsed={extraDiceUsed2}     
+                    typeExtraDice={TYPE_EXTRADICE2}       
                 ></ExtraDice>
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice3}
-                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice3,extraDiceUsed3)}
-                    definitelyExtraDiceUsed={extraDiceUsed3}                
+                    onClickHandlerExtraDice={onClickHandlerExtraDice}
+                    definitelyExtraDiceUsed={extraDiceUsed3}              
+                    typeExtraDice={TYPE_EXTRADICE3}             
                 ></ExtraDice>
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice4}
-                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice4,extraDiceUsed4)}
-                    definitelyExtraDiceUsed={extraDiceUsed4}                
+                    onClickHandlerExtraDice={onClickHandlerExtraDice}
+                    definitelyExtraDiceUsed={extraDiceUsed4}               
+                    typeExtraDice={TYPE_EXTRADICE4}           
                 ></ExtraDice>
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice5}
-                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice5,extraDiceUsed5)}
-                    definitelyExtraDiceUsed={extraDiceUsed5}                
+                    onClickHandlerExtraDice={onClickHandlerExtraDice}
+                    definitelyExtraDiceUsed={extraDiceUsed5}           
+                    typeExtraDice={TYPE_EXTRADICE5}               
                 ></ExtraDice>
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice6}
-                    onClickHandlerExtraDice={()=>onClickHandlerExtraDice(nPotion_extraDice6,extraDiceUsed6)}
-                    definitelyExtraDiceUsed={extraDiceUsed6}                
+                    onClickHandlerExtraDice={onClickHandlerExtraDice}
+                    definitelyExtraDiceUsed={extraDiceUsed6}         
+                    typeExtraDice={TYPE_EXTRADICE6}               
                 ></ExtraDice>  
             </div>
 
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='dice-left-title' ></img>
-            <div className='dice-left-label'>{diceLeft_toUse}</div>
+            <div className='dice-left-label'>{nDiceLeft_toUse}</div>
 
             <img src={titleNTurn} alt='NTURN TITLE' className='n-turn-title' ></img>
             <div className='n-turn-label'>{nTurn}</div>
@@ -338,7 +427,7 @@ function Game() {
                     setDiceValue={setD6Value} 
                     usedDice={diceUsedD6} 
                     diceTouched={diceTouchedD6} 
-                    nActions={diceLeft_toUse} 
+                    nActions={nDiceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D6;
                         valueTouchedDiceRef.current = d6Value;
@@ -355,7 +444,7 @@ function Game() {
                     setDiceValue={setD8Value} 
                     usedDice={diceUsedD8} 
                     diceTouched={diceTouchedD8} 
-                    nActions={diceLeft_toUse} 
+                    nActions={nDiceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D8;
                         valueTouchedDiceRef.current = d8Value;
@@ -372,7 +461,7 @@ function Game() {
                     setDiceValue={setD10Value} 
                     usedDice={diceUsedD10} 
                     diceTouched={diceTouchedD10} 
-                    nActions={diceLeft_toUse} 
+                    nActions={nDiceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D10;
                         valueTouchedDiceRef.current = d10Value;
@@ -387,7 +476,7 @@ function Game() {
                     startTurnDiceValue={d12startValue} 
                     diceValue={d12Value} setDiceValue={setD12Value} 
                     usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
-                    nActions={diceLeft_toUse} 
+                    nActions={nDiceLeft_toUse} 
                     onClickImgHandler={()=>{
                         typeTouchedDiceRef.current = TYPE_D12;
                         valueTouchedDiceRef.current = d12Value;
@@ -448,7 +537,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -458,7 +549,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -468,7 +561,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -478,7 +573,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill>                
@@ -488,7 +585,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -498,7 +597,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -508,7 +609,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -518,7 +621,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -528,7 +633,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -538,7 +645,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -548,7 +657,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -558,7 +669,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -569,7 +682,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}      
                 ></Skill> 
@@ -579,7 +694,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -589,7 +706,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -599,7 +718,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -609,7 +730,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill>
@@ -619,7 +742,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -629,7 +754,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -639,7 +766,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -649,7 +778,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -659,7 +790,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -669,7 +802,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill> 
@@ -679,7 +814,9 @@ function Game() {
                     valueTouchedDiceRef={valueTouchedDiceRef}
                     typeTouchedDiceRef={typeTouchedDiceRef}
                     isDiceTouched={isDiceTouched}
-                    setDiceLeft_toUse={setDiceLeft_toUse}
+                    setNDiceLeft_toUse={setNDiceLeft_toUse}
+                    nDiceLeft_Used={nDiceLeft_Used}
+                    setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
                 ></Skill>  

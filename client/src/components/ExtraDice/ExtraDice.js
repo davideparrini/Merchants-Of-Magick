@@ -1,18 +1,21 @@
 import React,{ useState } from 'react'
 import './ExtraDice.scss'
 
-function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraDiceUsed}) {
+function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraDiceUsed,typeExtraDice}) {
     
-    const [extraDiceUsedTemporaly,setExtraDiceUsedTemporaly] = useState(false);
+     
+    
+    const [extraDiceUsedTemporarily,setExtraDiceUsedTemporarily] = useState(false);
+    const [isPlayble,setIsPlayble] = useState(true);
 
     function choose_className(){
         if(definitelyExtraDiceUsed){
             return 'no-active';
         }
         else{
-            if(extraDiceUsedTemporaly){
-                return 'going-no-active';
-            }
+            if(!isPlayble) return 'no-clickable';
+
+            if(extraDiceUsedTemporarily) return 'going-no-active';
         }
         return '';
     }
@@ -20,9 +23,8 @@ function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraD
     return (
         <div className={ 'e-dice ' + choose_className()} 
             onClick={()=>{
-                if(!definitelyExtraDiceUsed){
-                    onClickHandlerExtraDice(nPotion_extraDice,extraDiceUsedTemporaly)
-                    setExtraDiceUsedTemporaly(!extraDiceUsedTemporaly);
+                if(!definitelyExtraDiceUsed ){
+                    onClickHandlerExtraDice(nPotion_extraDice,extraDiceUsedTemporarily, definitelyExtraDiceUsed,setExtraDiceUsedTemporarily ,setIsPlayble,typeExtraDice)
                 }
             }}><div className={nPotion_extraDice == 0 ? '' : 'extra-dice-potion'}>{nPotion_extraDice == 0 ? '' : nPotion_extraDice}</div>
         </div>

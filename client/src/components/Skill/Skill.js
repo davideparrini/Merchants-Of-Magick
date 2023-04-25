@@ -7,7 +7,7 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
-function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setDiceLeft_toUse, setDiceUsed}) {
+function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed}) {
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
@@ -100,7 +100,8 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
             if(valueTouchedDiceRef.current >= attValue){
                 setAtt(true);
                 setDiceUsed(true);
-                setDiceLeft_toUse((n)=>(n-1));
+                setNDiceLeft_toUse((n)=>(n-1));
+                setNDiceLeft_Used((n)=>(n+1));
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;
@@ -109,7 +110,11 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
             if(valueTouchedDiceRef.current <= attValue){
                 setAtt(true);
                 setDiceUsed(true);
-                setDiceLeft_toUse((n)=>(n-1));
+                setNDiceLeft_toUse((n)=>(n-1));
+                setNDiceLeft_Used((n)=>(n+1));
+                // if(nDiceLeft_Used > 2){
+                //     setExtraDiceUsed(true);
+                // }
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;

@@ -37,3 +37,10 @@
     filter: grayscale(1);  
     pointer-events: none;
 }
+
+.no-clickable{
+    pointer-events: none;
+}
+.going-no-active{
+    filter: grayscale(0.5);
+}
