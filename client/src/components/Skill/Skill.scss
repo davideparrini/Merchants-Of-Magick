@@ -36,6 +36,7 @@
     color: #666;
     font: 18px Arial, sans-serif;
     font-weight: 700;
+
 }
 
 .ᨈ{
@@ -100,6 +101,7 @@
     animation: shake 2s ease-out 0;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
+    
 }
 .grey{
     background-color: rgb(143, 126, 40);
@@ -116,12 +118,15 @@
 
 .btn1{
     grid-area: bt1;
+    cursor: pointer;
 }
 .btn2{
     grid-area: bt2;
+    cursor: pointer;
 }
 .btn3{
     grid-area: bt3;
+    cursor: pointer;
 
 }
 
@@ -140,13 +145,11 @@
 
 .noButton{
     visibility: hidden;
-    cursor: not-allowed;
     pointer-events: none;
 }
 .upgraded{
     background: rgb(60, 60, 60);
     color: rgb(60, 60, 60);
-    cursor: not-allowed;
     pointer-events: none;
 }
 
