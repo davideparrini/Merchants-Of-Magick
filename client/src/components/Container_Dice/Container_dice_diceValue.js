@@ -20,6 +20,7 @@ function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValu
 			case TYPE_D8: return d8img;
 			case TYPE_D10: return d10img;
 			case TYPE_D12: return d12img;
+            default: return;
 		}
 	}
 

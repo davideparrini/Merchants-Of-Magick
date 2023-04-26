@@ -47,9 +47,12 @@ import { useEffect, useRef, useState } from 'react';
 import Timer from './components/Timer/Timer';
 import Container_dice_diceValue from './components/Container_Dice/Container_dice_diceValue';
 import ExtraDice from './components/ExtraDice/ExtraDice';
+import ForgeButton from './components/ForgeButton/ForgeButton';
 
 
 function Game() {
+
+    
 
     //CONFIGURAZIONI GIOCO
 
@@ -161,6 +164,39 @@ function Game() {
     //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
 
+
+    //lista skills crafting item
+    const skillListCraftingItem = [
+        backpack,
+        scroll,
+        ring,
+        grimoire,
+        staff,
+        sword,
+        crossbow, 
+        warhammer,
+        bracers,
+        helmet,
+        greaves,
+        plotarmor
+    ]
+
+    //lista skills magic research
+    const skillListMagicResearch = [
+        fiery,
+        shocking,
+        everlasting,
+        divine,
+        elves,
+        dwarves, 
+        orcs,
+        dragons,
+        glamorPotionSupplier,
+        renownedAccessories ,
+        weaponPrestige,
+        eliteArmor
+    ]
+
     //carte di gioco durante il turno
 
     const card1 ={item:'plot armor',gold: 5,enchantment: 'divine' , origin:'of the dragons'};
@@ -244,7 +280,7 @@ function Game() {
     }
 
     
-
+//service worker
     
 // funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
     function choose_fun_setExtraDiceUsed(){
@@ -302,8 +338,6 @@ function Game() {
 
 
 
-
-
     
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
@@ -345,7 +379,7 @@ function Game() {
     return (
         <div className="Game">   
             
-            <div className='timer-container'><Timer countdown={countdownTurn}></Timer></div>
+            <div className='timer-container'><Timer countdown={countdownTurn}/></div>
             
             <div className='extra-dices'>
                 <ExtraDice
@@ -353,25 +387,25 @@ function Game() {
                     onClickHandlerExtraDice={onClickHandlerExtraDice}
                     definitelyExtraDiceUsed={extraDiceUsed1}   
                     typeExtraDice={TYPE_EXTRADICE1}        
-                ></ExtraDice>
+                />
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice2} 
                     onClickHandlerExtraDice={onClickHandlerExtraDice}
                     definitelyExtraDiceUsed={extraDiceUsed2}     
                     typeExtraDice={TYPE_EXTRADICE2}       
-                ></ExtraDice>
+                />
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice3}
                     onClickHandlerExtraDice={onClickHandlerExtraDice}
                     definitelyExtraDiceUsed={extraDiceUsed3}              
                     typeExtraDice={TYPE_EXTRADICE3}             
-                ></ExtraDice>
+                />
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice4}
                     onClickHandlerExtraDice={onClickHandlerExtraDice}
                     definitelyExtraDiceUsed={extraDiceUsed4}               
                     typeExtraDice={TYPE_EXTRADICE4}           
-                ></ExtraDice>
+                />
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice5}
                     onClickHandlerExtraDice={onClickHandlerExtraDice}
@@ -383,7 +417,7 @@ function Game() {
                     onClickHandlerExtraDice={onClickHandlerExtraDice}
                     definitelyExtraDiceUsed={extraDiceUsed6}         
                     typeExtraDice={TYPE_EXTRADICE6}               
-                ></ExtraDice>  
+                />  
             </div>
 
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='dice-left-title' ></img>
@@ -414,7 +448,7 @@ function Game() {
                         setAllDiceNoTouched(); 
                         setDiceTouchedD6(true);
                     }}
-                ></Container_dice_diceValue>
+                />
                 <Container_dice_diceValue 
                     typeDice={TYPE_D8} 
                     nPotion={nPotion} 
@@ -431,7 +465,7 @@ function Game() {
                         setAllDiceNoTouched(); 
                         setDiceTouchedD8(true);
                     }}
-                    ></Container_dice_diceValue>
+                />
                 <Container_dice_diceValue 
                     typeDice={TYPE_D10} 
                     nPotion={nPotion} 
@@ -448,7 +482,7 @@ function Game() {
                         setAllDiceNoTouched(); 
                         setDiceTouchedD10(true);
                     }}
-                ></Container_dice_diceValue>
+                />
                 <Container_dice_diceValue 
                     typeDice={TYPE_D12} 
                     nPotion={nPotion} 
@@ -463,45 +497,40 @@ function Game() {
                         setAllDiceNoTouched(); 
                         setDiceTouchedD12(true);
                     }}
-                ></Container_dice_diceValue>
+                />
             </div>
 
 
             <div className='card-container'>
                 <Card order = {card1} 
-                    isShowed={showCard1}>
-                </Card>
-                <button className='btn-crafting' 
-                    onClick={()=>{
-                        if(checkSkillCard(card1)){
-                            setShowCard1(false);
-                            addItemShop(card1);
-                        }
-                    }}
-                ></button>
+                    isShowed={showCard1}
+                />
+                <ForgeButton 
+                    checkSkillCard={checkSkillCard}
+                    setShowCard={setShowCard1}
+                    addItemShop={addItemShop}
+                    card={card1}
+                />
+
                 <Card order = {card2} 
                     isShowed={showCard2} 
+                />
+                <ForgeButton 
+                    checkSkillCard={checkSkillCard}
+                    setShowCard={setShowCard1}
+                    addItemShop={addItemShop}
+                    card={card2}
+                />
 
-                ></Card>
-                <button className='btn-crafting' 
-                    onClick={()=>{
-                        if(checkSkillCard(card2)){ 
-                            setShowCard2(false);
-                            addItemShop(card2);
-                        }
-                    }}
-                ></button>
                 <Card order = {card3} 
                     isShowed={showCard3}
-                ></Card>
-                <button className='btn-crafting' 
-                    onClick={()=>{
-                        if(checkSkillCard(card3)){ 
-                            setShowCard3(false);
-                            addItemShop(card3);
-                        } 
-                    }}
-                ></button>
+                />
+                <ForgeButton 
+                    checkSkillCard={checkSkillCard}
+                    setShowCard={setShowCard1}
+                    addItemShop={addItemShop}
+                    card={card3}
+                />
             </div>
             <div className='player-table'>playerTable</div>
             <div className='quest1'>quest1</div>
@@ -510,324 +539,47 @@ function Game() {
             <div className='order2'>order2</div>
             <div className='order3'>order3</div>
             <div className='skills-table' ref={skillTableRef}>
-                <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-crafting-skills'></img>
-                <Skill skill = {backpack} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {scroll} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                    
-                ></Skill> 
-                <Skill skill = {ring} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {grimoire} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill>                
-                <Skill skill = {staff} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {sword} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {crossbow} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {warhammer}
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {bracers}
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {helmet} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {greaves} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {plotarmor} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='title-magic-research'></img>
-                <Skill skill = {fiery} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}    
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}  
-                ></Skill> 
-                <Skill skill = {shocking} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {everlasting} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {divine} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {elves} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill>
-                <Skill skill = {dwarves} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {orcs} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {dragons} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {glamorPotionSupplier} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                ></Skill> 
-                <Skill skill = {renownedAccessories} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {weaponPrestige} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill> 
-                <Skill skill = {eliteArmor} 
-                    setNPotion={setNPotion}
-                    fun_passSkillGained={getSkillGained}
-                    valueTouchedDiceRef={valueTouchedDiceRef}
-                    typeTouchedDiceRef={typeTouchedDiceRef}
-                    isDiceTouched={isDiceTouched}
-                    setNDiceLeft_toUse={setNDiceLeft_toUse}
-                    nDiceLeft_Used={nDiceLeft_Used}
-                    setNDiceLeft_Used={setNDiceLeft_Used}
-                    setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}
-                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                ></Skill>  
-
+                <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-crafting-skills'/>
+                {
+                   skillListCraftingItem.map((s,i)=>{
+                        return (
+                            <Skill skill = {s} key={i} 
+                            setNPotion={setNPotion}
+                            fun_passSkillGained={getSkillGained}
+                            valueTouchedDiceRef={valueTouchedDiceRef}
+                            typeTouchedDiceRef={typeTouchedDiceRef}
+                            isDiceTouched={isDiceTouched}
+                            setNDiceLeft_toUse={setNDiceLeft_toUse}
+                            nDiceLeft_Used={nDiceLeft_Used}
+                            setNDiceLeft_Used={setNDiceLeft_Used}
+                            setDiceUsed={choose_fun_setDiceUsed()}
+                            setAllDicesNoTouched={setAllDiceNoTouched}
+                            setExtraDiceUsed={choose_fun_setExtraDiceUsed()}/>
+                        )
+                   }) 
+                }
+                <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='title-magic-research'/>
+                {
+                   skillListMagicResearch.map((s,i)=>{
+                        return (
+                            <Skill skill = {s} key={i} 
+                            setNPotion={setNPotion}
+                            fun_passSkillGained={getSkillGained}
+                            valueTouchedDiceRef={valueTouchedDiceRef}
+                            typeTouchedDiceRef={typeTouchedDiceRef}
+                            isDiceTouched={isDiceTouched}
+                            setNDiceLeft_toUse={setNDiceLeft_toUse}
+                            nDiceLeft_Used={nDiceLeft_Used}
+                            setNDiceLeft_Used={setNDiceLeft_Used}
+                            setDiceUsed={choose_fun_setDiceUsed()}
+                            setAllDicesNoTouched={setAllDiceNoTouched}
+                            setExtraDiceUsed={choose_fun_setExtraDiceUsed()}/>
+                        )
+                   }) 
+                }
             </div>
-            <div className='legend-container'><Legend></Legend></div>
-            <button className='btn-turn'></button>
+            <div className='legend-container'><Legend/></div>
+            <button className='btn-turn'>BTN TURN</button>
 
             <div className='shop-container' ref={shopRef}>
                 <img src={shopImg} className='btn-shop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>

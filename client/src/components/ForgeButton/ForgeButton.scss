@@ -1,0 +1,21 @@
+@use '../../variables' as v;
+
+.btn-crafting{
+    position: relative;
+    right: 14px;
+    align-self: flex-end;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 5px solid v.$primary-color;
+    background-image: url(./craftingIcon1.png);
+    background-size: cover;
+}
+
+.cross-cursor{
+    cursor: url('./crossCursor5.png'), auto;
+}
+
+.forge-cursor{
+    // cursor: url('./forgeCursor.png'), auto;
+}

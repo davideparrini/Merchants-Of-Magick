@@ -14,7 +14,7 @@
     width: 220px;
     height: 270px;
     border: 6px solid v.$primary-color;
-    background: #7e6868;
+    
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
@@ -22,18 +22,9 @@
 
 
 .showed{
-    background: transparent;
+    background: #7e6868;
 }
 .no-showed{
-    position: relative;
-    bottom:107px;
-    right: 6px;
-    filter: blur(1);
-    z-index: 100;
-    width: 220px;
-    height: 270px;
-    border: 6px solid v.$primary-color;
-    border-radius: 15px;
     background: #242220;
 }
 .textCard{
@@ -123,6 +114,9 @@
     background-repeat: no-repeat;
 }
 
+.no-visible{
+    visibility: hidden;
+}
 .backpack{
     background-image: url(./image/backpack3.png);
 }

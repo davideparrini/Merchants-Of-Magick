@@ -30,15 +30,14 @@ function Card({order, isShowed}) {
     return (
         
         <div>
-            <div className='card'>
-                <div className={`${isShowed ? "showed" : "no-showed"}`}></div>
-                <div className='textCard t1'> {enchantment}</div>
-                <div className='textCard t2' >{item}</div>
-                <div className='textCard t3'>{orgin}</div>
-                <div className='goldItem'>{gold}</div>
-                <div className={'imgCard ' + itemWrap()}></div>
-                <div className={'imgEnchantmentsCard ' + enchantment}></div>
-                <div className={'imgOriginCard ' + orginWrap()}></div>
+            <div className={`card ${isShowed ? "showed" : "no-showed"}`}>
+                <div className={`textCard t1 ${isShowed ? "" : "no-visible"}`}> {enchantment}</div>
+                <div className={`textCard t2 ${isShowed ? "" : "no-visible"}`} >{item}</div>
+                <div className={`textCard t3 ${isShowed ? "" : "no-visible"}`}>{orgin}</div>
+                <div className={`goldItem ${isShowed ? "" : "no-visible"}`}>{gold}</div>
+                <div className={`imgCard ${itemWrap()}  ${isShowed ? "" : "no-visible"}`}></div>
+                <div className={`imgEnchantmentsCard ${enchantment}  ${isShowed ? "" : "no-visible"}`}></div>
+                <div className={`imgOriginCard ${orginWrap()}  ${isShowed ? "" : "no-visible"}`}></div>
             </div>
         </div>
     )

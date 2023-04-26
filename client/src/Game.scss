@@ -170,17 +170,7 @@ body{
     align-items: center;
     
 }
-.btn-crafting{
-    position: relative;
-    right: 14px;
-    align-self: flex-end;
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    border: 5px solid v.$primary-color;
-    background-image: url(./images/craftingIcon1.png);
-    background-size: cover;
-}
+
 .order-container{
     grid-area: orderContainer;
 }
@@ -290,3 +280,12 @@ body{
     transform: translateY(-20px);
     transition: 500ms ease;
 }
+
+// @media (max-width:1440px) {
+//     .btn-shop{
+//         border: 2px solid v.$primary-color;
+//         height: 80px;
+//         width: 80px;
+
+//     }
+// }
