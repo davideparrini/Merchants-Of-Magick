@@ -102,6 +102,9 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
                 setDiceUsed(true);
                 setNDiceLeft_toUse((n)=>(n-1));
                 setNDiceLeft_Used((n)=>(n+1));
+                if(nDiceLeft_Used >= 2){
+                    setExtraDiceUsed(true);
+                }
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;
@@ -112,9 +115,9 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
                 setDiceUsed(true);
                 setNDiceLeft_toUse((n)=>(n-1));
                 setNDiceLeft_Used((n)=>(n+1));
-                // if(nDiceLeft_Used > 2){
-                //     setExtraDiceUsed(true);
-                // }
+                if(nDiceLeft_Used >= 2){
+                    setExtraDiceUsed(true);
+                }
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;

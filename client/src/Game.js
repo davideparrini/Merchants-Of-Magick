@@ -72,10 +72,6 @@ function Game() {
     //Ref per mantenere il valore del dado toccato
     let valueTouchedDiceRef = useRef();
 
-
-    let funSetExtraDiceUsedRef1 = useRef(null);
-    let funSetExtraDiceUsedRef2 = useRef(null);
-
     //bool openShop
     const [openShop,setOpenShop] = useState(false);
 
@@ -130,11 +126,6 @@ function Game() {
     const[diceUsedD10,setDiceUsedD10] = useState(false);
     const[diceUsedD12,setDiceUsedD12] = useState(false);
 
-    //n dadi usati
-    const [nDiceUsed, setNDiceUsed]  = useState(0);
-
-
-
     //numero di dadi rimanenti da usare (variabile incrementabile e decrementabile usando un extra dice(temporanamente), E decrementata ogni volta che usiamo un dado)
     const [nDiceLeft_toUse,setNDiceLeft_toUse] = useState(DICE_PER_TURN);
 
@@ -144,8 +135,8 @@ function Game() {
     //numero dadi usati
     const [nDiceLeft_Used,setNDiceLeft_Used] = useState(0);
 
-    //numero di extra-dice usati temporaneamente
-    const [nExtraDiceUsedTemp,setnExtraDiceUsedTemp] = useState(0);
+    //lista di extra-dice usati temporaneamente
+    const [extraDiceUsedTempList,setExtraDiceUsedTempList] = useState([]);
 
 
     //bool extra-dice, eDice(true) -> eDice usato e non più disponibile per tutta la partita
@@ -252,23 +243,20 @@ function Game() {
         }
     }
 
-    // funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
-    function choose_fun_setExtraDiceUsed(typeExtraDice){
-        switch(typeExtraDice){
-            case TYPE_EXTRADICE1: return setExtraDiceUsed1;
-            case TYPE_EXTRADICE2: return setExtraDiceUsed2;
-            case TYPE_EXTRADICE3: return setExtraDiceUsed3;
-            case TYPE_EXTRADICE4: return setExtraDiceUsed4;
-            case TYPE_EXTRADICE5: return setExtraDiceUsed5;
-            case TYPE_EXTRADICE6: return setExtraDiceUsed6;  
-            default: return;
-        }
+    
+
+    
+// funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
+    function choose_fun_setExtraDiceUsed(){
+        if(!extraDiceUsed1 && extraDiceUsedTempList.includes(TYPE_EXTRADICE1)) return setExtraDiceUsed1;
+        if(!extraDiceUsed2 && extraDiceUsedTempList.includes(TYPE_EXTRADICE2)) return setExtraDiceUsed2;
+        if(!extraDiceUsed3 && extraDiceUsedTempList.includes(TYPE_EXTRADICE3)) return setExtraDiceUsed3;
+        if(!extraDiceUsed4 && extraDiceUsedTempList.includes(TYPE_EXTRADICE4)) return setExtraDiceUsed4;
+        if(!extraDiceUsed5 && extraDiceUsedTempList.includes(TYPE_EXTRADICE5)) return setExtraDiceUsed5;
+        if(!extraDiceUsed6 && extraDiceUsedTempList.includes(TYPE_EXTRADICE6)) return setExtraDiceUsed6;
+        return null;
     }
 
-    function choose_ref_setExtraDiceUsed(){
-        if(funSetExtraDiceUsedRef2.current == null) return funSetExtraDiceUsedRef1.current;
-        else funSetExtraDiceUsedRef2.current;
-    }
 
     
     //funzione passata al component per la gestione logica del extra-dice
@@ -279,7 +267,7 @@ function Game() {
         //se l extra-dice non è stato usato (in modo temporaneo) (quindi è utilizzabile/"buono")
         if(!extraDiceUsedTemporarily){
             //controllo che si possano usare massimo 2 extra-dice per turno, in caso lo setto setIsPlayeble a false per far diventare gl'extra dice non usati Unclickable
-            if(nExtraDiceUsedTemp >= 2) {
+            if(extraDiceUsedTempList.length >= 2) {
                 setIsPlayble(false);
                 return;
             }
@@ -289,11 +277,9 @@ function Game() {
             if(nPotion >= requireNPots){ 
                 setNPotion((n)=>(n-requireNPots));
                 setNDiceLeft_toUse((n)=>(n+1));
-                setnExtraDiceUsedTemp((n)=>(n+1));
+                setExtraDiceUsedTempList((l)=>[...l,typeExtraDice]);
                 setTotalPossibleDice_toUse((n)=>(n+1));
                 setExtraDiceUsedTemporarily(true);
-                if(funSetExtraDiceUsedRef1.current == null) funSetExtraDiceUsedRef1.current = choose_fun_setExtraDiceUsed(typeExtraDice);
-                else funSetExtraDiceUsedRef2.current = choose_fun_setExtraDiceUsed(typeExtraDice);
             } 
         }
         else{
@@ -301,17 +287,16 @@ function Game() {
             if(totalPossibleDice_toUse - nDiceLeft_Used > 0){
                 setNPotion((n)=>(n+requireNPots));
                 setNDiceLeft_toUse((n)=>(n-1));
-                setnExtraDiceUsedTemp((n)=>(n-1));
+                setExtraDiceUsedTempList((l)=>l.filter(function(value, index, array){
+                    return value != typeExtraDice;
+                }));
                 setTotalPossibleDice_toUse((n)=>(n-1));
                 setExtraDiceUsedTemporarily(false);
                 setIsPlayble(true);
-                /////DA AGGIUNGERE QUA
+
             }
             
-            // if(nDiceLeft_Used > 2){
-            //     choose_fun_setExtraDiceUsed(typeExtraDice)(true);
-            // }
-            
+        
         }
     }
 
@@ -352,9 +337,6 @@ function Game() {
             document.removeEventListener("mousedown", whileDiceTouched);
           }
     },[typeTouchedDiceRef]);
-
-
-
 
 
 
@@ -540,6 +522,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {scroll} 
                     setNPotion={setNPotion}
@@ -552,6 +535,8 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                    
                 ></Skill> 
                 <Skill skill = {ring} 
                     setNPotion={setNPotion}
@@ -564,6 +549,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {grimoire} 
                     setNPotion={setNPotion}
@@ -576,6 +562,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill>                
                 <Skill skill = {staff} 
                     setNPotion={setNPotion}
@@ -588,6 +575,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {sword} 
                     setNPotion={setNPotion}
@@ -600,6 +588,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {crossbow} 
                     setNPotion={setNPotion}
@@ -612,6 +601,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {warhammer}
                     setNPotion={setNPotion}
@@ -624,6 +614,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {bracers}
                     setNPotion={setNPotion}
@@ -636,6 +627,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {helmet} 
                     setNPotion={setNPotion}
@@ -648,6 +640,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {greaves} 
                     setNPotion={setNPotion}
@@ -660,6 +653,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {plotarmor} 
                     setNPotion={setNPotion}
@@ -672,6 +666,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='title-magic-research'></img>
                 <Skill skill = {fiery} 
@@ -684,7 +679,8 @@ function Game() {
                     nDiceLeft_Used={nDiceLeft_Used}
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
-                    setAllDicesNoTouched={setAllDiceNoTouched}      
+                    setAllDicesNoTouched={setAllDiceNoTouched}    
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}  
                 ></Skill> 
                 <Skill skill = {shocking} 
                     setNPotion={setNPotion}
@@ -697,6 +693,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {everlasting} 
                     setNPotion={setNPotion}
@@ -709,6 +706,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {divine} 
                     setNPotion={setNPotion}
@@ -721,6 +719,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {elves} 
                     setNPotion={setNPotion}
@@ -733,6 +732,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill>
                 <Skill skill = {dwarves} 
                     setNPotion={setNPotion}
@@ -745,6 +745,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {orcs} 
                     setNPotion={setNPotion}
@@ -757,6 +758,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {dragons} 
                     setNPotion={setNPotion}
@@ -769,6 +771,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {glamorPotionSupplier} 
                     setNPotion={setNPotion}
@@ -793,6 +796,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {weaponPrestige} 
                     setNPotion={setNPotion}
@@ -805,6 +809,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill> 
                 <Skill skill = {eliteArmor} 
                     setNPotion={setNPotion}
@@ -817,6 +822,7 @@ function Game() {
                     setNDiceLeft_Used={setNDiceLeft_Used}
                     setDiceUsed={choose_fun_setDiceUsed()}
                     setAllDicesNoTouched={setAllDiceNoTouched}
+                    setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                 ></Skill>  
 
             </div>
