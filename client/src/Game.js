@@ -72,8 +72,6 @@ function Game() {
     //Ref per mantenere il valore del dado toccato
     let valueTouchedDiceRef = useRef();
 
-    let queueSetExtraDiceUsedRef = [useRef(null), useRef(null)];
-    
 
     let funSetExtraDiceUsedRef1 = useRef(null);
     let funSetExtraDiceUsedRef2 = useRef(null);
@@ -267,9 +265,10 @@ function Game() {
         }
     }
 
-    // function choose_ref_setExtraDiceUsed(){
-    //     if(funSetExtraDiceUsedRef2.current == null) re
-    // }
+    function choose_ref_setExtraDiceUsed(){
+        if(funSetExtraDiceUsedRef2.current == null) return funSetExtraDiceUsedRef1.current;
+        else funSetExtraDiceUsedRef2.current;
+    }
 
     
     //funzione passata al component per la gestione logica del extra-dice
@@ -306,8 +305,7 @@ function Game() {
                 setTotalPossibleDice_toUse((n)=>(n-1));
                 setExtraDiceUsedTemporarily(false);
                 setIsPlayble(true);
-                if(funSetExtraDiceUsedRef2.current == null) funSetExtraDiceUsedRef1.current = null;
-                else funSetExtraDiceUsedRef2.current = null;
+                /////DA AGGIUNGERE QUA
             }
             
             // if(nDiceLeft_Used > 2){
