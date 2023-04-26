@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-import './ButtonTurn'
-function ButtonTurnDone() {
+import './ButtonTurn.scss'
+function ButtonTurnDone({finishTurn}) {
 
-  const [text,setText] = useState("Finish turn")
 
-  function handleClick(){
-    setText("Turn Done")
-  }
-  
-  return (
-    <div className={text==="Finish turn" ? "btnTurn not-done" : "bntTurn done"} onClick={handleClick}><span>{text}</span></div>
-  )
+    const [turnDone, setTurnDone] = useState(false);
+
+
+    return (
+        <div className={`btnTurn ${turnDone ? 'turnDone' : 'turnNotDone'}`} 
+        onClick={()=>{ 
+            setTurnDone(true);
+            finishTurn();
+        }
+        }>{!turnDone ? "Finish Turn" : "Waiting for others players..." }</div>
+    )
 }
 
-export default ButtonTurnDone
+    export default ButtonTurnDone

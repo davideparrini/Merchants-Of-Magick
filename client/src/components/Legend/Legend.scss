@@ -1,3 +1,5 @@
+@use '../../variables' as  v;
+
 .legenda{
     display: flex;
     flex-direction: column;
@@ -12,7 +14,7 @@
     font-size: 26px;
     letter-spacing: 3px;
     color: rgb(255, 255, 255);
-    background-color: #741313;
+    background-color: v.$primary-color;
     height: min-content;
     width: 310px;
     padding: auto;
@@ -34,7 +36,7 @@
     grid-template-rows: repeat(2,1fr);
     background-color: rgb(224, 195, 194);
     border-radius: 15px;
-    border: 5px solid #741313;
+    border: 5px solid v.$primary-color;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     
     

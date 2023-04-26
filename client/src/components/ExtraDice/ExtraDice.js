@@ -25,7 +25,7 @@ function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraD
                 if(!definitelyExtraDiceUsed ){
                     onClickHandlerExtraDice(nPotion_extraDice,usedTemporarily, definitelyExtraDiceUsed,setUsedTemporarily ,setIsPlayble,typeExtraDice)
                 }
-            }}><div className={nPotion_extraDice == 0 ? '' : 'extra-dice-potion'}>{nPotion_extraDice == 0 ? '' : nPotion_extraDice}</div>
+            }}><div className={nPotion_extraDice === 0 ? '' : 'extra-dice-potion'}>{nPotion_extraDice === 0 ? '' : nPotion_extraDice}</div>
         </div>
     )
 }

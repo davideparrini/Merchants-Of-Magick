@@ -15,7 +15,7 @@ import titleMagicResearch from './images/magicResearchTitle.png'
 import titleDiceLeft from './images/diceLeftTitle2.png'
 import titleNTurn from './images/turnNTitle.png'
 
-import shopImg from './images/shop.png'
+
 import potionImg from './images/potion4.png'
 
 import backpack from './components/Skill/skillsJson/backpack.json'
@@ -48,9 +48,12 @@ import Timer from './components/Timer/Timer';
 import Container_dice_diceValue from './components/Container_Dice/Container_dice_diceValue';
 import ExtraDice from './components/ExtraDice/ExtraDice';
 import ForgeButton from './components/ForgeButton/ForgeButton';
+import Shop from './components/Shop/Shop';
+import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
+import Quest from './components/Quest/Quest';
 
 
-function Game() {
+function Game({}) {
 
     
 
@@ -208,19 +211,23 @@ function Game() {
     const[showCard2,setShowCard2] = useState(true);
     const[showCard3,setShowCard3] = useState(true);
     
+    const quest1 = {attribute:"wood", request: 8,gold : 8};
+    const quest2 = {attribute:"elemental", request: 8, gold : 8};
+
+    const typeAttributeQuestCrafting = quest1.attribute;
+    const typeAttributeQuestMagicResearch = quest2.attribute;
+    const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
+    const [nAttributeGained_QuestMagicResearch,setnAttributeGained_QuestMagicResearch] = useState(0);
+
 
     //lista skill acquisite
-    const[skillsGained,setSkillsGained] = useState([]);
+    const[skillsGained,setSkillsGained] = useState(['plot armor', 'divine', 'of the dragons','everlasting','of the elves','crossbow']);
 
     
 ////////////////////////////////////FUCTIONS//////////////////////////////////////////////////////////////////////////////////////
 
     const addItemShop = (card) => {
-        const item = {
-          id: uuid(),
-          card,
-        }
-        setShop((s) => [...s, item])
+        setShop((s) => [...s, card])
       }
     
 
@@ -256,7 +263,7 @@ function Game() {
 
     //predicato per vedere se un dado è stato toccato
     function isDiceTouched(){ 
-        return typeTouchedDiceRef.current != '';
+        return typeTouchedDiceRef.current !== '';
     }
 
     //funzione che setta tutti i dadi come non toccati diceTouched -> false
@@ -279,8 +286,7 @@ function Game() {
         }
     }
 
-    
-//service worker
+
     
 // funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
     function choose_fun_setExtraDiceUsed(){
@@ -337,6 +343,9 @@ function Game() {
     }
 
 
+    function finishTurn(){
+
+    }
 
     
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
@@ -517,7 +526,7 @@ function Game() {
                 />
                 <ForgeButton 
                     checkSkillCard={checkSkillCard}
-                    setShowCard={setShowCard1}
+                    setShowCard={setShowCard2}
                     addItemShop={addItemShop}
                     card={card2}
                 />
@@ -527,14 +536,17 @@ function Game() {
                 />
                 <ForgeButton 
                     checkSkillCard={checkSkillCard}
-                    setShowCard={setShowCard1}
+                    setShowCard={setShowCard3}
                     addItemShop={addItemShop}
                     card={card3}
                 />
             </div>
             <div className='player-table'>playerTable</div>
-            <div className='quest1'>quest1</div>
-            <div className='quest2'>quest2</div>
+            <div className='quest'>
+                <Quest quest={quest1} progress={nAttributeGained_QuestCrafting}/>
+                <Quest quest={quest2} progress={nAttributeGained_QuestMagicResearch}/>
+            </div>
+            
             <div className='order1'>order1</div>
             <div className='order2'>order2</div>
             <div className='order3'>order3</div>
@@ -544,17 +556,23 @@ function Game() {
                    skillListCraftingItem.map((s,i)=>{
                         return (
                             <Skill skill = {s} key={i} 
-                            setNPotion={setNPotion}
-                            fun_passSkillGained={getSkillGained}
-                            valueTouchedDiceRef={valueTouchedDiceRef}
-                            typeTouchedDiceRef={typeTouchedDiceRef}
-                            isDiceTouched={isDiceTouched}
-                            setNDiceLeft_toUse={setNDiceLeft_toUse}
-                            nDiceLeft_Used={nDiceLeft_Used}
-                            setNDiceLeft_Used={setNDiceLeft_Used}
-                            setDiceUsed={choose_fun_setDiceUsed()}
-                            setAllDicesNoTouched={setAllDiceNoTouched}
-                            setExtraDiceUsed={choose_fun_setExtraDiceUsed()}/>
+                                setNPotion={setNPotion}
+                                fun_passSkillGained={getSkillGained}
+                                valueTouchedDiceRef={valueTouchedDiceRef}
+                                typeTouchedDiceRef={typeTouchedDiceRef}
+                                isDiceTouched={isDiceTouched}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_Used={setNDiceLeft_Used}
+                                setDiceUsed={choose_fun_setDiceUsed()}
+                                setAllDicesNoTouched={setAllDiceNoTouched}
+                                setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                                setNAttrQuest1={setnAttributeGained_QuestCrafting}
+                                setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
+                                typeAttrQuest1={typeAttributeQuestCrafting}
+                                typeAttrQuest2={typeAttributeQuestMagicResearch}
+                            
+                            />
                         )
                    }) 
                 }
@@ -563,27 +581,37 @@ function Game() {
                    skillListMagicResearch.map((s,i)=>{
                         return (
                             <Skill skill = {s} key={i} 
-                            setNPotion={setNPotion}
-                            fun_passSkillGained={getSkillGained}
-                            valueTouchedDiceRef={valueTouchedDiceRef}
-                            typeTouchedDiceRef={typeTouchedDiceRef}
-                            isDiceTouched={isDiceTouched}
-                            setNDiceLeft_toUse={setNDiceLeft_toUse}
-                            nDiceLeft_Used={nDiceLeft_Used}
-                            setNDiceLeft_Used={setNDiceLeft_Used}
-                            setDiceUsed={choose_fun_setDiceUsed()}
-                            setAllDicesNoTouched={setAllDiceNoTouched}
-                            setExtraDiceUsed={choose_fun_setExtraDiceUsed()}/>
+                                setNPotion={setNPotion}
+                                fun_passSkillGained={getSkillGained}
+                                valueTouchedDiceRef={valueTouchedDiceRef}
+                                typeTouchedDiceRef={typeTouchedDiceRef}
+                                isDiceTouched={isDiceTouched}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_Used={setNDiceLeft_Used}
+                                setDiceUsed={choose_fun_setDiceUsed()}
+                                setAllDicesNoTouched={setAllDiceNoTouched}
+                                setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                                setNAttrQuest1={setnAttributeGained_QuestCrafting}
+                                setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
+                                typeAttrQuest1={typeAttributeQuestCrafting}
+                                typeAttrQuest2={typeAttributeQuestMagicResearch}
+                            />
                         )
                    }) 
                 }
             </div>
             <div className='legend-container'><Legend/></div>
-            <button className='btn-turn'>BTN TURN</button>
-
+            <div className='btn-turn-container'>
+                <ButtonTurnDone finishTurn={finishTurn}/>
+            </div>
+            
             <div className='shop-container' ref={shopRef}>
-                <img src={shopImg} className='btn-shop' alt='SHOP' onClick={()=>setOpenShop(!openShop)}></img>
-                <div className={`dropdown-shop ${openShop? 'active' : 'inactive'}`}></div>
+                <Shop 
+                    shop={shop}
+                    openShop={openShop}
+                    setOpenShop={setOpenShop}
+                />
             </div>
         </div>
     );

@@ -3,7 +3,7 @@
 .Game {
     display: grid;
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion . extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer .  quest1 quest1 quest1 quest2 quest2 quest2'
+    'containerDices_Potion containerDices_Potion . extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer quest  quest quest quest quest quest quest'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable btnTurn btnTurn btnShop'
@@ -17,8 +17,11 @@
 
 body{
     background-image: url('./images/background6.png');
+    background-color: rgb(66, 63, 63);
     overflow: hidden;
     overscroll-behavior: none;
+    height: 100%;
+    width: 100%;
     
 } 
 
@@ -152,14 +155,11 @@ body{
     font-weight: 700;
 }
 
-.btn-turn{
+.btn-turn-container{
     grid-area: btnTurn;
-    justify-self: center;
-    align-self: center;
-    height: 70px;
-    width: 150px;
-    border-radius: 10px;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-container{
@@ -174,11 +174,11 @@ body{
 .order-container{
     grid-area: orderContainer;
 }
-.quest1{
-    grid-area: quest1;
-}
-.quest2{
-    grid-area: quest2;
+.quest{
+    grid-area: quest;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
 
 .order1{
@@ -235,50 +235,7 @@ body{
 
 .shop-container{
     grid-area: btnShop;
-}
-.btn-shop{
-    grid-area: btnShop;
-    background: rgb(255, 255, 255);
-    border: 4px solid v.$primary-color;
-    border-radius: 50%;
-    height: 80px;
-    width: 80px;
-}
-.btnShop:active{
-    opacity: 0.8;
-}
-
-
-.dropdown-shop{
-    position: absolute;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 10px 20px;
-    width: 200px;
-  }
-
-.dropdown-shop::before{
-    content: '';
-    top: -5px;
-    right: 20px;
-    height: 20px;
-    width: 20px;
-    background:#741313;
-    transform: rotate(45deg);
-}
-
-.dropdown-shop.active{
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    transition: 500ms ease;
-}
-
-.dropdown-shop.inactive{
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px);
-    transition: 500ms ease;
+    
 }
 
 // @media (max-width:1440px) {

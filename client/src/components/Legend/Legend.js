@@ -1,5 +1,5 @@
 import React from 'react'
-import './Legend.css'
+import './Legend.scss'
 
 import steelImg from '../Skill/iconsAttribute/steel.png'
 import woodImg from '../Skill/iconsAttribute/wood7.png'
