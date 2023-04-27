@@ -16,6 +16,21 @@
     cursor: url('./crossCursor5.png'), auto;
 }
 
+
+@keyframes strechForge {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
 .forge-cursor{
     // cursor: url('./forgeCursor.png'), auto;
+    transform: scale(1.2);
+    filter: drop-shadow(0px 0px 6px #fa0202); 
+    animation: strechForge  1s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
 }

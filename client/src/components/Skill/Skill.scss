@@ -36,6 +36,7 @@
     color: #666;
     font: 18px Arial, sans-serif;
     font-weight: 700;
+    z-index: 0;
 
 }
 
@@ -61,7 +62,7 @@
 }
 .attributeImg{
     height: 24px;
-    width: 24x;
+    width: 24px;
     z-index: 1;
     justify-self: end;
     margin-right: -10px;
@@ -104,8 +105,9 @@
     
 }
 .grey{
-    background-color: rgb(143, 126, 40);
+    background-color: hsl(50, 56%, 36%);
     color: #fff;
+    text-shadow: 1px -1px 1px hsl(50, 56%, 15%), -1px -1px 1px hsl(50, 56%, 15%),-1px 1px 1px hsl(50, 56%, 15%),1px 1px 1px hsl(50, 56%, 15%);
 }
 .skillName{
     font-family: 'Yu Gothic UI';

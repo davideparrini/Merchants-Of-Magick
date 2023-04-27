@@ -7,12 +7,11 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
-function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2}) {
+function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade,setFreeUpgrade}) {
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
     const[att3,setAtt3] = useState(isThereAttribute(skill.attribute3));
-    const id = skill.id;
     const typeCraftingItem = ['Accessories','Weapons','Armor'];
 
     //Tipi dado
@@ -42,7 +41,7 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
         }
         else{
             if(!boolAtt){
-                if(isDiceTouched() && isAttributeUpgradable(attValue,typeAtt)){
+                if((isDiceTouched() && isAttributeUpgradable(attValue,typeAtt)) || freeUpgrade){
                     return 'numberCircle upgradable'
                 }
                 else return 'numberCircle';
@@ -94,14 +93,24 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
    }
    
    function upgradeAttribute(attValue,typeAtt,setAtt){
+        if(freeUpgrade){
+            setAtt(true);
+            if(typeAtt === typeAttrQuest1) setNAttrQuest1((n)=>(n+1));
+            if(typeAtt === typeAttrQuest2) setNAttrQuest2((n)=>(n+1));
+            setFreeUpgrade((n)=>(n-1));
+            return;
+        }
         if(!matchTypeDice_Attribute(typeAtt , typeTouchedDiceRef.current)) return ;
-        console.log(typeTouchedDiceRef.current + " " + valueTouchedDiceRef.current)
         if(typeCraftingItem.includes(skill.typeItem)){
             if(valueTouchedDiceRef.current >= attValue){
                 setAtt(true);
+                ////////
+                ///TESTING/////
                 setDiceUsed(true);
                 setNDiceLeft_toUse((n)=>(n-1));
                 setNDiceLeft_Used((n)=>(n+1));
+                ////////
+    
                 if(typeAtt === typeAttrQuest1) setNAttrQuest1((n)=>(n+1));
                 if(nDiceLeft_Used >= 2){
                     setExtraDiceUsed(true);
@@ -113,9 +122,13 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
         }else{
             if(valueTouchedDiceRef.current <= attValue){
                 setAtt(true);
+                ////////
+                ///TESTING/////
                 setDiceUsed(true);
                 setNDiceLeft_toUse((n)=>(n-1));
                 setNDiceLeft_Used((n)=>(n+1));
+                ////////
+            
                 if(typeAtt === typeAttrQuest2) setNAttrQuest2((n)=>(n+1));
                 if(nDiceLeft_Used >= 2){
                     setExtraDiceUsed(true);

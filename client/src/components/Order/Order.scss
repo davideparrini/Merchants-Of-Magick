@@ -1,0 +1,124 @@
+@use '../../variables' as v;
+
+
+
+.orderCard{
+    justify-self: center;
+    align-self: center;
+    background: v.$card-color-0;
+    border-radius: 15px;
+    border: v.$border-primary-4px;
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    padding-top: 10px;
+    height: 90%;
+    width: 90%;
+}
+
+.orderTitle{
+    position: absolute;
+    z-index: 3;
+    top: 165px;
+    color: white;
+    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
+    font-weight: 700;
+    font-size: 20px;
+}
+.orderGold{
+    position: relative;
+    left: 100px;
+    bottom: 18px;
+    background-image: url(../Card/image/gold4.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    z-index: 3;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: large;
+    color: #e0e0e0;
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+}
+.orderImg{
+    position: absolute;
+    justify-self: center;
+    align-self: center;
+    height: 200px;
+    width: 200px;
+    z-index: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+}
+.orderImg.fiery{
+    background-image:url(../Card/image/fiery1.png); 
+}
+.orderImg.shocking{
+   background-image: url(../Card/image/shocking3.png);
+}
+
+.orderImg.everlasting{
+   background-image: url(../Card/image/everlasting4.png);
+}
+
+.orderImg.divine{
+   background-image: url(../Card/image/divine.png); 
+}
+
+.orderImg.elves{
+   background-image: url(../Card/image/elves2.png);
+}
+
+.orderImg.dwarves{
+   background-image: url(../Card/image/dwarves4.png);
+}
+
+.orderImg.orcs{
+   background-image: url(../Card/image/orcs2.png); 
+}
+.orderImg.dragons{
+  background-image: url(../Card/image/dragons.png);
+}
+
+.requestOrder{
+    border-radius: 15px;
+    border: v.$border-primary-2px;
+    background-color: v.$primary-color-2;
+    z-index: 2;
+    width: 90%;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: v.$text-shadow-stroke;
+    margin: 4px;
+    text-transform: capitalize;
+}
+
+.rewardOrders{
+    width: 90%;
+    background-color: hsl(0, 11%, 9%);
+    border-radius: 15px;
+    border: 2px solid black;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    text-shadow: v.$text-shadow-stroke;
+    margin: 4px;
+    z-index:2;
+}
+*.orderDone{
+    text-decoration: line-through v.$primary-color 3px;
+}

@@ -12,9 +12,9 @@ import d8img from '../Container_Dice/d8.png'
 import d10img from '../Container_Dice/d10.png'
 import d12img from '../Container_Dice/d12.png'
 
-function Legend() {
+function Legend({openLegend}) {
   return (
-    <div>
+    <div className={`boxContainerLegend ${openLegend? 'activeLegend' : 'inactiveLegend'}`}>
         <div className='titleLegenda'>Legend</div>
         <div className='legenda'>
                     <div className='rowLegenda'>

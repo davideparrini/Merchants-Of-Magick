@@ -2,7 +2,7 @@
 
 
 $width_dropdownshop: 300px;
-
+$text_shadow_px: 1px;
 
 
 .shop{
@@ -28,26 +28,6 @@ $width_dropdownshop: 300px;
     flex-direction: column;
     right:50px;
 }
-.dropdown-shop{
-
-    background-color: #242220;;
-    border: 4px solid v.$primary-color;
-    border-radius: 10px;
-    padding: 10px 20px;
-    width: $width_dropdownshop;
-    height: 100%;
-    max-height: 320px;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: v.$primary-color grey;
-    
-  }
-
-
-
 .boxContainerTitleShop_shop.activeShop{
     opacity: 1;
     visibility: visible;
@@ -63,6 +43,10 @@ $width_dropdownshop: 300px;
     transition: 500ms ease;
 }
 
+
+
+
+
 .titleShop{
     font-family: "Ubuntu Mono", monospace;
     text-align: center;
@@ -77,6 +61,24 @@ $width_dropdownshop: 300px;
     border-radius: 10px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     text-align: center;
+    
+}
+
+.dropdown-shop{
+
+    background-color: #242220;;
+    border: 4px solid v.$primary-color;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: $width_dropdownshop;
+    height: 100%;
+    max-height: 320px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: v.$primary-color grey;
     
 }
 
@@ -103,8 +105,10 @@ $width_dropdownshop: 300px;
     text-transform: capitalize;
     font-weight: 700;
     font-size: 13px;
-    color: rgb(255, 255, 255);
-    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    color: rgb(243, 243, 243);
+    letter-spacing: 0.4px;
+    // text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    text-shadow: $text_shadow_px -$text_shadow_px $text_shadow_px #000000, -$text_shadow_px -$text_shadow_px $text_shadow_px #000000,-$text_shadow_px $text_shadow_px $text_shadow_px #000000,$text_shadow_px $text_shadow_px $text_shadow_px #000000;
 }
 .itemShop::before{
     content: '';
@@ -126,7 +130,8 @@ $width_dropdownshop: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-shadow: 0 -1px 5px #000000, 0 -2px 15px rgb(223, 208, 0), 0 -10px 20px #f7b500, 0 -18px 40px rgb(214, 43, 43), 2px 2px 20px;
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+    text-shadow: 1px -1px 1px #000000, -1px -1px 1px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
     border-radius: 50%;
     font-weight: 700;
     font-size: small;

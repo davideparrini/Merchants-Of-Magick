@@ -3,12 +3,12 @@
 .Game {
     display: grid;
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion . extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer quest  quest quest quest quest quest quest'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable legenda legenda legenda'
+    'containerDices_Potion containerDices_Potion legenda extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer quest  quest quest quest quest quest quest'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable orderContainer orderContainer orderContainer'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable orderContainer orderContainer orderContainer'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable btnTurn btnTurn btnShop'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer orderContainer orderContainer orderContainer . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer orderContainer orderContainer orderContainer . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable';
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 3px;
@@ -171,26 +171,19 @@ body{
     
 }
 
-.order-container{
+.orderContainer{
     grid-area: orderContainer;
 }
+
+
+
+
 .quest{
     grid-area: quest;
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
-
-.order1{
-    grid-area: order1;
-}
-.order2{
-    grid-area: order2;
-}
-.order3{
-    grid-area: order3;
-}
-
 
 .player-table{
     grid-area: tablePlayers;
@@ -222,8 +215,20 @@ body{
 }
 .legend-container{
     grid-area: legenda;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
+.legend-btn{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    background-color: v.$primary-color;
+    color: white;
+    font-size: 30px;
+    font-weight: 550;
+}
 .title-crafting-skills{
     grid-area: title1;
 

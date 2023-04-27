@@ -51,6 +51,7 @@ import ForgeButton from './components/ForgeButton/ForgeButton';
 import Shop from './components/Shop/Shop';
 import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
 import Quest from './components/Quest/Quest';
+import OrdersContainer from './components/Order/OrdersContainer';
 
 
 function Game({}) {
@@ -69,6 +70,9 @@ function Game({}) {
     //Ref al area dello shop, Close on out-click
     let shopRef = useRef();
 
+    //Ref al area della legenda, Close on out-click
+    let legendRef = useRef();
+
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
 
@@ -77,6 +81,10 @@ function Game({}) {
 
     //Ref per mantenere il valore del dado toccato
     let valueTouchedDiceRef = useRef();
+
+
+    //bool openLegend
+    const [openLegend,setOpenLegend] = useState(false);
 
     //bool openShop
     const [openShop,setOpenShop] = useState(false);
@@ -213,6 +221,10 @@ function Game({}) {
     
     const quest1 = {attribute:"wood", request: 8,gold : 8};
     const quest2 = {attribute:"elemental", request: 8, gold : 8};
+
+    const [freeUpgrade,setFreeUpgrade] = useState(0);
+
+    const order =  {typeOrder:"divine",sponsorName: "Urfrick", req1:"ring", req2: "sword", req3: 'helmet'};
 
     const typeAttributeQuestCrafting = quest1.attribute;
     const typeAttributeQuestMagicResearch = quest2.attribute;
@@ -364,6 +376,22 @@ function Game({}) {
           }
     });
 
+
+
+    //Legend useEffect
+    useEffect(()=>{
+        let handlerLegend = (e)=>{
+            if(!legendRef.current.contains(e.target)){
+                setOpenLegend(false);
+            }   
+        };
+        document.addEventListener("mousedown", handlerLegend);
+
+        return() =>{
+            document.removeEventListener("mousedown", handlerLegend);
+          }
+    });
+
     //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
     useEffect(()=>{
         let whileDiceTouched = (e)=>{
@@ -388,8 +416,11 @@ function Game({}) {
     return (
         <div className="Game">   
             
-            <div className='timer-container'><Timer countdown={countdownTurn}/></div>
-            
+            <div className='legend-container' ref={legendRef}>
+                <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
+                <Legend openLegend={openLegend}/>
+            </div>
+
             <div className='extra-dices'>
                 <ExtraDice
                     nPotion_extraDice={nPotion_extraDice1}
@@ -428,13 +459,14 @@ function Game({}) {
                     typeExtraDice={TYPE_EXTRADICE6}               
                 />  
             </div>
-
+        
             <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='dice-left-title' ></img>
             <div className='dice-left-label'>{nDiceLeft_toUse}</div>
 
             <img src={titleNTurn} alt='NTURN TITLE' className='n-turn-title' ></img>
             <div className='n-turn-label'>{nTurn}</div>
 
+            <div className='timer-container'><Timer countdown={countdownTurn}/></div>
 
             <div className='container-dices-potion'>
                 <div className='container-potion'>
@@ -518,6 +550,7 @@ function Game({}) {
                     checkSkillCard={checkSkillCard}
                     setShowCard={setShowCard1}
                     addItemShop={addItemShop}
+                    showCard={showCard1}
                     card={card1}
                 />
 
@@ -528,6 +561,7 @@ function Game({}) {
                     checkSkillCard={checkSkillCard}
                     setShowCard={setShowCard2}
                     addItemShop={addItemShop}
+                    showCard={showCard2}
                     card={card2}
                 />
 
@@ -538,6 +572,7 @@ function Game({}) {
                     checkSkillCard={checkSkillCard}
                     setShowCard={setShowCard3}
                     addItemShop={addItemShop}
+                    showCard={showCard3}
                     card={card3}
                 />
             </div>
@@ -546,10 +581,7 @@ function Game({}) {
                 <Quest quest={quest1} progress={nAttributeGained_QuestCrafting}/>
                 <Quest quest={quest2} progress={nAttributeGained_QuestMagicResearch}/>
             </div>
-            
-            <div className='order1'>order1</div>
-            <div className='order2'>order2</div>
-            <div className='order3'>order3</div>
+
             <div className='skills-table' ref={skillTableRef}>
                 <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-crafting-skills'/>
                 {
@@ -571,6 +603,8 @@ function Game({}) {
                                 setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
                                 typeAttrQuest1={typeAttributeQuestCrafting}
                                 typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                freeUpgrade={freeUpgrade > 0}
+                                setFreeUpgrade={setFreeUpgrade}
                             
                             />
                         )
@@ -596,12 +630,18 @@ function Game({}) {
                                 setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
                                 typeAttrQuest1={typeAttributeQuestCrafting}
                                 typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                freeUpgrade={freeUpgrade > 0}
+                                setFreeUpgrade={setFreeUpgrade}
                             />
                         )
                    }) 
                 }
             </div>
-            <div className='legend-container'><Legend/></div>
+
+            <div className={`orderContainer`}>
+                <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade}/>
+            </div>
+            
             <div className='btn-turn-container'>
                 <ButtonTurnDone finishTurn={finishTurn}/>
             </div>

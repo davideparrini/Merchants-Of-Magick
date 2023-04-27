@@ -1,5 +1,31 @@
 @use '../../variables' as  v;
 
+
+
+.boxContainerLegend{
+    position: absolute;
+    top: 100px;
+    left: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.boxContainerLegend.activeLegend{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 500ms ease;
+    z-index: 1000;
+}
+
+.boxContainerLegend.inactiveLegend{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+
 .legenda{
     display: flex;
     flex-direction: column;
