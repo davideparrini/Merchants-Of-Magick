@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './ForgeButton.scss'
 
-function ForgeButton({checkSkillCard, showCard,setShowCard ,card, addItemShop}) {
+function ForgeButton({checkSkillCard, showCard,setShowCard ,card, addItemShop, setgoldAttuale}) {
 
     const [active, setActive] = useState(true)
 
@@ -12,6 +12,7 @@ function ForgeButton({checkSkillCard, showCard,setShowCard ,card, addItemShop}) 
                     setShowCard(false);
                     addItemShop(card);
                     setActive(false);
+                    setgoldAttuale((n)=>(n + card.gold));
                 } 
             }}
         />

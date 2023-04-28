@@ -61,10 +61,71 @@ function Game({}) {
     //CONFIGURAZIONI GIOCO
 
     const DICE_PER_TURN = 2;
-    const MAX_N_EXTRA_DICE_PER_TURN = 2;
-    const N_POTION_TEST = 0;
+    const N_POTION_TEST = 5;
     const TIMER_COUNTDOWN = 10;
 
+    //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
+    const testActive = true;
+
+
+     //lista skills crafting item
+     const skillListCraftingItem = [
+        backpack,
+        scroll,
+        ring,
+        grimoire,
+        staff,
+        sword,
+        crossbow, 
+        warhammer,
+        bracers,
+        helmet,
+        greaves,
+        plotarmor
+    ]
+
+    //lista skills magic research
+    const skillListMagicResearch = [
+        fiery,
+        shocking,
+        everlasting,
+        divine,
+        elves,
+        dwarves, 
+        orcs,
+        dragons,
+        glamorPotionSupplier,
+        renownedAccessories ,
+        weaponPrestige,
+        eliteArmor
+    ]
+
+    
+    //TEST
+    const card1 ={item:'plot armor',gold: 5,enchantment: 'divine' , origin:'of the dragons'};
+    const card2 ={item:'crossbow',gold: 3,enchantment: 'everlasting' , origin:'of the elves'};
+    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves'};
+    const card4 ={item:'sword',gold: 7,enchantment: 'fiery' , origin: 'of the orcs'};
+    const card5 ={item:'helmet',gold: 7,enchantment: 'fiery' , origin: ''};
+    const card6 ={item:'ring',gold: 7,enchantment: 'everlasting' , origin: 'of the dwarves'};
+
+    const quest1 = {attribute:"wood", request: 8,gold : 8};
+    const quest2 = {attribute:"elemental", request: 8, gold : 8};
+    const order =  {typeOrder:"divine",sponsorName: "Urfrick", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
+
+    const player1 ={name:"player1", card1: card1,card2: card2,card3: card3};
+    const player2 ={name:"player1", card1: card6,card2: card5,card3: card1};
+    const player3 ={name:"player1", card1: card3,card2: card4,card3: card2};
+    const SKILLS_TEST = ['divine','plot armor','of the dragons'];
+
+    //numero pozioni necessarie per usare gl'eDice
+    const nPotion_extraDice1 = 0;
+    const nPotion_extraDice2 = 0;
+    const nPotion_extraDice3 = 0;
+    const nPotion_extraDice4 = 2;
+    const nPotion_extraDice5 = 3;
+    const nPotion_extraDice6 = 4;
+    
 
     
     //Ref al area dello shop, Close on out-click
@@ -83,6 +144,9 @@ function Game({}) {
     let valueTouchedDiceRef = useRef();
 
 
+    //gold player
+    const[goldAttuale,setGoldAttuale] = useState(0);
+
     //bool openLegend
     const [openLegend,setOpenLegend] = useState(false);
 
@@ -100,7 +164,7 @@ function Game({}) {
     const countdownTurn = TIMER_COUNTDOWN;
 
     //numero pozioni
-    const [nPotion,setNPotion] = useState(100);
+    const [nPotion,setNPotion] = useState(N_POTION_TEST);
 
     //Tipi dado
     const TYPE_D6 = 'd6';
@@ -161,71 +225,22 @@ function Game({}) {
     const [extraDiceUsed5,setExtraDiceUsed5] = useState(false);
     const [extraDiceUsed6,setExtraDiceUsed6] = useState(false);
     
-    //numero pozioni necessarie per usare gl'eDice
-    const nPotion_extraDice1 = 0;
-    const nPotion_extraDice2 = 0;
-    const nPotion_extraDice3 = 0;
-    const nPotion_extraDice4 = 2;
-    const nPotion_extraDice5 = 3;
-    const nPotion_extraDice6 = 4;
-    
-
     
 
     //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
 
 
-    //lista skills crafting item
-    const skillListCraftingItem = [
-        backpack,
-        scroll,
-        ring,
-        grimoire,
-        staff,
-        sword,
-        crossbow, 
-        warhammer,
-        bracers,
-        helmet,
-        greaves,
-        plotarmor
-    ]
-
-    //lista skills magic research
-    const skillListMagicResearch = [
-        fiery,
-        shocking,
-        everlasting,
-        divine,
-        elves,
-        dwarves, 
-        orcs,
-        dragons,
-        glamorPotionSupplier,
-        renownedAccessories ,
-        weaponPrestige,
-        eliteArmor
-    ]
-
-    //carte di gioco durante il turno
-
-    const card1 ={item:'plot armor',gold: 5,enchantment: 'divine' , origin:'of the dragons'};
-    const card2 ={item:'crossbow',gold: 3,enchantment: 'everlasting' , origin:'of the elves'};
-    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves'};
-
+   
     //bool carta girata, showCard(false) -> carta girata
     const[showCard1,setShowCard1] = useState(true);
     const[showCard2,setShowCard2] = useState(true);
     const[showCard3,setShowCard3] = useState(true);
     
-    const quest1 = {attribute:"wood", request: 8,gold : 8};
-    const quest2 = {attribute:"elemental", request: 8, gold : 8};
-
+    //numero freeUpgrade disponibili
     const [freeUpgrade,setFreeUpgrade] = useState(0);
 
-    const order =  {typeOrder:"divine",sponsorName: "Urfrick", req1:"ring", req2: "sword", req3: 'helmet'};
-
+    
     const typeAttributeQuestCrafting = quest1.attribute;
     const typeAttributeQuestMagicResearch = quest2.attribute;
     const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
@@ -233,7 +248,7 @@ function Game({}) {
 
 
     //lista skill acquisite
-    const[skillsGained,setSkillsGained] = useState(['plot armor', 'divine', 'of the dragons','everlasting','of the elves','crossbow']);
+    const[skillsGained,setSkillsGained] = useState(SKILLS_TEST);
 
     
 ////////////////////////////////////FUCTIONS//////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +357,7 @@ function Game({}) {
                 setNPotion((n)=>(n+requireNPots));
                 setNDiceLeft_toUse((n)=>(n-1));
                 setExtraDiceUsedTempList((l)=>l.filter(function(value, index, array){
-                    return value != typeExtraDice;
+                    return value !== typeExtraDice;
                 }));
                 setTotalPossibleDice_toUse((n)=>(n-1));
                 setExtraDiceUsedTemporarily(false);
@@ -552,6 +567,7 @@ function Game({}) {
                     addItemShop={addItemShop}
                     showCard={showCard1}
                     card={card1}
+                    setgoldAttuale={setGoldAttuale}
                 />
 
                 <Card order = {card2} 
@@ -563,6 +579,7 @@ function Game({}) {
                     addItemShop={addItemShop}
                     showCard={showCard2}
                     card={card2}
+                    setgoldAttuale={setGoldAttuale}
                 />
 
                 <Card order = {card3} 
@@ -574,13 +591,13 @@ function Game({}) {
                     addItemShop={addItemShop}
                     showCard={showCard3}
                     card={card3}
+                    setgoldAttuale={setGoldAttuale}
                 />
             </div>
-            <div className='player-table'>playerTable</div>
-            <div className='quest'>
-                <Quest quest={quest1} progress={nAttributeGained_QuestCrafting}/>
-                <Quest quest={quest2} progress={nAttributeGained_QuestMagicResearch}/>
+            <div className='players-table'>
+
             </div>
+           
 
             <div className='skills-table' ref={skillTableRef}>
                 <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-crafting-skills'/>
@@ -605,7 +622,8 @@ function Game({}) {
                                 typeAttrQuest2={typeAttributeQuestMagicResearch}
                                 freeUpgrade={freeUpgrade > 0}
                                 setFreeUpgrade={setFreeUpgrade}
-                            
+                                setgoldAttuale={setGoldAttuale}
+                                testActive={testActive}
                             />
                         )
                    }) 
@@ -632,6 +650,8 @@ function Game({}) {
                                 typeAttrQuest2={typeAttributeQuestMagicResearch}
                                 freeUpgrade={freeUpgrade > 0}
                                 setFreeUpgrade={setFreeUpgrade}
+                                setgoldAttuale={setGoldAttuale}
+                                testActive={testActive}
                             />
                         )
                    }) 
@@ -639,9 +659,12 @@ function Game({}) {
             </div>
 
             <div className={`orderContainer`}>
-                <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade}/>
+                <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
             </div>
-            
+            <div className='quest'>
+                <Quest quest={quest1} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
+                <Quest quest={quest2} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
+            </div>
             <div className='btn-turn-container'>
                 <ButtonTurnDone finishTurn={finishTurn}/>
             </div>

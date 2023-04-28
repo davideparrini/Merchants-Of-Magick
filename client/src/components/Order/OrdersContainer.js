@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Order.scss'
 
-function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade}) {
+function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldAttuale}) {
 
     const [nOrderDone,setNOrderDone] = useState(0);
     const [orderDone1,setOrderDone1] = useState(false);
@@ -36,6 +36,7 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade}) {
             case 2: setFreeUpgrade((n)=>(n+1));
                 break;
             case 3: setFreeUpgrade((n)=>(n+1));
+                    setgoldAttuale((n)=>(n + order.gold));
                 break;
             default: break;
         }
@@ -47,7 +48,7 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade}) {
         <div className='orderCard'>
             <div className='orderTitle'>{`${order.sponsorName}'s order`}</div>
             <div className ={`orderImg ${order.typeOrder}`}/>
-            <div className='orderGold'>5</div>
+            <div className={`orderGold ${orderDone1 && orderDone2 && orderDone3 ? 'doneOrder':'no-doneOrder'}`}>{order.gold}</div>
             
             <div className={`requestOrder ${orderDone1 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req1}</div>
             <div className={`requestOrder ${orderDone2 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req2}</div>

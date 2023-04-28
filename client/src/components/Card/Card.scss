@@ -18,14 +18,23 @@
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
+    
+    
 }
 
 
 .showed{
-    background: #7e6868;
+    background: v.$card-color-0;
 }
 .no-showed{
-    background: #242220;
+    // background: #242220;
+   
+    transform: rotateY(180deg);
+    transition: transform 1.5s;
+    background: url(./image/backCard6.png);
+    background-size: cover;
+    background-repeat:no-repeat ;
+    height: 100%;
 }
 .textCard{
     display: flex;
@@ -86,6 +95,7 @@
     z-index: 2;
     background-size: contain;
     background-repeat: no-repeat;
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
 }
 
 .imgOriginCard{
@@ -180,16 +190,16 @@
 }
 
 .elves{
-    background-image: url(./image/elves2.png);
+    background-image: url(./image/elves_white.png);
 }
 
 .dwarves{
-    background-image: url(./image/dwarves4.png);
+    background-image: url(./image/dwarves_white.png);
 }
 
 .orcs{
-    background-image: url(./image/orcs2.png); 
+    background-image: url(./image/orcs_white.png); 
 }
 .dragons{
-   background-image: url(./image/dragons.png);
+   background-image: url(./image/dragons_white.png);
 }

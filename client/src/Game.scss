@@ -1,14 +1,14 @@
 @use 'variables' as v;
 
 .Game {
-    display: grid;
+    display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda extraDices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer quest  quest quest quest quest quest quest'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable orderContainer orderContainer orderContainer'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable orderContainer orderContainer orderContainer'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable btnTurn btnTurn btnShop'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  . playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable playersOrderTable';
+    'containerDices_Potion containerDices_Potion legenda titleExtra-dices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer btnShop  btnTurn btnTurn containerOrderQuest containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 3px;
@@ -41,14 +41,16 @@ body{
     grid-area: counterTimer;
    
 }
-
+.titleExtra-dices{
+    grid-area: titleExtra-dices;
+}
 .extra-dices{
     grid-area: extraDices;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     height: 100%;
-    width: 80%;
+    width: 100%;
 }
 
 
@@ -172,25 +174,32 @@ body{
 }
 
 .orderContainer{
-    grid-area: orderContainer;
+    grid-area: containerOrderQuest;
+    align-self: flex-end;
+    height: 60%;
 }
-
-
 
 
 .quest{
-    grid-area: quest;
+    grid-area: containerOrderQuest;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: flex-start;
     gap: 10px;
 }
 
-.player-table{
+.players-table{
     grid-area: tablePlayers;
+    background-color: v.$bg-color-2;
+    border-radius: 15px;
+    height: 95%;
+    width: 90%;
+    align-self: center;
 }
 
 .skills-table{
     min-width: max-content;
+    max-width: max-content;
     grid-area: skillTable;
     display: grid;
     grid-auto-flow: column;
@@ -240,7 +249,8 @@ body{
 
 .shop-container{
     grid-area: btnShop;
-    
+    justify-self: center;
+    align-self: center;    
 }
 
 // @media (max-width:1440px) {

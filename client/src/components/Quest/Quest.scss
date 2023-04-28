@@ -2,6 +2,7 @@
 
 $quest-height: 100px;
 $quest-width: 280px;
+$drop-shadow-color-quest-done: #ffc401;
 
 .containerQuest{
     width: $quest-width;
@@ -79,5 +80,16 @@ $quest-width: 280px;
     font-weight: 700;
     font-size: large;
     color: #e0e0e0;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+    
+}
+.goldQuest.no-doneQuest{
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202) grayscale(0.5);
+}
+
+
+.goldQuest.doneQuest{
+    filter: drop-shadow(0.1px 0.1px 1px $drop-shadow-color-quest-done) drop-shadow(-0.1px 0.1px 1px $drop-shadow-color-quest-done) drop-shadow(0.1px -0.1px 1px $drop-shadow-color-quest-done) drop-shadow(-0.1px -0.1px 1px $drop-shadow-color-quest-done);
+    animation: strech 2s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
 }

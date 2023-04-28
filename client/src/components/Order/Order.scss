@@ -1,6 +1,6 @@
 @use '../../variables' as v;
 
-
+$drop-shadow-color-order-done: #ffc401;
 
 .orderCard{
     justify-self: center;
@@ -14,7 +14,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    
     padding-top: 10px;
     height: 90%;
     width: 90%;
@@ -23,7 +22,7 @@
 .orderTitle{
     position: absolute;
     z-index: 3;
-    top: 165px;
+    top: 290px;
     color: white;
     text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
     font-weight: 700;
@@ -48,7 +47,17 @@
     font-weight: 700;
     font-size: large;
     color: #e0e0e0;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+    
+}
+
+.orderGold.no-doneOrder{
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202) grayscale(0.5);
+}
+.orderGold.doneOrder{
+    filter: drop-shadow(0.1px 0.1px 1px $drop-shadow-color-order-done) drop-shadow(-0.1px 0.1px 1px $drop-shadow-color-order-done) drop-shadow(0.1px -0.1px 1px $drop-shadow-color-order-done) drop-shadow(-0.1px -0.1px 1px $drop-shadow-color-order-done);
+    animation: strech 2s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
 }
 .orderImg{
     position: absolute;
@@ -81,7 +90,7 @@
 }
 
 .orderImg.dwarves{
-   background-image: url(../Card/image/dwarves4.png);
+   background-image: url(../Card/image/dwarves_black.png);
 }
 
 .orderImg.orcs{
@@ -122,3 +131,4 @@
 *.orderDone{
     text-decoration: line-through v.$primary-color 3px;
 }
+

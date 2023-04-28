@@ -25,7 +25,7 @@ function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValu
 	}
 
 	function incDice(){
-        if(nPotion >0 && diceValue < 12 && nActions > 0){
+        if(nPotion >0 && diceValue < 12 && nActions > 0 && !usedDice){
             setnPotion(nPotion+((diceValue+1) > startTurnDiceValue ? -1 : 1));
             setDiceValue(1+diceValue);
         }
@@ -33,7 +33,7 @@ function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValu
 	}
     
     function decDice(){
-        if(nPotion >0 && diceValue > 1 && nActions > 0){
+        if(nPotion >=0 && diceValue > 1 && nActions > 0 && !usedDice){
             setnPotion(nPotion+((diceValue-1) < startTurnDiceValue ? -1 : 1));
             setDiceValue(diceValue-1);
         }
