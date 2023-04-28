@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from '../Card/Card'
 
-    function Player_ofTable() {
+    function Player_ofTable({name,listCard, isYourNext}) {
         return (
             <div>
                 

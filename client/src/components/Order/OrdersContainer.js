@@ -46,7 +46,7 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
      
     return (
         <div className='orderCard'>
-            <div className='orderTitle'>{`${order.sponsorName}'s order`}</div>
+            <div className='orderTitle'>{order.sponsorName}</div>
             <div className ={`orderImg ${order.typeOrder}`}/>
             <div className={`orderGold ${orderDone1 && orderDone2 && orderDone3 ? 'doneOrder':'no-doneOrder'}`}>{order.gold}</div>
             

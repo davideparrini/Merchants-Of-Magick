@@ -10,8 +10,8 @@ import Card from './components/Card/Card';
 
 import Legend from './components/Legend/Legend';
 
-import titleCraftingSkills from './images/craftingSkillTitle.png'
-import titleMagicResearch from './images/magicResearchTitle.png'
+import titleCraftingSkills from './images/craftingSkillTitle2.png'
+import titleMagicResearch from './images/magicResearchTitle2.png'
 import titleDiceLeft from './images/diceLeftTitle2.png'
 import titleNTurn from './images/turnNTitle.png'
 import titleExtraDices from './images/extraDicesTitle.png'
@@ -112,7 +112,7 @@ function Game({}) {
 
     const quest1 = {attribute:"wood", request: 8,gold : 8};
     const quest2 = {attribute:"elemental", request: 8, gold : 8};
-    const order =  {typeOrder:"divine",sponsorName: "Urfrick", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
+    const order =  {typeOrder:"divine",sponsorName: "Warrior", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
 
     const player1 ={name:"player1", card1: card1,card2: card2,card3: card3};
     const player2 ={name:"player1", card1: card6,card2: card5,card3: card1};
@@ -614,71 +614,77 @@ function Game({}) {
            
 
             <div className='skills-table' ref={skillTableRef}>
-                <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-crafting-skills'/>
-                {
-                   skillListCraftingItem.map((s,i)=>{
-                        return (
-                            <Skill skill = {s} key={i} 
-                                setNPotion={setNPotion}
-                                fun_passSkillGained={getSkillGained}
-                                valueTouchedDiceRef={valueTouchedDiceRef}
-                                typeTouchedDiceRef={typeTouchedDiceRef}
-                                isDiceTouched={isDiceTouched}
-                                setNDiceLeft_toUse={setNDiceLeft_toUse}
-                                nDiceLeft_Used={nDiceLeft_Used}
-                                setNDiceLeft_Used={setNDiceLeft_Used}
-                                setDiceUsed={choose_fun_setDiceUsed()}
-                                setAllDicesNoTouched={setAllDiceNoTouched}
-                                setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                                setNAttrQuest1={setnAttributeGained_QuestCrafting}
-                                setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                typeAttrQuest1={typeAttributeQuestCrafting}
-                                typeAttrQuest2={typeAttributeQuestMagicResearch}
-                                freeUpgrade={freeUpgrade > 0}
-                                setFreeUpgrade={setFreeUpgrade}
-                                setgoldAttuale={setGoldAttuale}
-                                testActive={testActive}
-                            />
-                        )
-                   }) 
-                }
-                <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='title-magic-research'/>
-                {
-                   skillListMagicResearch.map((s,i)=>{
-                        return (
-                            <Skill skill = {s} key={i} 
-                                setNPotion={setNPotion}
-                                fun_passSkillGained={getSkillGained}
-                                valueTouchedDiceRef={valueTouchedDiceRef}
-                                typeTouchedDiceRef={typeTouchedDiceRef}
-                                isDiceTouched={isDiceTouched}
-                                setNDiceLeft_toUse={setNDiceLeft_toUse}
-                                nDiceLeft_Used={nDiceLeft_Used}
-                                setNDiceLeft_Used={setNDiceLeft_Used}
-                                setDiceUsed={choose_fun_setDiceUsed()}
-                                setAllDicesNoTouched={setAllDiceNoTouched}
-                                setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                                setNAttrQuest1={setnAttributeGained_QuestCrafting}
-                                setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                typeAttrQuest1={typeAttributeQuestCrafting}
-                                typeAttrQuest2={typeAttributeQuestMagicResearch}
-                                freeUpgrade={freeUpgrade > 0}
-                                setFreeUpgrade={setFreeUpgrade}
-                                setgoldAttuale={setGoldAttuale}
-                                testActive={testActive}
-                            />
-                        )
-                   }) 
-                }
-            </div>
+                <div className='containerTitle_Skills'>
+                    <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleSkills'/>
+                    <div className='skillsContainer'>
+                        {
+                        skillListCraftingItem.map((s,i)=>{
+                                return (
+                                    <Skill skill = {s} key={i} 
+                                        setNPotion={setNPotion}
+                                        fun_passSkillGained={getSkillGained}
+                                        valueTouchedDiceRef={valueTouchedDiceRef}
+                                        typeTouchedDiceRef={typeTouchedDiceRef}
+                                        isDiceTouched={isDiceTouched}
+                                        setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                        nDiceLeft_Used={nDiceLeft_Used}
+                                        setNDiceLeft_Used={setNDiceLeft_Used}
+                                        setDiceUsed={choose_fun_setDiceUsed()}
+                                        setAllDicesNoTouched={setAllDiceNoTouched}
+                                        setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                                        setNAttrQuest1={setnAttributeGained_QuestCrafting}
+                                        setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
+                                        typeAttrQuest1={typeAttributeQuestCrafting}
+                                        typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                        freeUpgrade={freeUpgrade > 0}
+                                        setFreeUpgrade={setFreeUpgrade}
+                                        setgoldAttuale={setGoldAttuale}
+                                        testActive={testActive}
+                                    />
+                                )
+                        })}
+                    </div>
+                    
 
-            <div className={`orderContainer`}>
-                <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
+                </div>
+                <div className='containerTitle_Skills'>
+                    <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleSkills'/>
+                    <div className='skillsContainer'>
+                        {
+                        skillListMagicResearch.map((s,i)=>{
+                                return (
+                                    <Skill skill = {s} key={i} 
+                                        setNPotion={setNPotion}
+                                        fun_passSkillGained={getSkillGained}
+                                        valueTouchedDiceRef={valueTouchedDiceRef}
+                                        typeTouchedDiceRef={typeTouchedDiceRef}
+                                        isDiceTouched={isDiceTouched}
+                                        setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                        nDiceLeft_Used={nDiceLeft_Used}
+                                        setNDiceLeft_Used={setNDiceLeft_Used}
+                                        setDiceUsed={choose_fun_setDiceUsed()}
+                                        setAllDicesNoTouched={setAllDiceNoTouched}
+                                        setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                                        setNAttrQuest1={setnAttributeGained_QuestCrafting}
+                                        setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
+                                        typeAttrQuest1={typeAttributeQuestCrafting}
+                                        typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                        freeUpgrade={freeUpgrade > 0}
+                                        setFreeUpgrade={setFreeUpgrade}
+                                        setgoldAttuale={setGoldAttuale}
+                                        testActive={testActive}
+                                    />
+                                )
+                        })}
+                    </div>
+                </div>
             </div>
-            <div className='quest'>
+            <div className='containerOrder_Quests'>
                 <Quest quest={quest1} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
                 <Quest quest={quest2} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
+                <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
             </div>
+            
             <div className='btn-turn-container'>
                 <ButtonTurnDone finishTurn={finishTurn}/>
             </div>

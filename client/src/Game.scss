@@ -179,60 +179,70 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
+    height: 90%;
     
 }
 
-.orderContainer{
-    grid-area: containerOrderQuest;
-    align-self: flex-end;
-    height: 60%;
-}
-
-
-.quest{
+.containerOrder_Quests{
     grid-area: containerOrderQuest;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 10px;
+    justify-content: space-around;
 }
 
 .players-table{
     grid-area: tablePlayers;
+    display: flex;
+    align-items: flex-start;
+
     background-color: v.$bg-color-2;
     border-radius: 15px;
     border: v.$border-primary-4px;
-    height: 95%;
+    height: 90%;
     width: 90%;
-    align-self: center;
+    
 }
 
 .skills-table{
-    min-width: max-content;
-    max-width: max-content;
     grid-area: skillTable;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-areas: 
-        'title1 title1 title2 title2'
-        'skill skill skill skill'
-        'skill skill skill skill'
-        'skill skill skill skill'
-        'skill skill skill skill'
-        'skill skill skill skill'
-        'skill skill skill skill';
-    
-    align-items: center;
-    justify-items: center;
-    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 1350px;
+    max-width: max-content;
+    min-height: 330px;
+    height: 80%;
     background: v.$skill-table-color;
-    // background: rgb(161, 112, 226);
     padding: 10px;
     margin: 5px;
     border-radius: 15px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+
+.containerTitle_Skills{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    max-height: 270px;
+}
+
+.titleSkills{
+    align-self: center;
+    height: 60px;
+    width: 365px;
+    margin-bottom: 20px;
+}
+.skillsContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+    gap: 6px;
+}
+
 .legend-container{
     grid-area: legenda;
     display: flex;
@@ -249,13 +259,9 @@ body{
     font-size: 30px;
     font-weight: 550;
 }
-.title-crafting-skills{
-    grid-area: title1;
 
-}
-.title-magic-research{
-    grid-area: title2;
-}
+
+
 
 
 .shop-container{

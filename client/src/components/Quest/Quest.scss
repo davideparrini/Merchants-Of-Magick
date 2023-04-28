@@ -1,7 +1,7 @@
 @use '../../variables' as v;
 
 $quest-height: 100px;
-$quest-width: 280px;
+$quest-width: 248px;
 $drop-shadow-color-quest-done: #ffc401;
 
 .containerQuest{
@@ -14,11 +14,13 @@ $drop-shadow-color-quest-done: #ffc401;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    width: 96%;
     
 }
 
 .progressBarEmpty{
     position: absolute;
+
     height: $quest-height;
     width: $quest-width;
     border-radius: 10px;
@@ -46,7 +48,7 @@ $drop-shadow-color-quest-done: #ffc401;
     width: 100%;
     font-variant: small-caps;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     color: rgb(255, 255, 255);
     text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
     z-index: 100;
@@ -57,7 +59,7 @@ $drop-shadow-color-quest-done: #ffc401;
     right: 0px;
     bottom: 40px;
     height: 10px;
-    width: 19px;
+    width: 22px;
     background: v.$primary-color;
     transform: rotate(45deg);
     z-index: 100;
@@ -65,12 +67,11 @@ $drop-shadow-color-quest-done: #ffc401;
 
 .goldQuest{
     background-image: url(../Card/image/gold4.png);
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
-    background-clip: content-box;
     z-index: 3;
-    height: 50px;
-    width: 65px;
+    height: 40px;
+    width: 56px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,7 +84,7 @@ $drop-shadow-color-quest-done: #ffc401;
     
 }
 .goldQuest.no-doneQuest{
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202) grayscale(0.5);
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202) grayscale(0.7);
 }
 
 
