@@ -3,7 +3,7 @@
 .Game {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda titleExtra-dices extraDices extraDices  diceLeftTitle diceLeftTitle diceLeftTitle diceNum nTurnTitle nTurnTitle nTurn counterTimer counterTimer btnShop  btnTurn btnTurn containerOrderQuest containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer btnShop  btnTurn btnTurn containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
@@ -15,6 +15,7 @@
     
 }
 
+
 body{
     background-image: url('./images/background6.png');
     background-color: rgb(66, 63, 63);
@@ -25,8 +26,27 @@ body{
     
 } 
 
+.upperContainer{
+    grid-area: upperContainer;
+    display: flex;
+    flex-direction: row;
+    height: max-content;
+    width: 100%;
+    justify-content: space-between;
+}
+.upperContainerTitles{
+    height: 40px;
+}
+
+.upperContainerTitles-2{
+    position: relative;
+    left: 20px;
+    height: 90px;
+    align-self: flex-end;
+    
+}
+
 .timer{
-    grid-area: counterTimer;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -36,23 +56,19 @@ body{
     color: #ffffff;
 }
 
-  
-.timer-container{ 
-    grid-area: counterTimer;
-   
-}
-.titleExtra-dices{
-    grid-area: titleExtra-dices;
+.containerExtraDices{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 .extra-dices{
-    grid-area: extraDices;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     height: 100%;
-    width: 100%;
+    width: 165px;
 }
-
 
 .no-active{
     filter: grayscale(1);  
@@ -60,56 +76,50 @@ body{
 }
 
 
-.dice-left-title{
-    grid-area: diceLeftTitle;
-    height: 50px;
+.containerDiceLeft{
     display: flex;
-    align-items: center;
-    align-self: center;
-    align-content: center;
-    justify-items: center;
+    flex-direction: row;
+    width: max-content;
     justify-content: center;
-    justify-self: flex-end;
+    align-items: center;
 }
+
+
+
 .dice-left-label{
-    grid-area: diceNum;
     display: flex;
     align-items: center;
     align-self: center;
-    align-content: center;
-    justify-items: center;
     justify-content: center;
     background-color: v.$label-color;
-    height: v.$label-height;
-    width: v.$label-width;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     border-radius: v.$label-border-radius;
     color: v.$primary-color;
     font: 35px Arial, sans-serif;
     font-weight: 700;
 }
 
-.n-turn-title{
-    grid-area: nTurnTitle;
-    height: 50px;
+
+.containerTurn{
     display: flex;
-    align-items: center;
-    align-self: center;
-    align-content: center;
-    justify-items: center;
+    flex-direction: row;
     justify-content: center;
-    justify-self: flex-end;
+    align-items: center;
+    width: max-content;
 }
+
 .n-turn-label{
-    grid-area: nTurn;
     display: flex;
     align-items: center;
-    align-self: center;
-    align-content: center;
-    justify-items: center;
     justify-content: center;
     background-color: v.$label-color;
-    height: v.$label-height;
-    width: v.$label-width;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
     border-radius: v.$label-border-radius;
     color: v.$primary-color;
     font: 35px Arial, sans-serif;
@@ -253,6 +263,7 @@ body{
     justify-self: center;
     align-self: center;    
 }
+
 
 // @media (max-width:1440px) {
 //     .btn-shop{

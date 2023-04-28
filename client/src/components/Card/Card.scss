@@ -13,7 +13,7 @@
     
     width: 220px;
     height: 270px;
-    border: 6px solid v.$primary-color;
+    border: 5px solid v.$primary-color;
     
     border-radius: 15px;
     text-align: center;
@@ -25,16 +25,18 @@
 
 .showed{
     background: v.$card-color-0;
+    transition: 2s;
+    transform-origin: 50%, 50%;
 }
 .no-showed{
     // background: #242220;
-   
-    transform: rotateY(180deg);
-    transition: transform 1.5s;
-    background: url(./image/backCard6.png);
+    background: url(./image/backCard6_darker.png);
     background-size: cover;
     background-repeat:no-repeat ;
     height: 100%;
+    transform: rotateY(180deg);
+    transition: transform 1s;
+
 }
 .textCard{
     display: flex;

@@ -14,7 +14,7 @@ import titleCraftingSkills from './images/craftingSkillTitle.png'
 import titleMagicResearch from './images/magicResearchTitle.png'
 import titleDiceLeft from './images/diceLeftTitle2.png'
 import titleNTurn from './images/turnNTitle.png'
-
+import titleExtraDices from './images/extraDicesTitle.png'
 
 import potionImg from './images/potion4.png'
 
@@ -63,6 +63,7 @@ function Game({}) {
     const DICE_PER_TURN = 2;
     const N_POTION_TEST = 5;
     const TIMER_COUNTDOWN = 10;
+    const MAX_N_TURN = 10;
 
     //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
     const testActive = true;
@@ -431,57 +432,70 @@ function Game({}) {
     return (
         <div className="Game">   
             
+            <div className='upperContainer'>
+                <div className='containerExtraDices'>
+                    <img src={titleExtraDices} alt='EXTRA DICES' className='upperContainerTitles-2' ></img>
+                    <div className='extra-dices'>
+                        <ExtraDice
+                            nPotion_extraDice={nPotion_extraDice1}
+                            onClickHandlerExtraDice={onClickHandlerExtraDice}
+                            definitelyExtraDiceUsed={extraDiceUsed1}   
+                            typeExtraDice={TYPE_EXTRADICE1}        
+                        />
+                        <ExtraDice
+                            nPotion_extraDice={nPotion_extraDice2} 
+                            onClickHandlerExtraDice={onClickHandlerExtraDice}
+                            definitelyExtraDiceUsed={extraDiceUsed2}     
+                            typeExtraDice={TYPE_EXTRADICE2}       
+                        />
+                        <ExtraDice
+                            nPotion_extraDice={nPotion_extraDice3}
+                            onClickHandlerExtraDice={onClickHandlerExtraDice}
+                            definitelyExtraDiceUsed={extraDiceUsed3}              
+                            typeExtraDice={TYPE_EXTRADICE3}             
+                        />
+                        <ExtraDice
+                            nPotion_extraDice={nPotion_extraDice4}
+                            onClickHandlerExtraDice={onClickHandlerExtraDice}
+                            definitelyExtraDiceUsed={extraDiceUsed4}               
+                            typeExtraDice={TYPE_EXTRADICE4}           
+                        />
+                        <ExtraDice
+                            nPotion_extraDice={nPotion_extraDice5}
+                            onClickHandlerExtraDice={onClickHandlerExtraDice}
+                            definitelyExtraDiceUsed={extraDiceUsed5}           
+                            typeExtraDice={TYPE_EXTRADICE5}               
+                        ></ExtraDice>
+                        <ExtraDice
+                            nPotion_extraDice={nPotion_extraDice6}
+                            onClickHandlerExtraDice={onClickHandlerExtraDice}
+                            definitelyExtraDiceUsed={extraDiceUsed6}         
+                            typeExtraDice={TYPE_EXTRADICE6}               
+                        />  
+                    </div>
+                </div>
+                
+                <div className='containerDiceLeft'>
+                    <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='upperContainerTitles' ></img>
+                    <div className='dice-left-label'>{nDiceLeft_toUse}</div>
+                </div>
+                
+                <div className='containerTurn'>
+                    <img src={titleNTurn} alt='NTURN TITLE' className='upperContainerTitles' ></img>
+                    <div className='n-turn-label'>{nTurn +'/'+ MAX_N_TURN}</div>
+                </div>
+                
+                <div className='timer-container'><Timer countdown={countdownTurn}/></div>
+
+            </div>
             <div className='legend-container' ref={legendRef}>
                 <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
                 <Legend openLegend={openLegend}/>
             </div>
 
-            <div className='extra-dices'>
-                <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice1}
-                    onClickHandlerExtraDice={onClickHandlerExtraDice}
-                    definitelyExtraDiceUsed={extraDiceUsed1}   
-                    typeExtraDice={TYPE_EXTRADICE1}        
-                />
-                <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice2} 
-                    onClickHandlerExtraDice={onClickHandlerExtraDice}
-                    definitelyExtraDiceUsed={extraDiceUsed2}     
-                    typeExtraDice={TYPE_EXTRADICE2}       
-                />
-                <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice3}
-                    onClickHandlerExtraDice={onClickHandlerExtraDice}
-                    definitelyExtraDiceUsed={extraDiceUsed3}              
-                    typeExtraDice={TYPE_EXTRADICE3}             
-                />
-                <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice4}
-                    onClickHandlerExtraDice={onClickHandlerExtraDice}
-                    definitelyExtraDiceUsed={extraDiceUsed4}               
-                    typeExtraDice={TYPE_EXTRADICE4}           
-                />
-                <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice5}
-                    onClickHandlerExtraDice={onClickHandlerExtraDice}
-                    definitelyExtraDiceUsed={extraDiceUsed5}           
-                    typeExtraDice={TYPE_EXTRADICE5}               
-                ></ExtraDice>
-                <ExtraDice
-                    nPotion_extraDice={nPotion_extraDice6}
-                    onClickHandlerExtraDice={onClickHandlerExtraDice}
-                    definitelyExtraDiceUsed={extraDiceUsed6}         
-                    typeExtraDice={TYPE_EXTRADICE6}               
-                />  
-            </div>
+            
         
-            <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='dice-left-title' ></img>
-            <div className='dice-left-label'>{nDiceLeft_toUse}</div>
-
-            <img src={titleNTurn} alt='NTURN TITLE' className='n-turn-title' ></img>
-            <div className='n-turn-label'>{nTurn}</div>
-
-            <div className='timer-container'><Timer countdown={countdownTurn}/></div>
+            
 
             <div className='container-dices-potion'>
                 <div className='container-potion'>
