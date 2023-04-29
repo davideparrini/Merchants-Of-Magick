@@ -1,16 +1,53 @@
-import React from 'react'
-import Player_ofTable from './Player_ofTable'
+import React, { useState } from 'react'
+import './BoardPlayers.scss'
+import Card from '../Card/Card';
 
-function BoardPlayers() {
+function BoardPlayers({listPlayers}) {
+
+    const[index,setIndex] = useState(0);
+    const[playerShowed,setPlayerShowed] = useState(listPlayers[0]);
+    
+    
+
+    function onClickShiftRight(){
+        if(index === (listPlayers.length-1) ){
+            setPlayerShowed(listPlayers[0]);
+            setIndex(0);
+        }
+        else{
+            setPlayerShowed(listPlayers[index+1]);
+            setIndex((i)=>(i+1));
+        }
+    }
+
+    function onClickShiftLeft(){
+        if(index === 0){
+            setPlayerShowed(listPlayers[listPlayers.length-1]);
+            setIndex(listPlayers.length-1);
+        }
+        else{
+            setPlayerShowed(listPlayers[index-1]);
+            setIndex((i)=>(i-1));
+        }
+    }
+    
     return (
-        <div>
+        <div className='boardPlayers'>
             <div className='navBar'>
-                <div className='namePlayer'></div>
-                <button className='shiftRight'></button>
-                <button className='shiftLeft'></button>
-                <button className='findCard'></button>
+                <div className='arrow shiftLeft' onClick={onClickShiftLeft}/>
+                <div className='namePlayer'>{playerShowed.name + " (" + (index+1)+"/"+ listPlayers.length +")"}</div>
+                <div className='arrow shiftRight' onClick={onClickShiftRight}/>
             </div>
-            <Player_ofTable></Player_ofTable>
+             <button className='findNextCard' onClick={()=>{setIndex(0); setPlayerShowed(listPlayers[0])}}>NC</button>
+            <div className='containerCards_BP'>
+                <div className='containerCard1_BP'>
+                    <div className={`${index === 0 ? 'nextCard visible' : 'nextCard no-visible'}`}>NEXT CARD</div>
+                    <Card isShowed={playerShowed.card1.onGoing} order={playerShowed.card1} smallSize={true}/>
+                </div>
+                <Card isShowed={playerShowed.card2.onGoing} order={playerShowed.card2} smallSize={true}/>
+                <Card isShowed={playerShowed.card3.onGoing} order={playerShowed.card3} smallSize={true}/>
+            </div>
+            
         </div>
     )
 }

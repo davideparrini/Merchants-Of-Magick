@@ -29,13 +29,25 @@ function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValu
             setnPotion(nPotion+((diceValue+1) > startTurnDiceValue ? -1 : 1));
             setDiceValue(1+diceValue);
         }
+        else{
+            if(nPotion ===0 && diceValue < 12 && nActions > 0 && !usedDice && (diceValue < startTurnDiceValue)){
+                setnPotion(nPotion+1);
+                setDiceValue(1+diceValue);
+            }
+        }
             
 	}
     
     function decDice(){
-        if(nPotion >=0 && diceValue > 1 && nActions > 0 && !usedDice){
+        if(nPotion >0 && diceValue > 1 && nActions > 0 && !usedDice){
             setnPotion(nPotion+((diceValue-1) < startTurnDiceValue ? -1 : 1));
             setDiceValue(diceValue-1);
+        }
+        else{
+            if(nPotion ===0 && diceValue > 1 && nActions > 0 && !usedDice && (diceValue > startTurnDiceValue) ){
+                setnPotion(nPotion+1);
+                setDiceValue(diceValue-1);
+            }
         }
 	}
     function emptyfun(){}

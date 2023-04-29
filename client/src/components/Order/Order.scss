@@ -5,7 +5,8 @@ $drop-shadow-color-order-done: #ffc401;
 .orderCard{
     justify-self: center;
     align-self: center;
-    background: v.$card-color-0;
+    // background: v.$card-color-0;
+    background: v.$bg-color-1;
     border-radius: 15px;
     border: v.$border-primary-4px;
     margin: 5px;
@@ -15,7 +16,7 @@ $drop-shadow-color-order-done: #ffc401;
     align-items: center;
     justify-content: space-evenly;
     padding-top: 10px;
-    height: 50%;
+    height: 100%;
     width: 90%;
 }
 
@@ -23,10 +24,10 @@ $drop-shadow-color-order-done: #ffc401;
     position: relative;
     z-index: 3;
     top: 20px;
-    color: white;
-    text-shadow: 2px -2px 2px v.$primary-color -2px -2px 2px v.$primary-color,-2px 2px 2px v.$primary-color,2px 2px 2px v.$primary-color;
+    color: v.$primary-color;
+    text-shadow: 0 -1px 4px white, 0 -2px 5px white, 0 -3px 10px white;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 26px;
 }
 .orderGold{
     position: relative;
@@ -37,7 +38,7 @@ $drop-shadow-color-order-done: #ffc401;
     background-repeat: no-repeat;
     background-clip: content-box;
     z-index: 3;
-    height: 65px;
+    height: 70px;
     width: 50px;
     display: flex;
     align-items: center;
@@ -68,7 +69,7 @@ $drop-shadow-color-order-done: #ffc401;
     z-index: 0;
     background-size: contain;
     background-repeat: no-repeat;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 .orderImg.fiery{
     background-image:url(../Card/image/fiery1.png); 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Timer.css'
 
-function Timer({countdown}) {
+function Timer({countdown,finishTurn, turnDone}) {
 
     const [remainingTime, setRemainingTime] = useState(countdown);
     const [clockWork,setClockWork] = useState(true);
@@ -17,6 +17,7 @@ function Timer({countdown}) {
         }
         else{
             setClockWork(false);
+            if(!turnDone) finishTurn();
         }
     },[remainingTime,clockWork]);
 

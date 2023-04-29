@@ -1,5 +1,6 @@
 import React from 'react'
 import './Shop.scss'
+import ItemShop from './ItemShop'
 
 function Shop({shop, openShop,setOpenShop}) {
 
@@ -13,10 +14,7 @@ function Shop({shop, openShop,setOpenShop}) {
                 <div className={`dropdown-shop`}>
                     <div className='itemContainer'>
                         {shop.map((item,i) => (
-                            <div key={i} className='itemShop'>
-                                {`${item.enchantment =! '' ? item.enchantment + ' ': ''}${item.item + " " + item.origin}`}
-                                <div className='goldShop'>{item.gold}</div>
-                            </div>
+                            <ItemShop item={item} key={i}/>
                         ))}
                     </div>
                     

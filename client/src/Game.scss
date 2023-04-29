@@ -1,5 +1,29 @@
 @use 'variables' as v;
 
+.endTurn{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.877);
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.visibleEndTurn{
+
+}
+.noVisibleEndTurn{
+    visibility: hidden;
+}
+.reportTurn{
+    background-color: rgb(209, 122, 71);
+    border-radius: 5px;
+    z-index: 100001;
+    height: 60%;
+    width: fit-content;
+}
+
 .Game {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
@@ -7,8 +31,8 @@
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers';
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . . . .'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . . . .';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 3px;
@@ -19,8 +43,8 @@
 body{
     background-image: url('./images/background6.png');
     background-color: rgb(66, 63, 63);
-    overflow: hidden;
-    overscroll-behavior: none;
+    // overflow: hidden;
+    // overscroll-behavior: none;
     height: 100%;
     width: 100%;
     
@@ -131,6 +155,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    height: 90%;
 }
 
 .container-potion{
@@ -178,30 +203,36 @@ body{
     grid-area: cardContainer;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: flex-start;
     height: 90%;
-    
+    position: relative;
+    bottom: 50px;    
 }
 
 .containerOrder_Quests{
     grid-area: containerOrderQuest;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-b;
 }
 
+.container_Quests{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 50%;
+}
+.container_Order{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 50%;
+}
 .players-table{
     grid-area: tablePlayers;
-    display: flex;
-    align-items: flex-start;
-
-    background-color: v.$bg-color-2;
-    border-radius: 15px;
-    border: v.$border-primary-4px;
-    height: 90%;
-    width: 90%;
-    
+    position: relative;
+    bottom: 50px;    
 }
 
 .skills-table{
@@ -225,7 +256,7 @@ body{
     flex-direction: column;
     width: 50%;
     height: 100%;
-    max-height: 270px;
+    max-height: 290px;
 }
 
 .titleSkills{
@@ -240,7 +271,7 @@ body{
     flex-wrap: wrap;
     height: 100%;
     width: 100%;
-    gap: 6px;
+    row-gap: 9px;
 }
 
 .legend-container{

@@ -1,0 +1,109 @@
+@use '../../variables' as v;
+
+.boardPlayers{
+    background-color: v.$card-color--2;
+    border-radius: 15px;
+    border: v.$border-primary-4px;
+    height: v.$height-card-normal-size;
+    width: 90%;
+}
+
+.navBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background: v.$card-color--3;
+    color: aliceblue;
+}
+.namePlayer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: v.$card-color-0;
+    height: 70%;
+    width: 200px;
+    border-radius: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: v.$text-shadow-stroke;
+    text-transform: capitalize;
+}
+.findNextCard{
+    position: absolute;
+    bottom: 280px;
+    right: 70px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background-color: v.$primary-color-4;
+    font-size: 15px;
+    font-weight: 580;
+    color: antiquewhite;
+    text-shadow: v.$text-shadow-stroke;
+
+}
+
+.arrow {
+    border: solid rgb(230, 230, 230);
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+.shiftLeft{
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.shiftRight{
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.shiftLeft:hover{
+    transform: scale(1.2) rotate(135deg);
+    -webkit-transform: scale(1.2) rotate(135deg);
+}
+.shiftRight:hover{
+    transform: scale(1.2) rotate(-45deg);
+    -webkit-transform: scale(1.2) rotate(-45deg);
+}
+.containerCards_BP{
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: center;
+    align-items: flex-end;
+}
+.containerCard1_BP{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.nextCard{
+    position: relative;
+    top: 12px;
+    height: 20px;
+    border: v.$border-primary-4px;
+    border-top-left-radius: 65px;
+    border-top-right-radius: 65px;
+    width: 95%;
+    z-index: 0;
+    background-color: rgb(207, 0, 0);
+    font-size: 17px;
+    font-weight: 600;
+    color: antiquewhite;
+    text-shadow: v.$text-shadow-stroke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

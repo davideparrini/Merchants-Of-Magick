@@ -52,9 +52,11 @@ import Shop from './components/Shop/Shop';
 import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
 import Quest from './components/Quest/Quest';
 import OrdersContainer from './components/Order/OrdersContainer';
+import BoardPlayers from './components/BoardPlayers/BoardPlayers';
+import ReportPlayer from './components/ReportPlayer';
 
 
-function Game({}) {
+function Game({data}) {
 
     
 
@@ -103,20 +105,23 @@ function Game({}) {
 
     
     //TEST
-    const card1 ={item:'plot armor',gold: 5,enchantment: 'divine' , origin:'of the dragons'};
-    const card2 ={item:'crossbow',gold: 3,enchantment: 'everlasting' , origin:'of the elves'};
-    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves'};
-    const card4 ={item:'sword',gold: 7,enchantment: 'fiery' , origin: 'of the orcs'};
-    const card5 ={item:'helmet',gold: 7,enchantment: 'fiery' , origin: ''};
-    const card6 ={item:'ring',gold: 7,enchantment: 'everlasting' , origin: 'of the dwarves'};
+    const card1 ={item:'plot armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', onGoing:true};
+    const card2 ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', onGoing:true};
+    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', onGoing:true};
+    const card4 ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', onGoing:true};
+    const card5 ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', onGoing:true};
+    const card6 ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', onGoing:true};
 
-    const quest1 = {attribute:"wood", request: 8,gold : 8};
-    const quest2 = {attribute:"elemental", request: 8, gold : 8};
+    // const quest1 = {attribute:"wood", request: 8,gold : 8};
+    // const quest2 = {attribute:"elemental", request: 8, gold : 8};
+    
     const order =  {typeOrder:"divine",sponsorName: "Warrior", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
 
-    const player1 ={name:"player1", card1: card1,card2: card2,card3: card3};
-    const player2 ={name:"player1", card1: card6,card2: card5,card3: card1};
-    const player3 ={name:"player1", card1: card3,card2: card4,card3: card2};
+    const player1 ={name:"Urfrick", card1: card1,card2: card2,card3: card3};
+    const player2 ={name:"Giacomino", card1: card6,card2: card5,card3: card1};
+    const player3 ={name:"Brix", card1: card3,card2: card4,card3: card2};
+    const listPlayers = [player1,player2,player3];
+ 
     const SKILLS_TEST = ['divine','plot armor','of the dragons'];
 
     //numero pozioni necessarie per usare gl'eDice
@@ -182,16 +187,16 @@ function Game({}) {
     const TYPE_EXTRADICE6 = 'ed6';
 
     //valori dei dadi
-    const [d6Value,setD6Value]=useState(5);
-    const [d8Value,setD8Value]=useState(1);
-    const [d10Value,setD10Value]=useState(8);
-    const [d12Value,setD12Value]=useState(11);
+    const [d6Value,setD6Value]=useState(data.dices.d6);
+    const [d8Value,setD8Value]=useState(data.dices.d8);
+    const [d10Value,setD10Value]=useState(data.dices.d10);
+    const [d12Value,setD12Value]=useState(data.dices.d12);
 
     //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
-    const [d6startValue,setD6startValue]=useState(d6Value);
-    const [d8startValue,setD8startValue]=useState(d8Value);
-    const [d10startValue,setD10startValue]=useState(d10Value);
-    const [d12startValue,setD12startValue]=useState(d12Value);
+    const d6startValue = data.dices.d6;
+    const d8startValue = data.dices.d8;
+    const d10startValue = data.dices.d10;
+    const d12startValue = data.dices.d12;
 
     //bool se i dadi sono stati toccati, diceTouched(true) -> focused 
     const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
@@ -231,6 +236,7 @@ function Game({}) {
     //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
 
+    const[turnDone, setTurnDone] = useState(false);
 
    
     //bool carta girata, showCard(false) -> carta girata
@@ -242,8 +248,8 @@ function Game({}) {
     const [freeUpgrade,setFreeUpgrade] = useState(0);
 
     
-    const typeAttributeQuestCrafting = quest1.attribute;
-    const typeAttributeQuestMagicResearch = quest2.attribute;
+    const typeAttributeQuestCrafting = data.quests.quest1.attribute;
+    const typeAttributeQuestMagicResearch = data.quests.quest2.attribute;
     const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
     const [nAttributeGained_QuestMagicResearch,setnAttributeGained_QuestMagicResearch] = useState(0);
 
@@ -258,15 +264,6 @@ function Game({}) {
         setShop((s) => [...s, card])
       }
     
-
-
-    function updateStartValueTurnDice(){
-        setD6startValue(d6Value);
-        setD8startValue(d8Value);
-        setD10startValue(d10Value);
-        setD12startValue(d12Value);
-    }
-
     
 
     //funzione da passare al component child Skill per aggiungere la skill alla lista delle skill del giocatore
@@ -372,7 +369,7 @@ function Game({}) {
 
 
     function finishTurn(){
-
+        setTurnDone(true);
     }
 
     
@@ -430,271 +427,285 @@ function Game({}) {
 
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
-        <div className="Game">   
-            
-            <div className='upperContainer'>
-                <div className='containerExtraDices'>
-                    <img src={titleExtraDices} alt='EXTRA DICES' className='upperContainerTitles-2' ></img>
-                    <div className='extra-dices'>
-                        <ExtraDice
-                            nPotion_extraDice={nPotion_extraDice1}
-                            onClickHandlerExtraDice={onClickHandlerExtraDice}
-                            definitelyExtraDiceUsed={extraDiceUsed1}   
-                            typeExtraDice={TYPE_EXTRADICE1}        
-                        />
-                        <ExtraDice
-                            nPotion_extraDice={nPotion_extraDice2} 
-                            onClickHandlerExtraDice={onClickHandlerExtraDice}
-                            definitelyExtraDiceUsed={extraDiceUsed2}     
-                            typeExtraDice={TYPE_EXTRADICE2}       
-                        />
-                        <ExtraDice
-                            nPotion_extraDice={nPotion_extraDice3}
-                            onClickHandlerExtraDice={onClickHandlerExtraDice}
-                            definitelyExtraDiceUsed={extraDiceUsed3}              
-                            typeExtraDice={TYPE_EXTRADICE3}             
-                        />
-                        <ExtraDice
-                            nPotion_extraDice={nPotion_extraDice4}
-                            onClickHandlerExtraDice={onClickHandlerExtraDice}
-                            definitelyExtraDiceUsed={extraDiceUsed4}               
-                            typeExtraDice={TYPE_EXTRADICE4}           
-                        />
-                        <ExtraDice
-                            nPotion_extraDice={nPotion_extraDice5}
-                            onClickHandlerExtraDice={onClickHandlerExtraDice}
-                            definitelyExtraDiceUsed={extraDiceUsed5}           
-                            typeExtraDice={TYPE_EXTRADICE5}               
-                        ></ExtraDice>
-                        <ExtraDice
-                            nPotion_extraDice={nPotion_extraDice6}
-                            onClickHandlerExtraDice={onClickHandlerExtraDice}
-                            definitelyExtraDiceUsed={extraDiceUsed6}         
-                            typeExtraDice={TYPE_EXTRADICE6}               
-                        />  
-                    </div>
+        <div>
+            <div className='endTurn'>
+                <div className='reportTurn'>
+                    {
+                        listPlayers.map((p,i)=>{
+                            <ReportPlayer key={i}></ReportPlayer>
+                        })
+                    }
                 </div>
-                
-                <div className='containerDiceLeft'>
-                    <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='upperContainerTitles' ></img>
-                    <div className='dice-left-label'>{nDiceLeft_toUse}</div>
-                </div>
-                
-                <div className='containerTurn'>
-                    <img src={titleNTurn} alt='NTURN TITLE' className='upperContainerTitles' ></img>
-                    <div className='n-turn-label'>{nTurn +'/'+ MAX_N_TURN}</div>
-                </div>
-                
-                <div className='timer-container'><Timer countdown={countdownTurn}/></div>
-
             </div>
-            <div className='legend-container' ref={legendRef}>
-                <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
-                <Legend openLegend={openLegend}/>
-            </div>
-
-            
-        
-            
-
-            <div className='container-dices-potion'>
-                <div className='container-potion'>
-                    <img src={potionImg} className='potion-img' alt='POTION'></img>
-                    <label className='potion-label'>{nPotion}</label>
-                </div>
-                <Container_dice_diceValue 
-                    typeDice={TYPE_D6} 
-                    nPotion={nPotion} 
-                    setnPotion={setNPotion} 
-                    startTurnDiceValue={d6startValue} 
-                    diceValue={d6Value} 
-                    setDiceValue={setD6Value} 
-                    usedDice={diceUsedD6} 
-                    diceTouched={diceTouchedD6} 
-                    nActions={nDiceLeft_toUse} 
-                    onClickImgHandler={()=>{
-                        typeTouchedDiceRef.current = TYPE_D6;
-                        valueTouchedDiceRef.current = d6Value;
-                        setAllDiceNoTouched(); 
-                        setDiceTouchedD6(true);
-                    }}
-                />
-                <Container_dice_diceValue 
-                    typeDice={TYPE_D8} 
-                    nPotion={nPotion} 
-                    setnPotion={setNPotion} 
-                    startTurnDiceValue={d8startValue} 
-                    diceValue={d8Value} 
-                    setDiceValue={setD8Value} 
-                    usedDice={diceUsedD8} 
-                    diceTouched={diceTouchedD8} 
-                    nActions={nDiceLeft_toUse} 
-                    onClickImgHandler={()=>{
-                        typeTouchedDiceRef.current = TYPE_D8;
-                        valueTouchedDiceRef.current = d8Value;
-                        setAllDiceNoTouched(); 
-                        setDiceTouchedD8(true);
-                    }}
-                />
-                <Container_dice_diceValue 
-                    typeDice={TYPE_D10} 
-                    nPotion={nPotion} 
-                    setnPotion={setNPotion} 
-                    startTurnDiceValue={d10startValue} 
-                    diceValue={d10Value} 
-                    setDiceValue={setD10Value} 
-                    usedDice={diceUsedD10} 
-                    diceTouched={diceTouchedD10} 
-                    nActions={nDiceLeft_toUse} 
-                    onClickImgHandler={()=>{
-                        typeTouchedDiceRef.current = TYPE_D10;
-                        valueTouchedDiceRef.current = d10Value;
-                        setAllDiceNoTouched(); 
-                        setDiceTouchedD10(true);
-                    }}
-                />
-                <Container_dice_diceValue 
-                    typeDice={TYPE_D12} 
-                    nPotion={nPotion} 
-                    setnPotion={setNPotion} 
-                    startTurnDiceValue={d12startValue} 
-                    diceValue={d12Value} setDiceValue={setD12Value} 
-                    usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
-                    nActions={nDiceLeft_toUse} 
-                    onClickImgHandler={()=>{
-                        typeTouchedDiceRef.current = TYPE_D12;
-                        valueTouchedDiceRef.current = d12Value;
-                        setAllDiceNoTouched(); 
-                        setDiceTouchedD12(true);
-                    }}
-                />
-            </div>
-
-
-            <div className='card-container'>
-                <Card order = {card1} 
-                    isShowed={showCard1}
-                />
-                <ForgeButton 
-                    checkSkillCard={checkSkillCard}
-                    setShowCard={setShowCard1}
-                    addItemShop={addItemShop}
-                    showCard={showCard1}
-                    card={card1}
-                    setgoldAttuale={setGoldAttuale}
-                />
-
-                <Card order = {card2} 
-                    isShowed={showCard2} 
-                />
-                <ForgeButton 
-                    checkSkillCard={checkSkillCard}
-                    setShowCard={setShowCard2}
-                    addItemShop={addItemShop}
-                    showCard={showCard2}
-                    card={card2}
-                    setgoldAttuale={setGoldAttuale}
-                />
-
-                <Card order = {card3} 
-                    isShowed={showCard3}
-                />
-                <ForgeButton 
-                    checkSkillCard={checkSkillCard}
-                    setShowCard={setShowCard3}
-                    addItemShop={addItemShop}
-                    showCard={showCard3}
-                    card={card3}
-                    setgoldAttuale={setGoldAttuale}
-                />
-            </div>
-            <div className='players-table'>
-
-            </div>
-           
-
-            <div className='skills-table' ref={skillTableRef}>
-                <div className='containerTitle_Skills'>
-                    <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleSkills'/>
-                    <div className='skillsContainer'>
-                        {
-                        skillListCraftingItem.map((s,i)=>{
-                                return (
-                                    <Skill skill = {s} key={i} 
-                                        setNPotion={setNPotion}
-                                        fun_passSkillGained={getSkillGained}
-                                        valueTouchedDiceRef={valueTouchedDiceRef}
-                                        typeTouchedDiceRef={typeTouchedDiceRef}
-                                        isDiceTouched={isDiceTouched}
-                                        setNDiceLeft_toUse={setNDiceLeft_toUse}
-                                        nDiceLeft_Used={nDiceLeft_Used}
-                                        setNDiceLeft_Used={setNDiceLeft_Used}
-                                        setDiceUsed={choose_fun_setDiceUsed()}
-                                        setAllDicesNoTouched={setAllDiceNoTouched}
-                                        setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                                        setNAttrQuest1={setnAttributeGained_QuestCrafting}
-                                        setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                        typeAttrQuest1={typeAttributeQuestCrafting}
-                                        typeAttrQuest2={typeAttributeQuestMagicResearch}
-                                        freeUpgrade={freeUpgrade > 0}
-                                        setFreeUpgrade={setFreeUpgrade}
-                                        setgoldAttuale={setGoldAttuale}
-                                        testActive={testActive}
-                                    />
-                                )
-                        })}
+            <div className="Game">   
+                <div className='upperContainer'>
+                    <div className='containerExtraDices'>
+                        <img src={titleExtraDices} alt='EXTRA DICES' className='upperContainerTitles-2' ></img>
+                        <div className='extra-dices'>
+                            <ExtraDice
+                                nPotion_extraDice={nPotion_extraDice1}
+                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                definitelyExtraDiceUsed={extraDiceUsed1}   
+                                typeExtraDice={TYPE_EXTRADICE1}        
+                            />
+                            <ExtraDice
+                                nPotion_extraDice={nPotion_extraDice2} 
+                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                definitelyExtraDiceUsed={extraDiceUsed2}     
+                                typeExtraDice={TYPE_EXTRADICE2}       
+                            />
+                            <ExtraDice
+                                nPotion_extraDice={nPotion_extraDice3}
+                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                definitelyExtraDiceUsed={extraDiceUsed3}              
+                                typeExtraDice={TYPE_EXTRADICE3}             
+                            />
+                            <ExtraDice
+                                nPotion_extraDice={nPotion_extraDice4}
+                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                definitelyExtraDiceUsed={extraDiceUsed4}               
+                                typeExtraDice={TYPE_EXTRADICE4}           
+                            />
+                            <ExtraDice
+                                nPotion_extraDice={nPotion_extraDice5}
+                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                definitelyExtraDiceUsed={extraDiceUsed5}           
+                                typeExtraDice={TYPE_EXTRADICE5}               
+                            ></ExtraDice>
+                            <ExtraDice
+                                nPotion_extraDice={nPotion_extraDice6}
+                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                definitelyExtraDiceUsed={extraDiceUsed6}         
+                                typeExtraDice={TYPE_EXTRADICE6}               
+                            />  
+                        </div>
                     </div>
                     
+                    <div className='containerDiceLeft'>
+                        <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='upperContainerTitles' ></img>
+                        <div className='dice-left-label'>{nDiceLeft_toUse}</div>
+                    </div>
+                    
+                    <div className='containerTurn'>
+                        <img src={titleNTurn} alt='NTURN TITLE' className='upperContainerTitles' ></img>
+                        <div className='n-turn-label'>{nTurn +'/'+ MAX_N_TURN}</div>
+                    </div>
+                    
+                    <div className='timer-container'><Timer countdown={countdownTurn} finishTurn={finishTurn} turnDone={turnDone}/></div>
 
                 </div>
-                <div className='containerTitle_Skills'>
-                    <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleSkills'/>
-                    <div className='skillsContainer'>
-                        {
-                        skillListMagicResearch.map((s,i)=>{
-                                return (
-                                    <Skill skill = {s} key={i} 
-                                        setNPotion={setNPotion}
-                                        fun_passSkillGained={getSkillGained}
-                                        valueTouchedDiceRef={valueTouchedDiceRef}
-                                        typeTouchedDiceRef={typeTouchedDiceRef}
-                                        isDiceTouched={isDiceTouched}
-                                        setNDiceLeft_toUse={setNDiceLeft_toUse}
-                                        nDiceLeft_Used={nDiceLeft_Used}
-                                        setNDiceLeft_Used={setNDiceLeft_Used}
-                                        setDiceUsed={choose_fun_setDiceUsed()}
-                                        setAllDicesNoTouched={setAllDiceNoTouched}
-                                        setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
-                                        setNAttrQuest1={setnAttributeGained_QuestCrafting}
-                                        setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                        typeAttrQuest1={typeAttributeQuestCrafting}
-                                        typeAttrQuest2={typeAttributeQuestMagicResearch}
-                                        freeUpgrade={freeUpgrade > 0}
-                                        setFreeUpgrade={setFreeUpgrade}
-                                        setgoldAttuale={setGoldAttuale}
-                                        testActive={testActive}
-                                    />
-                                )
-                        })}
+                <div className='legend-container' ref={legendRef}>
+                    <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
+                    <Legend openLegend={openLegend}/>
+                </div>
+
+
+                <div className='container-dices-potion'>
+                    <div className='container-potion'>
+                        <img src={potionImg} className='potion-img' alt='POTION'></img>
+                        <label className='potion-label'>{nPotion}</label>
+                    </div>
+                    <Container_dice_diceValue 
+                        typeDice={TYPE_D6} 
+                        nPotion={nPotion} 
+                        setnPotion={setNPotion} 
+                        startTurnDiceValue={d6startValue} 
+                        diceValue={d6Value} 
+                        setDiceValue={setD6Value} 
+                        usedDice={diceUsedD6} 
+                        diceTouched={diceTouchedD6} 
+                        nActions={nDiceLeft_toUse} 
+                        onClickImgHandler={()=>{
+                            typeTouchedDiceRef.current = TYPE_D6;
+                            valueTouchedDiceRef.current = d6Value;
+                            setAllDiceNoTouched(); 
+                            setDiceTouchedD6(true);
+                        }}
+                    />
+                    <Container_dice_diceValue 
+                        typeDice={TYPE_D8} 
+                        nPotion={nPotion} 
+                        setnPotion={setNPotion} 
+                        startTurnDiceValue={d8startValue} 
+                        diceValue={d8Value} 
+                        setDiceValue={setD8Value} 
+                        usedDice={diceUsedD8} 
+                        diceTouched={diceTouchedD8} 
+                        nActions={nDiceLeft_toUse} 
+                        onClickImgHandler={()=>{
+                            typeTouchedDiceRef.current = TYPE_D8;
+                            valueTouchedDiceRef.current = d8Value;
+                            setAllDiceNoTouched(); 
+                            setDiceTouchedD8(true);
+                        }}
+                    />
+                    <Container_dice_diceValue 
+                        typeDice={TYPE_D10} 
+                        nPotion={nPotion} 
+                        setnPotion={setNPotion} 
+                        startTurnDiceValue={d10startValue} 
+                        diceValue={d10Value} 
+                        setDiceValue={setD10Value} 
+                        usedDice={diceUsedD10} 
+                        diceTouched={diceTouchedD10} 
+                        nActions={nDiceLeft_toUse} 
+                        onClickImgHandler={()=>{
+                            typeTouchedDiceRef.current = TYPE_D10;
+                            valueTouchedDiceRef.current = d10Value;
+                            setAllDiceNoTouched(); 
+                            setDiceTouchedD10(true);
+                        }}
+                    />
+                    <Container_dice_diceValue 
+                        typeDice={TYPE_D12} 
+                        nPotion={nPotion} 
+                        setnPotion={setNPotion} 
+                        startTurnDiceValue={d12startValue} 
+                        diceValue={d12Value} setDiceValue={setD12Value} 
+                        usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
+                        nActions={nDiceLeft_toUse} 
+                        onClickImgHandler={()=>{
+                            typeTouchedDiceRef.current = TYPE_D12;
+                            valueTouchedDiceRef.current = d12Value;
+                            setAllDiceNoTouched(); 
+                            setDiceTouchedD12(true);
+                        }}
+                    />
+                </div>
+
+
+                <div className='card-container'>
+                    <Card order = {data.cards.card1} 
+                        isShowed={showCard1}
+                        smallSize={false}
+                    />
+                    <ForgeButton 
+                        checkSkillCard={checkSkillCard}
+                        setShowCard={setShowCard1}
+                        addItemShop={addItemShop}
+                        showCard={showCard1}
+                        card={data.cards.card1}
+                        setgoldAttuale={setGoldAttuale}
+                    />
+
+                    <Card order = {data.cards.card2} 
+                        isShowed={showCard2} 
+                        smallSize={false}
+                    />
+                    <ForgeButton 
+                        checkSkillCard={checkSkillCard}
+                        setShowCard={setShowCard2}
+                        addItemShop={addItemShop}
+                        showCard={showCard2}
+                        card={data.cards.card2}
+                        setgoldAttuale={setGoldAttuale}
+                    />
+
+                    <Card order = {data.cards.card3} 
+                        isShowed={showCard3}
+                        smallSize={false}
+                    />
+                    <ForgeButton 
+                        checkSkillCard={checkSkillCard}
+                        setShowCard={setShowCard3}
+                        addItemShop={addItemShop}
+                        showCard={showCard3}
+                        card={data.cards.card3}
+                        setgoldAttuale={setGoldAttuale}
+                    />
+                </div>
+                <div className='players-table'>
+                    <BoardPlayers listPlayers={listPlayers}/>
+                </div>
+            
+
+                <div className='skills-table' ref={skillTableRef}>
+                    <div className='containerTitle_Skills'>
+                        <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleSkills'/>
+                        <div className='skillsContainer'>
+                            {
+                            skillListCraftingItem.map((s,i)=>{
+                                    return (
+                                        <Skill skill = {s} key={i} 
+                                            setNPotion={setNPotion}
+                                            fun_passSkillGained={getSkillGained}
+                                            valueTouchedDiceRef={valueTouchedDiceRef}
+                                            typeTouchedDiceRef={typeTouchedDiceRef}
+                                            isDiceTouched={isDiceTouched}
+                                            setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                            nDiceLeft_Used={nDiceLeft_Used}
+                                            setNDiceLeft_Used={setNDiceLeft_Used}
+                                            setDiceUsed={choose_fun_setDiceUsed()}
+                                            setAllDicesNoTouched={setAllDiceNoTouched}
+                                            setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                                            setNAttrQuest1={setnAttributeGained_QuestCrafting}
+                                            setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
+                                            typeAttrQuest1={typeAttributeQuestCrafting}
+                                            typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                            freeUpgrade={freeUpgrade > 0}
+                                            setFreeUpgrade={setFreeUpgrade}
+                                            setgoldAttuale={setGoldAttuale}
+                                            testActive={testActive}
+                                        />
+                                    )
+                            })}
+                        </div>
+                        
+
+                    </div>
+                    <div className='containerTitle_Skills'>
+                        <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleSkills'/>
+                        <div className='skillsContainer'>
+                            {
+                            skillListMagicResearch.map((s,i)=>{
+                                    return (
+                                        <Skill skill = {s} key={i} 
+                                            setNPotion={setNPotion}
+                                            fun_passSkillGained={getSkillGained}
+                                            valueTouchedDiceRef={valueTouchedDiceRef}
+                                            typeTouchedDiceRef={typeTouchedDiceRef}
+                                            isDiceTouched={isDiceTouched}
+                                            setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                            nDiceLeft_Used={nDiceLeft_Used}
+                                            setNDiceLeft_Used={setNDiceLeft_Used}
+                                            setDiceUsed={choose_fun_setDiceUsed()}
+                                            setAllDicesNoTouched={setAllDiceNoTouched}
+                                            setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
+                                            setNAttrQuest1={setnAttributeGained_QuestCrafting}
+                                            setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
+                                            typeAttrQuest1={typeAttributeQuestCrafting}
+                                            typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                            freeUpgrade={freeUpgrade > 0}
+                                            setFreeUpgrade={setFreeUpgrade}
+                                            setgoldAttuale={setGoldAttuale}
+                                            testActive={testActive}
+                                        />
+                                    )
+                            })}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='containerOrder_Quests'>
-                <Quest quest={quest1} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
-                <Quest quest={quest2} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
-                <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
-            </div>
-            
-            <div className='btn-turn-container'>
-                <ButtonTurnDone finishTurn={finishTurn}/>
-            </div>
-            
-            <div className='shop-container' ref={shopRef}>
-                <Shop 
-                    shop={shop}
-                    openShop={openShop}
-                    setOpenShop={setOpenShop}
-                />
+                <div className='containerOrder_Quests'>
+                    <div className='container_Quests'>
+                        <Quest quest={data.quests.quest1} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
+                        <Quest quest={data.quests.quest2} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
+                    </div>
+                    <div className='container_Order'>
+                        <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
+                    </div>
+                </div>
+                
+                <div className='btn-turn-container'>
+                    <ButtonTurnDone finishTurn={finishTurn}/>
+                </div>
+                
+                <div className='shop-container' ref={shopRef}>
+                    <Shop 
+                        shop={shop}
+                        openShop={openShop}
+                        setOpenShop={setOpenShop}
+                    />
+                </div>
             </div>
         </div>
     );

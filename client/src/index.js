@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import Game from './Game';
+import data from './data_test.json'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(
     <React.StrictMode>
-        <Game /> 
+        <Game data={data}/> 
     </React.StrictMode>
 );
 

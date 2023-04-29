@@ -1,43 +1,26 @@
 @use '../../variables' as v;
 
+$sizeNormal:1;
+$sizeSmall:0.63;
+
+
 .card{
+    width: calc(220px * $sizeNormal);
+    height: calc(v.$height-card-normal-size * $sizeNormal);
     display: grid;
-    grid-template-columns: 90px 40px 90px;
-    grid-template-rows: min-content;
+    grid-template-columns: 40% 20% 40%;
+    grid-template-rows: 30% 40% 30%;
     grid-template-areas: 
         'imgE t1 goldItem'
         '. t2 .'
-        '. t3 imgO';
-
-    /* background: #aa683b; */
-    
-    width: 220px;
-    height: 270px;
+        '. t3 imgO';   
     border: 5px solid v.$primary-color;
-    
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
-    
-    
+    z-index: 2;
 }
 
-
-.showed{
-    background: v.$card-color-0;
-    transition: 2s;
-    transform-origin: 50%, 50%;
-}
-.no-showed{
-    // background: #242220;
-    background: url(./image/backCard6_darker.png);
-    background-size: cover;
-    background-repeat:no-repeat ;
-    height: 100%;
-    transform: rotateY(180deg);
-    transition: transform 1s;
-
-}
 .textCard{
     display: flex;
     justify-items: center;
@@ -46,25 +29,16 @@
     align-content: center;
     justify-self: center;
     font-family: Georgia, serif;
-    font-size: 25px;
+    font-size: calc(25px * $sizeNormal);
     color: #ffffff;
     text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
     font-weight: 700;
     font-variant: small-caps;
-    width: 200px;
-    padding: 10px;
-    margin-top: 25px;
-    z-index: 3;
+    width: 120px;
+    margin-top: 20px;
+    z-index: 4;
 }
-.t1{
-    grid-area: t1;
-}
-.t2{
-    grid-area: t2;
-}
-.t3{
-    grid-area: t3;
-}
+
 .goldItem{
     grid-area: goldItem;
     background-image: url(./image/gold4.png);
@@ -73,8 +47,8 @@
     background-clip: content-box;
     filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
     z-index: 3;
-    height: 50px;
-    width: 50px;
+    height: calc(60px * $sizeNormal);
+    width: calc(60px * $sizeNormal);
     display: flex;
     justify-self: flex-end;
     align-self: flex-start;
@@ -83,17 +57,16 @@
     text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
     border-radius: 50%;
     font-weight: 700;
-    font-size: x-large;
+    font-size: calc(24px * $sizeNormal);
     color: #e0e0e0;
 }
 .imgCard{
     grid-area: t2;
-    position: absolute;
     justify-self: center;
     align-self: center;
-    height: 200px;
-    width: 200px;
-    opacity: 1;
+    width: calc(200px * $sizeNormal);
+    height: calc(200px * $sizeNormal);
+    opacity: 0.7;
     z-index: 2;
     background-size: contain;
     background-repeat: no-repeat;
@@ -107,24 +80,154 @@
     justify-self: center;
     align-self: center;
     justify-items: center;
-    height: 90px;
-    width: 90px;
-    opacity: 1;
+    position: relative;
+    bottom: 5px;
+    height: calc(100px * $sizeNormal);
+    width: calc(100px * $sizeNormal);
+    opacity: 0.7;
     z-index: 1;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
 .imgEnchantmentsCard{
     grid-area: imgE;
-    height: 100px;
-    width: 100px;
+    height: calc(100px * $sizeNormal);
+    width: calc(100px * $sizeNormal);
     opacity: 1;
     z-index: 1;
     background-size: contain;
     background-repeat: no-repeat;
 }
 
+///////////////////////////////////SMALL VERSION//////////////////////////////////////////////
+.cardSmall{
+    width: calc(220px * $sizeSmall);
+    height: calc(290px * $sizeSmall);
+    display: grid;
+    grid-template-columns: 40% 20% 40%;
+    grid-template-rows: 30% 40% 30%;
+    grid-template-areas: 
+        'imgE t1 goldItem'
+        '. t2 .'
+        '. t3 imgO';
+
+    /* background: #aa683b; */
+    
+    
+    border: 5px solid v.$primary-color;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
+    
+}
+
+
+
+.textCardSmall{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    justify-self: center;
+    font-family: Georgia, serif;
+    font-size: calc(25px * $sizeSmall);
+    color: #ffffff;
+    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    font-weight: 700;
+    font-variant: small-caps;
+    width: 120px;
+    margin-top: 20px;
+    z-index: 4;
+}
+
+
+.goldItemSmall{
+    grid-area: goldItem;
+    background-image: url(./image/gold4.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+    z-index: 3;
+    height: calc(60px * $sizeSmall);
+    width: calc(60px * $sizeSmall);
+    display: flex;
+    justify-self: flex-end;
+    align-self: flex-start;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: calc(24px * $sizeSmall);
+    color: #e0e0e0;
+}
+.imgCardSmall{
+    grid-area: t2;
+    justify-self: center;
+    align-self: center;
+    width: calc(200px * $sizeSmall);
+    height: calc(200px * $sizeSmall);
+    opacity: 0.7;
+    z-index: 2;
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+}
+
+.imgOriginCardSmall{
+    grid-area: imgO;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-self: center;
+    justify-items: center;
+    position: relative;
+    bottom: 5px;
+    height: calc(100px * $sizeSmall);
+    width: calc(100px * $sizeSmall);
+    opacity: 0.7;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.imgEnchantmentsCardSmall{
+    grid-area: imgE;
+    height: calc(100px * $sizeSmall);
+    width: calc(100px * $sizeSmall);
+    opacity: 1;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+///////////////////////
+
+
+.showed{
+    background: v.$card-color-0;
+}
+.no-showed{
+    // background: #242220;
+    background: url(./image/backCard6_darker.png);
+    background-size: cover;
+    background-repeat:no-repeat ;
+    transform: rotateY(180deg);
+    transition: transform 1s;
+}
+
+.t1{
+    grid-area: t1;
+}
+.t2{
+    grid-area: t2;
+}
+.t3{
+    grid-area: t3;
+}
 .no-visible{
     visibility: hidden;
 }
