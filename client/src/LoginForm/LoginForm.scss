@@ -1,4 +1,4 @@
-@use '../../variables' as v;
+@use '../variables' as v;
 .LoginForm{
     height: 100%;
     width: 100%;
@@ -90,13 +90,13 @@
     width: 60px;
     font-size: 25px;
     font-weight: 700;
-    border: 3px solid #9b9dad;
+    border: 2px solid #9b9dad;
     color: #c7cae0;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2 ;
-    background-color: v.$bg-color;
+    background-color: v.$bg-color-0;
 }
 
 .logWithFormContainer{
@@ -106,10 +106,11 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+    
 
 }
 .logWithForm{
-    
+    border: 2px solid #818391;
     height: 50px;
     width: 350px;
     color: white;

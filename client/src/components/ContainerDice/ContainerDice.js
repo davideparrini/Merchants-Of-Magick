@@ -3,9 +3,9 @@ import d6img from './d6.png'
 import d8img from './d8.png'
 import d10img from './d10.png'
 import d12img from './d12.png'
-import './Container_dice_diceValue.scss'
+import './ContainerDice.scss'
 
-function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValue, diceValue ,setDiceValue, usedDice ,diceTouched, onClickImgHandler, nActions}) {
+function ContainerDice({typeDice,nPotion,setnPotion,startTurnDiceValue, diceValue ,setDiceValue, usedDice ,diceTouched, onClickImgHandler, nActions}) {
 
     //Tipi dado
     const TYPE_D6 = 'd6';
@@ -61,4 +61,4 @@ function Container_dice_diceValue({typeDice,nPotion,setnPotion,startTurnDiceValu
     )
 }
 
-export default Container_dice_diceValue
+export default ContainerDice

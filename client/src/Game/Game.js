@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-pascal-case */
 
 import './Game.scss';
 import { v4 as uuid } from 'uuid';
@@ -45,7 +44,7 @@ import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 
 import { useEffect, useRef, useState } from 'react';
 import Timer from '../components/Timer/Timer';
-import Container_dice_diceValue from '../components/Container_Dice/Container_dice_diceValue';
+import ContainerDice from '../components/ContainerDice/ContainerDice'
 import ExtraDice from '../components/ExtraDice/ExtraDice';
 import ForgeButton from '../components/ForgeButton/ForgeButton';
 import Shop from '../components/Shop/Shop';
@@ -501,7 +500,7 @@ function Game({data}) {
                         <img src={potionImg} className='potion-img' alt='POTION'></img>
                         <label className='potion-label'>{nPotion}</label>
                     </div>
-                    <Container_dice_diceValue 
+                    <ContainerDice 
                         typeDice={TYPE_D6} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
@@ -518,7 +517,7 @@ function Game({data}) {
                             setDiceTouchedD6(true);
                         }}
                     />
-                    <Container_dice_diceValue 
+                    <ContainerDice 
                         typeDice={TYPE_D8} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
@@ -535,7 +534,7 @@ function Game({data}) {
                             setDiceTouchedD8(true);
                         }}
                     />
-                    <Container_dice_diceValue 
+                    <ContainerDice 
                         typeDice={TYPE_D10} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
@@ -552,7 +551,7 @@ function Game({data}) {
                             setDiceTouchedD10(true);
                         }}
                     />
-                    <Container_dice_diceValue 
+                    <ContainerDice 
                         typeDice={TYPE_D12} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 

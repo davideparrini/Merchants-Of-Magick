@@ -1,5 +1,5 @@
 import React from 'react'
-import './LoginForm/LoginForm.scss'
+import './LoginForm.scss'
 
 function LoginForm() {
     return (

@@ -10,9 +10,9 @@ import LoginForm from './LoginForm/LoginForm';
 const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(
     <React.StrictMode>
-        {/* <Game data={data}/>  */}
+        <Game data={data}/> 
         {/* <Lobby></Lobby> */}
-        <LoginForm></LoginForm>
+        {/* <LoginForm></LoginForm> */}
     </React.StrictMode>
 );
 
