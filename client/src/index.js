@@ -5,14 +5,16 @@ import Game from './Game/Game';
 import data from './data_test.json'
 import Lobby from './Lobby/Lobby';
 import LoginForm from './LoginForm/LoginForm';
+import Logged from './Logged/Logged';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(
     <React.StrictMode>
+        <LoginForm></LoginForm>
+        <Logged></Logged>
+        <Lobby></Lobby>
         <Game data={data}/> 
-        {/* <Lobby></Lobby> */}
-        {/* <LoginForm></LoginForm> */}
     </React.StrictMode>
 );
 

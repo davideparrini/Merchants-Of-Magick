@@ -7,6 +7,11 @@ html{
 #root{
     height: 100%;
     width: 100%;
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
 }
 body{
     background-image: url('./images/background6.png');
@@ -55,6 +60,8 @@ body{
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 3px;
+    margin: 20px;
+    margin-top: 30px;
     
 }
 

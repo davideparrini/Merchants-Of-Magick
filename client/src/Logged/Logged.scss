@@ -1,10 +1,11 @@
 @use '../variables' as v;
-.Lobby{
+.Logged{
     height: 100%;
     width: 100%;
+    
+   
 }
-
-.opacityLobby{
+.opacityLogged{
     height: 100%;
     width: 100%;
     background: #000000da;
@@ -13,7 +14,7 @@
     align-items: center;
 
 }
-.containerLobby{
+.containerLogged{
     height: 70%;
     width: 60%;
     background: v.$bg-color;
@@ -22,28 +23,38 @@
     justify-content: space-around;
     align-items: center;
 }
-.containerPlayersLobby{
-    height: 90%;
-    width: 600px;
-    background: rgb(134, 134, 134);
-    border-radius: 15px;
-    border: v.$border-primary-4px;
+
+.titleLogged{
+    background-image: url(./titleLogged4.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 50%;
+    width: 50%;
+    z-index: 100;
 }
-.containerBtnLobby{
-    align-self: flex-end;
+.bgImg{
+    position: absolute;
+    background-image: url(./bgLogged4.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 70%;
+    width: 60%;
+    opacity: 0.4;
+    z-index: 3;
+
+}
+.containerBtnLogged{
     display: flex;
     height: 50%;
     width: auto;
     flex-direction: column;
-    justify-content: end;
+    justify-content: space-evenly;
     align-items: center;
-    margin: 40px;
 }
-
-.startGameBtn{
+.loggedBtn{
     z-index: 100;
     height: 100px;
-    width: 350px;
+    width: 400px;
     border-radius: 15px;
     background-color: v.$primary-color;
     border: 3px solid;
@@ -54,10 +65,9 @@
     font-family: Impact, Charcoal, sans-serif;
     text-shadow: v.$text-shadow-stroke;
 }
-.startGameBtn:active{
+.loggedBtn:active{
     filter: contrast(0.6);
 }
-
 .logOut{
     position: absolute;
     right: 40px;
@@ -69,6 +79,7 @@
     background-repeat: no-repeat;
     z-index: 1000;
     cursor: pointer;
+   
 }
 .logOutLabel{
     color: white;
@@ -76,28 +87,5 @@
     top:48px    
 }
 .logOut:focus,.logOut:active{
-    filter: contrast(0.4);
-}
-
-.backBtn{
-    position: absolute;
-    right: 40px;
-    top: 150px;
-    height: 50px;
-    width: 45px;
-    background-image: url(../images/back.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 1000;
-    cursor: pointer;
-}
-
-.backLabel{
-    color: white;
-    position: relative;
-    top: 50px;
-    text-align: center;
-}
-.backBtn:focus,.backBtn:active{
     filter: contrast(0.4);
 }

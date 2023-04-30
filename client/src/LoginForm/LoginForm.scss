@@ -62,15 +62,23 @@
     border-radius: 15px;
     font-size: 21px;
     text-shadow: v.$text-shadow-stroke;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
 }
 
 .btnLogIn{
-    background: v.$skill-table-color;
-    border-color: v.$bg-color-3;
+    background: v.$bg-color-3;
+    border-color: v.$skill-table-color;
+}
+.btnLogIn:active{
+    background-color: v.$skill-table-color;
 }
 .btnSigUp{
-    background: v.$primary-color;
-    border-color: v.$primary-color-2;
+    background: v.$primary-color-4;
+    border-color: v.$primary-color;
+}
+.btnSigUp:active{
+    background-color: v.$primary-color;
 }
 .loginDivider{
     grid-area: bar;
@@ -110,7 +118,7 @@
 
 }
 .logWithForm{
-    border: 2px solid #818391;
+    border: 1px solid #818391;
     height: 50px;
     width: 350px;
     color: white;
@@ -121,6 +129,10 @@
     font-size: 21px;
     
 }
+.logWithForm:focus,.logWithForm:active{
+    background-color: #221616;
+}
+
 .facebook{
     background-color: #036ce5;
 }
