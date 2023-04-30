@@ -1,4 +1,10 @@
-
+import barbarian from './Adventurers/barbarian.json';
+import cleric from './Adventurers/cleric.json';
+import knight from './Adventurers/knight.json';
+import ranger from './Adventurers/ranger.json';
+import warrior from './Adventurers/warrior.json';
+import witch from './Adventurers/witch.json';
+import wizard from './Adventurers/wizard.json';
 
 
 const craftingItemType = [
@@ -44,9 +50,9 @@ function chooseRandomTypeOrder(){
     }
 }
 
-export function createOrder(typeOrder){
-    var orderJson = {item,gold,enchantment,origin}; 
-    let t_order = typeOrder == typeOrder_RANDOM ? chooseRandomTypeOrder() : typeOrder;
+function createNewCard(typeCard){
+    var orderJson = {item,gold,enchantment,origin,inProgress}; 
+    let t_order = typeCard == typeOrder_RANDOM ? chooseRandomTypeOrder() : typeCard;
     orderJson.item = craftingItemType[Math.floor(Math.random() * craftingItemType.length)];
     switch(t_order){
         case typeOrder_NO_ENCHANTMENT:
@@ -63,6 +69,7 @@ export function createOrder(typeOrder){
             orderJson.gold = Math.floor(Math.random() * 4) + 4;
             break;
     }
+    orderJson.inProgress = true;
     return JSON.stringify(orderJson);
 }
 
@@ -73,4 +80,39 @@ export function rollDices(){
     dicesJson.d10 = Math.floor(Math.random() * 10) + 1;
     dicesJson.d12 = Math.floor(Math.random() * 12) + 1;
     return JSON.stringify(dicesJson);
+}
+
+
+export function addNewCards_slipCards(listPlayers){
+    let oldListCards =[];
+    let newListCards = [];
+    listPlayers.forEach((p) =>
+        p.cards.map((c)=>oldListCards.push(c)) 
+    )
+    oldListCards.forEach((c)=>{
+        if(!c.inProgress){
+            newCard = createNewCard(typeOrder_RANDOM);
+            newListCards.push(newCard);
+        }
+        else{
+            newListCards.push(c);
+        }
+    })
+    let json = [];
+   for(i=0; i < listPlayers.length-1;i++){
+        let playerJson = {
+            nickname,
+            cards:{
+                card1,
+                card2,
+                card3
+            }
+        };
+        playerJson.nickname = listPlayers[i].nickname;
+        cards.card1 = newListCards.shift();
+        cards.card2 = newListCards.shift();
+        cards.card3 = newListCards.shift();
+        json.push(playerJson);
+   }
+
 }

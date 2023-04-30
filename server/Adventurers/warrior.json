@@ -1,0 +1,8 @@
+{
+    "adventurer" : "The Warrior",
+    "typeOrder" : "of the dwarves",
+    "req1" :"grimoire",
+    "req2" : "crossbow", 
+    "req3" : "bracers", 
+    "gold": 6
+}

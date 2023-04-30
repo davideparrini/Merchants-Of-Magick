@@ -1,0 +1,8 @@
+{
+    "adventurer" : "The Knight",
+    "typeOrder" : "of the dragons",
+    "req1" :"backpack",
+    "req2" : "sword", 
+    "req3" : "helmet", 
+    "gold": 6
+}

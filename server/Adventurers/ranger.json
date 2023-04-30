@@ -1,0 +1,8 @@
+{
+    "adventurer" : "The Ranger",
+    "typeOrder" : "of the elves",
+    "req1" :"ring",
+    "req2" : "staff", 
+    "req3" : "plate armor", 
+    "gold": 6
+}

@@ -11,7 +11,7 @@ function Card({order, isShowed, smallSize}) {
 
     function itemWrap(){
         switch(item){
-            case 'plot armor': return 'plotarmor';
+            case 'plate armor': return 'plateArmor';
             default: return item;
         }
       

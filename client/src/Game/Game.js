@@ -4,11 +4,11 @@ import './Game.scss';
 import { v4 as uuid } from 'uuid';
 
 
-import Skill from './components/Skill/Skill';
+import Skill from '../components/Skill/Skill';
 
-import Card from './components/Card/Card';
+import Card from '../components/Card/Card';
 
-import Legend from './components/Legend/Legend';
+import Legend from '../components/Legend/Legend';
 
 import titleCraftingSkills from './images/craftingSkillTitle2.png'
 import titleMagicResearch from './images/magicResearchTitle2.png'
@@ -18,42 +18,42 @@ import titleExtraDices from './images/extraDicesTitle.png'
 
 import potionImg from './images/potion4.png'
 
-import backpack from './components/Skill/skillsJson/backpack.json'
-import scroll from './components/Skill/skillsJson/scroll.json'
-import ring from './components/Skill/skillsJson/ring.json'
-import grimoire from './components/Skill/skillsJson/grimoire.json'
-import staff from './components/Skill/skillsJson/staff.json'
-import sword from './components/Skill/skillsJson/sword.json'
-import crossbow from './components/Skill/skillsJson/crossbow.json'
-import warhammer from './components/Skill/skillsJson/warhammer.json'
-import bracers from './components/Skill/skillsJson/bracers.json'
-import helmet from './components/Skill/skillsJson/helmet.json'
-import greaves from './components/Skill/skillsJson/greaves.json'
-import plotarmor from './components/Skill/skillsJson/plotarmor.json'
-import fiery from './components/Skill/skillsJson/fiery.json'
-import shocking from './components/Skill/skillsJson/shocking.json'
-import everlasting from './components/Skill/skillsJson/everlasting.json'
-import divine from './components/Skill/skillsJson/divine.json'
-import elves from './components/Skill/skillsJson/elves.json'
-import dwarves from './components/Skill/skillsJson/dwarves.json'
-import orcs from './components/Skill/skillsJson/orcs.json'
-import dragons from './components/Skill/skillsJson/dragons.json'
-import glamorPotionSupplier from './components/Skill/skillsJson/glamorPotionSupplier.json'
-import renownedAccessories from './components/Skill/skillsJson/renownedAcc.json'
-import weaponPrestige from './components/Skill/skillsJson/weaponPrestige.json'
-import eliteArmor from './components/Skill/skillsJson/eliteArmor.json'
+import backpack from '../components/Skill/skillsJson/backpack.json'
+import scroll from '../components/Skill/skillsJson/scroll.json'
+import ring from '../components/Skill/skillsJson/ring.json'
+import grimoire from '../components/Skill/skillsJson/grimoire.json'
+import staff from '../components/Skill/skillsJson/staff.json'
+import sword from '../components/Skill/skillsJson/sword.json'
+import crossbow from '../components/Skill/skillsJson/crossbow.json'
+import warhammer from '../components/Skill/skillsJson/warhammer.json'
+import bracers from '../components/Skill/skillsJson/bracers.json'
+import helmet from '../components/Skill/skillsJson/helmet.json'
+import greaves from '../components/Skill/skillsJson/greaves.json'
+import plotarmor from '../components/Skill/skillsJson/platearmor.json'
+import fiery from '../components/Skill/skillsJson/fiery.json'
+import shocking from '../components/Skill/skillsJson/shocking.json'
+import everlasting from '../components/Skill/skillsJson/everlasting.json'
+import divine from '../components/Skill/skillsJson/divine.json'
+import elves from '../components/Skill/skillsJson/elves.json'
+import dwarves from '../components/Skill/skillsJson/dwarves.json'
+import orcs from '../components/Skill/skillsJson/orcs.json'
+import dragons from '../components/Skill/skillsJson/dragons.json'
+import glamorPotionSupplier from '../components/Skill/skillsJson/glamorPotionSupplier.json'
+import renownedAccessories from '../components/Skill/skillsJson/renownedAcc.json'
+import weaponPrestige from '../components/Skill/skillsJson/weaponPrestige.json'
+import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 
 import { useEffect, useRef, useState } from 'react';
-import Timer from './components/Timer/Timer';
-import Container_dice_diceValue from './components/Container_Dice/Container_dice_diceValue';
-import ExtraDice from './components/ExtraDice/ExtraDice';
-import ForgeButton from './components/ForgeButton/ForgeButton';
-import Shop from './components/Shop/Shop';
-import ButtonTurnDone from './components/ButtonTurn/ButtonTurn';
-import Quest from './components/Quest/Quest';
-import OrdersContainer from './components/Order/OrdersContainer';
-import BoardPlayers from './components/BoardPlayers/BoardPlayers';
-import ReportPlayer from './components/ReportPlayer';
+import Timer from '../components/Timer/Timer';
+import Container_dice_diceValue from '../components/Container_Dice/Container_dice_diceValue';
+import ExtraDice from '../components/ExtraDice/ExtraDice';
+import ForgeButton from '../components/ForgeButton/ForgeButton';
+import Shop from '../components/Shop/Shop';
+import ButtonTurnDone from '../components/ButtonTurn/ButtonTurn';
+import Quest from '../components/Quest/Quest';
+import OrdersContainer from '../components/Order/OrdersContainer';
+import BoardPlayers from '../components/BoardPlayers/BoardPlayers';
+import ReportPlayer from '../components/ReportPlayer/ReportPlayer';
 
 
 function Game({data}) {
@@ -105,24 +105,24 @@ function Game({data}) {
 
     
     //TEST
-    const card1 ={item:'plot armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', onGoing:true};
-    const card2 ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', onGoing:true};
-    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', onGoing:true};
-    const card4 ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', onGoing:true};
-    const card5 ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', onGoing:true};
-    const card6 ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', onGoing:true};
+    const card1 ={item:'plate armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', inProgress:true};
+    const card2 ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', inProgress:true};
+    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', inProgress:true};
+    const card4 ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', inProgress:true};
+    const card5 ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', inProgress:true};
+    const card6 ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', inProgress:true};
 
     // const quest1 = {attribute:"wood", request: 8,gold : 8};
     // const quest2 = {attribute:"elemental", request: 8, gold : 8};
     
-    const order =  {typeOrder:"divine",sponsorName: "Warrior", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
+    const order =  {typeOrder:"divine", adventurer: "The Warrior", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
 
     const player1 ={name:"Urfrick", card1: card1,card2: card2,card3: card3};
     const player2 ={name:"Giacomino", card1: card6,card2: card5,card3: card1};
     const player3 ={name:"Brix", card1: card3,card2: card4,card3: card2};
     const listPlayers = [player1,player2,player3];
  
-    const SKILLS_TEST = ['divine','plot armor','of the dragons'];
+    const SKILLS_TEST = ['divine','plate armor','of the dragons'];
 
     //numero pozioni necessarie per usare gl'eDice
     const nPotion_extraDice1 = 0;
@@ -132,7 +132,7 @@ function Game({data}) {
     const nPotion_extraDice5 = 3;
     const nPotion_extraDice6 = 4;
     
-
+    
     
     //Ref al area dello shop, Close on out-click
     let shopRef = useRef();
@@ -150,6 +150,7 @@ function Game({data}) {
     let valueTouchedDiceRef = useRef();
 
 
+    const [endTurn,setEndTurn] = useState(false);
     //gold player
     const[goldAttuale,setGoldAttuale] = useState(0);
 
@@ -280,11 +281,6 @@ function Game({data}) {
         return hasItemSkill && hasEnchantmentSkill && hasOriginSkill ;
     }
 
-    
-
-    function timer(){
-        return 0;
-    }
 
     //predicato per vedere se un dado è stato toccato
     function isDiceTouched(){ 
@@ -428,13 +424,13 @@ function Game({data}) {
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div>
-            <div className='endTurn'>
+            <div className={`endTurn ${!endTurn ?"noVisibleEndTurn": ""}`}>
                 <div className='reportTurn'>
-                    {
-                        listPlayers.map((p,i)=>{
-                            <ReportPlayer key={i}></ReportPlayer>
+                    {/* {
+                        listPlayers.map((r,i)=>{
+                            return <ReportPlayer report={r} key={i}></ReportPlayer>;
                         })
-                    }
+                    } */}
                 </div>
             </div>
             <div className="Game">   

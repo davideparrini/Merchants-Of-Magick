@@ -4,7 +4,7 @@
         "gold": 3,
         "enchantment": "divine" ,
         "origin" :"",
-        "isShowed": true
+        "inProgress": true
         
     },
     "card2":{
@@ -12,13 +12,13 @@
         "gold": 5,
         "enchantment": "fiery" ,
         "origin" :"of the elves",
-        "isShowed": true
+        "inProgress": true
     },
     "card3":{
         "item":"plot armor",
         "gold": 7,
         "enchantment": "divine" ,
         "origin" :"of the dragons",
-        "isShowed": true
+        "inProgress": true
     }
 }

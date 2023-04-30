@@ -1,0 +1,155 @@
+@use '../../variables' as v;
+.LoginForm{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+}
+.loginWrap{
+    display: grid;
+    grid-template-areas: 'form bar logwith';
+    grid-template-columns: 1fr 180px 1fr;
+    height: 60%;
+    width: 50%;
+}
+.titleLogForm{
+    position: relative;
+    right: 370px;
+    top: 70px;
+    color: #ffffff;
+    font-size: 70px;
+    font-weight: 700;
+    justify-self: flex-end;
+}
+.loginContainer{
+    grid-area: form;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 50px;
+}
+.label_field_Container{
+    width: 100%;
+}
+
+.labelLogForm{
+    color: white;
+    font-size: 20px;
+    font-weight: 600
+
+    
+}
+.fieldLogForm{
+    height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 20px;
+    padding-left: 10px;
+}
+.btnLog_SigContainer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.btnForm{
+    height: 60px;
+    width: 50%;
+    color: white;
+    border-radius: 15px;
+    font-size: 21px;
+    text-shadow: v.$text-shadow-stroke;
+}
+
+.btnLogIn{
+    background: v.$skill-table-color;
+    border-color: v.$bg-color-3;
+}
+.btnSigUp{
+    background: v.$primary-color;
+    border-color: v.$primary-color-2;
+}
+.loginDivider{
+    grid-area: bar;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}   
+.bar{
+    background: #9b9dad;
+    height: 100%;
+    width: 3px;
+    z-index: 1;
+}
+.loginOr{
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    font-size: 25px;
+    font-weight: 700;
+    border: 3px solid #9b9dad;
+    color: #c7cae0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2 ;
+    background-color: v.$bg-color;
+}
+
+.logWithFormContainer{
+    grid-area: logwith;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+}
+.logWithForm{
+    
+    height: 50px;
+    width: 350px;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 21px;
+    
+}
+.facebook{
+    background-color: #036ce5;
+}
+
+.facebook::before{
+    content: url(./facebook.png);
+    position: relative;
+    margin: 15px;
+    top: 2px;
+    
+}
+.google{
+    background-color: #ffffff;
+    color: black;
+}
+.google::before{
+    content: url(./google.png);
+    position: relative;
+    margin: 15px;
+    top: 2px;
+    
+}
+.github{
+    background: #161b22;
+
+}
+.github::before{
+    content: url(./github.png);
+    position: relative;
+    margin: 15px;
+    top: 2px;
+    
+}

@@ -1,0 +1,20 @@
+.Lobby{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.containerLobbyPlayers{
+    width: 400px;
+    height: 400px;
+    border-radius: 15px;
+    
+    background-color: #414141;
+}
+
+.btnStartGame{
+    
+}

@@ -42,10 +42,10 @@ function BoardPlayers({listPlayers}) {
             <div className='containerCards_BP'>
                 <div className='containerCard1_BP'>
                     <div className={`${index === 0 ? 'nextCard visible' : 'nextCard no-visible'}`}>NEXT CARD</div>
-                    <Card isShowed={playerShowed.card1.onGoing} order={playerShowed.card1} smallSize={true}/>
+                    <Card isShowed={playerShowed.card1.inProgress} order={playerShowed.card1} smallSize={true}/>
                 </div>
-                <Card isShowed={playerShowed.card2.onGoing} order={playerShowed.card2} smallSize={true}/>
-                <Card isShowed={playerShowed.card3.onGoing} order={playerShowed.card3} smallSize={true}/>
+                <Card isShowed={playerShowed.card2.inProgress} order={playerShowed.card2} smallSize={true}/>
+                <Card isShowed={playerShowed.card3.inProgress} order={playerShowed.card3} smallSize={true}/>
             </div>
             
         </div>

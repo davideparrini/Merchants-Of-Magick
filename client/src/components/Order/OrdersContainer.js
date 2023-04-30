@@ -15,15 +15,15 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
     
     useEffect(()=>{
         if(checkOrderRequest(order.req1) && !orderDone1) {
-            setNOrderDone(nOrderDone+1);
+            setNOrderDone((n)=>(n+1));
             setOrderDone1(true);
         }
         if(checkOrderRequest(order.req2) && !orderDone2) {
-            setNOrderDone(nOrderDone+1);
+            setNOrderDone((n)=>(n+1));
             setOrderDone2(true);
         }
         if(checkOrderRequest(order.req3) && !orderDone3) {
-            setNOrderDone(nOrderDone+1);
+            setNOrderDone((n)=>(n+1));
             setOrderDone3(true);
         }
     },[skillsGained]);
@@ -46,7 +46,7 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
      
     return (
         <div className='orderCard'>
-            <div className='orderTitle'>{order.sponsorName}</div>
+            <div className='orderTitle'>{order.adventurer}</div>
             <div className ={`orderImg ${order.typeOrder}`}/>
             <div className={`orderGold ${orderDone1 && orderDone2 && orderDone3 ? 'doneOrder':'no-doneOrder'}`}>{order.gold}</div>
             

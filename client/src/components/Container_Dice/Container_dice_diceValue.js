@@ -1,5 +1,4 @@
 import React from 'react'
-import { useEffect, useRef, useState } from 'react';
 import d6img from './d6.png'
 import d8img from './d8.png'
 import d10img from './d10.png'

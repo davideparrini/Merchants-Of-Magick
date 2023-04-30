@@ -1,5 +1,5 @@
 {
- 
+    "name":"Ciccio",
     "dices":{
         "d6":6,
         "d8":2,
@@ -11,19 +11,22 @@
             "item":"sword",
             "gold": 4,
             "enchantment": "divine" , 
-            "origin":"of the dragons"
+            "origin":"of the dragons",
+            "inProgress": true
         },
         "card2":{
             "item":"grimoire",
             "gold": 3,
             "enchantment": "everlasting" , 
-            "origin":"of the dwarves"
+            "origin":"of the dwarves",
+            "inProgress": true
         },
         "card3":{
             "item":"crossbow",
             "gold": 4,
             "enchantment": "fiery" , 
-            "origin":"of the orcs"
+            "origin":"of the orcs",
+            "inProgress": true
         }
             
     },
