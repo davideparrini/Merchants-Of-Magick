@@ -1,26 +1,117 @@
 
 @use '../../variables' as  v;
 
+
+.ButtonTurn{
+    
+}
 .btnTurn{
-    width: 140px;
+    width: 150px;
     height: 90px;
     color: #fff;
     background: hsl(0, 100%, 60%);
     border-radius: 5px;
     margin: auto;
-    font-family: 'Lato', sans-serif;
     font-weight: 700;
-    line-height: 20px;
     cursor: pointer;
     text-align: center;
     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
     7px 7px 20px 0px rgba(0,0,0,.1),
     4px 4px 5px 0px rgba(0,0,0,.1);
-    text-shadow: rgb(0, 0, 0) 3px 1px 1px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-family: "Lucida Console", Monaco, monospace;
+    text-shadow: v.$text-shadow-stroke;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-  
-  
-  
+
+.btnTurn:hover{
+    opacity: 0.9;
+}
+.turnDone{
+    background:  rgb(29, 67, 150);
+    pointer-events: none;
+}
+
+.containerFinishTurnAlert{
+    position: absolute;
+    right: 200px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: 300px;
+    border-radius: 15px;
+    border: v.$border-primary-6px;
+    background: v.$bg-color-2;
+}
+
+.activeFinishTurnAlert{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 500ms ease;
+    z-index: 1000;
+}
+
+.inactiveFinishTurnAlert{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+.messageFinishTurnAlert{
+    height:  50%;
+    width: 80%;
+    background: v.$label-color;
+    color: v.$primary-color;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 10px;
+    border: v.$border-primary-4px;
+    display: flex;
+    font-family: "Lucida Console", Monaco, monospace;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap:2px;
+
+}
+.containerBtnFinishTurnAlert{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 5px;
+
+}
+
+.btnFinishTurnAlert{
+    height: 50px;
+    width: 120px;
+    border-radius: 10px;
+    border:v.$border-primary-4px;
+    color: white;
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    margin-bottom: 10px;
+}
+
+.btnFinishTurnAlert:active{
+    filter: contrast(0.7);
+}
+.btnFinishTurnAlert.yesBtn{
+    background:  rgb(29, 67, 150);
+}
+.btnFinishTurnAlert.noBtn{
+    background: #b91b1b;
+}

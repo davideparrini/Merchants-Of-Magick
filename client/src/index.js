@@ -1,20 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import Game from './Game/Game';
-import data from './data_test.json'
-import Lobby from './Lobby/Lobby';
-import LoginForm from './LoginForm/LoginForm';
-import Logged from './Logged/Logged';
+
+import App from './App';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(
     <React.StrictMode>
-        <LoginForm></LoginForm>
-        <Logged></Logged>
-        <Lobby></Lobby>
-        <Game data={data}/> 
+        <App/>
     </React.StrictMode>
 );
 

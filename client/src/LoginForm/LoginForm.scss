@@ -64,6 +64,7 @@
     text-shadow: v.$text-shadow-stroke;
     word-spacing: 3px;
     font-family: Impact, Charcoal, sans-serif;
+    cursor: pointer;
 }
 
 .btnLogIn{
@@ -127,7 +128,7 @@
     justify-content: flex-start;
     align-items: center;
     font-size: 21px;
-    
+    cursor: pointer;
 }
 .logWithForm:focus,.logWithForm:active{
     background-color: #221616;

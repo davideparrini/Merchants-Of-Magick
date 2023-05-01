@@ -1,30 +1,9 @@
 @use '../variables' as v;
 
-html{
+.Game{
     height: 100%;
     width: 100%;
 }
-#root{
-    height: 100%;
-    width: 100%;
-    user-select: none; /* supported by Chrome and Opera */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-}
-body{
-    background-image: url('./images/background6.png');
-    background-color: rgb(66, 63, 63);
-    // overflow: hidden;
-    // overscroll-behavior: none;
-    height: 100%;
-    width: 100%;
-    
-} 
-
-
-
 
 .endTurn{
     position: absolute;
@@ -48,21 +27,24 @@ body{
     width: 70%; 
 }
 
-.Game {
+.gameContainer {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer btnShop  btnTurn btnTurn containerOrderQuest containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . . . .'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . . . .';
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . btnTurn . .'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . btnTurn . .';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 3px;
-    margin: 20px;
+
     margin-top: 30px;
     
+}
+.waitStateGame{
+    pointer-events: none;
 }
 
 .upperContainer{
@@ -316,6 +298,27 @@ body{
     align-self: center;    
 }
 
+
+.exitGame{
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    height: 50px;
+    width: 50px;
+    background-image: url(../images/logOut.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    cursor: pointer;
+}
+.exitLabel{
+    color: white;
+    position: relative;
+    top:48px    
+}
+.exitGame:focus,.logOutGame:active{
+    filter: contrast(0.4);
+}
 
 // @media (max-width:1440px) {
 //     .btn-shop{

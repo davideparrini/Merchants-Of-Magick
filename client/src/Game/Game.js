@@ -55,7 +55,9 @@ import BoardPlayers from '../components/BoardPlayers/BoardPlayers';
 import ReportPlayer from '../components/ReportPlayer/ReportPlayer';
 
 
-function Game({data}) {
+const LOGGED_STATE = 'LOGGED';
+
+function Game({data,setUserState}) {
 
     
 
@@ -63,11 +65,11 @@ function Game({data}) {
 
     const DICE_PER_TURN = 2;
     const N_POTION_TEST = 5;
-    const TIMER_COUNTDOWN = 10;
+    const TIMER_COUNTDOWN = 400;
     const MAX_N_TURN = 10;
 
     //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-    const testActive = true;
+    const testActive = false;
 
 
      //lista skills crafting item
@@ -132,7 +134,9 @@ function Game({data}) {
     const nPotion_extraDice6 = 4;
     
     
-    
+    //Ref al area dello finishTurnBtn, Close on out-click
+    let finishTurnRef = useRef();
+
     //Ref al area dello shop, Close on out-click
     let shopRef = useRef();
 
@@ -150,9 +154,13 @@ function Game({data}) {
 
 
     const [endTurn,setEndTurn] = useState(false);
+
     //gold player
     const[goldAttuale,setGoldAttuale] = useState(0);
 
+    //bool openFinishTurn
+    const [openFinishTurnAlert,setOpenFinishTurnAlert] = useState(false);
+    
     //bool openLegend
     const [openLegend,setOpenLegend] = useState(false);
 
@@ -355,10 +363,7 @@ function Game({data}) {
                 setTotalPossibleDice_toUse((n)=>(n-1));
                 setExtraDiceUsedTemporarily(false);
                 setIsPlayble(true);
-
-            }
-            
-        
+            }       
         }
     }
 
@@ -369,6 +374,20 @@ function Game({data}) {
 
     
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
+
+    //FinishTurn useEffect
+    useEffect(()=>{
+        let handlerFinishTurn = (e)=>{
+            if(!finishTurnRef.current.contains(e.target)){
+                setOpenFinishTurnAlert(false);
+            }   
+        };
+        document.addEventListener("mousedown", handlerFinishTurn);
+
+        return() =>{
+            document.removeEventListener("mousedown", handlerFinishTurn);
+          }
+    });
 
     //Shop useEffect
     useEffect(()=>{
@@ -422,7 +441,15 @@ function Game({data}) {
 
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
-        <div>
+        <div className='Game'>
+            <div className='exitGame'
+                    onClick={()=>{
+                        if(window.confirm('Are you sure to leave the Game?')){
+                            setUserState(LOGGED_STATE);
+                        }
+                    }}>
+                    <label className='exitLabel'>Exit</label>
+            </div>
             <div className={`endTurn ${!endTurn ?"noVisibleEndTurn": ""}`}>
                 <div className='reportTurn'>
                     {/* {
@@ -432,7 +459,7 @@ function Game({data}) {
                     } */}
                 </div>
             </div>
-            <div className="Game">   
+            <div className={`gameContainer ${turnDone ? 'waitStateGame' :''}`}>   
                 <div className='upperContainer'>
                     <div className='containerExtraDices'>
                         <img src={titleExtraDices} alt='EXTRA DICES' className='upperContainerTitles-2' ></img>
@@ -691,7 +718,7 @@ function Game({data}) {
                 </div>
                 
                 <div className='btn-turn-container'>
-                    <ButtonTurnDone finishTurn={finishTurn}/>
+                    <ButtonTurnDone finishTurn={finishTurn} isTurnDone={turnDone} nDiceLeft_toUse={nDiceLeft_toUse}  openFinishTurnAlert={openFinishTurnAlert} setOpenFinishTurnAlert={setOpenFinishTurnAlert} refFinishturn={finishTurnRef}/>
                 </div>
                 
                 <div className='shop-container' ref={shopRef}>
