@@ -31,6 +31,7 @@ $drop-shadow-color-quest-done: #ffc401;
 .progressBarFill{
     position: relative;
     height: 100%;
+    max-width: 100%;
     background-color: v.$primary-color-4;
     border-radius: 7px;
     transition: width 0.5s ease-out;
@@ -68,7 +69,7 @@ $drop-shadow-color-quest-done: #ffc401;
 
 .goldQuest{
     background-image: url(../Card/image/gold4.png);
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     z-index: 3;
     height: 40px;

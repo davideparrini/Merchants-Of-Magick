@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import './Quest.scss'
 
-function Quest({quest,progress, setgoldAttuale}) {
+function Quest({quest,progress, goldReward , setgoldAttuale}) {
     
     useEffect(()=>{
         if(progress === quest.request){
-            setgoldAttuale((n)=>(n + quest.gold));
+            setgoldAttuale((n)=>(n + goldReward));
         }
     },[progress]);
 
@@ -16,7 +16,7 @@ function Quest({quest,progress, setgoldAttuale}) {
                 <div className= 'progressBarFill' style={{width : `${progress*(100/quest.request)}%`}}/>
             </div>
             <div className= 'questText'>{`You need ${quest.attribute} for complete the quest: ${progress}/${quest.request}`}</div>
-            <div className={`goldQuest ${progress < quest.request ? 'no-doneQuest':'doneQuest'}`}>{quest.gold}</div>
+            <div className={`goldQuest ${progress < quest.request ? 'no-doneQuest':'doneQuest'}`}>{goldReward}</div>
             
         </div>
     )

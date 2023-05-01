@@ -1,8 +1,8 @@
-import { getAuth, GoogleAuthProvider,  signInWithPopup, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, GoogleAuthProvider,  signInWithPopup, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
-import { app } from './FireBaseConfig';
+import {firebase } from './FireBaseConfig';
 
-const auth = getAuth(app);
+export const auth = getAuth(firebase);
 const provider = new GoogleAuthProvider();
 
 function createAuthConfig() {
@@ -33,6 +33,7 @@ function createAuthConfig() {
         await signOut(auth);
     }
 
+   
 
     return {
         signUp, login, googleLogin, logout

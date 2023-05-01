@@ -23,16 +23,16 @@ function Lobby({setUserState}) {
                 </div>
                 <div className='logOut' 
                     onClick={()=>{
-                        if(window.confirm('Are you sure to LogOut?')){
-                            setUserState(LOGIN_STATE);
+                        if(window.confirm('Are you sure to Log Out?')){
                             authConfig.logout();
+                            setUserState(LOGIN_STATE);  
                         }
                     }}>
                     <label className='logOutLabel'>LogOut</label>
                 </div>
                 <div className='backBtn' 
                     onClick={()=>{
-                        if(window.confirm('Are you sure to go out of the lobby?')){
+                        if(window.confirm('Are you sure to leave the lobby?')){
                             setUserState(LOGGED_STATE);
                         }
                     }}><label className='backLabel'>Back</label>

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Logged.scss'
-import { authConfig } from '../Config/authConfig';
+import { authConfig,auth } from '../Config/authConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
@@ -9,6 +10,17 @@ const GAME_STATE = 'GAME';
 
 function Logged({setUserState}) {
 
+
+    useEffect(()=>{
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                setUserState(LOGGED_STATE);
+            }
+            else{
+                setUserState(LOGIN_STATE);
+            }
+        })
+    },[setUserState]);
 
     return (
         <div className='Logged'>
@@ -29,8 +41,7 @@ function Logged({setUserState}) {
                 </div>
                 <div className='logOut' 
                     onClick={()=>{
-                        if(window.confirm('Are you sure to LogOut?')){
-                            setUserState(LOGIN_STATE);
+                        if(window.confirm('Are you sure to Log Out?')){
                             authConfig.logout();
                         }
                     }}>

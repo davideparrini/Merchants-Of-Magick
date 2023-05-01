@@ -1,5 +1,6 @@
 @use '../variables' as v;
-.LoginForm{
+
+.Login_SignUpForm{
     height: 100%;
     width: 100%;
     display: flex;
@@ -8,42 +9,42 @@
     flex-direction: column;
     gap: 50px;
 }
-.loginWrap{
+.login_SignUpFormWrap{
     display: grid;
     grid-template-areas: 'form bar logwith';
     grid-template-columns: 1fr 180px 1fr;
     height: 60%;
     width: 50%;
 }
-.titleLogForm{
+.titleLogin_SignUpForm{
     position: relative;
     right: 370px;
-    top: 70px;
+    top: 90px;
     color: #ffffff;
     font-size: 70px;
     font-weight: 700;
     justify-self: flex-end;
 }
-.loginContainer{
+.login_SignUpFormContainer{
     grid-area: form;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     row-gap: 50px;
 }
 .label_field_Container{
-    width: 100%;
+    width: 95%;
 }
 
-.labelLogForm{
+.labelLogin_SignUpForm{
     color: white;
     font-size: 20px;
     font-weight: 600
 
     
 }
-.fieldLogForm{
+.fieldLogin_SignUpForm{
     height: 50px;
     width: 100%;
     border-radius: 10px;
@@ -54,6 +55,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: 10px;
 }
 .btnForm{
     height: 60px;
@@ -65,6 +67,7 @@
     word-spacing: 3px;
     font-family: Impact, Charcoal, sans-serif;
     cursor: pointer;
+
 }
 
 .btnLogIn{
@@ -75,6 +78,7 @@
     background-color: v.$skill-table-color;
 }
 .btnSigUp{
+ 
     background: v.$primary-color-4;
     border-color: v.$primary-color;
 }

@@ -19,7 +19,7 @@ function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse,openFinishTurnAl
                 setOpenFinishTurnAlert(true);
             }else{
                 setTurnDone(true);
-                finishTurn();
+                finishTurn(turnDone);
             }
             
         }
@@ -29,7 +29,7 @@ function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse,openFinishTurnAl
             <div className='containerBtnFinishTurnAlert'>
                 <button className='btnFinishTurnAlert yesBtn' onClick={()=>{
                     setTurnDone(true);
-                    finishTurn();
+                    finishTurn(turnDone);
                     setOpenFinishTurnAlert(false);
                 }}>Yes</button>
                 <button className='btnFinishTurnAlert noBtn'onClick={()=>{

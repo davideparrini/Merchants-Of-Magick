@@ -57,6 +57,21 @@ import ReportPlayer from '../components/ReportPlayer/ReportPlayer';
 
 const LOGGED_STATE = 'LOGGED';
 
+ //Tipi dado
+ const TYPE_D6 = 'd6';
+ const TYPE_D8 = 'd8';
+ const TYPE_D10 = 'd10';
+ const TYPE_D12 = 'd12';
+
+ //Tipi dado
+ const TYPE_EXTRADICE1 = 'ed1';
+ const TYPE_EXTRADICE2 = 'ed2';
+ const TYPE_EXTRADICE3 = 'ed3';
+ const TYPE_EXTRADICE4 = 'ed4';
+ const TYPE_EXTRADICE5 = 'ed5';
+ const TYPE_EXTRADICE6 = 'ed6';
+
+
 function Game({data,setUserState}) {
 
     
@@ -65,7 +80,7 @@ function Game({data,setUserState}) {
 
     const DICE_PER_TURN = 2;
     const N_POTION_TEST = 5;
-    const TIMER_COUNTDOWN = 400;
+    const TIMER_COUNTDOWN = 300;
     const MAX_N_TURN = 10;
 
     //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
@@ -106,22 +121,24 @@ function Game({data,setUserState}) {
 
     
     //TEST
-    const card1 ={item:'plate armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', inProgress:true};
-    const card2 ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', inProgress:true};
-    const card3 ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', inProgress:true};
-    const card4 ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', inProgress:true};
-    const card5 ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', inProgress:true};
-    const card6 ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', inProgress:true};
+    const card1Es ={item:'plate armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', inProgress:true};
+    const card2Es ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', inProgress:true};
+    const card3Es ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', inProgress:true};
+    const card4Es ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', inProgress:true};
+    const card5Es ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', inProgress:true};
+    const card6Es ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', inProgress:true};
 
     // const quest1 = {attribute:"wood", request: 8,gold : 8};
     // const quest2 = {attribute:"elemental", request: 8, gold : 8};
     
     const order =  {typeOrder:"divine", adventurer: "The Warrior", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
 
-    const player1 ={name:"Urfrick", card1: card1,card2: card2,card3: card3};
-    const player2 ={name:"Giacomino", card1: card6,card2: card5,card3: card1};
-    const player3 ={name:"Brix", card1: card3,card2: card4,card3: card2};
-    const listPlayers = [player1,player2,player3];
+    const player1 ={name:"Urfrick", card1: card1Es,card2: card2Es,card3: card3Es};
+    const player2 ={name:"Giacomino", card1: card6Es,card2: card5Es,card3: card1Es};
+    const player3 ={name:"Brix", card1: card3Es,card2: card4Es,card3: card2Es};
+    
+
+    
  
     const SKILLS_TEST = ['divine','plate armor','of the dragons'];
 
@@ -171,29 +188,15 @@ function Game({data,setUserState}) {
     const [shop,setShop] = useState([]);
 
    
-    //monitor del timer, finito countDown -> true
-    const [timerEnd,setTimerEnd] = useState(false);
+
     
     //durata di un turno
-    const countdownTurn = TIMER_COUNTDOWN;
+    const [countdownTurn,setCountdownTurn] = useState(TIMER_COUNTDOWN);
 
     //numero pozioni
     const [nPotion,setNPotion] = useState(N_POTION_TEST);
 
-    //Tipi dado
-    const TYPE_D6 = 'd6';
-    const TYPE_D8 = 'd8';
-    const TYPE_D10 = 'd10';
-    const TYPE_D12 = 'd12';
-
-    //Tipi dado
-    const TYPE_EXTRADICE1 = 'ed1';
-    const TYPE_EXTRADICE2 = 'ed2';
-    const TYPE_EXTRADICE3 = 'ed3';
-    const TYPE_EXTRADICE4 = 'ed4';
-    const TYPE_EXTRADICE5 = 'ed5';
-    const TYPE_EXTRADICE6 = 'ed6';
-
+   
     //valori dei dadi
     const [d6Value,setD6Value]=useState(data.dices.d6);
     const [d8Value,setD8Value]=useState(data.dices.d8);
@@ -201,10 +204,10 @@ function Game({data,setUserState}) {
     const [d12Value,setD12Value]=useState(data.dices.d12);
 
     //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
-    const d6startValue = data.dices.d6;
-    const d8startValue = data.dices.d8;
-    const d10startValue = data.dices.d10;
-    const d12startValue = data.dices.d12;
+    let d6startValue = data.dices.d6;
+    let d8startValue = data.dices.d8;
+    let d10startValue = data.dices.d10;
+    let d12startValue = data.dices.d12;
 
     //bool se i dadi sono stati toccati, diceTouched(true) -> focused 
     const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
@@ -246,7 +249,18 @@ function Game({data,setUserState}) {
 
     const[turnDone, setTurnDone] = useState(false);
 
-   
+
+    const [listPlayers,setListPlayers] = useState([player1,player2,player3]);
+
+
+    const[quest1Reward, setQuest1Reward] = useState(data.quests.quest1.gold);
+    const[quest2Reward, setQuest2Reward] = useState(data.quests.quest2.gold);
+
+
+    const [card1,setCard1] = useState(data.cards.card1);
+    const [card2,setCard2] = useState(data.cards.card2);
+    const [card3,setCard3] = useState(data.cards.card3);
+
     //bool carta girata, showCard(false) -> carta girata
     const[showCard1,setShowCard1] = useState(true);
     const[showCard2,setShowCard2] = useState(true);
@@ -368,11 +382,28 @@ function Game({data,setUserState}) {
     }
 
 
-    function finishTurn(){
-        setTurnDone(true);
+    function finishTurn(turnDone){
+        if(!turnDone){
+            setTurnDone(true);
+            
+        }
     }
 
-    
+    function newTurn(){
+        setNTurn((n)=>(n+1));
+        setCountdownTurn(TIMER_COUNTDOWN);
+        d8startValue =22;
+        d10startValue =22;
+        d12startValue =22;
+        setNDiceLeft_toUse(2);
+        // setQuest1Reward();
+        // setQuest2Reward();
+        // setListPlayers();
+        // setCard1();
+        // setCard2();
+        // setCard3();
+
+    }
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
     //FinishTurn useEffect
@@ -597,7 +628,7 @@ function Game({data,setUserState}) {
 
 
                 <div className='card-container'>
-                    <Card order = {data.cards.card1} 
+                    <Card order = {card1} 
                         isShowed={showCard1}
                         smallSize={false}
                     />
@@ -606,11 +637,11 @@ function Game({data,setUserState}) {
                         setShowCard={setShowCard1}
                         addItemShop={addItemShop}
                         showCard={showCard1}
-                        card={data.cards.card1}
+                        card={card1}
                         setgoldAttuale={setGoldAttuale}
                     />
 
-                    <Card order = {data.cards.card2} 
+                    <Card order = {card2} 
                         isShowed={showCard2} 
                         smallSize={false}
                     />
@@ -619,11 +650,11 @@ function Game({data,setUserState}) {
                         setShowCard={setShowCard2}
                         addItemShop={addItemShop}
                         showCard={showCard2}
-                        card={data.cards.card2}
+                        card={card2}
                         setgoldAttuale={setGoldAttuale}
                     />
 
-                    <Card order = {data.cards.card3} 
+                    <Card order = {card3} 
                         isShowed={showCard3}
                         smallSize={false}
                     />
@@ -632,7 +663,7 @@ function Game({data,setUserState}) {
                         setShowCard={setShowCard3}
                         addItemShop={addItemShop}
                         showCard={showCard3}
-                        card={data.cards.card3}
+                        card={card3}
                         setgoldAttuale={setGoldAttuale}
                     />
                 </div>
@@ -709,8 +740,8 @@ function Game({data,setUserState}) {
                 </div>
                 <div className='containerOrder_Quests'>
                     <div className='container_Quests'>
-                        <Quest quest={data.quests.quest1} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
-                        <Quest quest={data.quests.quest2} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
+                        <Quest quest={data.quests.quest1} goldReward={quest1Reward} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
+                        <Quest quest={data.quests.quest2}goldReward={quest2Reward} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
                     </div>
                     <div className='container_Order'>
                         <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>

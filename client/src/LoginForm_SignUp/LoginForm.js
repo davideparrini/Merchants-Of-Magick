@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import './LoginForm.scss'
-import { authConfig } from '../Config/authConfig';
+import React, { useEffect, useState } from 'react'
+import './LoginForm_SignUp.scss'
+import { authConfig,auth } from '../Config/authConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
-
-
-
+const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
 const LOBBY_STATE = 'LOBBY';
@@ -15,32 +14,36 @@ function LoginForm({setUserState}) {
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
 
+    useEffect(()=>{
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                setUserState(LOGGED_STATE);
+            }
+            
+        })
+    },[setUserState]);
+
+    
     return (
-        <div className='LoginForm'>
-            <div className='titleLogForm'>Log In</div>
-            <div className='loginWrap'>
-                <div className='loginContainer'>
+        <div className='Login_SignUpForm'>
+            <div className='titleLogin_SignUpForm'>Log In</div>
+            <div className='login_SignUpFormWrap'>
+                <div className='login_SignUpFormContainer'>
                     <div className='label_field_Container'>
-                        <label className='labelLogForm'>Email</label>
-                        <input className='fieldLogForm' value={email} type='text' onChange={e => setEmail(e.target.value)}/>
+                        <label className='labelLogin_SignUpForm'>Email</label>
+                        <input className='fieldLogin_SignUpForm' value={email} type='text' onChange={e => setEmail(e.target.value)}/>
                     </div>
                     <div className='label_field_Container'>
-                        <label className='labelLogForm'>Password</label>
-                        <input className='fieldLogForm' value={password} type='password' onChange={e => setPassword(e.target.value)}></input>
+                        <label className='labelLogin_SignUpForm'>Password</label>
+                        <input className='fieldLogin_SignUpForm' value={password} type='password' onChange={e => setPassword(e.target.value)}></input>
                     </div>
                     <div className='btnLog_SigContainer'>
                         <button className='btnForm btnLogIn'
                             onClick={()=>{
                                 authConfig.login(email,password)
-                                .then(()=> setUserState(LOGGED_STATE))
-                                // .catch((err)=>{
-                                //     if(err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found'){
-                                //         alert("email/password not correct!")
-                                //     }
-                                // })
                             }}
                         >Log In</button>
-                        <button className='btnForm btnSigUp'>Sign Up</button>
+                        <button className='btnForm btnSigUp' onClick={()=>setUserState(SIGN_UP_STATE)}>Sign Up</button>
                     </div>
                     
                 </div>
@@ -57,7 +60,7 @@ function LoginForm({setUserState}) {
                     <form className='logWithForm github'>Log In with GitHub</form>
                 </div>
             </div>
-            
+           
         </div>
     )
 }
