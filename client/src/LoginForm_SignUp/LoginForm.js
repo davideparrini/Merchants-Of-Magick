@@ -5,9 +5,7 @@ import { authConfig } from '../Config/authConfig';
 
 const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
-const LOGGED_STATE = 'LOGGED';
-const LOBBY_STATE = 'LOBBY';
-const GAME_STATE = 'GAME';
+
 
 function LoginForm({setUserState}) {
 
@@ -18,7 +16,7 @@ function LoginForm({setUserState}) {
     const requestLogin = useCallback((email, password) => authConfig.login(email,password),[]);
 
     useEffect(()=>{
-        const unsub = authConfig.onAuthStateChanged(setUserState);
+        const unsub = authConfig.onAuthStateChanged(setUserState,LOGIN_STATE);
         return ()=>{
             unsub();
         }

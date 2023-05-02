@@ -6,8 +6,6 @@ import './LoginForm_SignUp.scss'
 const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
-const LOBBY_STATE = 'LOBBY';
-const GAME_STATE = 'GAME';
 
 function SignUp({setUserState}) {
 
@@ -15,7 +13,7 @@ function SignUp({setUserState}) {
     const[password,setPassword] = useState('');
 
     useEffect(()=>{
-        const unsub = authConfig.onAuthStateChanged(setUserState);
+        const unsub = authConfig.onAuthStateChanged(setUserState,SIGN_UP_STATE);
         return ()=>{
             unsub();
         }

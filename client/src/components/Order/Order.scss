@@ -24,23 +24,25 @@ $drop-shadow-color-order-done: #ffc401;
 .orderTitle{
     position: relative;
     z-index: 3;
-    top: 20px;
-    color: v.$primary-color;
-    text-shadow: 0 -1px 4px white, 0 -2px 5px white, 0 -3px 10px white;
+    top: 10px;
+    right: 15px;
+    font-family: 'Shizuru', cursive;
+    color: white;
+    text-shadow: v.$text-shadow-primarycolor;
     font-weight: 700;
     font-size: 26px;
 }
 .orderGold{
     position: relative;
-    left: 100px;
-    bottom: 35px;
+    left: 107px;
+    bottom: 45px;
     background-image: url(../Card/image/gold4.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-clip: content-box;
     z-index: 3;
-    height: 60px;
-    width: 50px;
+    height: 55px;
+    width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;

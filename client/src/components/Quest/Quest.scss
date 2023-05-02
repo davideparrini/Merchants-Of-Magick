@@ -7,7 +7,7 @@ $drop-shadow-color-quest-done: #ffc401;
 .containerQuest{
     width: $quest-width;
     height: $quest-height;
-    background-color: v.$bg-color-1;
+    background-color: v.$bg-color-5;
     border-radius: 12px;
     border: v.$border-primary-4px;
     display: flex;
@@ -53,7 +53,7 @@ $drop-shadow-color-quest-done: #ffc401;
     font-weight: 700;
     font-size: 18px;
     color: rgb(255, 255, 255);
-    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    text-shadow: v.$text-shadow-primarycolor2;
     z-index: 100;
 }
 .questText::before{

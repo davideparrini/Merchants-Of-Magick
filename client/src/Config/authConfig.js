@@ -42,14 +42,14 @@ function createAuthConfig() {
 
    
 
-    function onAuthStateChanged(setUserState){
+    function onAuthStateChanged(setUserState,unLoggedState){
         return auth.onAuthStateChanged((user)=>{
             if(user){
                 setUserState(LOGGED_STATE);
                 console.log(user.displayName);
             }
             else {
-                setUserState(LOGIN_STATE);
+                setUserState(unLoggedState);
                 console.log(" logged out");
             }
         })
