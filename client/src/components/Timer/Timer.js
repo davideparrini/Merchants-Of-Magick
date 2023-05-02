@@ -21,9 +21,6 @@ function Timer({countdown,finishTurn, turnDone}) {
         }
     },[remainingTime,clockWork,turnDone]);
 
-    // useEffect(()=>{
-    //     setRemainingTime(countdown);
-    // },[countdown])
 
     return (
         <div className={`timer ${clockWork ? 'working' : 'noWorking'}`}>{remainingTime}</div>

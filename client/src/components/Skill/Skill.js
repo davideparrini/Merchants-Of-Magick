@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Skill.scss'
 import steelImg from './iconsAttribute/steel.png'
 import woodImg from './iconsAttribute/wood7.png'
@@ -8,12 +8,16 @@ import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 
 function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade,setFreeUpgrade, setgoldAttuale, testActive}) {
+    
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
     const[att3,setAtt3] = useState(isThereAttribute(skill.attribute3));
     const typeCraftingItem = ['Accessories','Weapons','Armor'];
 
+    const helperRef = useRef();
+    const[helperOpen,setHelperOpen] = useState(false);
+    
     //Tipi dado
     const TYPE_D6 = 'd6';
     const TYPE_D8 = 'd8';
@@ -30,6 +34,20 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
     const TYPE_WILD = 'wild';
     
     
+
+    useEffect(()=>{
+        let handlerHelper = (e)=>{
+            if(!helperRef.current.contains(e.target)){
+                setHelperOpen(false);
+            }   
+        };
+        document.addEventListener("mousedown", handlerHelper);
+
+        return() =>{
+            document.removeEventListener("mousedown", handlerHelper);
+          }
+    });
+
 
     function isThereAttribute(attValue){
         return (attValue === 0 || attValue == null);
@@ -175,6 +193,8 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
                 {skill.attribute3}
                 <div className= {getCappuccio()}>{getCappuccio()}</div>
             </button>
+            <button className={skill.typeItem === 'Charms' ? 'charmsHelper' :'charmsHelper noButton'} onClick={()=>setHelperOpen(true)}>?</button>
+            <div className={helperOpen ? 'helper' : "helper noButton"} ref={helperRef}>{skill.helperText}</div>
         </div>
     )
 }

@@ -53,9 +53,10 @@ import Quest from '../components/Quest/Quest';
 import OrdersContainer from '../components/Order/OrdersContainer';
 import BoardPlayers from '../components/BoardPlayers/BoardPlayers';
 import ReportPlayer from '../components/ReportPlayer/ReportPlayer';
+import Exit from '../components/Exit/Exit';
 
 
-const LOGGED_STATE = 'LOGGED';
+
 
  //Tipi dado
  const TYPE_D6 = 'd6';
@@ -151,14 +152,9 @@ function Game({data,setUserState}) {
     const nPotion_extraDice6 = 4;
     
     
-    //Ref al area dello finishTurnBtn, Close on out-click
-    let finishTurnRef = useRef();
+    
 
-    //Ref al area dello shop, Close on out-click
-    let shopRef = useRef();
-
-    //Ref al area della legenda, Close on out-click
-    let legendRef = useRef();
+    
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
@@ -175,21 +171,12 @@ function Game({data,setUserState}) {
     //gold player
     const[goldAttuale,setGoldAttuale] = useState(0);
 
-    //bool openFinishTurn
-    const [openFinishTurnAlert,setOpenFinishTurnAlert] = useState(false);
-    
-    //bool openLegend
-    const [openLegend,setOpenLegend] = useState(false);
-
-    //bool openShop
-    const [openShop,setOpenShop] = useState(false);
+   
 
     //lista items dentro lo shop
     const [shop,setShop] = useState([]);
 
    
-
-    
     //durata di un turno
     const [countdownTurn,setCountdownTurn] = useState(TIMER_COUNTDOWN);
 
@@ -406,49 +393,7 @@ function Game({data,setUserState}) {
     }
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
-    //FinishTurn useEffect
-    useEffect(()=>{
-        let handlerFinishTurn = (e)=>{
-            if(!finishTurnRef.current.contains(e.target)){
-                setOpenFinishTurnAlert(false);
-            }   
-        };
-        document.addEventListener("mousedown", handlerFinishTurn);
-
-        return() =>{
-            document.removeEventListener("mousedown", handlerFinishTurn);
-          }
-    });
-
-    //Shop useEffect
-    useEffect(()=>{
-        let handlerShop = (e)=>{
-            if(!shopRef.current.contains(e.target)){
-                setOpenShop(false);
-            }   
-        };
-        document.addEventListener("mousedown", handlerShop);
-
-        return() =>{
-            document.removeEventListener("mousedown", handlerShop);
-          }
-    });
-
-
-
-    //Legend useEffect
-    useEffect(()=>{
-        let handlerLegend = (e)=>{
-            if(!legendRef.current.contains(e.target)){
-                setOpenLegend(false);
-            }   
-        };
-        document.addEventListener("mousedown", handlerLegend);
-
-        return() =>{
-            document.removeEventListener("mousedown", handlerLegend);
-          }
-    });
+    
 
     //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
     useEffect(()=>{
@@ -473,14 +418,7 @@ function Game({data,setUserState}) {
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div className='Game'>
-            <div className='exitGame'
-                    onClick={()=>{
-                        if(window.confirm('Are you sure to leave the Game?')){
-                            setUserState(LOGGED_STATE);
-                        }
-                    }}>
-                    <label className='exitLabel'>Exit</label>
-            </div>
+            <Exit setUserState={setUserState}/>
             <div className={`endTurn ${!endTurn ?"noVisibleEndTurn": ""}`}>
                 <div className='reportTurn'>
                     {/* {
@@ -547,12 +485,7 @@ function Game({data,setUserState}) {
                     <div className='timer-container'><Timer countdown={countdownTurn} finishTurn={finishTurn} turnDone={turnDone}/></div>
 
                 </div>
-                <div className='legend-container' ref={legendRef}>
-                    <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
-                    <Legend openLegend={openLegend}/>
-                </div>
-
-
+                <div className='legend-container'><Legend/></div>
                 <div className='container-dices-potion'>
                     <div className='container-potion'>
                         <img src={potionImg} className='potion-img' alt='POTION'></img>
@@ -574,6 +507,7 @@ function Game({data,setUserState}) {
                             setAllDiceNoTouched(); 
                             setDiceTouchedD6(true);
                         }}
+                        
                     />
                     <ContainerDice 
                         typeDice={TYPE_D8} 
@@ -749,15 +683,11 @@ function Game({data,setUserState}) {
                 </div>
                 
                 <div className='btn-turn-container'>
-                    <ButtonTurnDone finishTurn={finishTurn} isTurnDone={turnDone} nDiceLeft_toUse={nDiceLeft_toUse}  openFinishTurnAlert={openFinishTurnAlert} setOpenFinishTurnAlert={setOpenFinishTurnAlert} refFinishturn={finishTurnRef}/>
+                    <ButtonTurnDone finishTurn={finishTurn} isTurnDone={turnDone} nDiceLeft_toUse={nDiceLeft_toUse} />
                 </div>
                 
-                <div className='shop-container' ref={shopRef}>
-                    <Shop 
-                        shop={shop}
-                        openShop={openShop}
-                        setOpenShop={setOpenShop}
-                    />
+                <div className='shop-container'>
+                    <Shop shop={shop}/>
                 </div>
             </div>
         </div>

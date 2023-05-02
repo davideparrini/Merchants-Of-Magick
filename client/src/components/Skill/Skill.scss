@@ -174,3 +174,40 @@
     animation-iteration-count: infinite;
     animation-fill-mode: both;
 }
+.charmsHelper{
+    position: relative;
+    left: 312px;
+    bottom: 31.5px;
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    background: v.$primary-color-4;
+    border: v.$border-primary-2px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.charmsHelper:active{
+    background: v.$primary-color-6;
+}
+
+.helper{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 312px;
+    border-radius: 15px;
+    border: v.$border-primary-4px;
+    background: v.$primary-color-4;
+    z-index: 20;
+    color: #FFF;
+    font-size: 18px;
+    text-shadow: v.$text-shadow-stroke;
+}

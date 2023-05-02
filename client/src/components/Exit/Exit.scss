@@ -1,0 +1,91 @@
+@use '../../variables' as v;
+
+.exitBtn{
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    height: 50px;
+    width: 50px;
+    background-image: url(../../images/logOut.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.exitLabel{
+    color: white;
+    position: relative;
+    top:48px    
+}
+.exitGame:focus,.logOutGame:active{
+    filter: contrast(0.4);
+}
+.blackBg{
+    background: rgba(0, 0, 0, 0.884);
+    position: absolute;
+    top:0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.exitWindow{
+    position: absolute;
+    background: v.$bg-color-1-2;
+    height: 300px;
+    width: 600px;
+    border-radius: 15px;
+    color: v.$bg-color-4;
+    font-size: 40px;
+    font-weight: 700;
+    text-shadow: v.$text-shadow-primarycolor;
+    border: v.$border-primary-4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.btnExitContainer{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: 60px;
+}
+.noShowedWindow{
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.btnExit{
+    height: 70px;
+    width: 150px;
+    border-radius: 15px;
+    color: v.$bg-color-4;
+    font-size: 40px;
+    font-weight: 700;
+    text-shadow: v.$text-shadow-primarycolor;
+    border: v.$border-primary-4px;
+    cursor: pointer;
+
+}
+.btnExit:active{
+    filter: brightness(0.8);
+}
+.btnExit.leaveBtn{
+    background: v.$primary-color-4-5;
+}
+.btnExit.waitLeaveBtn{
+    background: v.$primary-color-4;
+    filter: grayscale(0.8);
+    pointer-events: none;
+}
+.btnExit.cancelBtn{
+    background: v.$blue-btn;
+}

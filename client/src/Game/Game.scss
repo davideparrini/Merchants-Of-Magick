@@ -3,10 +3,15 @@
 .Game{
     height: 100%;
     width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 .endTurn{
     position: absolute;
+    top: 0px;
+    right: 0px;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.877);
@@ -278,15 +283,6 @@
     align-items: flex-end;
 }
 
-.legend-btn{
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
-    background-color: v.$primary-color;
-    color: white;
-    font-size: 30px;
-    font-weight: 550;
-}
 
 
 

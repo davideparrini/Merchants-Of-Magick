@@ -2,12 +2,14 @@
 .Logged{
     height: 100%;
     width: 100%;
-    
-   
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 .opacityLogged{
     height: 100%;
     width: 100%;
+    
     background: #000000da;
     display: flex;
     justify-content: center;
@@ -64,6 +66,7 @@
     word-spacing: 3px;
     font-family: Impact, Charcoal, sans-serif;
     text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
 }
 .loggedBtn:active{
     filter: contrast(0.6);

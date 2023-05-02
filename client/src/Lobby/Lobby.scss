@@ -2,6 +2,9 @@
 .Lobby{
     height: 100%;
     width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 .opacityLobby{
@@ -53,6 +56,7 @@
     word-spacing: 3px;
     font-family: Impact, Charcoal, sans-serif;
     text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
 }
 .startGameBtn:active{
     filter: contrast(0.6);

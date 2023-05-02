@@ -5,5 +5,7 @@
     "attribute1":4,
     "attribute2":0,
     "attribute3":0,
-    "typeItem": "Charms"
+    "typeItem": "Charms",
+    "helperText": "Gain 3 potions instead of 1 for this row"
+
 }

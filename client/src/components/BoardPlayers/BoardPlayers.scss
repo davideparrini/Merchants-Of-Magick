@@ -47,6 +47,7 @@
     font-weight: 580;
     color: antiquewhite;
     text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
 
 }
 
@@ -55,6 +56,7 @@
     border-width: 0 4px 4px 0;
     display: inline-block;
     padding: 3px;
+    cursor: pointer;
   }
 
 .shiftLeft{

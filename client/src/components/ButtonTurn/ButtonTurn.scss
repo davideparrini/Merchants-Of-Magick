@@ -31,7 +31,7 @@
     opacity: 0.9;
 }
 .turnDone{
-    background:  rgb(29, 67, 150);
+    background:  v.$blue-btn;
     pointer-events: none;
 }
 
@@ -110,7 +110,7 @@
     filter: contrast(0.7);
 }
 .btnFinishTurnAlert.yesBtn{
-    background:  rgb(29, 67, 150);
+    background:  v.$blue-btn;
 }
 .btnFinishTurnAlert.noBtn{
     background: #b91b1b;
