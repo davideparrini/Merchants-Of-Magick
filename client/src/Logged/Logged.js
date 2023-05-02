@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect} from 'react'
 import './Logged.scss'
-import { authConfig,auth } from '../Config/authConfig';
-import { onAuthStateChanged } from 'firebase/auth';
+import { authConfig } from '../Config/authConfig';
 
+
+const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
 const LOBBY_STATE = 'LOBBY';
@@ -12,15 +13,11 @@ function Logged({setUserState}) {
 
 
     useEffect(()=>{
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                setUserState(LOGGED_STATE);
-            }
-            else{
-                setUserState(LOGIN_STATE);
-            }
-        })
-    },[setUserState]);
+        const unsub = authConfig.onAuthStateChanged(setUserState);
+        return ()=>{
+            unsub();
+        }
+    },[]);
 
     return (
         <div className='Logged'>

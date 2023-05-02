@@ -1,7 +1,7 @@
 @use '../../variables' as v;
 
 $quest-height: 100px;
-$quest-width: 248px;
+$quest-width: 260px;
 $drop-shadow-color-quest-done: #ffc401;
 
 .containerQuest{
@@ -14,7 +14,7 @@ $drop-shadow-color-quest-done: #ffc401;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 83%;
+    width: $quest-width;
     margin-left: 50px;
     
 }
@@ -30,6 +30,7 @@ $drop-shadow-color-quest-done: #ffc401;
 
 .progressBarFill{
     position: relative;
+    
     height: 100%;
     max-width: 100%;
     background-color: v.$primary-color-4;

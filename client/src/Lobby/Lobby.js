@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Lobby.scss'
 import { authConfig } from '../Config/authConfig';
 
@@ -8,6 +8,9 @@ const GAME_STATE = 'GAME';
 
 
 function Lobby({setUserState}) {
+
+    
+
     return (
         <div className='Lobby'>
                 <div className='opacityLobby'>

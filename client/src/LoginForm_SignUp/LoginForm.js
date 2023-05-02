@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import './LoginForm_SignUp.scss'
-import { authConfig,auth } from '../Config/authConfig';
-import { onAuthStateChanged } from 'firebase/auth';
+import { authConfig } from '../Config/authConfig';
+
 
 const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
@@ -14,14 +14,15 @@ function LoginForm({setUserState}) {
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
 
+
+    const requestLogin = useCallback((email, password) => authConfig.login(email,password),[]);
+
     useEffect(()=>{
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                setUserState(LOGGED_STATE);
-            }
-            
-        })
-    },[setUserState]);
+        const unsub = authConfig.onAuthStateChanged(setUserState);
+        return ()=>{
+            unsub();
+        }
+    },[]);
 
     
     return (
@@ -39,11 +40,9 @@ function LoginForm({setUserState}) {
                     </div>
                     <div className='btnLog_SigContainer'>
                         <button className='btnForm btnLogIn'
-                            onClick={()=>{
-                                authConfig.login(email,password)
-                            }}
+                            onClick={()=>{requestLogin(email,password)}}
                         >Log In</button>
-                        <button className='btnForm btnSigUp' onClick={()=>setUserState(SIGN_UP_STATE)}>Sign Up</button>
+                        <button className='btnForm btnSigUp' onClick={()=>{setUserState(SIGN_UP_STATE)}}>Sign Up</button>
                     </div>
                     
                 </div>

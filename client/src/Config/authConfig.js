@@ -2,23 +2,30 @@ import { getAuth, GoogleAuthProvider,  signInWithPopup, signInWithEmailAndPasswo
 
 import {firebase } from './FireBaseConfig';
 
-export const auth = getAuth(firebase);
+const auth = getAuth(firebase);
 const provider = new GoogleAuthProvider();
+
+const SIGN_UP_STATE = 'SIGNUPFORM';
+const LOGIN_STATE = 'LOGINFORM';
+const LOGGED_STATE = 'LOGGED';
+const LOBBY_STATE = 'LOBBY';
+const GAME_STATE = 'GAME';
+
 
 function createAuthConfig() {
 
-    async  function signUp(email,pwd) {
+    async  function signUp(email,password) {
         try {
-            await createUserWithEmailAndPassword(auth, email, pwd)
+            await createUserWithEmailAndPassword(auth, email, password)
         } catch (err) {
             console.error('ERROR signUp with email and password:', err);
         }
     }
     
 
-    async function login(email, pwd) {
+    async function login(email, password) {
         try {
-            await signInWithEmailAndPassword(auth, email, pwd)
+            await signInWithEmailAndPassword(auth, email, password)
 
         } catch (err) {
             console.error('ERROR login with email and password:', err);
@@ -35,8 +42,21 @@ function createAuthConfig() {
 
    
 
+    function onAuthStateChanged(setUserState){
+        return auth.onAuthStateChanged((user)=>{
+            if(user){
+                setUserState(LOGGED_STATE);
+                console.log(user.displayName);
+            }
+            else {
+                setUserState(LOGIN_STATE);
+                console.log(" logged out");
+            }
+        })
+    }
+
     return {
-        signUp, login, googleLogin, logout
+        onAuthStateChanged,signUp, login, googleLogin, logout
     };
 }
 

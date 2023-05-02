@@ -18,7 +18,6 @@ const SIGN_UP_STATE = 'SIGNUPFORM';
 function App() {
 
     const[userState,setUserState] = useState(LOGIN_STATE);
-    const[lobbyId,setLobbyID] = useState('');
 
     function switchState(){
         switch (userState) {

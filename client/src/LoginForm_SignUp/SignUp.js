@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { authConfig,auth } from '../Config/authConfig';
+import { authConfig } from '../Config/authConfig';
 import './LoginForm_SignUp.scss'
-import { onAuthStateChanged } from 'firebase/auth';
+
 
 const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
@@ -15,13 +15,11 @@ function SignUp({setUserState}) {
     const[password,setPassword] = useState('');
 
     useEffect(()=>{
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
-                setUserState(LOGGED_STATE);
-            }
-        })
-    },[setUserState]);
-
+        const unsub = authConfig.onAuthStateChanged(setUserState);
+        return ()=>{
+            unsub();
+        }
+    },[]);
 
     return (
         <div className='Login_SignUpForm'>
