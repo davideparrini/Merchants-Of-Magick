@@ -41,7 +41,7 @@
     animation: shakeClock 1s ease-out 0;
     animation-iteration-count: infinite;
   }
-  .noWorking{
+  .no-working{
     -webkit-animation: rotate-scale-up 1s linear both;
     animation: rotate-scale-up 1s linear both;
     animation-iteration-count: 3;

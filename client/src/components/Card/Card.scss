@@ -21,7 +21,7 @@ $sizeSmall:0.7;
     z-index: 2;
 }
 
-.textCard{
+.text-card{
     display: flex;
     justify-items: center;
     align-items: center;
@@ -45,7 +45,7 @@ $sizeSmall:0.7;
     top: 3px;
 }
 
-.imgCard{
+.img-card{
     grid-area: t2;
     justify-self: center;
     align-self: center;
@@ -58,7 +58,7 @@ $sizeSmall:0.7;
     filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
 }
 
-.imgOriginCard{
+.img-origin-card{
     grid-area: imgO;
     display: flex;
     justify-content: center;
@@ -75,7 +75,7 @@ $sizeSmall:0.7;
     background-repeat: no-repeat;
 }
 
-.imgEnchantmentsCard{
+.img-enchantment-card{
     grid-area: imgE;
     height: calc(100px * $sizeNormal);
     width: calc(100px * $sizeNormal);
@@ -86,27 +86,27 @@ $sizeSmall:0.7;
 }
 
 ///////////////////////////////////SMALL VERSION//////////////////////////////////////////////
-.cardSmall{
+.card-small{
     width: calc(220px * $sizeSmall);
     height: calc(290px * $sizeSmall);
 }
 
-.textCardSmall{
+.text-card-small{
     font-size: calc(25px * $sizeSmall);
     width: 120px; 
 }
 
-.imgCardSmall{
+.img-card-small{
     width: calc(200px * $sizeSmall);
     height: calc(200px * $sizeSmall);
 }
 
-.imgOriginCardSmall{
+.img-origin-card-small{
     height: calc(100px * $sizeSmall);
     width: calc(100px * $sizeSmall);
 }
 
-.imgEnchantmentsCardSmall{
+.img-enchantment-card-small{
     height: calc(100px * $sizeSmall);
     width: calc(100px * $sizeSmall);
 }

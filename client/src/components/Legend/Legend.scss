@@ -17,7 +17,7 @@
 .legend-btn:active{
     background: v.$primary-color-2;
 }
-.boxContainerLegend{
+.box-container-legend{
     position: absolute;
     top: 100px;
     left: 240px;
@@ -25,7 +25,7 @@
     flex-direction: column;
 }
 
-.boxContainerLegend.activeLegend{
+.box-container-legend.active-legend{
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -33,7 +33,7 @@
     z-index: 1000;
 }
 
-.boxContainerLegend.inactiveLegend{
+.box-container-legend.inactive-legend{
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
@@ -41,7 +41,7 @@
 }
 
 
-.legendaAttribute{
+.legend-attributes{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -49,7 +49,7 @@
     width: 300px;
     margin-top: 2px;
 }
-.titleLegenda{
+.title-legend{
     font-family: "Ubuntu Mono", monospace;
     text-align: center;
     font-size: 26px;
@@ -66,13 +66,13 @@
     text-align: center;
     margin-top: 5px;
 }
-.rowLegendaAttribute{
+.row-legend-attribute{
     height: auto;
     width: 150px;
     display: grid;
     grid-template-areas: 
-        'attributeLegenda attributeLegenda imgAttributeLegenda'
-        'diceLegenda1 diceLegenda2 diceLegenda3';
+        'attributeLegend attributeLegend imgAttributeLegend'
+        'diceLegend1 diceLegend2 diceLegend3';
     padding: 5px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2,1fr);
@@ -82,7 +82,7 @@
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.rowLegendaItem{
+.row-legend-item{
     width: 320px;
     padding: 5px;
     background-color: rgb(224, 195, 194);
@@ -92,7 +92,7 @@
 
 }
 
-.typeItemLegenda{
+.type-item-legend{
     font-family: "Ubuntu Mono", monospace;
     font-weight: 900;
     text-align: center;
@@ -102,7 +102,7 @@
     margin: auto;
 }
 
-.itemLegenda{
+.item-legend{
     font-family: "Ubuntu Mono", monospace;
     text-align: center;
     font-weight: 700;
@@ -112,13 +112,14 @@
     margin: auto;
 }
 
-.imgLegenda{
+.img-legend{
     width: 35px;
     height: 35px;
     margin: auto;
+    
 }
-.attributeLegenda{
-    grid-area: attributeLegenda;
+.attribute-legend{
+    grid-area: attributeLegend;
     font-family: "Ubuntu Mono", monospace;
     font-weight: 700;
     text-align: center;
@@ -127,16 +128,15 @@
     text-shadow: rgb(145, 142, 142) 1px 1px 1px ;
     margin: auto;
 }
-.imgAttributeLegenda{
-    
-    grid-area: imgAttributeLegenda;
+.img-attribute-legend{
+    grid-area: imgAttributeLegend;
 }
-.diceLegenda1{
-    grid-area: diceLegenda1;
+.dice1-legenda{
+    grid-area: diceLegend1;
 }
-.diceLegenda2{
-    grid-area: diceLegenda2;
+.dice2-legenda{
+    grid-area: diceLegend2;
 }
-.diceLegenda3{
-    grid-area: diceLegenda3;
+.dice3-legenda{
+    grid-area: diceLegend3;
 }

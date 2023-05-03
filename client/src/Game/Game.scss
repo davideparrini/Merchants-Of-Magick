@@ -8,7 +8,7 @@
     right: 0px;
 }
 
-.endTurn{
+.end-turn{
     position: absolute;
     top: 0px;
     right: 0px;
@@ -21,10 +21,10 @@
     align-items: center;
 }
 
-.noVisibleEndTurn{
+.no-visible-end-turn{
     visibility: hidden;
 }
-.reportTurn{
+.report-turn{
     background-color: rgb(209, 122, 71);
     border-radius: 5px;
     z-index: 100001;
@@ -32,7 +32,7 @@
     width: 70%; 
 }
 
-.gameContainer {
+.game-container {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
     'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . containerOrderQuest containerOrderQuest .'
@@ -48,11 +48,11 @@
     margin-top: 30px;
     
 }
-.waitStateGame{
+.wait-state-game{
     pointer-events: none;
 }
 
-.upperContainer{
+.upper-container{
     grid-area: upperContainer;
     display: flex;
     flex-direction: row;
@@ -60,11 +60,11 @@
     width: 100%;
     justify-content: space-between;
 }
-.upperContainerTitles{
+.upper-container-titles{
     height: 40px;
 }
 
-.upperContainerTitles-2{
+.upper-container-titles-extra-dices{
     position: relative;
     left: 20px;
     height: 90px;
@@ -82,7 +82,7 @@
     color: #ffffff;
 }
 
-.containerExtraDices{
+.container-extra-dices{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -102,7 +102,7 @@
 }
 
 
-.containerDiceLeft{
+.container-dice-left{
     display: flex;
     flex-direction: row;
     width: max-content;
@@ -130,7 +130,7 @@
 }
 
 
-.containerTurn{
+.container-turn{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -212,20 +212,20 @@
     bottom: 50px;    
 }
 
-.containerOrder_Quests{
+.container-order-quests{
     grid-area: containerOrderQuest;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.container_Quests{
+.container-quests{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     height: 40%;
 }
-.container_Order{
+.container-order{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -251,12 +251,11 @@
     background: v.$skill-table-color;
     padding: 10px;
     margin: 5px;
-    
     border-radius: 15px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.containerTitle_Skills{
+.container-title-skills{
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -264,13 +263,13 @@
     max-height: 290px;
 }
 
-.titleSkills{
+.title-skills{
     align-self: center;
     height: 60px;
     width: 365px;
     margin-bottom: 20px;
 }
-.skillsContainer{
+.skills-container{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -293,27 +292,6 @@
     align-self: center;    
 }
 
-
-.exitGame{
-    position: absolute;
-    right: 40px;
-    bottom: 40px;
-    height: 50px;
-    width: 50px;
-    background-image: url(../images/logOut.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 1000;
-    cursor: pointer;
-}
-.exitLabel{
-    color: white;
-    position: relative;
-    top:48px    
-}
-.exitGame:focus,.logOutGame:active{
-    filter: contrast(0.4);
-}
 
 // @media (max-width:1440px) {
 //     .btn-shop{

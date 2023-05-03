@@ -8,17 +8,17 @@ const TYPE_GOLD_BIG = 'BIG';
 
 function chooseGoldSize(goldSize){
     switch(goldSize){
-        case TYPE_GOLD_SMALL: return 'smallSizeGold';
-        case TYPE_GOLD_MEDIUM: return 'mediumSizeGold';
-        case TYPE_GOLD_BIG: return 'bigSizeGold';
-        case TYPE_GOLD_X_SMALL: return 'x_smallSizeGold';
+        case TYPE_GOLD_SMALL: return 'small-size-gold';
+        case TYPE_GOLD_MEDIUM: return 'medium-size-gold';
+        case TYPE_GOLD_BIG: return 'big-size-gold';
+        case TYPE_GOLD_X_SMALL: return 'x-small-size-gold';
         default: return;
     }
 }
 
 function Gold({size,active,value}) {
     return (
-        <div className={`gold ${chooseGoldSize(size)} ${active ? '' : 'goldNoActive'}`}>{value}</div>
+        <div className={`gold ${chooseGoldSize(size)} ${active ? '' : 'gold-no-active'}`}>{value}</div>
     )
 }
 

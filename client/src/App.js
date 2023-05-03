@@ -17,7 +17,7 @@ const SIGN_UP_STATE = 'SIGNUPFORM';
 
 function App() {
 
-    const[userState,setUserState] = useState(GAME_STATE);
+    const[userState,setUserState] = useState(LOGIN_STATE);
 
     function switchState(){
         switch (userState) {

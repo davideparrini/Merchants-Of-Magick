@@ -32,16 +32,16 @@ function BoardPlayers({listPlayers}) {
     }
     
     return (
-        <div className='boardPlayers'>
-            <div className='navBar'>
-                <div className='arrow shiftLeft' onClick={onClickShiftLeft}/>
-                <div className='namePlayer'>{playerShowed.name + " (" + (index+1)+"/"+ listPlayers.length +")"}</div>
-                <div className='arrow shiftRight' onClick={onClickShiftRight}/>
+        <div className='board-players'>
+            <div className='nav-bar'>
+                <div className='arrow shift-left' onClick={onClickShiftLeft}/>
+                <div className='name-player'>{playerShowed.name + " (" + (index+1)+"/"+ listPlayers.length +")"}</div>
+                <div className='arrow shift-right' onClick={onClickShiftRight}/>
             </div>
-             <button className='findNextCard' onClick={()=>{setIndex(0); setPlayerShowed(listPlayers[0])}}>NC</button>
-            <div className='containerCards_BP'>
-                <div className='containerCard1_BP'>
-                    <div className={`${index === 0 ? 'nextCard visible' : 'nextCard no-visible'}`}>NEXT CARD</div>
+             <button className='find-next-card' onClick={()=>{setIndex(0); setPlayerShowed(listPlayers[0])}}>NC</button>
+            <div className='container-cards-BP'>
+                <div className='container-card1-BP'>
+                    <div className={`${index === 0 ? 'next-card visible' : 'next-card no-visible'}`}>NEXT CARD</div>
                     <Card isShowed={playerShowed.card1.inProgress} order={playerShowed.card1} smallSize={true}/>
                 </div>
                 <Card isShowed={playerShowed.card2.inProgress} order={playerShowed.card2} smallSize={true}/>

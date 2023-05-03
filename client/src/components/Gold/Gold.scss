@@ -24,27 +24,27 @@ $perc-size-x-small:0.6;
     color: #e0e0e0;
     filter: drop-shadow(1px 1px 3px #180202);
 }
-.goldNoActive{
+.gold-no-active{
     filter: grayscale(0.8);
 }
 
-.smallSizeGold{
+.x-small-size-gold{
+    height: calc(40px * $perc-size-x-small);
+    width: calc(40px * $perc-size-x-small);
+    font-size: calc(20px * $perc-size-x-small);;
+}
+.small-size-gold{
     height: calc(40px * $perc-size-small);
     width: calc(40px * $perc-size-small);
     font-size: calc(20px * $perc-size-small);;
 }
-.mediumSizeGold{
+.medium-size-gold{
     height: calc(40px * $perc-size-normal);
     width: calc(40px * $perc-size-normal);
     font-size: calc(18px * $perc-size-normal);;
 }
-.bigSizeGold{
+.big-size-gold{
     height: calc(40px * $perc-size-big);
     width: calc(40px * $perc-size-big);
     font-size: calc(20px * $perc-size-big);;
-}
-.x_smallSizeGold{
-    height: calc(40px * $perc-size-x-small);
-    width: calc(40px * $perc-size-x-small);
-    font-size: calc(20px * $perc-size-x-small);;
 }

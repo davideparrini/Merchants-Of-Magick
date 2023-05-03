@@ -63,26 +63,26 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
 
     function checkNoButton(attValue, boolAtt, typeAtt){
         if(attValue === 0 || attValue == null){
-            return 'noButton';
+            return 'no-button';
         }
         else{
             if(!boolAtt){
                 if((isDiceTouched() && isAttributeUpgradable(attValue,typeAtt)) || freeUpgrade){
-                    return 'numberCircle upgradable'
+                    return 'number-circle upgradable'
                 }
-                else return 'numberCircle';
+                else return 'number-circle';
             }
                 
             else {
-                return 'numberCircle upgraded';
+                return 'number-circle upgraded';
             }
         }
     }
     function checkNoImg(attValue){
         if(attValue === 0 || attValue == null){
-            return 'noImg';
+            return 'no-img';
         }
-        else return 'attributeImg';
+        else return 'attribute-img';
     }
 
    function getCappuccio(){
@@ -184,8 +184,8 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
 
     return (
         <div className= {typeCraftingItem.includes(skill.typeItem) ? 'skill crafting' : 'skill magic'}>
-            <button className={hasSkill ? 'numberCircle goldSkill' : 'numberCircle greySkill'}>{skill.gold}</button>
-            <p className='skillName'>{skill.name}</p>
+            <button className={hasSkill ? 'number-circle gold-skill' : 'number-circle grey-skill'}>{skill.gold}</button>
+            <p className='skill-name'>{skill.name}</p>
             <img src={typeCraftingItem.includes(skill.typeItem) ? steelImg : elementalImg} alt='Wood' className={checkNoImg(skill.attribute1) + ' img1'}></img>
             <button className={checkNoButton(skill.attribute1,att1,(typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL)) + ' btn1'} onClick={()=>upgradeAttribute(skill.attribute1,(typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL), setAtt1)}>
                 {skill.attribute1}
@@ -201,9 +201,9 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
                 {skill.attribute3}
                 <div className= {getCappuccio()}>{getCappuccio()}</div>
             </button>
-            <button className={skill.typeItem === 'Charms' ? 'charmsHelper' :'charmsHelper noButton'} onClick={()=>setHelperOpen(true)}>?</button>
-            <div className={helperOpen ? 'helper' : "helper noButton"} ref={helperRef}>
-                <div className={skill.name !== "glamor potion supplier" ? '':'noGoldHelper'}><Gold size={TYPE_GOLD_SMALL} active={true} value={2}/></div>
+            <button className={skill.typeItem === 'Charms' ? 'charms-helper' :'charms-helper no-button'} onClick={()=>setHelperOpen(true)}>?</button>
+            <div className={helperOpen ? 'helper' : "helper no-button"} ref={helperRef}>
+                <div className={skill.name !== "glamor potion supplier" ? '':'no-gold-helper'}><Gold size={TYPE_GOLD_SMALL} active={true} value={2}/></div>
                 {skill.helperText}
             </div>
         </div>

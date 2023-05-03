@@ -48,18 +48,18 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
 
      
     return (
-        <div className={`orderCard ${orderDone1 && orderDone2 && orderDone3 ? 'orderCardDone' : ''}`}>
-            <div className='orderTitle'>{order.adventurer}</div>
-            <div className ={`orderImg ${order.typeOrder}`}/>
-            <div className='orderGold' >
+        <div className={`order-card ${orderDone1 && orderDone2 && orderDone3 ? 'order-done' : ''}`}>
+            <div className='order-title'>{order.adventurer}</div>
+            <div className ={`order-img ${order.typeOrder}`}/>
+            <div className='order-gold' >
                 <Gold value={order.gold} size={TYPE_GOLD_MEDIUM} active={orderDone1 && orderDone2 && orderDone3}/>
             </div>
-            <div className={`requestOrder ${orderDone1 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req1}</div>
-            <div className={`requestOrder ${orderDone2 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req2}</div>
-            <div className={`requestOrder ${orderDone3 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req3}</div>
-            <div className={`rewardOrders ${nOrderDone > 0 ? 'orderDone' : ''}`}>-1st Order Completed: Gain 3 potions</div>
-            <div className={`rewardOrders ${nOrderDone > 1 ? 'orderDone' : ''}`}>-2st Order Completed: Mark any circle</div>
-            <div className={`rewardOrders ${nOrderDone > 2 ? 'orderDone' : ''}`}>-3st Order Completed: Mark any circle and get order gold</div>
+            <div className={`request-order ${orderDone1 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.req1}</div>
+            <div className={`request-order ${orderDone2 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.req2}</div>
+            <div className={`request-order ${orderDone3 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.req3}</div>
+            <div className={`reward-orders ${nOrderDone > 0 ? 'req-done' : ''}`}>-1st Order Completed: Gain 3 potions</div>
+            <div className={`reward-orders ${nOrderDone > 1 ? 'req-done' : ''}`}>-2st Order Completed: Mark any circle</div>
+            <div className={`reward-orders ${nOrderDone > 2 ? 'req-done' : ''}`}>-3st Order Completed: Mark any circle and get order gold</div>
         </div>
         
     )

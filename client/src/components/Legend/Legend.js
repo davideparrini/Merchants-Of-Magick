@@ -39,66 +39,66 @@ function Legend() {
     return (
         <div className='Legend'>
             <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
-            <div className={`boxContainerLegend ${openLegend? 'activeLegend' : 'inactiveLegend'}`} ref={legendRef}>
-                <div className='titleLegenda'>Legend</div>
-                <div className='legendaAttribute'>
-                    <div className='rowLegendaAttribute'>
-                        <p className='attributeLegenda'>Steel➔</p>
-                        <img src={steelImg}  alt='STEEL' className='imgLegenda imgAttributeLegenda'></img>
-                        <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
+            <div className={`box-container-legend ${openLegend? 'active-legend' : 'inactive-legend'}`} ref={legendRef}>
+                <div className='title-legend'>Legend</div>
+                <div className='legend-attributes'>
+                    <div className='row-legend-attribute'>
+                        <p className='attribute-legend'>Steel➔</p>
+                        <img src={steelImg}  alt='STEEL' className='img-legend img-attribute-legend'></img>
+                        <img src={d6img}  alt='D6' className='img-legend dice1-legenda'></img>
                     </div>
-                    <div className='rowLegendaAttribute'>
-                        <p className='attributeLegenda'>Wood➔</p>
-                        <img src={woodImg}  alt='WOOD'  className='imgLegenda imgAttributeLegenda'></img>
-                        <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
-                        <img src={d8img} alt='D8'  className='imgLegenda diceLegenda2'></img>
+                    <div className='row-legend-attribute'>
+                        <p className='attribute-legend'>Wood➔</p>
+                        <img src={woodImg}  alt='WOOD'  className='img-legend img-attribute-legend'></img>
+                        <img src={d6img}  alt='D6' className='img-legend dice1-legenda'></img>
+                        <img src={d8img} alt='D8'  className='img-legend dice2-legenda'></img>
                     </div>
-                    <div className='rowLegendaAttribute'>
-                        <p className='attributeLegenda'>Leather➔</p>
-                        <img src={leatherImg}  alt='LEATHER' className='imgLegenda imgAttributeLegenda'></img>
-                        <img src={d6img}  alt='D6' className='imgLegenda diceLegenda1'></img>
-                        <img src={d8img}  alt='D8'  className='imgLegenda diceLegenda2'></img>
-                        <img src={d10img}  alt='D10'  className='imgLegenda diceLegenda3'></img>
+                    <div className='row-legend-attribute'>
+                        <p className='attribute-legend'>Leather➔</p>
+                        <img src={leatherImg}  alt='LEATHER' className='img-legend img-attribute-legend'></img>
+                        <img src={d6img}  alt='D6' className='img-legend dice1-legenda'></img>
+                        <img src={d8img}  alt='D8'  className='img-legend dice2-legenda'></img>
+                        <img src={d10img}  alt='D10'  className='img-legend dice3-legenda'></img>
                     </div>
-                    <div className='rowLegendaAttribute'>
-                        <p className='attributeLegenda'>Elemental➔</p>
-                        <img src={elementalImg}  alt='ELEMENTAL' className='imgLegenda imgAttributeLegenda'></img>
-                        <img src={d8img}  alt='8'  className='imgLegenda diceLegenda1'></img>
-                        <img src={d10img} alt='D10' className='imgLegenda diceLegenda2'></img>
-                        <img src={d12img}  alt='D12' className='imgLegenda diceLegenda3'></img>
+                    <div className='row-legend-attribute'>
+                        <p className='attribute-legend'>Elemental➔</p>
+                        <img src={elementalImg}  alt='ELEMENTAL' className='img-legend img-attribute-legend'></img>
+                        <img src={d8img}  alt='8'  className='img-legend dice1-legenda'></img>
+                        <img src={d10img} alt='D10' className='img-legend dice2-legenda'></img>
+                        <img src={d12img}  alt='D12' className='img-legend dice3-legenda'></img>
                     </div>
-                    <div className='rowLegendaAttribute'>
-                        <p className='attributeLegenda'>Arcane➔</p>
-                        <img src={arcaneImg} alt='ARCANE' className='imgLegenda imgAttributeLegenda'></img>
-                        <img src={d10img} alt='D10' className='imgLegenda diceLegenda2'></img>
-                        <img src={d12img} alt='D12' className='imgLegenda diceLegenda3'></img>
+                    <div className='row-legend-attribute'>
+                        <p className='attribute-legend'>Arcane➔</p>
+                        <img src={arcaneImg} alt='ARCANE' className='img-legend img-attribute-legend'></img>
+                        <img src={d10img} alt='D10' className='img-legend dice2-legenda'></img>
+                        <img src={d12img} alt='D12' className='img-legend dice3-legenda'></img>
                     </div> 
-                    <div className='rowLegendaAttribute'>
-                        <p className='attributeLegenda'>Wild➔</p>
-                        <img src={wildImg} alt='WILD' className='imgLegenda imgAttributeLegenda'></img>
-                        <img src={d12img} alt='D12' className='imgLegenda diceLegenda3'></img>
+                    <div className='row-legend-attribute'>
+                        <p className='attribute-legend'>Wild➔</p>
+                        <img src={wildImg} alt='WILD' className='img-legend img-attribute-legend'></img>
+                        <img src={d12img} alt='D12' className='img-legend dice3-legenda'></img>
                     </div> 
                 </div>
-                <div className='rowLegendaItem'>
-                    <p className='typeItemLegenda'>Accessories:</p>
-                    <p className='itemLegenda'>-Backpack</p>
-                    <p className='itemLegenda'>-Scroll</p>
-                    <p className='itemLegenda'>-Ring</p>
-                    <p className='itemLegenda'>-Grimoire</p>
+                <div className='row-legend-item'>
+                    <p className='type-item-legend'>Accessories:</p>
+                    <p className='item-legend'>-Backpack</p>
+                    <p className='item-legend'>-Scroll</p>
+                    <p className='item-legend'>-Ring</p>
+                    <p className='item-legend'>-Grimoire</p>
                 </div>
-                <div className='rowLegendaItem'>
-                    <p className='typeItemLegenda'>Weapons:</p>
-                    <p className='itemLegenda'>-Staff</p>
-                    <p className='itemLegenda'>-Sword</p>
-                    <p className='itemLegenda'>-Crossbow</p>
-                    <p className='itemLegenda'>-Warhammer</p>
+                <div className='row-legend-item'>
+                    <p className='type-item-legend'>Weapons:</p>
+                    <p className='item-legend'>-Staff</p>
+                    <p className='item-legend'>-Sword</p>
+                    <p className='item-legend'>-Crossbow</p>
+                    <p className='item-legend'>-Warhammer</p>
                 </div>
-                <div className='rowLegendaItem'>
-                    <p className='typeItemLegenda'>Armor:</p>
-                    <p className='itemLegenda'>-Bracers</p>
-                    <p className='itemLegenda'>-Helmet</p>
-                    <p className='itemLegenda'>-Greaves</p>
-                    <p className='itemLegenda'>-Plate Armor</p>
+                <div className='row-legend-item'>
+                    <p className='type-item-legend'>Armor:</p>
+                    <p className='item-legend'>-Bracers</p>
+                    <p className='item-legend'>-Helmet</p>
+                    <p className='item-legend'>-Greaves</p>
+                    <p className='item-legend'>-Plate Armor</p>
                 </div>
             </div>
         </div>

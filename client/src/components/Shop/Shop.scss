@@ -26,13 +26,13 @@ $text_shadow_px: 1px;
 .btn-shop:active{
     filter: contrast(0.7);
 }
-.boxContainerTitleShop_shop{
+.box-container-title-shop{
     position: absolute;
     display: flex;
     flex-direction: column;
     
 }
-.boxContainerTitleShop_shop.activeShop{
+.box-container-title-shop.active-shop{
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -40,7 +40,7 @@ $text_shadow_px: 1px;
     z-index: 1000;
 }
 
-.boxContainerTitleShop_shop.inactiveShop{
+.box-container-title-shop.inactive-shop{
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
@@ -51,7 +51,7 @@ $text_shadow_px: 1px;
 
 
 
-.titleShop{
+.title-shop{
     font-family: "Ubuntu Mono", monospace;
     text-align: center;
     font-size: 26px;
@@ -100,7 +100,7 @@ $text_shadow_px: 1px;
   border-radius: 20px;
 }
 
-.itemContainer{
+.item-container{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,7 +109,7 @@ $text_shadow_px: 1px;
     width: $width_dropdownshop;
     height: 100%;
 }
-.itemShop{
+.item-shop{
     background-color: #7e6868;
     border: 2px solid v.$primary-color;
     border-radius: 8px;
@@ -128,7 +128,7 @@ $text_shadow_px: 1px;
     // text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
     text-shadow: $text_shadow_px -$text_shadow_px $text_shadow_px #000000, -$text_shadow_px -$text_shadow_px $text_shadow_px #000000,-$text_shadow_px $text_shadow_px $text_shadow_px #000000,$text_shadow_px $text_shadow_px $text_shadow_px #000000;
 }
-.itemShop::before{
+.item-shop::before{
     content: '';
     position: relative;
     right: 0px;

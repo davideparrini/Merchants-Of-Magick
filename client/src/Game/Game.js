@@ -411,8 +411,8 @@ function Game({data,setUserState}) {
     return (
         <div className='Game'>
             <Exit setUserState={setUserState}/>
-            <div className={`endTurn ${!endTurn ?"noVisibleEndTurn": ""}`}>
-                <div className='reportTurn'>
+            <div className={`end-turn ${!endTurn ?"no-visible-end-turn": ""}`}>
+                <div className='report-turn'>
                     {/* {
                         listPlayers.map((r,i)=>{
                             return <ReportPlayer report={r} key={i}></ReportPlayer>;
@@ -420,10 +420,10 @@ function Game({data,setUserState}) {
                     } */}
                 </div>
             </div>
-            <div className={`gameContainer ${turnDone ? 'waitStateGame' :''}`}>   
-                <div className='upperContainer'>
-                    <div className='containerExtraDices'>
-                        <img src={titleExtraDices} alt='EXTRA DICES' className='upperContainerTitles-2' ></img>
+            <div className={`game-container ${turnDone ? 'wait-state-game' :''}`}>   
+                <div className='upper-container'>
+                    <div className='container-extra-dices'>
+                        <img src={titleExtraDices} alt='EXTRA DICES' className='upper-container-titles-extra-dices' ></img>
                         <div className='extra-dices'>
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice1}
@@ -464,13 +464,13 @@ function Game({data,setUserState}) {
                         </div>
                     </div>
                     
-                    <div className='containerDiceLeft'>
-                        <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='upperContainerTitles' ></img>
+                    <div className='container-dice-left'>
+                        <img src={titleDiceLeft} alt='DICE LEFT TITLE' className='upper-container-titles'></img>
                         <div className='dice-left-label'>{nDiceLeft_toUse}</div>
                     </div>
                     
-                    <div className='containerTurn'>
-                        <img src={titleNTurn} alt='NTURN TITLE' className='upperContainerTitles' ></img>
+                    <div className='container-turn'>
+                        <img src={titleNTurn} alt='NTURN TITLE' className='upper-container-titles' ></img>
                         <div className='n-turn-label'>{nTurn +'/'+ MAX_N_TURN}</div>
                     </div>
                     
@@ -599,9 +599,9 @@ function Game({data,setUserState}) {
             
 
                 <div className='skills-table' ref={skillTableRef}>
-                    <div className='containerTitle_Skills'>
-                        <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='titleSkills'/>
-                        <div className='skillsContainer'>
+                    <div className='container-title-skills'>
+                        <img src={titleCraftingSkills} alt='CRAFTING SKILLS' className='title-skills'/>
+                        <div className='skills-container'>
                             {
                             skillListCraftingItem.map((s,i)=>{
                                     return (
@@ -632,9 +632,9 @@ function Game({data,setUserState}) {
                         
 
                     </div>
-                    <div className='containerTitle_Skills'>
-                        <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='titleSkills'/>
-                        <div className='skillsContainer'>
+                    <div className='container-title-skills'>
+                        <img src={titleMagicResearch} alt='MACIC RESEARCH SKILLS' className='title-skills'/>
+                        <div className='skills-container'>
                             {
                             skillListMagicResearch.map((s,i)=>{
                                     return (
@@ -664,12 +664,12 @@ function Game({data,setUserState}) {
                         </div>
                     </div>
                 </div>
-                <div className='containerOrder_Quests'>
-                    <div className='container_Quests'>
+                <div className='container-order-quests'>
+                    <div className='container-quests'>
                         <Quest quest={data.quests.quest1} goldReward={quest1Reward} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
                         <Quest quest={data.quests.quest2}goldReward={quest2Reward} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
                     </div>
-                    <div className='container_Order'>
+                    <div className='container-order'>
                         <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
                     </div>
                 </div>

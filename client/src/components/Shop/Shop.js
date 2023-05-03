@@ -27,10 +27,10 @@ function Shop({shop}) {
     return (
         <div className='shop'> 
             <button  className= 'btn-shop' onClick={()=>setOpenShop(!openShop)} ref={shopRef}/>
-            <div className={`boxContainerTitleShop_shop ${openShop? 'activeShop' : 'inactiveShop'}`} ref={shopRef}>
-                <div className='titleShop'>Shop</div>
+            <div className={`box-container-title-shop ${openShop? 'active-shop' : 'inactive-shop'}`} ref={shopRef}>
+                <div className='title-shop'>Shop</div>
                 <div className='dropdown-shop'>
-                    <div className='itemContainer'>
+                    <div className='item-container'>
                         {shop.map((item,i) => (
                             <ItemShop item={item} key={i}/>
                         ))}

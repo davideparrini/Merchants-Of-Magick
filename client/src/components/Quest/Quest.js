@@ -14,13 +14,13 @@ function Quest({quest,progress, goldReward , setgoldAttuale}) {
     },[progress]);
 
     return (
-        <div className={`containerQuest ${progress === quest.request ? 'questDone' : ''}`}>
+        <div className={`container-quest ${progress === quest.request ? 'quest-done' : ''}`}>
             {/* <div className= "titleQuest" >Quest</div> */}
-            <div className= 'progressBarEmpty'>
-                <div className= 'progressBarFill' style={{width : `${progress*(100/quest.request)}%`}}/>
+            <div className= 'progress-bar-empty'>
+                <div className= 'progress-bar-fill' style={{width : `${progress*(100/quest.request)}%`}}/>
             </div>
-            <div className= 'questText'>{`You need ${quest.attribute} for complete the quest: ${progress}/${quest.request}`}</div>
-            <div className='goldContainerQuest'>
+            <div className= 'quest-text'>{`You need ${quest.attribute} for complete the quest: ${progress}/${quest.request}`}</div>
+            <div className='gold-container-quest'>
                 <Gold active={progress === quest.request} size={TYPE_GOLD_MEDIUM} value={goldReward}/>
             </div>
             

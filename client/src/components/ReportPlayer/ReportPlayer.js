@@ -7,11 +7,11 @@ function ReportPlayer({report}) {
     const listItems = report.itemShop; 
 
     return (
-        <div className='containerReport'>
-            <div className='namePlayerReport'>{namePlayerReport}</div>
+        <div className='container-report'>
+            <div className='name-player-report'>{namePlayerReport}</div>
             {
                 listSkills.map((s,i)=>{
-                    return <div className='skillReport' key={i}/>;
+                    return <div className='skill-report' key={i}/>;
                 })
             }
             {

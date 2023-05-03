@@ -2,10 +2,8 @@
 @use '../../variables' as  v;
 
 
-.ButtonTurn{
-    
-}
-.btnTurn{
+
+.btn-turn{
     width: 150px;
     height: 90px;
     color: #fff;
@@ -27,15 +25,15 @@
     align-items: center;
 }
 
-.btnTurn:hover{
+.btn-turn:hover{
     opacity: 0.9;
 }
-.turnDone{
+.turn-done{
     background:  v.$blue-btn;
     pointer-events: none;
 }
 
-.containerFinishTurnAlert{
+.container-finish-turn-alert{
     position: absolute;
     right: 200px;
     bottom: 100px;
@@ -50,7 +48,7 @@
     background: v.$bg-color-2;
 }
 
-.activeFinishTurnAlert{
+.active-finish-turn-alert{
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -58,14 +56,14 @@
     z-index: 1000;
 }
 
-.inactiveFinishTurnAlert{
+.inactive-finish-turn-alert{
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
     transition: 500ms ease;
 }
 
-.messageFinishTurnAlert{
+.message-finish-turn-alert{
     height:  50%;
     width: 80%;
     background: v.$label-color;
@@ -85,7 +83,7 @@
     gap:2px;
 
 }
-.containerBtnFinishTurnAlert{
+.container-btn-finish-turn-alert{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -93,7 +91,7 @@
 
 }
 
-.btnFinishTurnAlert{
+.btn-finish-turn-alert{
     height: 50px;
     width: 120px;
     border-radius: 10px;
@@ -106,12 +104,12 @@
     margin-bottom: 10px;
 }
 
-.btnFinishTurnAlert:active{
+.btn-finish-turn-alert:active{
     filter: contrast(0.7);
 }
-.btnFinishTurnAlert.yesBtn{
+.btn-finish-turn-alert.yes-btn{
     background:  v.$blue-btn;
 }
-.btnFinishTurnAlert.noBtn{
+.btn-finish-turn-alert.no-btn{
     background: #b91b1b;
 }

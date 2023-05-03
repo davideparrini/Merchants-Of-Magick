@@ -1,6 +1,6 @@
 @use '../../variables' as v;
 
-.boardPlayers{
+.board-players{
     background-color: v.$card-color--2;
     border-radius: 15px;
     border: v.$border-primary-4px;
@@ -11,7 +11,7 @@
     justify-content: space-between;
 }
 
-.navBar{
+.nav-bar{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -24,7 +24,7 @@
     background: v.$card-color--3;
     color: aliceblue;
 }
-.namePlayer{
+.name-player{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,7 +38,7 @@
     text-shadow: v.$text-shadow-stroke;
     text-transform: capitalize;
 }
-.findNextCard{
+.find-next-card{
     position: absolute;
     bottom: 258px;
     right: 10px;
@@ -54,7 +54,7 @@
     cursor: pointer;
 
 }
-.findNextCard:active{
+.find-next-card:active{
     filter: brightness(0.5);
 }
 
@@ -66,25 +66,25 @@
     cursor: pointer;
   }
 
-.shiftLeft{
+.shift-left{
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
 }
 
-.shiftRight{
+.shift-right{
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }
 
-.shiftLeft:hover{
+.shift-left:hover{
     transform: scale(1.2) rotate(135deg);
     -webkit-transform: scale(1.2) rotate(135deg);
 }
-.shiftRight:hover{
+.shift-right:hover{
     transform: scale(1.2) rotate(-45deg);
     -webkit-transform: scale(1.2) rotate(-45deg);
 }
-.containerCards_BP{
+.container-cards-BP{
     height: 80%;
     display: flex;
     flex-direction: row;
@@ -93,14 +93,14 @@
     align-items: flex-end;
     margin-bottom: 10px;
 }
-.containerCard1_BP{
+.container-card1-BP{
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     
 }
-.nextCard{
+.next-card{
     position: relative;
     top: 12px;
     height: 30px;

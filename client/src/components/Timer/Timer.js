@@ -23,7 +23,7 @@ function Timer({countdown,finishTurn, turnDone}) {
 
 
     return (
-        <div className={`timer ${clockWork ? 'working' : 'noWorking'}`}>{remainingTime}</div>
+        <div className={`timer ${clockWork ? 'working' : 'no-working'}`}>{remainingTime}</div>
     )
 }
 

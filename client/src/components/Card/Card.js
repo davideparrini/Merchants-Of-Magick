@@ -35,16 +35,16 @@ function Card({order, isShowed, smallSize}) {
 
     return (
         
-        <div className={`card ${smallSize ? "cardSmall": ""} ${isShowed ? "showed" : "no-showed"}`}>
-        <div className={`textCard ${smallSize ? "textCardSmall": ''}  t1 ${isShowed ? "" : "no-visible"}`}> {enchantment}</div>
-        <div className={`textCard ${smallSize ? 'textCardSmall': ''}  t2 ${isShowed ? "" : "no-visible"}`} >{item}</div>
-        <div className={`textCard ${smallSize ? 'textCardSmall': ''}  t3 ${isShowed ? "" : "no-visible"}`}>{origin}</div>
+        <div className={`card ${smallSize ? "card-small": ""} ${isShowed ? "showed" : "no-showed"}`}>
+        <div className={`text-card ${smallSize ? "text-card-small": ''}  t1 ${isShowed ? "" : "no-visible"}`}> {enchantment}</div>
+        <div className={`text-card ${smallSize ? 'text-card-small': ''}  t2 ${isShowed ? "" : "no-visible"}`} >{item}</div>
+        <div className={`text-card ${smallSize ? 'text-card-small': ''}  t3 ${isShowed ? "" : "no-visible"}`}>{origin}</div>
         <div className={`goldContainerCard ${isShowed ? "" : "no-visible"}`}>
             <Gold size={smallSize ?TYPE_GOLD_SMALL : TYPE_GOLD_BIG} active={true} value={gold}/>
         </div>
-        <div className={`imgCard ${smallSize ? 'imgCardSmall': ''}  ${itemWrap()}  ${isShowed ? "" : "no-visible"}`}></div>
-        <div className={`imgEnchantmentsCard ${smallSize ? 'imgEnchantmentsCardSmall': ''}  ${enchantment}  ${isShowed ? "" : "no-visible"}`}></div>
-        <div className={`imgOriginCard ${smallSize ? 'imgOriginCardSmall': ''} ${orginWrap()}  ${isShowed ? "" : "no-visible"}`}></div>
+        <div className={`img-card ${smallSize ? 'img-card-small': ''}  ${itemWrap()}  ${isShowed ? "" : "no-visible"}`}></div>
+        <div className={`img-enchantment-card ${smallSize ? 'img-enchantment-card-small': ''}  ${enchantment}  ${isShowed ? "" : "no-visible"}`}></div>
+        <div className={`img-origin-card ${smallSize ? 'img-origin-card-small': ''} ${orginWrap()}  ${isShowed ? "" : "no-visible"}`}></div>
     </div>
     )
 }

@@ -34,33 +34,33 @@ function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse}) {
     },[isTurnDone]);
 
     return (
-        <div className='ButtonTurn'>
-            <button className={`btnTurn ${turnDone ? 'turnDone' : ''}`} 
-        onClick={()=>{ 
-            if(nDiceLeft_toUse > 0){
-                setOpenFinishTurnAlert(true);
-            }else{
-                setTurnDone(true);
-                finishTurn(turnDone);
-            }
-            
-        }
-        }>{!turnDone ? "Finish Turn" : "Waiting for others players..." }</button>
-        <div className={`containerFinishTurnAlert ${openFinishTurnAlert? 'activeFinishTurnAlert' : 'inactiveFinishTurnAlert'}`} ref={finishTurnRef}>
-            <div className='messageFinishTurnAlert'>Are you sure to finish your turn? <br/>You have more dice to play!</div>
-            <div className='containerBtnFinishTurnAlert'>
-                <button className='btnFinishTurnAlert yesBtn' onClick={()=>{
+        <>
+            <button className={`btn-turn ${turnDone ? 'turn-done' : ''}`} 
+                onClick={()=>{ 
+                if(nDiceLeft_toUse > 0){
+                    setOpenFinishTurnAlert(true);
+                }else{
                     setTurnDone(true);
                     finishTurn(turnDone);
-                    setOpenFinishTurnAlert(false);
-                }}>Yes</button>
-                <button className='btnFinishTurnAlert noBtn'onClick={()=>{
-                    setOpenFinishTurnAlert(false);
-                }}>No</button>
+                }
+                
+            }
+            }>{!turnDone ? "Finish Turn" : "Waiting for others players..." }</button>
+            <div className={`container-finish-turn-alert ${openFinishTurnAlert? 'active-finish-turn-alert' : 'inactive-finish-turn-alert'}`} ref={finishTurnRef}>
+                <div className='message-finish-turn-alert'>Are you sure to finish your turn? <br/>You have more dice to play!</div>
+                <div className='container-btn-finish-turn-alert'>
+                    <button className='btn-finish-turn-alert yes-btn' onClick={()=>{
+                        setTurnDone(true);
+                        finishTurn(turnDone);
+                        setOpenFinishTurnAlert(false);
+                    }}>Yes</button>
+                    <button className='btn-finish-turn-alert no-btn'onClick={()=>{
+                        setOpenFinishTurnAlert(false);
+                    }}>No</button>
+                </div>
+                
             </div>
-            
-        </div>
-        </div>
+        </>
         )
 }
 

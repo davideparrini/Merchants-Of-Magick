@@ -24,14 +24,14 @@ function Exit({setUserState}) {
 
     return (
         <>            
-            <div className='exitBtn' onClick={()=>{setExitWindowOpen(true); setRemainingTime(5)}}>
-                <label className='exitLabel'>Exit</label>
+            <div className='exit-btn' onClick={()=>{setExitWindowOpen(true); setRemainingTime(5)}}>
+                <label className='exit-label'>Exit</label>
             </div>
-            <div className={exitWindowOpen ? 'blackBg': 'noShowedWindow'}>
-                <div className='exitWindow'>Are you sure to leave the game?
-                    <div className='btnExitContainer'>
-                        <button className={remainingTime > 0 ? 'btnExit waitLeaveBtn' :'btnExit leaveBtn' } onClick={()=>setUserState(LOGGED_STATE)} >{remainingTime > 0 ? remainingTime : 'Leave'}</button>
-                        <button className='btnExit cancelBtn' onClick={()=>setExitWindowOpen(false)}>No</button>
+            <div className={exitWindowOpen ? 'black-bg': 'no-showed-window'}>
+                <div className='exit-window'>Are you sure to leave the game?
+                    <div className='btn-exit-container'>
+                        <button className={remainingTime > 0 ? 'btn-exit wait-leave-btn' :'btn-exit leave-btn' } onClick={()=>setUserState(LOGGED_STATE)} >{remainingTime > 0 ? remainingTime : 'Leave'}</button>
+                        <button className='btn-exit cancel-btn' onClick={()=>setExitWindowOpen(false)}>No</button>
                     </div>      
                 </div>
             </div>

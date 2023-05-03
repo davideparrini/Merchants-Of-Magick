@@ -3,7 +3,7 @@
 $quest-height: 85px;
 
 
-.containerQuest{
+.container-quest{
     width: v.$width-order_quest;
     height: $quest-height;
     background-color: v.$bg-color-5;
@@ -15,11 +15,11 @@ $quest-height: 85px;
     align-items: center;
  
 }
-.questDone{
+.questD-done{
     filter: v.$drop-show-order-quest-Done;
 }
 
-.progressBarEmpty{
+.progress-bar-empty{
     position: absolute;
     height: $quest-height;
     width: v.$width-order_quest;
@@ -27,7 +27,7 @@ $quest-height: 85px;
     
 }
 
-.progressBarFill{
+.progress-bar-fill{
     position: relative;
     height: 100%;
     max-width: 100%;
@@ -37,7 +37,7 @@ $quest-height: 85px;
     
 }
 
-.questText{
+.quest-text{
 
     display: flex;
     justify-content: center;
@@ -54,7 +54,7 @@ $quest-height: 85px;
     text-shadow: v.$text-shadow-primarycolor2;
     z-index: 100;
 }
-.questText::before{
+.quest-text::before{
     content: '';
     position: relative;
     left: 4px;
@@ -66,7 +66,7 @@ $quest-height: 85px;
     z-index: 100;
 }
 
-.goldContainerQuest{
+.gold-container-quest{
     position: relative;
     right:10px;
 }

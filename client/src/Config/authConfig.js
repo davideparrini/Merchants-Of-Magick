@@ -29,6 +29,7 @@ function createAuthConfig() {
             console.error('ERROR setting username:', err);
         }
     }
+
     async function login(email, password) {
         try {
             await signInWithEmailAndPassword(auth, email, password)
@@ -49,14 +50,15 @@ function createAuthConfig() {
    
 
     function onAuthStateChanged(setUserState,unLoggedState){
-        return auth.onAuthStateChanged((user)=>{
+        return auth.onAuthStateChanged( (user)=>{
             if(user){
                 setUserState(LOGGED_STATE);
                 console.log(user.displayName);
+                
             }
             else {
                 setUserState(unLoggedState);
-                console.log(" logged out");
+                console.log("logged out");
             }
         })
     }
