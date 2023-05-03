@@ -8,7 +8,7 @@ $text_shadow_px: 1px;
 .shop{
     background-color: #ffffff;
     border-radius: 50%;
-    border: 6px solid v.$primary-color; 
+    
 }
 
 
@@ -17,14 +17,15 @@ $text_shadow_px: 1px;
     background: url('./shop.png');
     background-size: contain;
     border-radius: 50%;
+    border: v.$border-primary-6px;
     height: 80px;
     width: 80px;
     cursor: pointer;
 }
-.btn-shop:hover{
-    opacity: 0.9;
-}
 
+.btn-shop:active{
+    filter: contrast(0.7);
+}
 .boxContainerTitleShop_shop{
     position: absolute;
     display: flex;
@@ -82,7 +83,21 @@ $text_shadow_px: 1px;
     overflow: scroll;
     scrollbar-width: thin;
     scrollbar-color: v.$primary-color grey;
+    overflow-x: hidden
     
+}
+.dropdown-shop::-webkit-scrollbar {
+    width: 10px;
+  }
+
+
+.dropdown-shop::-webkit-scrollbar-thumb {
+    background: #242220;
+    border-radius: 20px;
+}
+.dropdown-shop::-webkit-scrollbar-track {
+  background: #242220;
+  border-radius: 20px;
 }
 
 .itemContainer{
@@ -102,7 +117,7 @@ $text_shadow_px: 1px;
     width: $width_dropdownshop;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     font-variant: small-caps;
     text-transform: capitalize;
@@ -116,27 +131,9 @@ $text_shadow_px: 1px;
 .itemShop::before{
     content: '';
     position: relative;
-    right: 15px;
+    right: 0px;
     height: 10px;
     width: 10px;
     background: v.$primary-color;
     transform: rotate(45deg);
-}
-.goldShop{
-    background-image: url(../Card/image/gold4.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-clip: content-box;
-    z-index: 3;
-    height: 30px;
-    width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
-    text-shadow: 1px -1px 1px #000000, -1px -1px 1px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: small;
-    color: #e0e0e0;
 }

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './Lobby.scss'
-import { authConfig } from '../Config/authConfig';
+import { authConfig,auth } from '../Config/authConfig';
+import Gold from '../components/Gold/Gold';
 
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
@@ -13,9 +14,11 @@ function Lobby({setUserState}) {
 
     return (
         <div className='Lobby'>
-                <div className='opacityLobby'>
+            <div className='opacityLobby'>
                 <div className='containerLobby'>
-                    <div className='containerPlayersLobby'/>
+                    <div className='containerPlayersLobby'>
+                        
+                        </div>
                     <div className='containerBtnLobby'>
                         <button className='startGameBtn'
                             onClick={()=>{
@@ -40,8 +43,8 @@ function Lobby({setUserState}) {
                         }
                     }}><label className='backLabel'>Back</label>
                 </div>
-               
-            </div>
+            </div>  
+            <div className='usernameLog'>Logged as:{auth.currentUser.displayName}</div>
         </div>
         
     )

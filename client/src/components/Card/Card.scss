@@ -38,28 +38,13 @@ $sizeSmall:0.7;
     margin-top: 20px;
     z-index: 4;
 }
-
-.goldItem{
+.goldContainerCard{
     grid-area: goldItem;
-    background-image: url(./image/gold4.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-clip: content-box;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
-    z-index: 3;
-    height: calc(60px * $sizeNormal);
-    width: calc(60px * $sizeNormal);
-    display: flex;
-    justify-self: flex-end;
-    align-self: flex-start;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: calc(24px * $sizeNormal);
-    color: #e0e0e0;
+    position: relative;
+    left: 25px;
+    top: 3px;
 }
+
 .imgCard{
     grid-area: t2;
     justify-self: center;
@@ -104,104 +89,26 @@ $sizeSmall:0.7;
 .cardSmall{
     width: calc(220px * $sizeSmall);
     height: calc(290px * $sizeSmall);
-    display: grid;
-    grid-template-columns: 40% 20% 40%;
-    grid-template-rows: 30% 40% 30%;
-    grid-template-areas: 
-        'imgE t1 goldItem'
-        '. t2 .'
-        '. t3 imgO';
-
-    /* background: #aa683b; */
-    
-    
-    border: 5px solid v.$primary-color;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
-    
 }
-
-
 
 .textCardSmall{
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    justify-self: center;
-    font-family: Georgia, serif;
     font-size: calc(25px * $sizeSmall);
-    color: #ffffff;
-    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
-    font-weight: 700;
-    font-variant: small-caps;
-    width: 120px;
-    margin-top: 20px;
-    z-index: 4;
+    width: 120px; 
 }
 
-
-.goldItemSmall{
-    grid-area: goldItem;
-    background-image: url(./image/gold4.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-clip: content-box;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
-    z-index: 3;
-    height: calc(60px * $sizeSmall);
-    width: calc(60px * $sizeSmall);
-    display: flex;
-    justify-self: flex-end;
-    align-self: flex-start;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: calc(24px * $sizeSmall);
-    color: #e0e0e0;
-}
 .imgCardSmall{
-    grid-area: t2;
-    justify-self: center;
-    align-self: center;
     width: calc(200px * $sizeSmall);
     height: calc(200px * $sizeSmall);
-    opacity: 0.9;
-    z-index: 2;
-    background-size: contain;
-    background-repeat: no-repeat;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
 }
 
 .imgOriginCardSmall{
-    grid-area: imgO;
-    display: flex;
-    justify-content: center;
-    justify-self: center;
-    align-self: center;
-    justify-items: center;
-    position: relative;
-    bottom: 5px;
     height: calc(100px * $sizeSmall);
     width: calc(100px * $sizeSmall);
-    opacity: 0.8;
-    z-index: 1;
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 .imgEnchantmentsCardSmall{
-    grid-area: imgE;
     height: calc(100px * $sizeSmall);
     width: calc(100px * $sizeSmall);
-    opacity: 1;
-    z-index: 1;
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 ///////////////////////

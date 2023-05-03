@@ -35,11 +35,11 @@
 .gameContainer {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . containerOrderQuest containerOrderQuest containerOrderQuest .'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
-    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest containerOrderQuest .'
-    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . btnTurn . .'
+    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
+    'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . containerOrderQuest containerOrderQuest .'
     'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . btnTurn . .';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
@@ -216,20 +216,22 @@
     grid-area: containerOrderQuest;
     display: flex;
     flex-direction: column;
-    justify-content: space-b;
+    justify-content: space-between;
 }
 
 .container_Quests{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 50%;
+    height: 40%;
 }
 .container_Order{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 50%;
+    align-items: flex-start;
+    height: 60%;
+    margin-left: 28px;
 }
 .players-table{
     grid-area: tablePlayers;
@@ -249,6 +251,7 @@
     background: v.$skill-table-color;
     padding: 10px;
     margin: 5px;
+    
     border-radius: 15px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
@@ -282,10 +285,6 @@
     justify-content: center;
     align-items: flex-end;
 }
-
-
-
-
 
 
 .shop-container{

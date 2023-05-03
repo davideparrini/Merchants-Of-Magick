@@ -6,6 +6,27 @@ import leatherImg from './iconsAttribute/leather.png'
 import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
+import Gold from '../Gold/Gold'
+
+
+const TYPE_GOLD_SMALL = 'SMALL';
+const TYPE_GOLD_MEDIUM = 'MEDIUM';
+const TYPE_GOLD_BIG = 'BIG';
+
+//Tipi dado
+const TYPE_D6 = 'd6';
+const TYPE_D8 = 'd8';
+const TYPE_D10 = 'd10';
+const TYPE_D12 = 'd12';
+
+//Tipi attributi
+
+const TYPE_STEEL = 'steel';
+const TYPE_WOOD = 'wood';
+const TYPE_LEATHER = 'leather';
+const TYPE_ELEMENTAL = 'elemental';
+const TYPE_ARCANE = 'arcane';
+const TYPE_WILD = 'wild';
 
 function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade,setFreeUpgrade, setgoldAttuale, testActive}) {
     
@@ -18,20 +39,7 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
     const helperRef = useRef();
     const[helperOpen,setHelperOpen] = useState(false);
     
-    //Tipi dado
-    const TYPE_D6 = 'd6';
-    const TYPE_D8 = 'd8';
-    const TYPE_D10 = 'd10';
-    const TYPE_D12 = 'd12';
-
-    //Tipi attributi
-
-    const TYPE_STEEL = 'steel';
-    const TYPE_WOOD = 'wood';
-    const TYPE_LEATHER = 'leather';
-    const TYPE_ELEMENTAL = 'elemental';
-    const TYPE_ARCANE = 'arcane';
-    const TYPE_WILD = 'wild';
+    
     
     
 
@@ -176,7 +184,7 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
 
     return (
         <div className= {typeCraftingItem.includes(skill.typeItem) ? 'skill crafting' : 'skill magic'}>
-            <button className={hasSkill ? 'numberCircle gold' : 'numberCircle grey'}>{skill.gold}</button>
+            <button className={hasSkill ? 'numberCircle goldSkill' : 'numberCircle greySkill'}>{skill.gold}</button>
             <p className='skillName'>{skill.name}</p>
             <img src={typeCraftingItem.includes(skill.typeItem) ? steelImg : elementalImg} alt='Wood' className={checkNoImg(skill.attribute1) + ' img1'}></img>
             <button className={checkNoButton(skill.attribute1,att1,(typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL)) + ' btn1'} onClick={()=>upgradeAttribute(skill.attribute1,(typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL), setAtt1)}>
@@ -194,7 +202,10 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
                 <div className= {getCappuccio()}>{getCappuccio()}</div>
             </button>
             <button className={skill.typeItem === 'Charms' ? 'charmsHelper' :'charmsHelper noButton'} onClick={()=>setHelperOpen(true)}>?</button>
-            <div className={helperOpen ? 'helper' : "helper noButton"} ref={helperRef}>{skill.helperText}</div>
+            <div className={helperOpen ? 'helper' : "helper noButton"} ref={helperRef}>
+                <div className={skill.name !== "glamor potion supplier" ? '':'noGoldHelper'}><Gold size={TYPE_GOLD_SMALL} active={true} value={2}/></div>
+                {skill.helperText}
+            </div>
         </div>
     )
 }

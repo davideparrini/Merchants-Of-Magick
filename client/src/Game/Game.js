@@ -1,20 +1,30 @@
 
 import './Game.scss';
-import { v4 as uuid } from 'uuid';
 
 
+import { useEffect, useRef, useState } from 'react';
+import Timer from '../components/Timer/Timer';
+import ContainerDice from '../components/ContainerDice/ContainerDice'
+import ExtraDice from '../components/ExtraDice/ExtraDice';
+import ForgeButton from '../components/ForgeButton/ForgeButton';
+import Shop from '../components/Shop/Shop';
+import ButtonTurnDone from '../components/ButtonTurn/ButtonTurn';
+import Quest from '../components/Quest/Quest';
+import OrdersContainer from '../components/Order/OrdersContainer';
+import BoardPlayers from '../components/BoardPlayers/BoardPlayers';
+import ReportPlayer from '../components/ReportPlayer/ReportPlayer';
+import Exit from '../components/Exit/Exit';
 import Skill from '../components/Skill/Skill';
-
 import Card from '../components/Card/Card';
-
 import Legend from '../components/Legend/Legend';
+
+
 
 import titleCraftingSkills from './images/craftingSkillTitle2.png'
 import titleMagicResearch from './images/magicResearchTitle2.png'
 import titleDiceLeft from './images/diceLeftTitle2.png'
 import titleNTurn from './images/turnNTitle.png'
 import titleExtraDices from './images/extraDicesTitle.png'
-
 import potionImg from './images/potion4.png'
 
 import backpack from '../components/Skill/skillsJson/backpack.json'
@@ -42,21 +52,10 @@ import renownedAccessories from '../components/Skill/skillsJson/renownedAcc.json
 import weaponPrestige from '../components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 
-import { useEffect, useRef, useState } from 'react';
-import Timer from '../components/Timer/Timer';
-import ContainerDice from '../components/ContainerDice/ContainerDice'
-import ExtraDice from '../components/ExtraDice/ExtraDice';
-import ForgeButton from '../components/ForgeButton/ForgeButton';
-import Shop from '../components/Shop/Shop';
-import ButtonTurnDone from '../components/ButtonTurn/ButtonTurn';
-import Quest from '../components/Quest/Quest';
-import OrdersContainer from '../components/Order/OrdersContainer';
-import BoardPlayers from '../components/BoardPlayers/BoardPlayers';
-import ReportPlayer from '../components/ReportPlayer/ReportPlayer';
-import Exit from '../components/Exit/Exit';
 
 
-
+//SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
+const testActive = false;
 
  //Tipi dado
  const TYPE_D6 = 'd6';
@@ -72,87 +71,81 @@ import Exit from '../components/Exit/Exit';
  const TYPE_EXTRADICE5 = 'ed5';
  const TYPE_EXTRADICE6 = 'ed6';
 
+//CONFIGURAZIONI GIOCO
+
+const DICE_PER_TURN = 2;
+const N_POTION_TEST = 5;
+const TIMER_COUNTDOWN = 300;
+const MAX_N_TURN = 10;
+
+ //lista skills crafting item
+ const skillListCraftingItem = [
+    backpack,
+    scroll,
+    ring,
+    grimoire,
+    staff,
+    sword,
+    crossbow, 
+    warhammer,
+    bracers,
+    helmet,
+    greaves,
+    plotarmor
+]
+
+//lista skills magic research
+const skillListMagicResearch = [
+    fiery,
+    shocking,
+    everlasting,
+    divine,
+    elves,
+    dwarves, 
+    orcs,
+    dragons,
+    glamorPotionSupplier,
+    renownedAccessories ,
+    weaponPrestige,
+    eliteArmor
+]
+
+
+//TEST
+const card1Es ={item:'plate armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', inProgress:true};
+const card2Es ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', inProgress:true};
+const card3Es ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', inProgress:true};
+const card4Es ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', inProgress:true};
+const card5Es ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', inProgress:true};
+const card6Es ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', inProgress:true};
+
+// const quest1 = {attribute:"wood", request: 8,gold : 8};
+// const quest2 = {attribute:"elemental", request: 8, gold : 8};
+
+const order =  {typeOrder:"divine", adventurer: "The Cleric", req1:"backpack", req2: "sword", req3: 'helmet', gold: 6};
+
+const player1 ={name:"Urfrick", card1: card1Es,card2: card2Es,card3: card3Es};
+const player2 ={name:"Giacomino", card1: card6Es,card2: card5Es,card3: card1Es};
+const player3 ={name:"Brix", card1: card3Es,card2: card4Es,card3: card2Es};
+
+
+
+
+const SKILLS_TEST = [];
+
+//numero pozioni necessarie per usare gl'eDice
+const nPotion_extraDice1 = 0;
+const nPotion_extraDice2 = 0;
+const nPotion_extraDice3 = 0;
+const nPotion_extraDice4 = 2;
+const nPotion_extraDice5 = 3;
+const nPotion_extraDice6 = 4;
+
+
+
+
 
 function Game({data,setUserState}) {
-
-    
-
-    //CONFIGURAZIONI GIOCO
-
-    const DICE_PER_TURN = 2;
-    const N_POTION_TEST = 5;
-    const TIMER_COUNTDOWN = 300;
-    const MAX_N_TURN = 10;
-
-    //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-    const testActive = false;
-
-
-     //lista skills crafting item
-     const skillListCraftingItem = [
-        backpack,
-        scroll,
-        ring,
-        grimoire,
-        staff,
-        sword,
-        crossbow, 
-        warhammer,
-        bracers,
-        helmet,
-        greaves,
-        plotarmor
-    ]
-
-    //lista skills magic research
-    const skillListMagicResearch = [
-        fiery,
-        shocking,
-        everlasting,
-        divine,
-        elves,
-        dwarves, 
-        orcs,
-        dragons,
-        glamorPotionSupplier,
-        renownedAccessories ,
-        weaponPrestige,
-        eliteArmor
-    ]
-
-    
-    //TEST
-    const card1Es ={item:'plate armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', inProgress:true};
-    const card2Es ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', inProgress:true};
-    const card3Es ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', inProgress:true};
-    const card4Es ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', inProgress:true};
-    const card5Es ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', inProgress:true};
-    const card6Es ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', inProgress:true};
-
-    // const quest1 = {attribute:"wood", request: 8,gold : 8};
-    // const quest2 = {attribute:"elemental", request: 8, gold : 8};
-    
-    const order =  {typeOrder:"divine", adventurer: "The Warrior", req1:"ring", req2: "sword", req3: 'helmet', gold: 5};
-
-    const player1 ={name:"Urfrick", card1: card1Es,card2: card2Es,card3: card3Es};
-    const player2 ={name:"Giacomino", card1: card6Es,card2: card5Es,card3: card1Es};
-    const player3 ={name:"Brix", card1: card3Es,card2: card4Es,card3: card2Es};
-    
-
-    
- 
-    const SKILLS_TEST = ['divine','plate armor','of the dragons'];
-
-    //numero pozioni necessarie per usare gl'eDice
-    const nPotion_extraDice1 = 0;
-    const nPotion_extraDice2 = 0;
-    const nPotion_extraDice3 = 0;
-    const nPotion_extraDice4 = 2;
-    const nPotion_extraDice5 = 3;
-    const nPotion_extraDice6 = 4;
-    
-    
-    
 
     
 
@@ -228,7 +221,6 @@ function Game({data,setUserState}) {
     const [extraDiceUsed4,setExtraDiceUsed4] = useState(false);
     const [extraDiceUsed5,setExtraDiceUsed5] = useState(false);
     const [extraDiceUsed6,setExtraDiceUsed6] = useState(false);
-    
     
 
     //numero turno attuale

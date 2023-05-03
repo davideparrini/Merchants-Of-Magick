@@ -10,7 +10,7 @@
 .opacityLobby{
     height: 100%;
     width: 100%;
-    background: #000000da;
+    background: #00000098;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,4 +104,11 @@
 }
 .backBtn:focus,.backBtn:active{
     filter: contrast(0.4);
+}
+
+.usernameLog{
+    position: absolute;
+    top:50px;
+    left: 50px;
+    color: white;
 }

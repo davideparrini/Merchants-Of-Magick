@@ -1,6 +1,6 @@
 @use '../../variables' as v;
 
-$drop-shadow-color-order-done: #ffc401;
+
 
 .orderCard{
     justify-self: center;
@@ -17,58 +17,35 @@ $drop-shadow-color-order-done: #ffc401;
     justify-content: space-evenly;
     padding-top: 10px;
     height: 100%;
-    width: 80%;
-    margin-left: 60px;
+    width: calc(v.$width-order_quest - 10px);
+    
 }
-
+.orderCardDone{
+    filter: v.$drop-show-order-quest-Done;
+}
 .orderTitle{
     position: relative;
     z-index: 3;
-    top: 10px;
+    top: 20px;
     right: 15px;
     font-family: 'Shizuru', cursive;
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
     font-weight: 700;
-    font-size: 26px;
+    font-size: 30px;
 }
 .orderGold{
     position: relative;
-    left: 107px;
-    bottom: 45px;
-    background-image: url(../Card/image/gold4.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-clip: content-box;
-    z-index: 3;
-    height: 55px;
-    width: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: large;
-    color: #e0e0e0;
-    
+    left: 95px;
+    bottom: 25px; 
 }
 
-.orderGold.no-doneOrder{
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202) grayscale(0.8);
-}
-.orderGold.doneOrder{
-    filter: drop-shadow(0.1px 0.1px 1px $drop-shadow-color-order-done) drop-shadow(-0.1px 0.1px 1px $drop-shadow-color-order-done) drop-shadow(0.1px -0.1px 1px $drop-shadow-color-order-done) drop-shadow(-0.1px -0.1px 1px $drop-shadow-color-order-done);
-    animation: strech 2s ease-out 0;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-}
 .orderImg{
     position: absolute;
     justify-self: center;
     align-self: center;
-    height: 200px;
-    width: 200px;
+    height: 270px;
+    width: 270px;
     z-index: 0;
     background-size: contain;
     background-repeat: no-repeat;
@@ -142,5 +119,6 @@ $drop-shadow-color-order-done: #ffc401;
 }
 *.orderDone{
     text-decoration: line-through v.$primary-color 3px;
+    filter: drop-shadow(0px 0px 5px red)
 }
 

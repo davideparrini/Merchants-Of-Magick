@@ -1,11 +1,10 @@
 @use '../../variables' as v;
 
-$quest-height: 100px;
-$quest-width: 260px;
-$drop-shadow-color-quest-done: #ffc401;
+$quest-height: 85px;
+
 
 .containerQuest{
-    width: $quest-width;
+    width: v.$width-order_quest;
     height: $quest-height;
     background-color: v.$bg-color-5;
     border-radius: 12px;
@@ -14,23 +13,22 @@ $drop-shadow-color-quest-done: #ffc401;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: $quest-width;
-    margin-left: 50px;
-    
+ 
+}
+.questDone{
+    filter: v.$drop-show-order-quest-Done;
 }
 
 .progressBarEmpty{
     position: absolute;
-
     height: $quest-height;
-    width: $quest-width;
+    width: v.$width-order_quest;
     border-radius: 10px;
     
 }
 
 .progressBarFill{
     position: relative;
-    
     height: 100%;
     max-width: 100%;
     background-color: v.$primary-color-4;
@@ -40,12 +38,12 @@ $drop-shadow-color-quest-done: #ffc401;
 }
 
 .questText{
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
-    margin: 5px;
+
     background-color: transparent;
     height: 80px;
     width: 100%;
@@ -59,41 +57,16 @@ $drop-shadow-color-quest-done: #ffc401;
 .questText::before{
     content: '';
     position: relative;
-    right: 0px;
-    bottom: 40px;
-    height: 10px;
-    width: 22px;
+    left: 4px;
+    bottom: 30px;
+    height: 8px;
+    width: 14px;
     background: v.$primary-color;
     transform: rotate(45deg);
     z-index: 100;
 }
 
-.goldQuest{
-    background-image: url(../Card/image/gold4.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 3;
-    height: 40px;
-    width: 56px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    text-shadow: 1px -1px 2px #000000, -1px -1px 2px #000000,-1px 1px 2px #000000,1px 1px 2px #000000;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: large;
-    color: #e0e0e0;
-    
-}
-.goldQuest.no-doneQuest{
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202) grayscale(0.7);
-}
-
-
-.goldQuest.doneQuest{
-    filter: drop-shadow(0.1px 0.1px 1px $drop-shadow-color-quest-done) drop-shadow(-0.1px 0.1px 1px $drop-shadow-color-quest-done) drop-shadow(0.1px -0.1px 1px $drop-shadow-color-quest-done) drop-shadow(-0.1px -0.1px 1px $drop-shadow-color-quest-done);
-    animation: strech 2s ease-out 0;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
+.goldContainerQuest{
+    position: relative;
+    right:10px;
 }

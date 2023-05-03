@@ -1,6 +1,6 @@
 import React, { useEffect} from 'react'
 import './Logged.scss'
-import { authConfig } from '../Config/authConfig';
+import { authConfig, auth} from '../Config/authConfig';
 
 
 
@@ -45,7 +45,7 @@ function Logged({setUserState}) {
                 </div>
                
             </div>
-        
+            <div className='usernameLog'>Logged as:{auth.currentUser.displayName}</div>
         </div>
     )
 }

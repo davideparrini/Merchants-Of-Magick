@@ -10,7 +10,7 @@
     height: 100%;
     width: 100%;
     
-    background: #000000da;
+    background: #00000098;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,8 +86,14 @@
 .logOutLabel{
     color: white;
     position: relative;
-    top:48px    
+    top:48px;  
 }
 .logOut:focus,.logOut:active{
     filter: contrast(0.4);
+}
+.usernameLog{
+    position: absolute;
+    top:50px;
+    left: 50px;
+    color: white;
 }

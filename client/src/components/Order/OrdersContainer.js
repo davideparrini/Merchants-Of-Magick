@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './Order.scss'
+import Gold from '../Gold/Gold';
+
+const TYPE_GOLD_MEDIUM = 'MEDIUM';
 
 function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldAttuale}) {
 
@@ -45,11 +48,12 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
 
      
     return (
-        <div className='orderCard'>
+        <div className={`orderCard ${orderDone1 && orderDone2 && orderDone3 ? 'orderCardDone' : ''}`}>
             <div className='orderTitle'>{order.adventurer}</div>
             <div className ={`orderImg ${order.typeOrder}`}/>
-            <div className={`orderGold ${orderDone1 && orderDone2 && orderDone3 ? 'doneOrder':'no-doneOrder'}`}>{order.gold}</div>
-            
+            <div className='orderGold' >
+                <Gold value={order.gold} size={TYPE_GOLD_MEDIUM} active={orderDone1 && orderDone2 && orderDone3}/>
+            </div>
             <div className={`requestOrder ${orderDone1 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req1}</div>
             <div className={`requestOrder ${orderDone2 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req2}</div>
             <div className={`requestOrder ${orderDone3 ? 'orderDone' : ''}`}>{order.typeOrder +' '+ order.req3}</div>
