@@ -4,19 +4,11 @@ import { authConfig, auth} from '../Config/authConfig';
 
 
 
-const LOGIN_STATE = 'LOGINFORM';
 const LOBBY_STATE = 'LOBBY';
 
 
-function Logged({setUserState}) {
+function Logged({setPage}) {
 
-
-    useEffect(()=>{
-        const unsub = authConfig.onAuthStateChanged(setUserState,LOGIN_STATE);
-        return ()=>{
-            unsub();
-        }
-    },[]);
 
     return (
         <div className='Logged'>
@@ -27,11 +19,11 @@ function Logged({setUserState}) {
                     <div className='containerBtnLogged'>
                         <button className='loggedBtn'
                             onClick={()=>{
-                                setUserState(LOBBY_STATE);
+                                setPage(LOBBY_STATE);
                         }}>Create New Lobby</button>
                         <button className='loggedBtn'
                             onClick={()=>{
-                                setUserState(LOBBY_STATE);
+                                setPage(LOBBY_STATE);
                         }}>Join A Lobby</button>
                     </div>
                 </div>

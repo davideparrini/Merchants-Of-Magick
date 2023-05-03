@@ -145,7 +145,7 @@ const nPotion_extraDice6 = 4;
 
 
 
-function Game({data,setUserState}) {
+function Game({data,setPage}) {
 
     
 
@@ -410,7 +410,7 @@ function Game({data,setUserState}) {
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div className='Game'>
-            <Exit setUserState={setUserState}/>
+            <Exit setPage={setPage}/>
             <div className={`end-turn ${!endTurn ?"no-visible-end-turn": ""}`}>
                 <div className='report-turn'>
                     {/* {

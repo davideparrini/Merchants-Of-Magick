@@ -47,24 +47,9 @@ function createAuthConfig() {
         await signOut(auth);
     }
 
-   
-
-    function onAuthStateChanged(setUserState,unLoggedState){
-        return auth.onAuthStateChanged( (user)=>{
-            if(user){
-                setUserState(LOGGED_STATE);
-                console.log(user.displayName);
-                
-            }
-            else {
-                setUserState(unLoggedState);
-                console.log("logged out");
-            }
-        })
-    }
 
     return {
-        onAuthStateChanged,updateUserName,signUp, login, googleLogin, logout
+        updateUserName,signUp, login, googleLogin, logout
     };
 }
 

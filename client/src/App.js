@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { authConfig, auth} from './Config/authConfig';
 import './App.scss'
 import LoginForm from './LoginForm_SignUp/LoginForm';
 import Lobby from './Lobby/Lobby';
@@ -7,6 +8,8 @@ import Logged from './Logged/Logged'
 
 import data from './data_test.json'
 import SignUp from './LoginForm_SignUp/SignUp';
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 
 const LOGIN_STATE = 'LOGINFORM';
@@ -17,20 +20,38 @@ const SIGN_UP_STATE = 'SIGNUPFORM';
 
 function App() {
 
-    const[userState,setUserState] = useState(LOGIN_STATE);
+    const[page,setPage] = useState(LOGIN_STATE);
+    const[userAuthState,setUserAuthState] = useState(null);
+    
+    useEffect(()=>{
+        const unsub = onAuthStateChanged(auth, (user)=>{
+            if(user){
+                console.log(user.displayName);
+                setUserAuthState(user)
+            }
+            else {
+                console.log("logged out");
+                setUserAuthState(null);
+                setPage(LOGIN_STATE);
+            }
+        })
+        return ()=>{
+            unsub();
+        }
+    },[]);
 
     function switchState(){
-        switch (userState) {
+        switch (page) {
             case LOGIN_STATE:
-                return <LoginForm setUserState={setUserState}/>;
+                return <LoginForm userAuthState={userAuthState} setPage={setPage}/>;
             case SIGN_UP_STATE:
-                return <SignUp setUserState={setUserState}/>; 
+                return <SignUp userAuthState={userAuthState} setPage={setPage}/>; 
             case LOGGED_STATE:
-                return <Logged setUserState={setUserState}/>;
+                return <Logged userAuthState={userAuthState} setPage={setPage}/>;
             case LOBBY_STATE:
-                return <Lobby setUserState={setUserState}/>;
+                return <Lobby setPage={setPage}/>;
             case GAME_STATE:
-                return <Game data={data} setUserState={setUserState}/>;
+                return <Game data={data} setPage={setPage}/>;
             default:
                 break;
         }

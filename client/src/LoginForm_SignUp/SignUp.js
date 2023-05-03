@@ -7,17 +7,19 @@ const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
 
-function SignUp({setUserState}) {
+function SignUp({setPage,userAuthState}) {
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
 
     useEffect(()=>{
-        const unsub = authConfig.onAuthStateChanged(setUserState,SIGN_UP_STATE);
-        return ()=>{
-            unsub();
+        if(userAuthState){
+            setPage(LOGGED_STATE);
         }
-    },[]);
+        else{
+            setPage(SIGN_UP_STATE);
+        }
+    },[userAuthState])
 
     return (
         <div className='Login_SignUpForm'>
@@ -34,7 +36,7 @@ function SignUp({setUserState}) {
                     </div>
                     <div className='btnLog_SigContainer'>
                         <button className='btnForm btnSigUp' onClick={()=>{
-                                authConfig.signUp(email,password).then(setUserState(LOGGED_STATE))
+                                authConfig.signUp(email,password).then(setPage(LOGGED_STATE))
                             }}>Sign Up</button>
                     </div>
                 </div>
@@ -52,7 +54,7 @@ function SignUp({setUserState}) {
                 </div>
             </div>
             <div className='backBtn' 
-                onClick={()=>{setUserState(LOGIN_STATE)}}><label className='backLabel'>Back</label>
+                onClick={()=>{setPage(LOGIN_STATE)}}><label className='backLabel'>Back</label>
             </div>
            
         </div>

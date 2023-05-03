@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './LoginForm_SignUp.scss'
 import { authConfig } from '../Config/authConfig';
+import Logged from '../Logged/Logged';
 
 
 const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
+const LOGGED_STATE = 'LOGGED';
 
-
-function LoginForm({setUserState}) {
+function LoginForm({userAuthState, setPage}) {
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
@@ -16,12 +17,13 @@ function LoginForm({setUserState}) {
     const requestLogin = useCallback((email, password) => authConfig.login(email,password),[]);
 
     useEffect(()=>{
-        const unsub = authConfig.onAuthStateChanged(setUserState,LOGIN_STATE);
-        return ()=>{
-            unsub();
+        if(userAuthState){
+            setPage(LOGGED_STATE);
         }
-    },[]);
-
+        else{
+            setPage(LOGIN_STATE);
+        }
+    },[userAuthState])
     
     return (
         <div className='Login_SignUpForm'>
@@ -40,7 +42,7 @@ function LoginForm({setUserState}) {
                         <button className='btnForm btnLogIn'
                             onClick={()=>{requestLogin(email,password)}}
                         >Log In</button>
-                        <button className='btnForm btnSigUp' onClick={()=>{setUserState(SIGN_UP_STATE)}}>Sign Up</button>
+                        <button className='btnForm btnSigUp' onClick={()=>{setPage(SIGN_UP_STATE)}}>Sign Up</button>
                     </div>
                     
                 </div>
