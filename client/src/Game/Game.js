@@ -55,7 +55,7 @@ import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = false;
+const testActive = true;
 
  //Tipi dado
  const TYPE_D6 = 'd6';

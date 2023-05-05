@@ -20,7 +20,7 @@ const SIGN_UP_STATE = 'SIGNUPFORM';
 
 function App() {
 
-    const[page,setPage] = useState(LOGIN_STATE);
+    const[page,setPage] = useState(GAME_STATE);
     const[userAuthState,setUserAuthState] = useState(null);
     
     useEffect(()=>{
