@@ -8,43 +8,44 @@ const LOGGED_STATE = 'LOGGED';
 const GAME_STATE = 'GAME';
 
 
-function Lobby({setPage}) {
-
-    
+function Lobby({setPage, username}) {
 
     return (
         <div className='Lobby'>
-            <div className='opacityLobby'>
-                <div className='containerLobby'>
-                    <div className='containerPlayersLobby'>
+            <div className='opacity-lobby'>
+                <div className='container-lobby'>
+                    <div className='container-players-lobby'>
                         
                         </div>
-                    <div className='containerBtnLobby'>
-                        <button className='startGameBtn'
+                    <div className='container-btn-lobby'>
+                        <button className='start-game-btn'
                             onClick={()=>{
                                 setPage(GAME_STATE);
                             }}
                         >Start Game</button>
                     </div>
                 </div>
-                <div className='logOut' 
+                <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
                             authConfig.logout();
                             setPage(LOGIN_STATE);  
                         }
                     }}>
-                    <label className='logOutLabel'>LogOut</label>
+                    <label className='log-out-label'>LogOut</label>
                 </div>
-                <div className='backBtn' 
+                <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
                             setPage(LOGGED_STATE);
                         }
-                    }}><label className='backLabel'>Back</label>
+                    }}><label className='back-label'>Back</label>
                 </div>
             </div>  
-            <div className='usernameLog'>Logged as:{auth.currentUser.displayName}</div>
+            <div className='username-log'>
+                <label>Logged as:</label>
+                <div className='user-logged'>{username}</div>
+            </div>
         </div>
         
     )

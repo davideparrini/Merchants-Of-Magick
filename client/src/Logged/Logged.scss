@@ -6,7 +6,7 @@
     top: 0px;
     right: 0px;
 }
-.opacityLogged{
+.opacity-logged{
     height: 100%;
     width: 100%;
     
@@ -16,7 +16,7 @@
     align-items: center;
 
 }
-.containerLogged{
+.container-logged{
     height: 70%;
     width: 60%;
     background: v.$bg-color;
@@ -26,15 +26,15 @@
     align-items: center;
 }
 
-.titleLogged{
+.title-logged{
     background-image: url(./titleLogged4.png);
     background-size: contain;
     background-repeat: no-repeat;
     height: 50%;
     width: 50%;
-    z-index: 100;
+    z-index: 2;
 }
-.bgImg{
+.bg-img{
     position: absolute;
     background-image: url(./bgLogged4.png);
     background-size: contain;
@@ -42,10 +42,10 @@
     height: 70%;
     width: 60%;
     opacity: 0.4;
-    z-index: 3;
+    z-index: 2;
 
 }
-.containerBtnLogged{
+.container-btn-logged{
     display: flex;
     height: 50%;
     width: auto;
@@ -53,8 +53,8 @@
     justify-content: space-evenly;
     align-items: center;
 }
-.loggedBtn{
-    z-index: 100;
+.logged-btn{
+    z-index: 2;
     height: 100px;
     width: 400px;
     border-radius: 15px;
@@ -68,10 +68,10 @@
     text-shadow: v.$text-shadow-stroke;
     cursor: pointer;
 }
-.loggedBtn:active{
+.logged-btn:active{
     filter: contrast(0.6);
 }
-.logOut{
+.log-out{
     position: absolute;
     right: 40px;
     top: 40px;
@@ -80,20 +80,35 @@
     background-image: url(../images/logOut.png);
     background-size: contain;
     background-repeat: no-repeat;
-    z-index: 1000;
+    z-index: 3;
     cursor: pointer;
 }
-.logOutLabel{
+.log-out-label{
     color: white;
     position: relative;
     top:48px;  
 }
-.logOut:focus,.logOut:active{
+.log-out:focus,.log-out:active{
     filter: contrast(0.4);
 }
-.usernameLog{
+.username-log{
     position: absolute;
     top:50px;
     left: 50px;
     color: white;
+    display: flex;
+    height: 50px;
+    width: 240px;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-logged{
+    height: 50px;
+    width: 150px;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

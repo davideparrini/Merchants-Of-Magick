@@ -1,9 +1,11 @@
 import { getAuth, GoogleAuthProvider,  signInWithPopup, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 
+
 import {firebase } from './FireBaseConfig';
 
 export const auth = getAuth(firebase);
 const provider = new GoogleAuthProvider();
+
 
 const SIGN_UP_STATE = 'SIGNUPFORM';
 const LOGIN_STATE = 'LOGINFORM';
@@ -14,21 +16,14 @@ const GAME_STATE = 'GAME';
 
 function createAuthConfig() {
 
-    async  function signUp(email,password,username) {
+    async  function signUp(email,password) {
         try {
             await createUserWithEmailAndPassword(auth, email, password)
         } catch (err) {
             console.error('ERROR signUp with email and password:', err);
         }
     }
-    
-    async function updateUserName(username){
-        try {
-            await updateProfile(auth.currentUser , {displayName: username});
-        } catch (err) {
-            console.error('ERROR setting username:', err);
-        }
-    }
+
 
     async function login(email, password) {
         try {
@@ -40,7 +35,7 @@ function createAuthConfig() {
     }
 
     function googleLogin() {
-        signInWithPopup(auth, provider);
+        return signInWithPopup(auth, provider)
     }
 
     async function logout() {
@@ -48,8 +43,9 @@ function createAuthConfig() {
     }
 
 
+    
     return {
-        updateUserName,signUp, login, googleLogin, logout
+        signUp, login, googleLogin, logout
     };
 }
 

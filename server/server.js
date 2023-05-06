@@ -3,14 +3,19 @@ import { Request } from 'express';
 import { Response } from 'express';
 import cors from 'cors';
 
-const app = express();
-const port = "8888";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
+var cors = require('cors');
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors:{
+    origin:'*',
+  }
+});
 
-// app.use(express.json());
-// app.use(cors());
+io.on("connection", (socket) => {
+  // ...
+});
 
-
-app.listen(port, () =>{
-    console.log(`Listening on port ${port}`);
-} );
+httpServer.listen(8888);

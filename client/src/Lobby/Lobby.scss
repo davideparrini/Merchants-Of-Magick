@@ -7,7 +7,7 @@
     right: 0px;
 }
 
-.opacityLobby{
+.opacity-lobby{
     height: 100%;
     width: 100%;
     background: #00000098;
@@ -16,7 +16,7 @@
     align-items: center;
 
 }
-.containerLobby{
+.container-lobby{
     height: 70%;
     width: 60%;
     background: v.$bg-color;
@@ -25,14 +25,14 @@
     justify-content: space-around;
     align-items: center;
 }
-.containerPlayersLobby{
+.container-players-lobby{
     height: 90%;
     width: 600px;
     background: rgb(134, 134, 134);
     border-radius: 15px;
     border: v.$border-primary-4px;
 }
-.containerBtnLobby{
+.container-btn-lobby{
     align-self: flex-end;
     display: flex;
     height: 50%;
@@ -43,7 +43,7 @@
     margin: 40px;
 }
 
-.startGameBtn{
+.start-game-btn{
     z-index: 100;
     height: 100px;
     width: 350px;
@@ -58,11 +58,11 @@
     text-shadow: v.$text-shadow-stroke;
     cursor: pointer;
 }
-.startGameBtn:active{
+.start-game-btn:active{
     filter: contrast(0.6);
 }
 
-.logOut{
+.log-out{
     position: absolute;
     right: 40px;
     top: 40px;
@@ -74,16 +74,16 @@
     z-index: 1000;
     cursor: pointer;
 }
-.logOutLabel{
+.log-out-label{
     color: white;
     position: relative;
     top:48px    
 }
-.logOut:focus,.logOut:active{
+.log-out:focus,.log-out:active{
     filter: contrast(0.4);
 }
 
-.backBtn{
+.back-btn{
     position: absolute;
     right: 40px;
     top: 150px;
@@ -95,20 +95,35 @@
     z-index: 1000;
     cursor: pointer;
 }
+.back-btn:focus,.back-btn:active{
+    filter: contrast(0.4);
+}
 
-.backLabel{
+.back-label{
     color: white;
     position: relative;
     top: 50px;
     text-align: center;
 }
-.backBtn:focus,.backBtn:active{
-    filter: contrast(0.4);
-}
 
-.usernameLog{
+.username-log{
     position: absolute;
     top:50px;
     left: 50px;
     color: white;
+    display: flex;
+    height: 50px;
+    width: 240px;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-logged{
+    height: 50px;
+    width: 150px;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

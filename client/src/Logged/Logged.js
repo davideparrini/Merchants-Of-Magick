@@ -1,43 +1,47 @@
 import React, { useEffect} from 'react'
 import './Logged.scss'
 import { authConfig, auth} from '../Config/authConfig';
-
+import { dbFirestore} from '../Config/firestoreDB';
 
 
 const LOBBY_STATE = 'LOBBY';
 
 
-function Logged({setPage}) {
 
+function Logged({setPage,username}) {
 
+    
     return (
         <div className='Logged'>
-            <div className='opacityLogged'>
-                <div className='bgImg'></div>
-                <div className='containerLogged'>
-                    <div className='titleLogged'/>
-                    <div className='containerBtnLogged'>
-                        <button className='loggedBtn'
+            <div className='opacity-logged'>
+                <div className='bg-img'></div>
+                <div className='container-logged'>
+                    <div className='title-logged'/>
+                    <div className='container-btn-logged'>
+                        <button className='logged-btn'
                             onClick={()=>{
                                 setPage(LOBBY_STATE);
                         }}>Create New Lobby</button>
-                        <button className='loggedBtn'
+                        <button className='logged-btn'
                             onClick={()=>{
                                 setPage(LOBBY_STATE);
                         }}>Join A Lobby</button>
                     </div>
                 </div>
-                <div className='logOut' 
+                <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
                             authConfig.logout();
                         }
                     }}>
-                    <label className='logOutLabel'>LogOut</label>
+                    <label className='log-out-label'>LogOut</label>
                 </div>
                
             </div>
-            <div className='usernameLog'>Logged as:{auth.currentUser.displayName}</div>
+            <div className='username-log'>
+                <label>Logged as:</label>
+                <div className='user-logged'>{username}</div>
+            </div>
         </div>
     )
 }
