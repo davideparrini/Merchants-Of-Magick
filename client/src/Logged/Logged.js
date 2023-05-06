@@ -1,17 +1,20 @@
 import React, { useEffect} from 'react'
 import './Logged.scss'
-import { authConfig} from '../Config/authConfig';
+import { userAuth} from '../Config/auth';
 import FriendList from '../components/FriendList/FriendList';
-
+import { connectionHandlerClient } from '../Config/connectionHandler';
 
 
 const LOBBY_STATE = 'LOBBY';
 
 
 
-function Logged({setPage,username,setLeaderLobby}) {
+function Logged({setPage,username,setLeaderLobby,setLobby}) {
 
-    
+    useEffect(()=>{
+        connectionHandlerClient.sendUsername(username);
+    },[username])
+
     return (
         <div className='Logged'>
             <div className='opacity-logged'>
@@ -23,6 +26,7 @@ function Logged({setPage,username,setLeaderLobby}) {
                             onClick={()=>{
                                 setPage(LOBBY_STATE);
                                 setLeaderLobby(true);
+                                connectionHandlerClient.createLobby(username,setLobby)
                         }}>Create New Lobby</button>
                         <button className='logged-btn'
                             onClick={()=>{
@@ -34,7 +38,7 @@ function Logged({setPage,username,setLeaderLobby}) {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
-                            authConfig.logout();
+                            userAuth.logout();
                         }
                     }}>
                     <label className='log-out-label'>LogOut</label>

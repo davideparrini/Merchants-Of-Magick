@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { authConfig } from '../Config/authConfig';
+import { userAuth } from '../Config/auth';
 import './LoginForm_SignUp.scss'
 
 
@@ -36,7 +36,7 @@ function SignUp({setPage,userAuthState}) {
                     </div>
                     <div className='btn-log-sig-up-container'>
                         <button className='btn-form btn-sign-up' onClick={()=>{
-                                authConfig.signUp(email,password).then(setPage(LOGGED_STATE))
+                                userAuth.signUp(email,password).then(setPage(LOGGED_STATE))
                             }}>Sign Up</button>
                     </div>
                 </div>
@@ -49,7 +49,7 @@ function SignUp({setPage,userAuthState}) {
                 <div className='log-with-form-container'>
                     <form className='log-with-form facebook'>Sign Up with Facebook</form>
                     <form className='log-with-form google' 
-                        onClick={authConfig.googleLogin} >Sign Up with Google</form>
+                        onClick={userAuth.googleLogin} >Sign Up with Google</form>
                     <form className='log-with-form github'>Sign Up with GitHub</form>
                 </div>
             </div>

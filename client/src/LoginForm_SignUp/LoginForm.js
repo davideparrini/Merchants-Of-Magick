@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './LoginForm_SignUp.scss'
-import { authConfig } from '../Config/authConfig';
+import { userAuth } from '../Config/auth';
 
 
 const SIGN_UP_STATE = 'SIGNUPFORM';
@@ -13,7 +13,7 @@ function LoginForm({userAuthState, setPage}) {
     const[password,setPassword] = useState('');
 
 
-    const requestLogin = useCallback((email, password) => authConfig.login(email,password),[]);
+    const requestLogin = useCallback((email, password) => userAuth.login(email,password),[]);
 
     useEffect(()=>{
         if(userAuthState){
@@ -54,7 +54,7 @@ function LoginForm({userAuthState, setPage}) {
                 <div className='log-with-form-container'>
                     <form className='log-with-form facebook'>Log In with Facebook</form>
                     <form className='log-with-form google' 
-                        onClick={authConfig.googleLogin} >Log In with Google</form>
+                        onClick={userAuth.googleLogin} >Log In with Google</form>
                     <form className='log-with-form github'>Log In with GitHub</form>
                 </div>
             </div>

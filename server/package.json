@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "socket.io": "^4.6.0",
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -11,6 +13,7 @@
   "main": "server.js",
   "author": "",
   "license": "ISC",
+  "type": "module",
   "description": "",
   "devDependencies": {
     "nodemon": "^2.0.22"

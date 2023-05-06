@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import './Lobby.scss'
-import { authConfig } from '../Config/authConfig';
+import { userAuth } from '../Config/auth';
+import { connectionHandlerClient } from '../Config/connectionHandler';
 
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
 const GAME_STATE = 'GAME';
 
 
-function Lobby({setPage, username,leaderLobby}) {
+function Lobby({setPage, username,leaderLobby,lobby}) {
 
     const[playerToAdd,setPlayerToAdd] = useState('');
 
@@ -37,7 +38,7 @@ function Lobby({setPage, username,leaderLobby}) {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
-                            authConfig.logout();
+                            userAuth.logout();
                             setPage(LOGIN_STATE);  
                         }
                     }}>
@@ -46,6 +47,7 @@ function Lobby({setPage, username,leaderLobby}) {
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
+                            console.log({lobby});
                             setPage(LOGGED_STATE);
                         }
                     }}><label className='back-label'>Back</label>

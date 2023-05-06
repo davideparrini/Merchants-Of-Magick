@@ -49,4 +49,4 @@ function createAuthConfig() {
     };
 }
 
-export const authConfig = createAuthConfig(); 
+export const userAuth = createAuthConfig(); 
