@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Lobby.scss'
 import { authConfig } from '../Config/authConfig';
 
@@ -7,17 +7,27 @@ const LOGGED_STATE = 'LOGGED';
 const GAME_STATE = 'GAME';
 
 
-function Lobby({setPage, username}) {
+function Lobby({setPage, username,leaderLobby}) {
+
+    const[playerToAdd,setPlayerToAdd] = useState('');
 
     return (
         <div className='Lobby'>
+
+            {/* <div className='friend-list-container'>
+                <FriendList friendList={["s","a","a"]}/>
+            </div> */}
             <div className='opacity-lobby'>
                 <div className='container-lobby'>
                     <div className='container-players-lobby'>
                         
-                        </div>
+                    </div>
+                    <div className='container-add-player'>
+                        <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
+                        <button className='btn-add-player'>Add Player</button>
+                    </div>
                     <div className='container-btn-lobby'>
-                        <button className='start-game-btn'
+                        <button className= {`start-game-btn ${leaderLobby ? '' : 'inactive-btn'}`}
                             onClick={()=>{
                                 setPage(GAME_STATE);
                             }}

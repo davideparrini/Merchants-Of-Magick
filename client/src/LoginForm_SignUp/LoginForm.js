@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './LoginForm_SignUp.scss'
 import { authConfig } from '../Config/authConfig';
-import Logged from '../Logged/Logged';
 
 
 const SIGN_UP_STATE = 'SIGNUPFORM';

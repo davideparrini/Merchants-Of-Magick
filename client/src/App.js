@@ -25,6 +25,11 @@ function App() {
     const[userAuthState,setUserAuthState] = useState(null);
     const[username,setUsername] = useState('');
     const[openSetUsername,setOpenSetUsername] = useState(false);
+
+    const[socketID, setSocketID] = useState(null);
+    const[lobbyID, setLobbyID] = useState(null);
+    const[leaderLobby,setLeaderLobby] = useState(null);
+
     
     useEffect(()=>{
         const unsub = onAuthStateChanged(auth, (user)=>{
@@ -59,9 +64,9 @@ function App() {
             case SIGN_UP_STATE:
                 return <SignUp userAuthState={userAuthState} setPage={setPage}/>; 
             case LOGGED_STATE:
-                return <Logged userAuthState={userAuthState} setPage={setPage} username={username}/>;
+                return <Logged userAuthState={userAuthState} setPage={setPage} username={username} setLeaderLobby={setLeaderLobby}/>;
             case LOBBY_STATE:
-                return <Lobby setPage={setPage} username={username}/>;
+                return <Lobby setPage={setPage} username={username} leaderLobby={leaderLobby}/>;
             case GAME_STATE:
                 return <Game data={data} setPage={setPage}/>;
             default:

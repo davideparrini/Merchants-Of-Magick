@@ -21,26 +21,69 @@
     width: 60%;
     background: v.$bg-color;
     border-radius: 15px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: grid;
+    grid-template-areas:
+        'players .'
+        'players .'
+        'players addPlayer'
+        'players btnStart';
+    grid-template-columns: 1fr 1fr ;
+    grid-template-rows: repeat(4,0.5fr);
 }
 .container-players-lobby{
+    grid-area: players;
     height: 90%;
-    width: 600px;
+    width: 90%;
     background: rgb(134, 134, 134);
     border-radius: 15px;
     border: v.$border-primary-4px;
+    justify-self: center;
+    align-self: center;
+}
+.container-add-player{
+    grid-area: addPlayer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: auto;
+    gap: 5px;
+
+}
+.field-add-player{
+    height: 50px;
+    width: 350px;
+    border-radius: 8px;
+    border: 3px solid v.$primary-color;
+    font-size: 30px;
+}
+.btn-add-player{
+    height: 40px;
+    width: 350px;
+    border-radius: 15px;
+    color: white;
+    background: v.$bg-color-3;
+    border: 2px solid v.$primary-color;
+    font-size: 20px;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
+}
+.btn-add-player:active{
+    filter: brightness(0.5);
 }
 .container-btn-lobby{
+    grid-area: btnStart;
     align-self: flex-end;
     display: flex;
-    height: 50%;
+    height: 100%;
     width: auto;
     flex-direction: column;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    margin: 40px;
+    
 }
 
 .start-game-btn{
@@ -59,7 +102,13 @@
     cursor: pointer;
 }
 .start-game-btn:active{
-    filter: contrast(0.6);
+    filter: brightness(0.5);
+}
+
+.start-game-btn.inactive-btn{
+    filter: grayscale(0.9);
+    color: rgb(190, 190, 190);
+    pointer-events: none;
 }
 
 .log-out{

@@ -5,12 +5,12 @@ import { dbFirestore} from '../Config/firestoreDB';
 function SetUsername({openSetUsername,setOpenSetUsername,user, setNickname}) {
 
     const[username,setUsername] = useState('');
-    const[validUsername, setValidUsername] = useState(false);
+    const[validUsername, setValidUsername] = useState(null);
 
     return (
         <div className={`box-set-user-name ${openSetUsername ? '': 'no-active-set-username'}`}>
             <label className='label-set-username'>Username</label>
-            <input className={`field-set-username ${validUsername ? 'valid-username' : 'invalid-username'}`} value={username} maxLength={15} type='text' 
+            <input className={`field-set-username ${validUsername === null ? '' : (validUsername ? 'valid-username' : 'invalid-username')}`} value={username} maxLength={15} type='text' 
                     onChange={e =>{
 
                         dbFirestore.checkUsername(e.target.value).then(b =>{
@@ -23,7 +23,7 @@ function SetUsername({openSetUsername,setOpenSetUsername,user, setNickname}) {
                         })
                         setUsername(e.target.value);
                     }}/>
-            <div className={`ico-field-set-username ${validUsername ? 'ico-valid-username' : 'ico-invalid-username'}`}/>
+            <div className={`ico-field-set-username ${validUsername === null ? '' : ( validUsername ? 'ico-valid-username' : 'ico-invalid-username')}`}/>
             <button className={`btn-submit-username ${validUsername ? '' : 'btn-invalid-username'}`} 
                 onClick={()=>{
                     if(validUsername){
@@ -31,7 +31,7 @@ function SetUsername({openSetUsername,setOpenSetUsername,user, setNickname}) {
                         setNickname(username);
                         setOpenSetUsername(false);
                         setUsername('');
-                        setValidUsername(false);
+                        setValidUsername(null);
                     }
                 }}>Submit</button>
         </div>
