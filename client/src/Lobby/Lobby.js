@@ -3,6 +3,7 @@ import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 
+
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
 const GAME_STATE = 'GAME';
@@ -47,7 +48,7 @@ function Lobby({setPage, username,leaderLobby,lobby}) {
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
-                            console.log({lobby});
+                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb))
                             setPage(LOGGED_STATE);
                         }
                     }}><label className='back-label'>Back</label>
@@ -56,6 +57,7 @@ function Lobby({setPage, username,leaderLobby,lobby}) {
             <div className='username-log'>
                 <label>Logged as:</label>
                 <div className='user-logged'>{username}</div>
+                <div className={`connected-label ${connectionHandlerClient.checkConnection() ? 'online-label' : 'offline-lab'}`}></div>
             </div>
         </div>
         

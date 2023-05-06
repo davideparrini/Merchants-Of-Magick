@@ -69,7 +69,12 @@
     cursor: pointer;
 }
 .logged-btn:active{
-    filter: contrast(0.6);
+    filter: brightness(0.6);
+}
+.inactive-btn{
+    filter: grayscale(0.9);
+    color:rgb(136, 136, 136);
+    pointer-events: none;
 }
 .log-out{
     position: absolute;
@@ -100,6 +105,7 @@
     height: 50px;
     width: 240px;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     align-items: center;
 }
@@ -117,4 +123,70 @@
     left: 40px;
     height: 70%;
     width: 15%;
+}
+.connected-label{
+    font-size: 25px;
+    position: relative;
+    left: 110px;
+    top: 10px;
+    letter-spacing: 2px;
+}
+.online-label{
+    color:rgb(113, 255, 47);
+}
+.offline-label{
+    color:rgb(255, 47, 47);
+}
+
+.submit-lobby-id{
+    position: absolute;
+    right: 150px;
+    bottom: 240px;
+    height: 100px;
+    width: 550px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.submit-lobby-id.open-submit-lobby-id{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 500ms ease;
+    z-index: 3;
+}
+.submit-lobby-id.closed-submit-lobby-id{
+    opacity: 1;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+.field-submit-lobby-id{
+    width: 75%;
+    height: 30px;
+    border-radius: 15px;
+    font-size: 25px;
+    padding: 15px;
+}
+.btn-submit-lobby-id{
+    height: 50px;
+    width: 100px;
+    border-radius: 20px;
+    background-color: v.$bg-color-3;
+    border: 2px solid;
+    border-color: v.$bg-color-4;
+    letter-spacing: 1px;
+    color: white;
+    font-size: 24px;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
+}
+
+.btn-submit-lobby-id:active{
+    filter: brightness(0.6);
 }

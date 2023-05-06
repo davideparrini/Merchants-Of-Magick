@@ -26,7 +26,6 @@ function App() {
     const[username,setUsername] = useState('');
     const[openSetUsername,setOpenSetUsername] = useState(false);
 
-    const[socket, setSocket] = useState(null);
     const[lobby, setLobby] = useState(null);
     const[leaderLobby,setLeaderLobby] = useState(null);
 
@@ -45,6 +44,7 @@ function App() {
                     } 
                 })
                 connectionHandlerClient.connect();
+                
             }
             else {
                 console.log("logged out");
@@ -59,6 +59,7 @@ function App() {
         }
     },[]);
 
+    
     function switchState(){
         switch (page) {
             case LOGIN_STATE:
