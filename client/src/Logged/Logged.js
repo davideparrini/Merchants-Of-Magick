@@ -1,7 +1,7 @@
 import React, { useEffect} from 'react'
 import './Logged.scss'
-import { authConfig, auth} from '../Config/authConfig';
-import { dbFirestore} from '../Config/firestoreDB';
+import { authConfig} from '../Config/authConfig';
+
 
 
 const LOBBY_STATE = 'LOBBY';

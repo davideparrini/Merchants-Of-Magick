@@ -22,39 +22,39 @@ function SignUp({setPage,userAuthState}) {
     },[userAuthState])
 
     return (
-        <div className='Login_SignUpForm'>
-            <div className='titleLogin_SignUpForm'>Sign Up</div>
-            <div className='login_SignUpFormWrap'>
-                <div className='login_SignUpFormContainer'>
-                    <div className='label_field_Container'>
-                        <label className='labelLogin_SignUpForm'>Email</label>
-                        <input className='fieldLogin_SignUpForm' value={email} type='text' onChange={e => setEmail(e.target.value)}/>
+        <div className='LoginSignUpForm'>
+            <div className='title-login-sign-up-form'>Sign Up</div>
+            <div className='login-sign-up-form-wrap'>
+                <div className='login-sign-up-form-container'>
+                    <div className='label-field-container'>
+                        <label className='label-login-sign-up-form'>Email</label>
+                        <input className='field-login-sign-up-form' value={email} type='text' onChange={e => setEmail(e.target.value)}/>
                     </div>
-                    <div className='label_field_Container'>
-                        <label className='labelLogin_SignUpForm'>New password</label>
-                        <input className='fieldLogin_SignUpForm' value={password} type='password' onChange={e => setPassword(e.target.value)}></input>
+                    <div className='label-field-container'>
+                        <label className='label-login-sign-up-form'>New password</label>
+                        <input className='field-login-sign-up-form' value={password} type='password' onChange={e => setPassword(e.target.value)}></input>
                     </div>
-                    <div className='btnLog_SigContainer'>
-                        <button className='btnForm btnSigUp' onClick={()=>{
+                    <div className='btn-log-sig-up-container'>
+                        <button className='btn-form btn-sign-up' onClick={()=>{
                                 authConfig.signUp(email,password).then(setPage(LOGGED_STATE))
                             }}>Sign Up</button>
                     </div>
                 </div>
 
-                <div className='loginDivider'>
+                <div className='divider'>
                     <div className='bar'/>
-                    <div className='loginOr'>OR</div>
+                    <div className='divider-or'>OR</div>
                 </div>
 
-                <div className='logWithFormContainer'>
-                    <form className='logWithForm facebook'>Sign Up with Facebook</form>
-                    <form className='logWithForm google' 
+                <div className='log-with-form-container'>
+                    <form className='log-with-form facebook'>Sign Up with Facebook</form>
+                    <form className='log-with-form google' 
                         onClick={authConfig.googleLogin} >Sign Up with Google</form>
-                    <form className='logWithForm github'>Sign Up with GitHub</form>
+                    <form className='log-with-form github'>Sign Up with GitHub</form>
                 </div>
             </div>
-            <div className='backBtn' 
-                onClick={()=>{setPage(LOGIN_STATE)}}><label className='backLabel'>Back</label>
+            <div className='back-btn' 
+                onClick={()=>{setPage(LOGIN_STATE)}}><label className='back-label'>Back</label>
             </div>
            
         </div>

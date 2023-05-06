@@ -1,7 +1,6 @@
 import React from 'react'
 import './Lobby.scss'
-import { authConfig,auth } from '../Config/authConfig';
-import Gold from '../components/Gold/Gold';
+import { authConfig } from '../Config/authConfig';
 
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';

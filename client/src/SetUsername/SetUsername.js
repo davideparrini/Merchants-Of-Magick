@@ -32,8 +32,6 @@ function SetUsername({openSetUsername,setOpenSetUsername,user, setNickname}) {
                         setOpenSetUsername(false);
                         setUsername('');
                         setValidUsername(false);
-                        
-                        
                     }
                 }}>Submit</button>
         </div>

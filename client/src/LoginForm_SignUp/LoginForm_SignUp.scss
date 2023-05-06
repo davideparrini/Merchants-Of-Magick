@@ -1,6 +1,6 @@
 @use '../variables' as v;
 
-.Login_SignUpForm{
+.LoginSignUpForm{
     height: 100%;
     width: 100%;
     display: flex;
@@ -9,14 +9,14 @@
     flex-direction: column;
     gap: 50px;
 }
-.login_SignUpFormWrap{
+.login-sign-up-form-wrap{
     display: grid;
     grid-template-areas: 'form bar logwith';
     grid-template-columns: 1fr 180px 1fr;
     height: 60%;
     width: 50%;
 }
-.titleLogin_SignUpForm{
+.title-login-sign-up-form{
     position: relative;
     right: 370px;
     top: 90px;
@@ -25,7 +25,7 @@
     font-weight: 700;
     justify-self: flex-end;
 }
-.login_SignUpFormContainer{
+.login-sign-up-form-container{
     grid-area: form;
     display: flex;
     flex-direction: column;
@@ -33,29 +33,29 @@
     align-items: start;
     row-gap: 50px;
 }
-.label_field_Container{
+.label-field-container{
     width: 95%;
 }
 
-.labelLogin_SignUpForm{
+.label-login-sign-up-form{
     color: white;
     font-size: 20px;
     font-weight: 600
 }
-.fieldLogin_SignUpForm{
+.field-login-sign-up-form{
     height: 50px;
     width: 100%;
     border-radius: 10px;
     font-size: 20px;
     padding-left: 10px;
 }
-.btnLog_SigContainer{
+.btn-log-sig-up-container{
     display: flex;
     flex-direction: row;
     width: 100%;
     gap: 10px;
 }
-.btnForm{
+.btn-form{
     height: 60px;
     width: 50%;
     color: white;
@@ -68,22 +68,22 @@
 
 }
 
-.btnLogIn{
+.btn-log-in{
     background: v.$bg-color-3;
     border-color: v.$skill-table-color;
 }
-.btnLogIn:active{
+.btn-log-in:active{
     background-color: v.$skill-table-color;
 }
-.btnSigUp{
+.btn-sign-up{
  
     background: v.$primary-color-4;
     border-color: v.$primary-color;
 }
-.btnSigUp:active{
+.btn-sign-up:active{
     background-color: v.$primary-color;
 }
-.loginDivider{
+.divider{
     grid-area: bar;
     display: flex;
     justify-content: center;
@@ -95,7 +95,7 @@
     width: 3px;
     z-index: 1;
 }
-.loginOr{
+.divider-or{
     position: absolute;
     height: 60px;
     width: 60px;
@@ -110,7 +110,7 @@
     background-color: v.$bg-color-0;
 }
 
-.logWithFormContainer{
+.log-with-form-container{
     grid-area: logwith;
     display: flex;
     flex-direction: column;
@@ -120,7 +120,7 @@
     
 
 }
-.logWithForm{
+.log-with-form{
     border: 1px solid #818391;
     height: 50px;
     width: 350px;
@@ -132,7 +132,7 @@
     font-size: 21px;
     cursor: pointer;
 }
-.logWithForm:focus,.logWithForm:active{
+.log-with-form:focus,.log-with-form:active{
     background-color: #221616;
 }
 

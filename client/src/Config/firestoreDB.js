@@ -38,7 +38,7 @@ function createFirebaseStore() {
             console.log("username", username);
             return username;
         } 
-        return "ss";
+        return null;
     }
 
     return {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { authConfig, auth} from './Config/authConfig';
+import {auth} from './Config/authConfig';
 import './App.scss'
 import LoginForm from './LoginForm_SignUp/LoginForm';
 import Lobby from './Lobby/Lobby';
