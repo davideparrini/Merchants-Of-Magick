@@ -23,22 +23,22 @@
     border-radius: 15px;
     display: grid;
     grid-template-areas:
+        'idLobby .'
         'players .'
         'players .'
-        'players addPlayer'
-        'players btnStart';
+        'addPlayer btnStart';
     grid-template-columns: 1fr 1fr ;
     grid-template-rows: repeat(4,0.5fr);
 }
 .container-players-lobby{
     grid-area: players;
-    height: 90%;
+    height: 100%;
     width: 90%;
     background: rgb(134, 134, 134);
     border-radius: 15px;
     border: v.$border-primary-4px;
     justify-self: center;
-    align-self: center;
+    align-self: flex-end;
 }
 .container-add-player{
     grid-area: addPlayer;

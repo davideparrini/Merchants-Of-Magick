@@ -32,11 +32,11 @@ function createSocketConfig() {
     }
 
    function joinLobby(lobbyID,username,cb){
-        socket.emit("join-lobby",(lobbyID,username,cb));
+        socket.emit("join-lobby",lobbyID,username,cb);
    }
 
    function leaveLobby(lobbyID,username,cb){
-        socket.emit("leave-lobby",(lobbyID,username,cb));
+        socket.emit("leave-lobby",lobbyID,username,cb);
         socket.off("lobby-player-joined");
         socket.off("lobby-player-left");
    }

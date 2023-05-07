@@ -54,24 +54,23 @@ function Logged({setPage,username,setLeaderLobby,setLobby}) {
                 <div className={`submit-lobby-id ${openSubmitLobbyId ? 'open-submit-lobby-id' : 'closed-submit-lobby-id'}`} ref={submitLobbyIdRef}>
                     <input className='field-submit-lobby-id' placeholder={'ID LOBBY, try ask your friend!'} value={idLobbyJoin} onChange={ e => setIdLobbyJoin(e.target.value)}/>
                     <button className='btn-submit-lobby-id' onClick={()=>{
-                        let cbRes;
+                        
                         connectionHandlerClient.joinLobby(idLobbyJoin,username,(res,lobby)=>{
-                            cbRes = res;
+                            switch(res){
+                                case 'OK': 
+                                    setPage(LOBBY_STATE);
+                                    setLeaderLobby(false);
+                                    break;
+                                case 'FULL':
+                                    break;
+                                case 'ERROR':
+                                    break;
+                                default: break;
+                            }
                             setLobby(lobby);
-                            console.log(res +  " " + lobby  );
                         });
-                        console.log(cbRes );
-                        switch(cbRes){
-                            case 'OK': 
-                                setPage(LOBBY_STATE);
-                                setLeaderLobby(false);
-                                break;
-                            case 'FULL':
-                                break;
-                            case 'ERROR':
-                                break;
-                            default: break;
-                        }
+                        
+                        
                         
                     }}>Join !</button>
                 </div>
