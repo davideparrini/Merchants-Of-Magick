@@ -13,14 +13,17 @@ function createSocketConfig() {
     function checkConnection(){
         return socket.connected;
     }
-
+    function registerToInvite(cb){
+        socket.on("invite" + socket.id,(lobby)=>{
+            cb(lobby);
+        });
+    }   
     function connect(){
         socket.connect();
-        socket.join(socket.id);
     }
 
     function disconnect(){
-        socket.leave(socket.id);
+        socket.off("invite"+socket.id);
         socket.disconnect();
     }
     
@@ -65,7 +68,8 @@ function createSocketConfig() {
         joinLobby,
         leaveLobby,
         updateLobby,
-        invitePlayer
+        invitePlayer,
+        registerToInvite
 
     }
 }

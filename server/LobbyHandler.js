@@ -25,7 +25,7 @@ function lobbyConnectionHandler(io,socket,lobbies, mapUsername_Socket, mapUserna
                 lobby.players.push(username);
                 socket.join(lobby.id);
                 io.to(lobby.id).emit("lobby-player-joined",username);
-                cb("OK",lobby)
+                cb("OK",lobby);
             }
         }
         else{
@@ -48,7 +48,7 @@ function lobbyConnectionHandler(io,socket,lobbies, mapUsername_Socket, mapUserna
                     }else{
                         lobby.players.push(usernameToInvite);
                         userSocket.join(lobby.id);
-                        io.to(userSocket.id).emit("invite-to-lobby",lobby);
+                        io.emit("invite" + userSocket.id, lobby);
                         io.to(lobby.id).emit("lobby-player-joined",usernameToInvite);
                         cb("OK")
                     }

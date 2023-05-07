@@ -31,6 +31,7 @@ function Logged({page, setPage,username,setLeaderLobby,lobby,setLobby}) {
 
     useEffect(()=>{
         connectionHandlerClient.sendUsername(username);
+        connectionHandlerClient.registerToInvite(setLobby);
     },[username])
 
     useEffect(()=>{
