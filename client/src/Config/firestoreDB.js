@@ -26,7 +26,6 @@ function createFirebaseStore() {
         const collRef = collection(db,"users");
         const q =  query(collRef, where('username', '==', username)) ;
         const snapshot = await getCountFromServer(q);
-        console.log(snapshot.data().count)
         return snapshot.data().count === 0;
     }
 
@@ -36,7 +35,7 @@ function createFirebaseStore() {
 
         if (docSnap.exists()) {
             let username = docSnap.data().username;
-            console.log("username", username);
+            console.log(username);
             return username;
         } 
         return null;

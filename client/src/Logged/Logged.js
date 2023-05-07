@@ -6,10 +6,10 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 
 
 const LOBBY_STATE = 'LOBBY';
+const LOGGED_STATE = 'LOGGED';
 
 
-
-function Logged({setPage,username,setLeaderLobby,setLobby}) {
+function Logged({page, setPage,username,setLeaderLobby,lobby,setLobby}) {
 
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
@@ -33,6 +33,11 @@ function Logged({setPage,username,setLeaderLobby,setLobby}) {
         connectionHandlerClient.sendUsername(username);
     },[username])
 
+    useEffect(()=>{
+        if(lobby != null && page !== LOBBY_STATE){
+            setPage(LOBBY_STATE);
+        }
+    },[lobby])
 
     return (
         <div className='Logged'>
@@ -43,9 +48,11 @@ function Logged({setPage,username,setLeaderLobby,setLobby}) {
                     <div className='container-btn-logged'>
                         <button className={`logged-btn ${connectionHandlerClient.checkConnection()  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
-                                setPage(LOBBY_STATE);
+                                connectionHandlerClient.createLobby(username,(lobby)=>{
+                                    setLobby(lobby);
+                                    connectionHandlerClient.updateLobby(lobby);
+                                })
                                 setLeaderLobby(true);
-                                connectionHandlerClient.createLobby(username,setLobby)
                         }}>Create New Lobby</button>
                         <button className={`logged-btn ${connectionHandlerClient.checkConnection()  ? '' : 'inactive-btn'}`}
                             onClick={()=>setOpenSubmitLobbyId(true)}>Join A Lobby</button>
@@ -58,7 +65,6 @@ function Logged({setPage,username,setLeaderLobby,setLobby}) {
                         connectionHandlerClient.joinLobby(idLobbyJoin,username,(res,lobby)=>{
                             switch(res){
                                 case 'OK': 
-                                    setPage(LOBBY_STATE);
                                     setLeaderLobby(false);
                                     break;
                                 case 'FULL':
@@ -68,6 +74,7 @@ function Logged({setPage,username,setLeaderLobby,setLobby}) {
                                 default: break;
                             }
                             setLobby(lobby);
+                            connectionHandlerClient.updateLobby(lobby);
                         });
                         
                         
@@ -77,6 +84,8 @@ function Logged({setPage,username,setLeaderLobby,setLobby}) {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
+                            setLobby(null);
+                            setLeaderLobby(false);
                             userAuth.logout();
                         }
                     }}>

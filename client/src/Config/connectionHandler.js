@@ -16,9 +16,11 @@ function createSocketConfig() {
 
     function connect(){
         socket.connect();
+        socket.join(socket.id);
     }
 
     function disconnect(){
+        socket.leave(socket.id);
         socket.disconnect();
     }
     
@@ -35,17 +37,21 @@ function createSocketConfig() {
         socket.emit("join-lobby",lobbyID,username,cb);
    }
 
-   function leaveLobby(lobbyID,username,cb){
-        socket.emit("leave-lobby",lobbyID,username,cb);
+   function leaveLobby(username,cb){
+        socket.emit("leave-lobby",username,cb);
         socket.off("lobby-player-joined");
         socket.off("lobby-player-left");
+   }
+
+   function invitePlayer(lobbyID ,usernameToInvite, cb){
+        socket.emit("invite-player",lobbyID,usernameToInvite,cb);
    }
 
    function updateLobby(lobby){
         socket.on("lobby-player-joined",(username)=> lobby.push(username));
         socket.on("lobby-player-left",(username)=>{
-            const indexUsername = lobby.findIndex((u)=> u === username);
-            lobby.splice(indexUsername,1);    
+            const indexUsernameLeft = lobby.findIndex((u)=> u === username);
+            lobby.splice(indexUsernameLeft,1);    
         });
    }
 
@@ -58,7 +64,8 @@ function createSocketConfig() {
         createLobby,
         joinLobby,
         leaveLobby,
-        updateLobby
+        updateLobby,
+        invitePlayer
 
     }
 }

@@ -1,4 +1,20 @@
 import React, { useEffect, useState } from 'react'
+// import { BrowserRouter as Route,Routes, Router } from 'react-router-dom'
+// <Router>
+//             <div className='App'>
+//                 <div className = {`container-set-username ${openSetUsername ? '' : 'no-active-set-username'}`}>
+//                     <SetUsername openSetUsername={openSetUsername} setOpenSetUsername={setOpenSetUsername} user={userAuthState} setNickname={setUsername}/>
+//                 </div>
+//                 <Routes>
+//                     <Route path="/" element={<LoginForm/>}/>
+//                     <Route path="/signup" element={<SignUp/>}/>
+//                     <Route path="/logged" element={<Logged/>}/>
+//                     <Route path="/lobby" element={<Lobby/>}/>
+//                     <Route path="/game" element={<Game/>}/>
+
+//                 </Routes>
+//             </div>
+//         </Router>
 import {auth} from './Config/auth';
 import './App.scss'
 import LoginForm from './LoginForm_SignUp/LoginForm';
@@ -12,6 +28,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import SetUsername from './SetUsername/SetUsername';
 import { dbFirestore} from './Config/firestoreDB';
 import { connectionHandlerClient } from './Config/connectionHandler';
+
 
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
@@ -33,7 +50,6 @@ function App() {
     useEffect(()=>{
         const unsub = onAuthStateChanged(auth, (user)=>{
             if(user){
-                console.log(user.displayName);
                 setUserAuthState(user);
                 dbFirestore.hasUsername(user).then(b =>{
                     if(!b){
@@ -59,6 +75,7 @@ function App() {
         }
     },[]);
 
+
     
     function switchState(){
         switch (page) {
@@ -67,9 +84,9 @@ function App() {
             case SIGN_UP_STATE:
                 return <SignUp userAuthState={userAuthState} setPage={setPage}/>; 
             case LOGGED_STATE:
-                return <Logged userAuthState={userAuthState} setPage={setPage} username={username} setLeaderLobby={setLeaderLobby} setLobby={setLobby}/>;
+                return <Logged userAuthState={userAuthState} page={page} setPage={setPage} username={username} setLeaderLobby={setLeaderLobby} lobby={lobby} setLobby={setLobby}/>;
             case LOBBY_STATE:
-                return <Lobby setPage={setPage} username={username} leaderLobby={leaderLobby} lobby={lobby}/>;
+                return <Lobby setPage={setPage} username={username} leaderLobby={leaderLobby} lobby={lobby} setLobby={setLobby} setLeaderLobby={setLeaderLobby}/>;
             case GAME_STATE:
                 return <Game data={data} setPage={setPage}/>;
             default:

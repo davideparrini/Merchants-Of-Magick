@@ -3,16 +3,19 @@ import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 
-
 const LOGIN_STATE = 'LOGINFORM';
 const LOGGED_STATE = 'LOGGED';
 const GAME_STATE = 'GAME';
 
 
-function Lobby({setPage, username,leaderLobby,lobby}) {
+function Lobby({setPage, username,leaderLobby,lobby,setLobby,setLeaderLobby}) {
 
     const[playerToAdd,setPlayerToAdd] = useState('');
+    const[idCopied,setIdCopied] = useState(false);
 
+    const handleCopy = ()=>{
+        navigator.clipboard.writeText(lobby.id);
+    }
     return (
         <div className='Lobby'>
 
@@ -21,12 +24,27 @@ function Lobby({setPage, username,leaderLobby,lobby}) {
             </div> */}
             <div className='opacity-lobby'>
                 <div className='container-lobby'>
+                    <div className='container-id-lobby'>
+                        
+                        <label className='label-id-lobby'>ID Lobby :</label>
+                        <div className='container-id-btn-id'>
+                        <div className='label-id'>{lobby.id}</div>
+                            <div className={`btn-copy-id ${idCopied ? 'copied-id' : '' }`} onClick={()=>{setIdCopied(true); handleCopy(); console.log(lobby.players)}}>
+                                <div className={idCopied ? '' : 'img-copy'}/>
+                                {idCopied ? 'Copied!' :'Copy ID'}
+                            </div>
+                        </div>     
+                    </div>
                     <div className='container-players-lobby'>
                         
                     </div>
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
-                        <button className='btn-add-player'>Add Player</button>
+                        <button className='btn-add-player' onClick={()=>{
+                            connectionHandlerClient.invitePlayer(lobby.id,playerToAdd,(res)=>{
+                                console.log(res)
+                            })
+                        }}>Add Player</button>
                     </div>
                     <div className='container-btn-lobby'>
                         <button className= {`start-game-btn ${leaderLobby ? '' : 'inactive-btn'}`}
@@ -39,6 +57,8 @@ function Lobby({setPage, username,leaderLobby,lobby}) {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
+                            setLobby(null);
+                            setLeaderLobby(false);
                             userAuth.logout();
                             setPage(LOGIN_STATE);  
                         }
@@ -48,6 +68,8 @@ function Lobby({setPage, username,leaderLobby,lobby}) {
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
+                            setLobby(null);
+                            setLeaderLobby(false);
                             connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb))
                             setPage(LOGGED_STATE);
                         }
