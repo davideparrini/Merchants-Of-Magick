@@ -66,7 +66,7 @@ function createSocketConfig() {
    function updateLobby(lobby,setLobby){
         socket.on("lobby-player-joined",(username)=>{
             lobby.players.push(username);
-            setLobby(lobby);
+            setLobby(()=>lobby);
         });
         socket.on("lobby-player-left",(username)=>{
             const indexUsernameLeft = lobby.players.findIndex((u)=> u === username);
@@ -74,7 +74,7 @@ function createSocketConfig() {
             if(username === lobby.leaveLobby){
                 lobby.leaderLobby = lobby.players[0];
             }
-            setLobby(lobby)    
+            setLobby(()=>lobby)    
         });
    }
 

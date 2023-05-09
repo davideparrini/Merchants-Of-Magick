@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { userAuth } from '../Config/auth';
 import './LoginForm_SignUp.scss'
 import { AppContext } from '../App';
@@ -15,6 +15,7 @@ function SignUp() {
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
+
 
     useEffect(()=>{
         if(userAuthState){
@@ -40,16 +41,15 @@ function SignUp() {
                     </div>
                     <div className='btn-log-sig-up-container'>
                         <button className='btn-form btn-sign-up' onClick={()=>{
-                                userAuth.signUp(email,password)
-                                .then((b)=>{
-                                if(b){
+                            userAuth.signUp(email,password).then((signedUp)=>{
+                                if(signedUp){
                                     navigate(LOGGED_PAGE)
                                 }
                                 else{
                                     alert("Email or password invalid! Email should be an email not an username! Password should be at least 6 characters! ")
                                 }
                             })
-                            }}>Sign Up</button>
+                        }}>Sign Up</button>
                     </div>
                 </div>
 

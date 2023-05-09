@@ -16,15 +16,6 @@ function LoginForm() {
     const[email,setEmail] = useState('');
     const[password,setPassword] = useState('');
 
-
-    const requestLogin = useCallback((email, password) =>{
-        userAuth.login(email,password).then((b)=>{
-            if(!b){
-                alert("Wrong email or password!");
-            }
-        })
-    },[]);
-
     useEffect(()=>{
         if(userAuthState){
             navigate(LOGGED_PAGE);
@@ -49,7 +40,13 @@ function LoginForm() {
                     </div>
                     <div className='btn-log-sig-up-container'>
                         <button className='btn-form btn-log-in'
-                            onClick={()=>{requestLogin(email,password)}}
+                            onClick={()=>{
+                                userAuth.login(email,password).then((logged)=>{
+                                    if(!logged){
+                                        alert("Wrong email or password!");
+                                    }
+                                })
+                            }}
                         >Log In</button>
                         <button className='btn-form btn-sign-up' onClick={()=>{navigate(SIGN_UP_PAGE)}}>Sign Up</button>
                     </div>

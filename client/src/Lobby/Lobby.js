@@ -15,12 +15,15 @@ function Lobby() {
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
-
     
+    useEffect(()=>{
+        console.log(lobby);
+    },[lobby]);
 
     const handleCopy = ()=>{
         navigator.clipboard.writeText(lobby.id);
     }
+
     return (
         <div className='Lobby'>
 
@@ -41,7 +44,21 @@ function Lobby() {
                         </div>     
                     </div>
                     <div className='container-players-lobby'>
-                        
+                        <div className='box-player' id='b0'/>
+                        <div className='box-player' id='b1'/>
+                        <div className='box-player' id='b2'/>
+                        <div className='box-player' id='b3'/>
+                        <div className='box-player' id='b4'/>
+                        <div className='box-player' id='b5'/>
+                        <div className='box-player' id='b6'/>
+                        <div className='box-player' id='b7'/>
+                        { 
+                            lobby.players.map((playerName,i)=>{
+                                return(<div className='player-container-lobby' id={"p"+i} key={i}>
+                                    <div className={lobby.leaderLobby === playerName ? 'leader-lobby' : 'no-leader-lobby'}/>{playerName}
+                                    </div>)
+                            })
+                        }        
                     </div>
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>

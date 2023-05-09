@@ -34,12 +34,96 @@
     grid-area: players;
     height: 100%;
     width: 90%;
-    background: rgb(134, 134, 134);
+    padding: 5px;
+    background: v.$label-color-0;
     border-radius: 15px;
     border: v.$border-primary-4px;
     justify-self: center;
     align-self: flex-end;
+    display: grid;
+    grid-template-areas: 
+    'player1 player5'
+    'player2 player6'
+    'player3 player7'
+    'player4 player8';
+    grid-template-columns: repeat(2,49%);
+    grid-template-rows: repeat(4,24%);
+    gap:5px;
 }
+
+.box-player{
+    z-index: 1;
+    background: v.$label-color-3;
+    border: 4px solid v.$primary-color;
+    border-radius: 15px;
+    height: 80%;
+    width: 95%;
+    opacity: 0.4;
+}
+
+.player-container-lobby{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5px;
+    background: #9c4848;
+    border: v.$border-primary-4px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0px 0px 7px 5px #3b0707; 
+    box-shadow: 0px 0px 3px 1px #3b0707;
+    height: 80%;
+    width: 95%;
+    z-index: 2;
+    color: white;
+    font-size: 22px;
+    font-family: Tahoma, Geneva, sans-serif;
+    
+    text-shadow: v.$text-shadow-stroke;
+}
+.leader-lobby{
+    background-image: url(./crown.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0px 0px 10px v.$primary-color);
+    height: 30px;
+    width: 30px;
+    position: relative;
+    right: 5px;
+    animation: strech  2s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+.no-leader-lobby{
+    display: none;
+}
+#p0, #b0{
+    grid-area: player1;
+}
+#p1, #b1{
+    grid-area: player2;
+}
+#p2, #b2{
+    grid-area: player3;
+}
+#p3, #b3{
+    grid-area: player4;
+}
+#p4, #b4{
+    grid-area: player5;
+}
+#p5, #b5{
+    grid-area: player6;
+}
+#p6, #b6{
+    grid-area: player7;
+}
+
+#p7, #b7{
+    grid-area: player8;
+}
+
+
 .container-add-player{
     grid-area: addPlayer;
     display: flex;
@@ -183,10 +267,6 @@
     'idLabel .'
     'id id';
     grid-template-columns: 80% 20%;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: flex-end;
-    // align-items: flex-start;
     gap: 10px;
     margin: 30px;
     color: white;
@@ -249,7 +329,7 @@
     background: v.$primary-color-2;
 }
 .img-copy{
-    background-image: url(./copy4.png);
+    background-image: url(./copy.png);
     background-size: cover;
     background-repeat: no-repeat;
     filter: drop-shadow(1px -1px 3px #000000);
@@ -257,3 +337,4 @@
     width: 30px;
     border-radius: 30%;
 }
+
