@@ -2,7 +2,7 @@
 import './Game.scss';
 
 
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Timer from '../components/Timer/Timer';
 import ContainerDice from '../components/ContainerDice/ContainerDice'
 import ExtraDice from '../components/ExtraDice/ExtraDice';
@@ -145,9 +145,8 @@ const nPotion_extraDice6 = 4;
 
 
 
-function Game({data,setPage}) {
+function Game({data}) {
 
-    
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
@@ -410,7 +409,7 @@ function Game({data,setPage}) {
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div className='Game'>
-            <Exit setPage={setPage}/>
+            <Exit/>
             <div className={`end-turn ${!endTurn ?"no-visible-end-turn": ""}`}>
                 <div className='report-turn'>
                     {/* {

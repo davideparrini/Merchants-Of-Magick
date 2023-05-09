@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
+import { AppContext } from '../App';
 
-const LOGIN_STATE = 'LOGINFORM';
-const LOGGED_STATE = 'LOGGED';
-const GAME_STATE = 'GAME';
+const LOGIN_PAGE = '/';
+const LOGGED_PAGE = '/logged';
+const GAME_PAGE = '/game';
 
 
-function Lobby({setPage, username,leaderLobby,lobby,setLobby,setLeaderLobby}) {
+function Lobby() {
+
+    const { username, leaderLobby, lobby, setLobby, setLeaderLobby, navigate} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
@@ -49,7 +52,7 @@ function Lobby({setPage, username,leaderLobby,lobby,setLobby,setLeaderLobby}) {
                     <div className='container-btn-lobby'>
                         <button className= {`start-game-btn ${leaderLobby ? '' : 'inactive-btn'}`}
                             onClick={()=>{
-                                setPage(GAME_STATE);
+                                navigate(GAME_PAGE)
                             }}
                         >Start Game</button>
                     </div>
@@ -60,7 +63,7 @@ function Lobby({setPage, username,leaderLobby,lobby,setLobby,setLeaderLobby}) {
                             setLobby(null);
                             setLeaderLobby(false);
                             userAuth.logout();
-                            setPage(LOGIN_STATE);  
+                            navigate(LOGIN_PAGE);  
                         }
                     }}>
                     <label className='log-out-label'>LogOut</label>
@@ -70,16 +73,15 @@ function Lobby({setPage, username,leaderLobby,lobby,setLobby,setLeaderLobby}) {
                         if(window.confirm('Are you sure to leave the lobby?')){
                             setLobby(null);
                             setLeaderLobby(false);
-                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb))
-                            setPage(LOGGED_STATE);
+                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb))               
+                            navigate(LOGGED_PAGE);
                         }
                     }}><label className='back-label'>Back</label>
                 </div>
             </div>  
             <div className='username-log'>
-                <label>Logged as:</label>
                 <div className='user-logged'>{username}</div>
-                <div className={`connected-label ${connectionHandlerClient.checkConnection() ? 'online-label' : 'offline-lab'}`}></div>
+                <div className={`connected-label ${connectionHandlerClient.checkConnection()  ? 'online-label' : 'offline-label'}`}>{connectionHandlerClient.checkConnection()  ? 'Online' : 'Offline'}</div>
             </div>
         </div>
         

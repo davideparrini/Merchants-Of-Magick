@@ -1,26 +1,36 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import './LoginForm_SignUp.scss'
 import { userAuth } from '../Config/auth';
+import { AppContext } from '../App';
 
 
-const SIGN_UP_STATE = 'SIGNUPFORM';
-const LOGIN_STATE = 'LOGINFORM';
-const LOGGED_STATE = 'LOGGED';
+const LOGIN_PAGE = '/';
+const SIGN_UP_PAGE = '/signup';
+const LOGGED_PAGE = '/logged';
 
-function LoginForm({userAuthState, setPage}) {
 
-    const[email,setEmail] =useState('');
+function LoginForm() {
+
+    const {userAuthState, navigate} = useContext(AppContext);
+    
+    const[email,setEmail] = useState('');
     const[password,setPassword] = useState('');
 
 
-    const requestLogin = useCallback((email, password) => userAuth.login(email,password),[]);
+    const requestLogin = useCallback((email, password) =>{
+        userAuth.login(email,password).then((b)=>{
+            if(!b){
+                alert("Errore email o password");
+            }
+        })
+    },[]);
 
     useEffect(()=>{
         if(userAuthState){
-            setPage(LOGGED_STATE);
+            navigate(LOGGED_PAGE);
         }
         else{
-            setPage(LOGIN_STATE);
+            navigate(LOGIN_PAGE);
         }
     },[userAuthState])
     
@@ -41,7 +51,7 @@ function LoginForm({userAuthState, setPage}) {
                         <button className='btn-form btn-log-in'
                             onClick={()=>{requestLogin(email,password)}}
                         >Log In</button>
-                        <button className='btn-form btn-sign-up' onClick={()=>{setPage(SIGN_UP_STATE)}}>Sign Up</button>
+                        <button className='btn-form btn-sign-up' onClick={()=>{navigate(SIGN_UP_PAGE)}}>Sign Up</button>
                     </div>
                     
                 </div>

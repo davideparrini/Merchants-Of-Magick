@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { userAuth } from '../Config/auth';
 import './LoginForm_SignUp.scss'
+import { AppContext } from '../App';
 
 
-const SIGN_UP_STATE = 'SIGNUPFORM';
-const LOGIN_STATE = 'LOGINFORM';
-const LOGGED_STATE = 'LOGGED';
+const LOGIN_PAGE = '/';
+const SIGN_UP_PAGE = '/signup';
+const LOGGED_PAGE = '/logged';
 
-function SignUp({setPage,userAuthState}) {
+
+function SignUp() {
+
+    const {userAuthState,navigate} = useContext(AppContext);
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
 
     useEffect(()=>{
         if(userAuthState){
-            setPage(LOGGED_STATE);
+            navigate(LOGGED_PAGE)
         }
         else{
-            setPage(SIGN_UP_STATE);
+            navigate(SIGN_UP_PAGE)
         }
     },[userAuthState])
 
@@ -36,7 +40,15 @@ function SignUp({setPage,userAuthState}) {
                     </div>
                     <div className='btn-log-sig-up-container'>
                         <button className='btn-form btn-sign-up' onClick={()=>{
-                                userAuth.signUp(email,password).then(setPage(LOGGED_STATE))
+                                userAuth.signUp(email,password)
+                                .then((b)=>{
+                                if(b){
+                                    navigate(LOGGED_PAGE)
+                                }
+                                else{
+                                    alert("Errore email o password non valide")
+                                }
+                            })
                             }}>Sign Up</button>
                     </div>
                 </div>
@@ -54,7 +66,7 @@ function SignUp({setPage,userAuthState}) {
                 </div>
             </div>
             <div className='back-btn' 
-                onClick={()=>{setPage(LOGIN_STATE)}}><label className='back-label'>Back</label>
+                onClick={()=>{navigate(LOGIN_PAGE)}}><label className='back-label'>Back</label>
             </div>
            
         </div>

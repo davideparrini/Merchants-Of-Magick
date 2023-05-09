@@ -18,24 +18,27 @@ function createAuthConfig() {
 
     async  function signUp(email,password) {
         try {
-            await createUserWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password);
+            return true;
         } catch (err) {
             console.error('ERROR signUp with email and password:', err);
+            return false;
         }
     }
 
 
     async function login(email, password) {
         try {
-            await signInWithEmailAndPassword(auth, email, password)
-
+            await signInWithEmailAndPassword(auth, email, password);
+            return true;
         } catch (err) {
             console.error('ERROR login with email and password:', err);
+            return false;
         }
     }
 
     function googleLogin() {
-        return signInWithPopup(auth, provider)
+        return signInWithPopup(auth, provider);
     }
 
     async function logout() {

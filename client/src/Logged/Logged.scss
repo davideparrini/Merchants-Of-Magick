@@ -9,7 +9,6 @@
 .opacity-logged{
     height: 100%;
     width: 100%;
-    
     background: #00000098;
     display: flex;
     justify-content: center;
@@ -112,10 +111,10 @@
 
 .user-logged{
     height: 50px;
-    width: 150px;
+    width: 250px;
     font-size: 40px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 .friend-list-container{

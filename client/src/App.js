@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from 'react'
-// import { BrowserRouter as Route,Routes, Router } from 'react-router-dom'
-// <Router>
-//             <div className='App'>
-//                 <div className = {`container-set-username ${openSetUsername ? '' : 'no-active-set-username'}`}>
-//                     <SetUsername openSetUsername={openSetUsername} setOpenSetUsername={setOpenSetUsername} user={userAuthState} setNickname={setUsername}/>
-//                 </div>
-//                 <Routes>
-//                     <Route path="/" element={<LoginForm/>}/>
-//                     <Route path="/signup" element={<SignUp/>}/>
-//                     <Route path="/logged" element={<Logged/>}/>
-//                     <Route path="/lobby" element={<Lobby/>}/>
-//                     <Route path="/game" element={<Game/>}/>
+import { Route,Routes, useNavigate } from 'react-router-dom'
 
-//                 </Routes>
-//             </div>
-//         </Router>
 import {auth} from './Config/auth';
 import './App.scss'
 import LoginForm from './LoginForm_SignUp/LoginForm';
@@ -30,22 +16,25 @@ import { dbFirestore} from './Config/firestoreDB';
 import { connectionHandlerClient } from './Config/connectionHandler';
 
 
-const LOGIN_STATE = 'LOGINFORM';
-const LOGGED_STATE = 'LOGGED';
-const LOBBY_STATE = 'LOBBY';
-const GAME_STATE = 'GAME';
-const SIGN_UP_STATE = 'SIGNUPFORM';
+const LOGIN_PAGE = '/';
+const SET_USERNAME =  '/setusername';
+const SIGN_UP_PAGE = '/signup';
+const LOGGED_PAGE = '/logged';
+const LOBBY_PAGE = '/lobby';
+const GAME_PAGE = '/game';
+
+
+
+export const AppContext = React.createContext();
 
 function App() {
 
-    const[page,setPage] = useState(LOGIN_STATE);
     const[userAuthState,setUserAuthState] = useState(null);
     const[username,setUsername] = useState('');
-    const[openSetUsername,setOpenSetUsername] = useState(false);
 
     const[lobby, setLobby] = useState(null);
     const[leaderLobby,setLeaderLobby] = useState(null);
-
+    const navigate = useNavigate();
     
     useEffect(()=>{
         const unsub = onAuthStateChanged(auth, (user)=>{
@@ -53,7 +42,7 @@ function App() {
                 setUserAuthState(user);
                 dbFirestore.hasUsername(user).then(b =>{
                     if(!b){
-                        setOpenSetUsername(true);
+                        navigate(SET_USERNAME);
                     }
                     else{
                         dbFirestore.getUsername(user).then(u => setUsername(u));
@@ -66,7 +55,7 @@ function App() {
                 console.log("logged out");
                 setUsername('');
                 setUserAuthState(null);
-                setPage(LOGIN_STATE);
+                navigate(LOGIN_PAGE);
                 connectionHandlerClient.disconnect();
             }
         })
@@ -75,32 +64,18 @@ function App() {
         }
     },[]);
 
-
-    
-    function switchState(){
-        switch (page) {
-            case LOGIN_STATE:
-                return <LoginForm userAuthState={userAuthState} setPage={setPage}/>;
-            case SIGN_UP_STATE:
-                return <SignUp userAuthState={userAuthState} setPage={setPage}/>; 
-            case LOGGED_STATE:
-                return <Logged userAuthState={userAuthState} page={page} setPage={setPage} username={username} setLeaderLobby={setLeaderLobby} lobby={lobby} setLobby={setLobby}/>;
-            case LOBBY_STATE:
-                return <Lobby setPage={setPage} username={username} leaderLobby={leaderLobby} lobby={lobby} setLobby={setLobby} setLeaderLobby={setLeaderLobby}/>;
-            case GAME_STATE:
-                return <Game data={data} setPage={setPage}/>;
-            default:
-                break;
-        }
-    }
-
-
     return (
         <div className='App'>
-            <div className = {`container-set-username ${openSetUsername ? '' : 'no-active-set-username'}`}>
-                <SetUsername openSetUsername={openSetUsername} setOpenSetUsername={setOpenSetUsername} user={userAuthState} setNickname={setUsername}/>
-            </div>
-            {switchState()}
+            <AppContext.Provider value={{userAuthState, setUserAuthState, username , setUsername, lobby, setLobby, leaderLobby, setLeaderLobby,navigate}}>
+                <Routes>
+                    <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
+                    <Route path={SET_USERNAME} element={<SetUsername />}/>
+                    <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
+                    <Route path={LOGGED_PAGE} element={<Logged/>}/>
+                    <Route path={LOBBY_PAGE} element={<Lobby/>}/>
+                    <Route path={GAME_PAGE} element={<Game data={data}/>}/>
+                </Routes>
+            </AppContext.Provider>
         </div>
     )
 }

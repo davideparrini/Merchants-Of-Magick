@@ -1,16 +1,20 @@
-import React, { useEffect, useRef, useState} from 'react'
+import React, { useContext, useEffect, useRef, useState} from 'react'
 import './Logged.scss'
 import { userAuth} from '../Config/auth';
 import FriendList from '../components/FriendList/FriendList';
 import { connectionHandlerClient } from '../Config/connectionHandler';
+import { AppContext } from '../App';
+
+const LOBBY_PAGE = '/lobby';
 
 
-const LOBBY_STATE = 'LOBBY';
-const LOGGED_STATE = 'LOGGED';
+
+function Logged() {
 
 
-function Logged({page, setPage,username,setLeaderLobby,lobby,setLobby}) {
+    const { username, setLeaderLobby, lobby, setLobby, navigate} = useContext(AppContext);
 
+    
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
     const submitLobbyIdRef = useRef();
@@ -35,8 +39,8 @@ function Logged({page, setPage,username,setLeaderLobby,lobby,setLobby}) {
     },[username])
 
     useEffect(()=>{
-        if(lobby != null && page !== LOBBY_STATE){
-            setPage(LOBBY_STATE);
+        if(lobby != null ){
+            navigate(LOBBY_PAGE);
         }
     },[lobby])
 
@@ -95,7 +99,6 @@ function Logged({page, setPage,username,setLeaderLobby,lobby,setLobby}) {
                
             </div>
             <div className='username-log'>
-                <label>Logged as:</label>
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${connectionHandlerClient.checkConnection()  ? 'online-label' : 'offline-label'}`}>{connectionHandlerClient.checkConnection()  ? 'Online' : 'Offline'}</div>
             </div>
