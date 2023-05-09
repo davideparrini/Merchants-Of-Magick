@@ -20,7 +20,7 @@ function LoginForm() {
     const requestLogin = useCallback((email, password) =>{
         userAuth.login(email,password).then((b)=>{
             if(!b){
-                alert("Errore email o password");
+                alert("Wrong email or password!");
             }
         })
     },[]);

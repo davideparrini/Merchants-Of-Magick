@@ -55,7 +55,7 @@ function Logged() {
                             onClick={()=>{
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby);
+                                    connectionHandlerClient.updateLobby(lobby,setLobby);
                                 })
                                 setLeaderLobby(true);
                         }}>Create New Lobby</button>
@@ -73,8 +73,10 @@ function Logged() {
                                     setLeaderLobby(false);
                                     break;
                                 case 'FULL':
+                                    alert("Lobby full!")
                                     break;
                                 case 'ERROR':
+                                    alert("Error, wrong id!")
                                     break;
                                 default: break;
                             }

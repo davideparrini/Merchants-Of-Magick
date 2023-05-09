@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
@@ -15,6 +15,8 @@ function Lobby() {
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
+
+    
 
     const handleCopy = ()=>{
         navigator.clipboard.writeText(lobby.id);

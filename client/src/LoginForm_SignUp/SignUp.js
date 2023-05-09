@@ -46,7 +46,7 @@ function SignUp() {
                                     navigate(LOGGED_PAGE)
                                 }
                                 else{
-                                    alert("Errore email o password non valide")
+                                    alert("Email or password invalid! Email should be an email not an username! Password should be at least 6 characters! ")
                                 }
                             })
                             }}>Sign Up</button>
