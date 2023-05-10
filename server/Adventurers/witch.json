@@ -1,8 +1,8 @@
 {
     "adventurer" : "The Witch",
     "typeOrder" : "fiery",
-    "req1" :"scroll",
-    "req2" : "staff", 
-    "req3" : "plate armor", 
+    "order1" :"scroll",
+    "order2" : "staff", 
+    "order3" : "plate armor", 
     "gold": 5
 }

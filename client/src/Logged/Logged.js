@@ -5,14 +5,11 @@ import FriendList from '../components/FriendList/FriendList';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 
-const LOBBY_PAGE = '/lobby';
-
-
 
 function Logged() {
 
 
-    const { username, setLeaderLobby, lobby, setLobby, navigate} = useContext(AppContext);
+    const { username, setLeaderLobby, lobby, setLobby,setGameInitState, navigate, EMPTYLOBBY, LOGGED_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -39,8 +36,8 @@ function Logged() {
     },[username])
 
     useEffect(()=>{
-        if(lobby != null ){
-            navigate(LOBBY_PAGE);
+        if(lobby.id  !== -1){
+            navigate(`${LOGGED_PAGE}/${lobby.id}`);
         }
     },[lobby])
 
@@ -55,7 +52,7 @@ function Logged() {
                             onClick={()=>{
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby,setLobby);
+                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby);
                                 })
                                 setLeaderLobby(true);
                         }}>Create New Lobby</button>
@@ -81,7 +78,7 @@ function Logged() {
                                 default: break;
                             }
                             setLobby(lobby);
-                            connectionHandlerClient.updateLobby(lobby);
+                            connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby);
                         });
                         
                         
@@ -91,8 +88,9 @@ function Logged() {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
-                            setLobby(null);
+                            setLobby(EMPTYLOBBY);
                             setLeaderLobby(false);
+                            setGameInitState(-1);
                             userAuth.logout();
                         }
                     }}>

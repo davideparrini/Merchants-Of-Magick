@@ -4,12 +4,9 @@ import { dbFirestore} from '../Config/firestoreDB';
 import { AppContext } from '../App';
 
 
-const LOGGED_PAGE = '/logged';
-
-
 function SetUsername() {
 
-    const {userAuthState, setUsername,navigate} = useContext(AppContext);
+    const {userAuthState, setUsername,navigate, LOGGED_PAGE} = useContext(AppContext);
     
     const[nickname,setNickname] = useState('');
     const[validUsername, setValidUsername] = useState(null);

@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react'
+import React, { useState, useEffect, useContext} from 'react'
 import { userAuth } from '../Config/auth';
 import './LoginForm_SignUp.scss'
 import { AppContext } from '../App';
 
 
-const LOGIN_PAGE = '/';
-const SIGN_UP_PAGE = '/signup';
-const LOGGED_PAGE = '/logged';
-
-
 function SignUp() {
 
-    const {userAuthState,navigate} = useContext(AppContext);
+    const {userAuthState,navigate, SIGN_UP_PAGE, LOGIN_PAGE, LOGGED_PAGE} = useContext(AppContext);
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');

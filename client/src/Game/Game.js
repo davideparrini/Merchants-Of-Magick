@@ -51,11 +51,12 @@ import glamorPotionSupplier from '../components/Skill/skillsJson/glamorPotionSup
 import renownedAccessories from '../components/Skill/skillsJson/renownedAcc.json'
 import weaponPrestige from '../components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
+import { AppContext } from '../App';
 
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = true;
+const testActive = false;
 
  //Tipi dado
  const TYPE_D6 = 'd6';
@@ -111,28 +112,6 @@ const skillListMagicResearch = [
 ]
 
 
-//TEST
-const card1Es ={item:'plate armor',gold: 7,enchantment: 'divine' , origin:'of the dragons', inProgress:true};
-const card2Es ={item:'crossbow',gold: 4,enchantment: 'everlasting' , origin:'of the elves', inProgress:true};
-const card3Es ={item:'warhammer',gold: 7,enchantment: 'shocking' , origin: 'of the dwarves', inProgress:true};
-const card4Es ={item:'sword',gold: 5,enchantment: 'fiery' , origin: 'of the orcs', inProgress:true};
-const card5Es ={item:'helmet',gold: 3,enchantment: 'fiery' , origin: '', inProgress:true};
-const card6Es ={item:'grimoire',gold: 6,enchantment: 'everlasting' , origin: 'of the dwarves', inProgress:true};
-
-// const quest1 = {attribute:"wood", request: 8,gold : 8};
-// const quest2 = {attribute:"elemental", request: 8, gold : 8};
-
-const order =  {typeOrder:"divine", adventurer: "The Cleric", req1:"backpack", req2: "sword", req3: 'helmet', gold: 6};
-
-const player1 ={name:"Urfrick", card1: card1Es,card2: card2Es,card3: card3Es};
-const player2 ={name:"Giacomino", card1: card6Es,card2: card5Es,card3: card1Es};
-const player3 ={name:"Brix", card1: card3Es,card2: card4Es,card3: card2Es};
-
-
-
-
-const SKILLS_TEST = [];
-
 //numero pozioni necessarie per usare gl'eDice
 const nPotion_extraDice1 = 0;
 const nPotion_extraDice2 = 0;
@@ -142,11 +121,10 @@ const nPotion_extraDice5 = 3;
 const nPotion_extraDice6 = 4;
 
 
+function Game({gameUpdated, setGameUpdated}) {
 
 
-
-function Game({data}) {
-
+    const { username, gameInitState, setGameInitState, gameOnNewTurn, setGameOnNewTurn} = useContext(AppContext);
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
@@ -177,16 +155,16 @@ function Game({data}) {
 
    
     //valori dei dadi
-    const [d6Value,setD6Value]=useState(data.dices.d6);
-    const [d8Value,setD8Value]=useState(data.dices.d8);
-    const [d10Value,setD10Value]=useState(data.dices.d10);
-    const [d12Value,setD12Value]=useState(data.dices.d12);
+    const [d6Value,setD6Value]=useState(gameInitState.dices.d6);
+    const [d8Value,setD8Value]=useState(gameInitState.dices.d8);
+    const [d10Value,setD10Value]=useState(gameInitState.dices.d10);
+    const [d12Value,setD12Value]=useState(gameInitState.dices.d12);
 
     //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
-    let d6startValue = data.dices.d6;
-    let d8startValue = data.dices.d8;
-    let d10startValue = data.dices.d10;
-    let d12startValue = data.dices.d12;
+    let d6startValue = gameInitState.dices.d6;
+    let d8startValue = gameInitState.dices.d8;
+    let d10startValue = gameInitState.dices.d10;
+    let d12startValue = gameInitState.dices.d12;
 
     //bool se i dadi sono stati toccati, diceTouched(true) -> focused 
     const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
@@ -228,16 +206,11 @@ function Game({data}) {
     const[turnDone, setTurnDone] = useState(false);
 
 
-    const [listPlayers,setListPlayers] = useState([player1,player2,player3]);
+    const [boardListPlayers,setBoardListPlayers] = useState(gameInitState.players);
 
-
-    const[quest1Reward, setQuest1Reward] = useState(data.quests.quest1.gold);
-    const[quest2Reward, setQuest2Reward] = useState(data.quests.quest2.gold);
-
-
-    const [card1,setCard1] = useState(data.cards.card1);
-    const [card2,setCard2] = useState(data.cards.card2);
-    const [card3,setCard3] = useState(data.cards.card3);
+    const [card1,setCard1] = useState(gameInitState.cards.card1);
+    const [card2,setCard2] = useState(gameInitState.cards.card2);
+    const [card3,setCard3] = useState(gameInitState.cards.card3);
 
     //bool carta girata, showCard(false) -> carta girata
     const[showCard1,setShowCard1] = useState(true);
@@ -248,14 +221,17 @@ function Game({data}) {
     const [freeUpgrade,setFreeUpgrade] = useState(0);
 
     
-    const typeAttributeQuestCrafting = data.quests.quest1.attribute;
-    const typeAttributeQuestMagicResearch = data.quests.quest2.attribute;
+    const typeAttributeQuestCrafting = gameInitState.quest1.attribute;
+    const typeAttributeQuestMagicResearch = gameInitState.quest2.attribute;
+
     const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
     const [nAttributeGained_QuestMagicResearch,setnAttributeGained_QuestMagicResearch] = useState(0);
-
+    
+    const[quest1Reward, setQuest1Reward] = useState(gameInitState.quest1.gold);
+    const[quest2Reward, setQuest2Reward] = useState(gameInitState.quest2.gold);
 
     //lista skill acquisite
-    const[skillsGained,setSkillsGained] = useState(SKILLS_TEST);
+    const[skillsGained,setSkillsGained] = useState([]);
 
     
 ////////////////////////////////////FUCTIONS//////////////////////////////////////////////////////////////////////////////////////
@@ -593,7 +569,7 @@ function Game({data}) {
                     />
                 </div>
                 <div className='players-table'>
-                    <BoardPlayers listPlayers={listPlayers}/>
+                    <BoardPlayers players={boardListPlayers}/>
                 </div>
             
 
@@ -665,11 +641,11 @@ function Game({data}) {
                 </div>
                 <div className='container-order-quests'>
                     <div className='container-quests'>
-                        <Quest quest={data.quests.quest1} goldReward={quest1Reward} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
-                        <Quest quest={data.quests.quest2}goldReward={quest2Reward} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
+                        <Quest questAttribute={typeAttributeQuestCrafting} questRequest={6} goldReward={quest1Reward} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
+                        <Quest questAttribute={typeAttributeQuestMagicResearch} questRequest={8} goldReward={quest2Reward} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
                     </div>
                     <div className='container-order'>
-                        <OrdersContainer order={order} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
+                        <OrdersContainer order={gameInitState.adventurer} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
                     </div>
                 </div>
                 

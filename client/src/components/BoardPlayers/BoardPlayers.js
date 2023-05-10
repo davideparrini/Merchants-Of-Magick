@@ -2,31 +2,31 @@ import React, { useState } from 'react'
 import './BoardPlayers.scss'
 import Card from '../Card/Card';
 
-function BoardPlayers({listPlayers}) {
+function BoardPlayers({players}) {
 
     const[index,setIndex] = useState(0);
-    const[playerShowed,setPlayerShowed] = useState(listPlayers[0]);
+    const[playerShowed,setPlayerShowed] = useState(players[0]);
     
     
 
     function onClickShiftRight(){
-        if(index === (listPlayers.length-1) ){
-            setPlayerShowed(listPlayers[0]);
+        if(index === (players.length-1) ){
+            setPlayerShowed(players[0]);
             setIndex(0);
         }
         else{
-            setPlayerShowed(listPlayers[index+1]);
+            setPlayerShowed(players[index+1]);
             setIndex((i)=>(i+1));
         }
     }
 
     function onClickShiftLeft(){
         if(index === 0){
-            setPlayerShowed(listPlayers[listPlayers.length-1]);
-            setIndex(listPlayers.length-1);
+            setPlayerShowed(players[players.length-1]);
+            setIndex(players.length-1);
         }
         else{
-            setPlayerShowed(listPlayers[index-1]);
+            setPlayerShowed(players[index-1]);
             setIndex((i)=>(i-1));
         }
     }
@@ -35,17 +35,17 @@ function BoardPlayers({listPlayers}) {
         <div className='board-players'>
             <div className='nav-bar'>
                 <div className='arrow shift-left' onClick={onClickShiftLeft}/>
-                <div className='name-player'>{playerShowed.name + " (" + (index+1)+"/"+ listPlayers.length +")"}</div>
+                <div className='name-player'>{playerShowed.username + " (" + (index+1)+"/"+ players.length +")"}</div>
                 <div className='arrow shift-right' onClick={onClickShiftRight}/>
             </div>
-             <button className='find-next-card' onClick={()=>{setIndex(0); setPlayerShowed(listPlayers[0])}}>NC</button>
+             <button className='find-next-card' onClick={()=>{setIndex(0); setPlayerShowed(players[0])}}>NC</button>
             <div className='container-cards-BP'>
                 <div className='container-card1-BP'>
                     <div className={`${index === 0 ? 'next-card visible' : 'next-card no-visible'}`}>NEXT CARD</div>
-                    <Card isShowed={playerShowed.card1.inProgress} order={playerShowed.card1} smallSize={true}/>
+                    <Card isShowed={playerShowed.cards.card1.inProgress} order={playerShowed.cards.card1} smallSize={true}/>
                 </div>
-                <Card isShowed={playerShowed.card2.inProgress} order={playerShowed.card2} smallSize={true}/>
-                <Card isShowed={playerShowed.card3.inProgress} order={playerShowed.card3} smallSize={true}/>
+                <Card isShowed={playerShowed.cards.card2.inProgress} order={playerShowed.cards.card2} smallSize={true}/>
+                <Card isShowed={playerShowed.cards.card3.inProgress} order={playerShowed.cards.card3} smallSize={true}/>
             </div>
             
         </div>

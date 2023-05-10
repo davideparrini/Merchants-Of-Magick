@@ -1,6 +1,7 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { lobbyHandler } from "./LobbyHandler.js";
+import { lobbyHandler } from "./Config/lobbyServerHandler.js";
+import { gameHandler } from "./Config/gameServerHandler.js";
 
 const httpServer = createServer();
 
@@ -15,8 +16,11 @@ const io = new Server(httpServer, {
 //Array delle lobbies
 const lobbies = [];
 
+//Mapping lobbyID_LobbyIndex nell'array di lobbies
+const mapLobbyID_LobbyIndex = new Map();
+
 //Mapping username-socket
-const mapUsername_socket = new Map()
+const mapUsername_socket = new Map();
 
 //Mapping socket.id-username
 const mapSocketID_Username = new Map();
@@ -24,19 +28,24 @@ const mapSocketID_Username = new Map();
 //Mapping username-lobby.id
 const mapUsername_lobbyIndex = new Map();
 
+const mapLobbyID_GameState = new Map();
 
 io.on("connection", (socket) => {
     console.log("Connected "+ socket.id );
     //Connesso
     socket.on("username",(username)=> {
         //Ricevo l'username dal socket e lo mappo nelle strutture dati
-        mapSocketID_Username.set(socket.id,username);
-        mapUsername_socket.set(username,socket);
+        if(username !== ''){
+            mapSocketID_Username.set(socket.id,username);
+            mapUsername_socket.set(username,socket);
+        }
+        
 
     })
     //lobbyHandler è la funzione che mi permette di gestire le interazioni che ci sono tra l'utente e la lobby con cui andrà ad interagire
-    lobbyHandler( io, socket, lobbies, mapUsername_socket , mapUsername_lobbyIndex );
+    lobbyHandler( io, socket, lobbies,mapLobbyID_LobbyIndex, mapUsername_socket , mapUsername_lobbyIndex, mapLobbyID_GameState );
 
+    gameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyID_GameState);
 
     socket.on("disconnect", () => {
         //Disconnesso

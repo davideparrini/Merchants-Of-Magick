@@ -17,15 +17,15 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
 
     
     useEffect(()=>{
-        if(checkOrderRequest(order.req1) && !orderDone1) {
+        if(checkOrderRequest(order.order1) && !orderDone1) {
             setNOrderDone((n)=>(n+1));
             setOrderDone1(true);
         }
-        if(checkOrderRequest(order.req2) && !orderDone2) {
+        if(checkOrderRequest(order.order2) && !orderDone2) {
             setNOrderDone((n)=>(n+1));
             setOrderDone2(true);
         }
-        if(checkOrderRequest(order.req3) && !orderDone3) {
+        if(checkOrderRequest(order.order3) && !orderDone3) {
             setNOrderDone((n)=>(n+1));
             setOrderDone3(true);
         }
@@ -54,9 +54,9 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
             <div className='order-gold' >
                 <Gold value={order.gold} size={TYPE_GOLD_MEDIUM} active={orderDone1 && orderDone2 && orderDone3}/>
             </div>
-            <div className={`request-order ${orderDone1 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.req1}</div>
-            <div className={`request-order ${orderDone2 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.req2}</div>
-            <div className={`request-order ${orderDone3 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.req3}</div>
+            <div className={`request-order ${orderDone1 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.order1}</div>
+            <div className={`request-order ${orderDone2 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.order2}</div>
+            <div className={`request-order ${orderDone3 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.order3}</div>
             <div className={`reward-orders ${nOrderDone > 0 ? 'req-done' : ''}`}>-1st Order Completed: Gain 3 potions</div>
             <div className={`reward-orders ${nOrderDone > 1 ? 'req-done' : ''}`}>-2st Order Completed: Mark any circle</div>
             <div className={`reward-orders ${nOrderDone > 2 ? 'req-done' : ''}`}>-3st Order Completed: Mark any circle and get order gold</div>

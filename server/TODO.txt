@@ -1,4 +1,4 @@
--
+Se player invitato via Username non si iscrive agli update, quando implemento le notifiche sarà da gestire
 
 
 LOGICA DEL GIOCO

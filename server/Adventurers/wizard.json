@@ -1,8 +1,8 @@
 {
     "adventurer" : "The Wizard",
     "typeOrder" : "shocking",
-    "req1" :"ring",
-    "req2" : "crossbow", 
-    "req3" : "greaves", 
+    "order1" :"ring",
+    "order2" : "crossbow", 
+    "order3" : "greaves", 
     "gold": 4
 }

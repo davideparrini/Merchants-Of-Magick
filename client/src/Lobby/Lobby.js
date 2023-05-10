@@ -4,21 +4,60 @@ import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 
-const LOGIN_PAGE = '/';
-const LOGGED_PAGE = '/logged';
-const GAME_PAGE = '/game';
 
+function Lobby({setGameUpdated}) {
 
-function Lobby() {
-
-    const { username, leaderLobby, lobby, setLobby, setLeaderLobby, navigate} = useContext(AppContext);
+    const { username, leaderLobby, lobby, setLobby, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, LOGIN_PAGE, LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
-    
+    const[gameStart, setGameStart] = useState(false);
+    const[countdownGameStart,setCountdownGameStart] = useState(5);
+
+    // const [remainingTime, setRemainingTime] = useState(1000);
+    // useEffect(() => {
+    //     if(remainingTime > 0 ){
+    //         const intervalId = setInterval(() => {
+    //             setRemainingTime((t)=> t-1);
+    //             console.log(gameInitState);
+    //         }, 3000);
+    //         return () => clearInterval(intervalId);
+    //     }
+
+    // },[remainingTime]);
+
+
+
+
     useEffect(()=>{
-        console.log(lobby);
-    },[lobby]);
+        if(lobby.id === -1){
+            navigate(LOGGED_PAGE);
+        }
+    },[])
+
+    useEffect(()=>{
+        if(gameStart && gameInitState !== -1){
+            const gI = gameInit();
+            setGameInitState(gI);
+            navigate(GAME_PAGE)
+        }
+    },[gameStart,gameInitState])
+
+    // useEffect(()=>{
+    //     if(gameStart){
+    //         if(countdownGameStart > 0){
+    //             const intervalId = setInterval(() => {
+    //                 setCountdownGameStart((t)=> t-1);
+    //             }, 1000);
+    //             return () => clearInterval(intervalId);
+    //         }
+    //         else{
+    //             navigate(GAME_PAGE);
+    //             setCountdownGameStart(5);
+    //         }
+    //     }
+        
+    // },[gameStart, countdownGameStart])
 
     const handleCopy = ()=>{
         navigator.clipboard.writeText(lobby.id);
@@ -69,18 +108,35 @@ function Lobby() {
                         }}>Add Player</button>
                     </div>
                     <div className='container-btn-lobby'>
-                        <button className= {`start-game-btn ${leaderLobby ? '' : 'inactive-btn'}`}
+                        <button className= {`start-game-btn ${ leaderLobby  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
-                                navigate(GAME_PAGE)
+                                if(true){
+                                    if(!gameStart){
+                                        connectionHandlerClient.gameStartRequest(lobby.id, setGameInitState,setGameUpdated, (res)=>{
+                                            switch(res){
+                                                case 'OK': 
+                                                    setGameStart(true);
+                                                    break;
+                                                case 'ERROR':
+                                                    alert("Error, something went wrong starting game!")
+                                                    break;
+                                                default: break;
+                                            }
+                                        })
+                                    }
+                                }
+                                   
                             }}
-                        >Start Game</button>
+                        >{gameStart ? countdownGameStart :'Start Game'}</button>
                     </div>
                 </div>
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
-                            setLobby(null);
+                            setLobby(EMPTYLOBBY);
                             setLeaderLobby(false);
+                            setGameInitState(-1);
+                            setCountdownGameStart(5);
                             userAuth.logout();
                             navigate(LOGIN_PAGE);  
                         }
@@ -90,9 +146,11 @@ function Lobby() {
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
-                            setLobby(null);
+                            setLobby(EMPTYLOBBY);
                             setLeaderLobby(false);
-                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb))               
+                            setCountdownGameStart(5);
+                            setGameInitState(-1);
+                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));              
                             navigate(LOGGED_PAGE);
                         }
                     }}><label className='back-label'>Back</label>

@@ -1,8 +1,8 @@
 {
     "adventurer" : "The Barbarian",
     "typeOrder" : "of the orcs",
-    "req1" :"scroll",
-    "req2" : "warhammer", 
-    "req3" : "helmet", 
+    "order1" :"scroll",
+    "order2" : "warhammer", 
+    "order3" : "helmet", 
     "gold": 5
 }
