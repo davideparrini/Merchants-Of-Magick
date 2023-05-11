@@ -2,7 +2,7 @@
 import './Game.scss';
 
 
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Timer from '../components/Timer/Timer';
 import ContainerDice from '../components/ContainerDice/ContainerDice'
 import ExtraDice from '../components/ExtraDice/ExtraDice';
@@ -56,7 +56,7 @@ import { AppContext } from '../App';
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = false;
+const testActive = true;
 
  //Tipi dado
  const TYPE_D6 = 'd6';
@@ -143,12 +143,18 @@ function Game({gameUpdated, setGameUpdated}) {
 
    
 
+    //numero turno attuale
+    const [nTurn,setNTurn] = useState(1);
+
+    const[turnDone, setTurnDone] = useState(false);
+
+    //durata di un turno
+    const [countdownTurn,setCountdownTurn] = useState(TIMER_COUNTDOWN);
+
+
     //lista items dentro lo shop
     const [shop,setShop] = useState([]);
 
-   
-    //durata di un turno
-    const [countdownTurn,setCountdownTurn] = useState(TIMER_COUNTDOWN);
 
     //numero pozioni
     const [nPotion,setNPotion] = useState(N_POTION_TEST);
@@ -161,10 +167,10 @@ function Game({gameUpdated, setGameUpdated}) {
     const [d12Value,setD12Value]=useState(gameInitState.dices.d12);
 
     //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
-    let d6startValue = gameInitState.dices.d6;
-    let d8startValue = gameInitState.dices.d8;
-    let d10startValue = gameInitState.dices.d10;
-    let d12startValue = gameInitState.dices.d12;
+    let d6startValue = useRef(gameInitState.dices.d6);
+    let d8startValue = useRef(gameInitState.dices.d8);
+    let d10startValue = useRef(gameInitState.dices.d10);
+    let d12startValue = useRef(gameInitState.dices.d12);
 
     //bool se i dadi sono stati toccati, diceTouched(true) -> focused 
     const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
@@ -198,12 +204,6 @@ function Game({gameUpdated, setGameUpdated}) {
     const [extraDiceUsed4,setExtraDiceUsed4] = useState(false);
     const [extraDiceUsed5,setExtraDiceUsed5] = useState(false);
     const [extraDiceUsed6,setExtraDiceUsed6] = useState(false);
-    
-
-    //numero turno attuale
-    const [nTurn,setNTurn] = useState(1);
-
-    const[turnDone, setTurnDone] = useState(false);
 
 
     const [boardListPlayers,setBoardListPlayers] = useState(gameInitState.players);
@@ -242,19 +242,13 @@ function Game({gameUpdated, setGameUpdated}) {
     
     
 
-    //funzione da passare al component child Skill per aggiungere la skill alla lista delle skill del giocatore
-    function getSkillGained(skillGained){
-        setSkillsGained((l)=>[...l,skillGained]);
-    }
-    
-
     //Controllo se il giocatore possiede le skill necessarie per craftare la carta
-    function checkSkillCard(card){
+    const checkSkillCard = useCallback((card)=>{
         const hasItemSkill = skillsGained.includes(card.item);
         const hasEnchantmentSkill = card.enchantment == null || card.enchantment === '' ? true : skillsGained.includes(card.origin);
         const hasOriginSkill = card.origin == null || card.origin === '' ? true : skillsGained.includes(card.origin);
         return hasItemSkill && hasEnchantmentSkill && hasOriginSkill ;
-    }
+    },[skillsGained])
 
 
     //predicato per vedere se un dado è stato toccato
@@ -298,7 +292,7 @@ function Game({gameUpdated, setGameUpdated}) {
 
     
     //funzione passata al component per la gestione logica del extra-dice
-    function onClickHandlerExtraDice(requireNPots,extraDiceUsedTemporarily, definitelyExtraDiceUsed,setExtraDiceUsedTemporarily, setIsPlayble,typeExtraDice){
+    const onClickHandlerExtraDice = useCallback((requireNPots,extraDiceUsedTemporarily, definitelyExtraDiceUsed,setExtraDiceUsedTemporarily, setIsPlayble,typeExtraDice) => {
         //se l extra-dice è usato definitivamente non puoi fare niente
         if(definitelyExtraDiceUsed) return;
 
@@ -333,22 +327,23 @@ function Game({gameUpdated, setGameUpdated}) {
                 setIsPlayble(true);
             }       
         }
-    }
+    },[ extraDiceUsedTempList, nPotion,nDiceLeft_Used, totalPossibleDice_toUse])
 
 
-    function finishTurn(turnDone){
+    const finishTurn = useCallback(()=>{
         if(!turnDone){
             setTurnDone(true);
             
         }
-    }
+    },[turnDone]);
 
     function newTurn(){
         setNTurn((n)=>(n+1));
         setCountdownTurn(TIMER_COUNTDOWN);
-        d8startValue =22;
-        d10startValue =22;
-        d12startValue =22;
+        d6startValue.current =22;
+        d8startValue.current =22;
+        d10startValue.current =22;
+        d12startValue.current =22;
         setNDiceLeft_toUse(2);
         // setQuest1Reward();
         // setQuest2Reward();
@@ -462,7 +457,7 @@ function Game({gameUpdated, setGameUpdated}) {
                         typeDice={TYPE_D6} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d6startValue} 
+                        startTurnDiceValue={d6startValue.current} 
                         diceValue={d6Value} 
                         setDiceValue={setD6Value} 
                         usedDice={diceUsedD6} 
@@ -480,7 +475,7 @@ function Game({gameUpdated, setGameUpdated}) {
                         typeDice={TYPE_D8} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d8startValue} 
+                        startTurnDiceValue={d8startValue.current} 
                         diceValue={d8Value} 
                         setDiceValue={setD8Value} 
                         usedDice={diceUsedD8} 
@@ -497,7 +492,7 @@ function Game({gameUpdated, setGameUpdated}) {
                         typeDice={TYPE_D10} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d10startValue} 
+                        startTurnDiceValue={d10startValue.current} 
                         diceValue={d10Value} 
                         setDiceValue={setD10Value} 
                         usedDice={diceUsedD10} 
@@ -514,7 +509,7 @@ function Game({gameUpdated, setGameUpdated}) {
                         typeDice={TYPE_D12} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d12startValue} 
+                        startTurnDiceValue={d12startValue.current} 
                         diceValue={d12Value} setDiceValue={setD12Value} 
                         usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
                         nActions={nDiceLeft_toUse} 
@@ -529,7 +524,7 @@ function Game({gameUpdated, setGameUpdated}) {
 
 
                 <div className='card-container'>
-                    <Card order = {card1} 
+                    <Card card = {card1} 
                         isShowed={showCard1}
                         smallSize={false}
                     />
@@ -542,7 +537,7 @@ function Game({gameUpdated, setGameUpdated}) {
                         setgoldAttuale={setGoldAttuale}
                     />
 
-                    <Card order = {card2} 
+                    <Card card = {card2} 
                         isShowed={showCard2} 
                         smallSize={false}
                     />
@@ -555,7 +550,7 @@ function Game({gameUpdated, setGameUpdated}) {
                         setgoldAttuale={setGoldAttuale}
                     />
 
-                    <Card order = {card3} 
+                    <Card card = {card3} 
                         isShowed={showCard3}
                         smallSize={false}
                     />
@@ -582,7 +577,7 @@ function Game({gameUpdated, setGameUpdated}) {
                                     return (
                                         <Skill skill = {s} key={i} 
                                             setNPotion={setNPotion}
-                                            fun_passSkillGained={getSkillGained}
+                                            setSkillsGained={setSkillsGained}
                                             valueTouchedDiceRef={valueTouchedDiceRef}
                                             typeTouchedDiceRef={typeTouchedDiceRef}
                                             isDiceTouched={isDiceTouched}
@@ -615,7 +610,7 @@ function Game({gameUpdated, setGameUpdated}) {
                                     return (
                                         <Skill skill = {s} key={i} 
                                             setNPotion={setNPotion}
-                                            fun_passSkillGained={getSkillGained}
+                                            setSkillsGained={setSkillsGained}
                                             valueTouchedDiceRef={valueTouchedDiceRef}
                                             typeTouchedDiceRef={typeTouchedDiceRef}
                                             isDiceTouched={isDiceTouched}

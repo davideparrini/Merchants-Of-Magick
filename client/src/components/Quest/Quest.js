@@ -11,7 +11,7 @@ function Quest({questAttribute, questRequest, progress, goldReward , setgoldAttu
         if(progress === questRequest){
             setgoldAttuale((n)=>(n + goldReward));
         }
-    },[progress]);
+    },[progress,goldReward]);
 
     return (
         <div className={`container-quest ${progress === questRequest ? 'quest-done' : ''}`}>

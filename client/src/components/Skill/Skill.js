@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './Skill.scss'
 import steelImg from './iconsAttribute/steel.png'
 import woodImg from './iconsAttribute/wood7.png'
@@ -10,8 +10,7 @@ import Gold from '../Gold/Gold'
 
 
 const TYPE_GOLD_SMALL = 'SMALL';
-const TYPE_GOLD_MEDIUM = 'MEDIUM';
-const TYPE_GOLD_BIG = 'BIG';
+
 
 //Tipi dado
 const TYPE_D6 = 'd6';
@@ -28,18 +27,45 @@ const TYPE_ELEMENTAL = 'elemental';
 const TYPE_ARCANE = 'arcane';
 const TYPE_WILD = 'wild';
 
-function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade,setFreeUpgrade, setgoldAttuale, testActive}) {
+//Tipi cratfing item
+const typeCraftingItem = ['Accessories','Weapons','Armor'];
+
+
+function isThereAttribute(attValue){
+    return (attValue === 0 || attValue == null);
+}
+
+function checkNoImg(attValue){
+    if(attValue === 0 || attValue == null){
+        return 'no-img';
+    }
+    else return 'attribute-img';
+}
+
+
+function matchTypeDice_Attribute(typeAtt,typeDice){
+    switch(typeAtt){
+        case TYPE_STEEL: return typeDice === TYPE_D6;
+        case TYPE_WOOD: return typeDice === TYPE_D6 || typeDice === TYPE_D8;
+        case TYPE_LEATHER: return typeDice === TYPE_D6 || typeDice === TYPE_D8 || typeDice === TYPE_D10;
+        case TYPE_ELEMENTAL: return typeDice === TYPE_D8 || typeDice === TYPE_D10 || typeDice === TYPE_D12;
+        case TYPE_ARCANE: return typeDice === TYPE_D10 || typeDice === TYPE_D12;
+        case TYPE_WILD: return  typeDice === TYPE_D12;
+        default: return false;
+    }
+}
+
+
+function Skill({skill, setNPotion, setSkillsGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used ,setNDiceLeft_Used , setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade,setFreeUpgrade, setgoldAttuale, testActive}) {
     
     const[hasSkill, setHasSkill] = useState(false);
     const[att1,setAtt1] = useState(isThereAttribute(skill.attribute1));
     const[att2,setAtt2] = useState(isThereAttribute(skill.attribute2));
     const[att3,setAtt3] = useState(isThereAttribute(skill.attribute3));
-    const typeCraftingItem = ['Accessories','Weapons','Armor'];
+    
 
     const helperRef = useRef();
     const[helperOpen,setHelperOpen] = useState(false);
-    
-    
     
     
 
@@ -57,54 +83,9 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
     });
 
 
-    function isThereAttribute(attValue){
-        return (attValue === 0 || attValue == null);
-    }
-
-    function checkNoButton(attValue, boolAtt, typeAtt){
-        if(attValue === 0 || attValue == null){
-            return 'no-button';
-        }
-        else{
-            if(!boolAtt){
-                if((isDiceTouched() && isAttributeUpgradable(attValue,typeAtt)) || freeUpgrade){
-                    return 'number-circle upgradable'
-                }
-                else return 'number-circle';
-            }
-                
-            else {
-                return 'number-circle upgraded';
-            }
-        }
-    }
-    function checkNoImg(attValue){
-        if(attValue === 0 || attValue == null){
-            return 'no-img';
-        }
-        else return 'attribute-img';
-    }
-
-   function getCappuccio(){
-        if(typeCraftingItem.includes(skill.typeItem))
-            return 'ᨈ'
-        else return 'ᨆ'
-   }
-
    
-   function matchTypeDice_Attribute(typeAtt,typeDice){
-        switch(typeAtt){
-            case TYPE_STEEL: return typeDice === TYPE_D6;
-            case TYPE_WOOD: return typeDice === TYPE_D6 || typeDice === TYPE_D8;
-            case TYPE_LEATHER: return typeDice === TYPE_D6 || typeDice === TYPE_D8 || typeDice === TYPE_D10;
-            case TYPE_ELEMENTAL: return typeDice === TYPE_D8 || typeDice === TYPE_D10 || typeDice === TYPE_D12;
-            case TYPE_ARCANE: return typeDice === TYPE_D10 || typeDice === TYPE_D12;
-            case TYPE_WILD: return  typeDice === TYPE_D12;
-            default: return false;
-        }
-   }
-
-   function isAttributeUpgradable(attValue,typeAtt){
+   
+   const isAttributeUpgradable = useCallback((attValue,typeAtt)=>{
         if(!matchTypeDice_Attribute(typeAtt , typeTouchedDiceRef.current)) return false;
         if(typeCraftingItem.includes(skill.typeItem)){
             if(valueTouchedDiceRef.current >= attValue){
@@ -116,9 +97,9 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
             }
         }
         return false;
-   }
+   },[skill.typeItem, typeTouchedDiceRef, valueTouchedDiceRef]);
    
-   function upgradeAttribute(attValue,typeAtt,setAtt){
+   const upgradeAttribute = useCallback((attValue,typeAtt,setAtt)=>{
         if(freeUpgrade){
             setAtt(true);
             if(typeAtt === typeAttrQuest1) setNAttrQuest1((n)=>(n+1));
@@ -167,7 +148,32 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
                 valueTouchedDiceRef.current = null;
             }
         }
-   }
+   },[freeUpgrade, nDiceLeft_Used, skill.gold, skill.typeItem, testActive, typeAttrQuest1, typeAttrQuest2, typeTouchedDiceRef, valueTouchedDiceRef]);
+
+   const checkNoButton = useCallback((attValue, boolAtt, typeAtt)=>{
+        if(attValue === 0 || attValue == null){
+            return 'no-button';
+        }
+        else{
+            if(!boolAtt){
+                if((isDiceTouched() && isAttributeUpgradable(attValue,typeAtt)) || freeUpgrade){
+                    return 'number-circle upgradable'
+                }
+                else return 'number-circle';
+            }
+                
+            else {
+                return 'number-circle upgraded';
+            }
+        }
+    },[freeUpgrade,isDiceTouched,isAttributeUpgradable]);
+
+
+    const getCappuccio = useCallback(()=>{
+        if(typeCraftingItem.includes(skill.typeItem))
+            return 'ᨈ'
+        else return 'ᨆ'
+    },[skill.typeItem]);
 
 
 
@@ -175,7 +181,7 @@ function Skill({skill, setNPotion, fun_passSkillGained, valueTouchedDiceRef, typ
     useEffect(()=>{
         if(att1 && att2 && att3){
             setHasSkill(true);
-            fun_passSkillGained(skill.name);
+            setSkillsGained((l)=>[...l,skill.name]);
             setNPotion((n)=>(n+1));
         }   
     },[att1,att2,att3])

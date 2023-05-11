@@ -146,7 +146,7 @@ function App() {
         gameStart,
         setGameStart
     
-    }),[userAuthState,username,gameInitState,navigate,lobby,leaderLobby,gameStart]);
+    }),[userAuthState, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, navigate, gameInit, gameUpdate, gameStart]);
 
     return (
         <div className='App'>

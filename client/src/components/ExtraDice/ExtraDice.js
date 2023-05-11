@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React,{ useCallback, useState } from 'react'
 import './ExtraDice.scss'
 
 function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraDiceUsed,typeExtraDice}) {
@@ -7,7 +7,7 @@ function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraD
     const [usedTemporarily,setUsedTemporarily] = useState(false);
     const [isPlayble,setIsPlayble] = useState(true);
 
-    function choose_className(){
+    const choose_className = useCallback(()=>{
         if(definitelyExtraDiceUsed){
             return 'no-active';
         }
@@ -17,7 +17,7 @@ function ExtraDice({nPotion_extraDice, onClickHandlerExtraDice, definitelyExtraD
             if(usedTemporarily) return 'going-no-active';
         }
         return '';
-    }
+    },[definitelyExtraDiceUsed, isPlayble, usedTemporarily]);
 
     return (
         <div className={ 'e-dice ' + choose_className()} 

@@ -66,12 +66,15 @@ function createSocketConfig() {
     
    //Mi iscrivo ai cambiamenti che succedono nella lobby e passaggio di stato da lobby a game
     function updateLobby(lobby,setLobby,myUsername,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn){
+        
+        //Aggiorno lobby se ha joinato qualcuno
         socket.on("lobby-player-joined",(username)=>{
             lobby.players.push(username);
             setLobby(lobby);
             setLobbyUpdated(true);
         });
 
+        //Aggiorno lobby se qualche player è uscito dalla lobby
         socket.on("lobby-player-left",(username)=>{
             const indexUsernameLeft = lobby.players.findIndex((u)=> u === username);
             lobby.players.splice(indexUsernameLeft,1);
@@ -83,11 +86,13 @@ function createSocketConfig() {
             setLobbyUpdated(true); 
         });
 
+        //Mi metto in ascolto ai cambi di stato (Lobby State -> Game State)
         socket.on("game-start",(res)=>{
             setGameInitState(res);
             setGameStart(true);
         })
 
+        //Mi metto in ascolto sui cambiamenti che ci sono stati nel gioco
         socket.on("game-change-turn",(res)=>{
             setGameOnNewTurn(res);
             setGameUpdated(true);
@@ -97,10 +102,9 @@ function createSocketConfig() {
 
 
 
-    //Manda una richiesta al server di iniziare il game, e quidni di darmi i dati necessari per farlo
+    //Manda una richiesta al server di iniziare il game
     function gameStartRequest(lobbyID,cb){
         socket.emit("game-start-request",lobbyID,cb);
-        
     }
 
 

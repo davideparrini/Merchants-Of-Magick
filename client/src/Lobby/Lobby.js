@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
@@ -54,9 +54,9 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
         
     },[gameStart, countdownGameStart,gameInitState])
 
-    const handleCopy = ()=>{
+    const handleCopy = useCallback(()=>{
         navigator.clipboard.writeText(lobby.id);
-    }
+    },[lobby.id]);
 
     return (
         <div className='Lobby'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import './Order.scss'
 import Gold from '../Gold/Gold';
 
@@ -13,9 +13,9 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
     const [orderDone2,setOrderDone2] = useState(false);
     const [orderDone3,setOrderDone3] = useState(false);
 
-    function checkOrderRequest(request){
+    const checkOrderRequest = useCallback((request)=>{
         return skillsGained.includes(request) && skillsGained.includes(order.typeOrder);
-    }
+    },[skillsGained, order.typeOrder]);
 
     
     useEffect(()=>{

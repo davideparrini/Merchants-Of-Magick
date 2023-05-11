@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import './BoardPlayers.scss'
 import Card from '../Card/Card';
 
@@ -9,7 +9,7 @@ function BoardPlayers({players}) {
     
     
 
-    function onClickShiftRight(){
+    const onClickShiftRight = useCallback(()=>{
         if(index === (players.length-1) ){
             setPlayerShowed(players[0]);
             setIndex(0);
@@ -18,9 +18,9 @@ function BoardPlayers({players}) {
             setPlayerShowed(players[index+1]);
             setIndex((i)=>(i+1));
         }
-    }
+    },[index, players])
 
-    function onClickShiftLeft(){
+    const onClickShiftLeft = useCallback(()=>{
         if(index === 0){
             setPlayerShowed(players[players.length-1]);
             setIndex(players.length-1);
@@ -29,7 +29,7 @@ function BoardPlayers({players}) {
             setPlayerShowed(players[index-1]);
             setIndex((i)=>(i-1));
         }
-    }
+    },[index, players])
     
     return (
         <div className='board-players'>
@@ -42,10 +42,10 @@ function BoardPlayers({players}) {
             <div className='container-cards-BP'>
                 <div className='container-card1-BP'>
                     <div className={`${index === 0 ? 'next-card visible' : 'next-card no-visible'}`}>NEXT CARD</div>
-                    <Card isShowed={playerShowed.cards.card1.inProgress} order={playerShowed.cards.card1} smallSize={true}/>
+                    <Card isShowed={playerShowed.cards.card1.inProgress} card={playerShowed.cards.card1} smallSize={true}/>
                 </div>
-                <Card isShowed={playerShowed.cards.card2.inProgress} order={playerShowed.cards.card2} smallSize={true}/>
-                <Card isShowed={playerShowed.cards.card3.inProgress} order={playerShowed.cards.card3} smallSize={true}/>
+                <Card isShowed={playerShowed.cards.card2.inProgress} card={playerShowed.cards.card2} smallSize={true}/>
+                <Card isShowed={playerShowed.cards.card3.inProgress} card={playerShowed.cards.card3} smallSize={true}/>
             </div>
             
         </div>
