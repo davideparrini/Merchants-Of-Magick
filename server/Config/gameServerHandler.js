@@ -12,7 +12,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
             const gameState = {
                 players: [...lobby.players],
                 nPlayers : lobby.players.length,
-                nTurn : 10,
+                nTurn : 9,
                 quest1: false,
                 quest2: false,
                 nPlayersEndTurn: 0,
@@ -42,10 +42,10 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
             gameState.nPlayersEndTurn++;
 
             //Check quests
-            if(playerGameState.quests.quest1){
+            if(playerGameState.quest1){
                 gameState.quest1 = true;
             }
-            if(playerGameState.quests.quest2){
+            if(playerGameState.quest2){
                 gameState.quest2 = true;
             }
 
@@ -70,7 +70,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
                 if(gameState.nTurn > 0){
                     //Faccio l'update delle carte, ovvero ne creo di nuove, le sostituisco con quelle già giocate/craftate
                     //ed eseguo uno slittamento di una carta al compagno vicino
-                    const cardsUpdated = gameLogic(gameState.cards, gameState.players);
+                    const cardsUpdated = gameLogic.updateCardsTurn(gameState.cards, gameState.players);
 
                     const response = {
                         quest1: gameState.quest1,
@@ -79,7 +79,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
                         cards: cardsUpdated,
                         report: gameState.report
                     }
-
+            
                     io.to(lobbyID).emit("game-change-turn", response);
 
                     //Faccio un refresh delle strutture dati che non  contengono dati sono persisenti

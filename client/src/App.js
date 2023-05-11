@@ -44,7 +44,6 @@ function App() {
     const[gameInitState, setGameInitState] = useState(-1);
     const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
 
-
     const[gameUpdated,setGameUpdated] = useState(false);
 
     const navigate = useNavigate();
@@ -144,9 +143,11 @@ function App() {
         gameInit,
         gameUpdate,
         gameStart,
-        setGameStart
+        setGameStart, 
+        gameUpdated,
+        setGameUpdated
     
-    }),[userAuthState, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, navigate, gameInit, gameUpdate, gameStart]);
+    }),[userAuthState, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, navigate, gameInit, gameUpdate, gameStart,gameUpdated]);
 
     return (
         <div className='App'>
@@ -155,9 +156,9 @@ function App() {
                     <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
                     <Route path={SET_USERNAME} element={<SetUsername />}/>
                     <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
-                    <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated}  setGameUpdated={setGameUpdated}/>}/>
+                    <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated} />}/>
                     <Route path={LOGGED_PAGE+'/:id'} element={<Lobby lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
-                    <Route path={GAME_PAGE} element={<Game gameUpdated={gameUpdated} setGameUpdated={setGameUpdated} />}/>
+                    <Route path={GAME_PAGE} element={<Game />}/>
                 </Routes>
             </AppContext.Provider>
         </div>

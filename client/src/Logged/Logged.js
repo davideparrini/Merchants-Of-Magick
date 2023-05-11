@@ -6,10 +6,10 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 
 
-function Logged({setGameUpdated,setLobbyUpdated}) {
+function Logged({setLobbyUpdated}) {
 
 
-    const { username, setLeaderLobby, setGameStart, lobby, setLobby,setGameInitState, setGameOnNewTurn, navigate, EMPTYLOBBY, LOGGED_PAGE} = useContext(AppContext);
+    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameOnNewTurn, navigate, EMPTYLOBBY, LOGGED_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');

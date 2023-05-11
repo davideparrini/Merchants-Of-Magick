@@ -52,11 +52,12 @@ import renownedAccessories from '../components/Skill/skillsJson/renownedAcc.json
 import weaponPrestige from '../components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 import { AppContext } from '../App';
+import { connectionHandlerClient } from '../Config/connectionHandler';
 
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = true;
+const testActive = false;
 
  //Tipi dado
  const TYPE_D6 = 'd6';
@@ -121,10 +122,10 @@ const nPotion_extraDice5 = 3;
 const nPotion_extraDice6 = 4;
 
 
-function Game({gameUpdated, setGameUpdated}) {
+function Game() {
 
 
-    const { username, gameInitState, setGameInitState, gameOnNewTurn, setGameOnNewTurn} = useContext(AppContext);
+    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated} = useContext(AppContext);
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
@@ -207,6 +208,7 @@ function Game({gameUpdated, setGameUpdated}) {
 
 
     const [boardListPlayers,setBoardListPlayers] = useState(gameInitState.players);
+    const [boardChanged, setBoardChanged] = useState(false);
 
     const [card1,setCard1] = useState(gameInitState.cards.card1);
     const [card2,setCard2] = useState(gameInitState.cards.card2);
@@ -227,12 +229,19 @@ function Game({gameUpdated, setGameUpdated}) {
     const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
     const [nAttributeGained_QuestMagicResearch,setnAttributeGained_QuestMagicResearch] = useState(0);
     
+    const[quest1Done ,setQuest1Done] = useState(false);
+    const[quest2Done ,setQuest2Done] = useState(false);
+
     const[quest1Reward, setQuest1Reward] = useState(gameInitState.quest1.gold);
     const[quest2Reward, setQuest2Reward] = useState(gameInitState.quest2.gold);
 
     //lista skill acquisite
     const[skillsGained,setSkillsGained] = useState([]);
 
+
+    const[report, setReport] = useState([]);
+
+    const[reportEndTurn, setReportEndTurn ] = useState([]);
     
 ////////////////////////////////////FUCTIONS//////////////////////////////////////////////////////////////////////////////////////
 
@@ -330,29 +339,63 @@ function Game({gameUpdated, setGameUpdated}) {
     },[ extraDiceUsedTempList, nPotion,nDiceLeft_Used, totalPossibleDice_toUse])
 
 
-    const finishTurn = useCallback(()=>{
+    const finishTurn = useCallback((turnDone)=>{
         if(!turnDone){
             setTurnDone(true);
-            
+            const playerGameState ={
+                quest1: quest1Done,
+                quest2: quest2Done,
+                cards:{
+                    card1: card1,
+                    card2: card2,
+                    card3: card3
+                },
+                report: report
+            }
+            connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
         }
     },[turnDone]);
 
-    function newTurn(){
+    const newTurn = useCallback((newGameState)=>{
+
         setNTurn((n)=>(n+1));
         setCountdownTurn(TIMER_COUNTDOWN);
-        d6startValue.current =22;
-        d8startValue.current =22;
-        d10startValue.current =22;
-        d12startValue.current =22;
         setNDiceLeft_toUse(2);
-        // setQuest1Reward();
-        // setQuest2Reward();
-        // setListPlayers();
-        // setCard1();
-        // setCard2();
-        // setCard3();
 
-    }
+        
+        d6startValue.current = newGameState.dices.d6;
+        d8startValue.current = newGameState.dices.d8;
+        d10startValue.current = newGameState.dices.d10;
+        d12startValue.current = newGameState.dices.d12;
+        setD6Value(newGameState.dices.d6);
+        setD8Value(newGameState.dices.d8);
+        setD10Value(newGameState.dices.d10);
+        setD12Value(newGameState.dices.d12);
+
+        if(newGameState.quest1){
+            setQuest1Reward(4);
+        }
+        if(newGameState.quest2){
+            setQuest2Reward(4);
+        }
+
+        const indexCardsCurrentPlayer = newGameState.cards.findIndex((p)=> p.username === username );
+        
+        const cardsCurrentPlayer = newGameState.cards[indexCardsCurrentPlayer];
+
+
+        setCard1(cardsCurrentPlayer.cards.card1);
+        setCard2(cardsCurrentPlayer.cards.card2);
+        setCard3(cardsCurrentPlayer.cards.card3);
+
+        newGameState.cards.splice(indexCardsCurrentPlayer,1);
+        
+        setBoardListPlayers(()=>newGameState.cards);
+        setBoardChanged(true);
+        setReportEndTurn(newGameState.report);
+        //showReports 
+    },[username])
+
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
     
@@ -375,6 +418,13 @@ function Game({gameUpdated, setGameUpdated}) {
     },[typeTouchedDiceRef]);
 
 
+    useEffect(()=>{
+        if(turnDone && gameUpdated){
+            newTurn(gameOnNewTurn);
+            //setTurnDone(false);
+            setGameUpdated(false);
+        }
+    },[turnDone, gameUpdated])
 
 
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
@@ -564,7 +614,7 @@ function Game({gameUpdated, setGameUpdated}) {
                     />
                 </div>
                 <div className='players-table'>
-                    <BoardPlayers players={boardListPlayers}/>
+                    <BoardPlayers boardListPlayers={boardListPlayers} boardChanged={boardChanged} setBoardChanged={setBoardChanged}/>
                 </div>
             
 

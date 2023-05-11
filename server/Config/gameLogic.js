@@ -86,7 +86,7 @@ function createGameLogic(){
         switch(t_card){
             case typeCard_NO_ENCHANTMENT:
                 origin = originType[Math.floor(Math.random() * originType.length)];
-                gold = Math.floor(Math.random() * 4) + 2;
+                gold = Math.floor(Math.random() * 4) + 3;
                 break;
             case typeCard_NO_ORIGIN:
                 enchantment = enchantmentType[Math.floor(Math.random() * enchantmentType.length)];
@@ -125,15 +125,15 @@ function createGameLogic(){
 
         let oldListCards =[]; //tutte le carte, giocate e non
         let newListCards = []; //carte giocate -> sostituite con nuove carte
-
         //pusho in ordine di playerIndex le carte dei giocatori in oldListCards
+
         players.forEach((username) =>{
-            let indexPlayer = cards.findIndex((u)=> u === username);
+            let indexPlayer = cards.findIndex((u)=> u.username === username);
             oldListCards.push(cards[indexPlayer].card1);
             oldListCards.push(cards[indexPlayer].card2);
             oldListCards.push(cards[indexPlayer].card3);
-        })
-
+        }
+        )
         //sostituisco le carte giocate con delle nuove, pushando tutto in newListCards
         oldListCards.forEach((c)=>{
             if(!c.inProgress){
@@ -144,21 +144,25 @@ function createGameLogic(){
                 newListCards.push(c);
             }
         })
-
+        console.log("NEWW CARDsS")
+        console.log(newListCards)
         //slittamento di una carta,
         const cardSlip = newListCards.shift();
         newListCards.push(cardSlip);
 
         let updatedCards = []; //res
 
-        for(let i=0; i < players.length-1;i++){ 
+        for(let i=0; i < players.length; i++){ 
             //ridistribuisco carte ai giocatori associando username-carte
             let playerCards = {
-                username: players[i].username,
-                card1: newListCards.shift(),
-                card2: newListCards.shift(),
-                card3: newListCards.shift()
+                username: players[i],
+                cards: {
+                    card1: newListCards.shift(),
+                    card2: newListCards.shift(),
+                    card3: newListCards.shift()
+                }
             };
+
             //obj creato lo pusho nel lista delle carte aggiornate, risultato della funzione
             updatedCards.push(playerCards);
         }
@@ -218,7 +222,7 @@ function createGameLogic(){
 
 
     return {
-        gameInit, addNewCards_slipCards: updateCardsTurn, rollDices, createNewCard, craftingItemType, originType, enchantmentType
+        gameInit, updateCardsTurn, rollDices, createNewCard, craftingItemType, originType, enchantmentType
     };
 }
 

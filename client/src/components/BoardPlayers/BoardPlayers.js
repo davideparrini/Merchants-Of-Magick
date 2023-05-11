@@ -1,44 +1,53 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import './BoardPlayers.scss'
 import Card from '../Card/Card';
+import { AppContext } from '../../App';
 
-function BoardPlayers({players}) {
+function BoardPlayers({boardListPlayers,boardChanged, setBoardChanged}) {
 
     const[index,setIndex] = useState(0);
-    const[playerShowed,setPlayerShowed] = useState(players[0]);
-    
-    
+    const[playerShowed,setPlayerShowed] = useState(boardListPlayers[0]);
+    const {gameUpdated} = useContext(AppContext);
+
+   
+    useEffect(()=>{
+        if(boardChanged){
+            setIndex(0);
+            setPlayerShowed(boardListPlayers[0]);
+            setBoardChanged(false);
+        }
+    },[boardChanged, gameUpdated]);
 
     const onClickShiftRight = useCallback(()=>{
-        if(index === (players.length-1) ){
-            setPlayerShowed(players[0]);
+        if(index === (boardListPlayers.length-1) ){
+            setPlayerShowed(boardListPlayers[0]);
             setIndex(0);
         }
         else{
-            setPlayerShowed(players[index+1]);
+            setPlayerShowed(boardListPlayers[index+1]);
             setIndex((i)=>(i+1));
         }
-    },[index, players])
+    },[index, boardListPlayers])
 
     const onClickShiftLeft = useCallback(()=>{
         if(index === 0){
-            setPlayerShowed(players[players.length-1]);
-            setIndex(players.length-1);
+            setPlayerShowed(boardListPlayers[boardListPlayers.length-1]);
+            setIndex(boardListPlayers.length-1);
         }
         else{
-            setPlayerShowed(players[index-1]);
+            setPlayerShowed(boardListPlayers[index-1]);
             setIndex((i)=>(i-1));
         }
-    },[index, players])
+    },[index, boardListPlayers])
     
     return (
         <div className='board-players'>
             <div className='nav-bar'>
                 <div className='arrow shift-left' onClick={onClickShiftLeft}/>
-                <div className='name-player'>{playerShowed.username + " (" + (index+1)+"/"+ players.length +")"}</div>
+                <div className='name-player'>{playerShowed.username + " (" + (index+1)+"/"+ boardListPlayers.length +")"}</div>
                 <div className='arrow shift-right' onClick={onClickShiftRight}/>
             </div>
-             <button className='find-next-card' onClick={()=>{setIndex(0); setPlayerShowed(players[0])}}>NC</button>
+             <button className='find-next-card' onClick={()=>{setIndex(0); setPlayerShowed(boardListPlayers[0])}}>NC</button>
             <div className='container-cards-BP'>
                 <div className='container-card1-BP'>
                     <div className={`${index === 0 ? 'next-card visible' : 'next-card no-visible'}`}>NEXT CARD</div>

@@ -8,18 +8,23 @@ function Timer({countdown,finishTurn, turnDone}) {
 
 
     useEffect(() => {
-        if(remainingTime > 0 && !turnDone){
-            const intervalId = setInterval(() => {
-                setRemainingTime((t)=> t-1);
-            }, 1000);
-            return () => clearInterval(intervalId);
-        }
-        else{
+        if(!turnDone){
+            if(remainingTime > 0 ){
+                const intervalId = setInterval(() => {
+                    setRemainingTime((t)=> t-1);
+                }, 1000);
+                return () => clearInterval(intervalId);
+            }
+            else{
+                
+                if(!turnDone) finishTurn(turnDone);
+            }
+        }else{
             setRemainingTime(0);
             setClockWork(false);
-            if(!turnDone) finishTurn(turnDone);
         }
-    },[remainingTime,clockWork,turnDone]);
+        
+    },[remainingTime,clockWork,turnDone,finishTurn]);
 
 
     return (

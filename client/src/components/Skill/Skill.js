@@ -148,7 +148,7 @@ function Skill({skill, setNPotion, setSkillsGained, valueTouchedDiceRef, typeTou
                 valueTouchedDiceRef.current = null;
             }
         }
-   },[freeUpgrade, nDiceLeft_Used, skill.gold, skill.typeItem, testActive, typeAttrQuest1, typeAttrQuest2, typeTouchedDiceRef, valueTouchedDiceRef]);
+   },[freeUpgrade, nDiceLeft_Used, setAllDicesNoTouched, setDiceUsed, setExtraDiceUsed, setFreeUpgrade, setNAttrQuest1, setNAttrQuest2, setNDiceLeft_Used, setNDiceLeft_toUse, setgoldAttuale, skill.gold, skill.typeItem, testActive, typeAttrQuest1, typeAttrQuest2, typeTouchedDiceRef, valueTouchedDiceRef]);
 
    const checkNoButton = useCallback((attValue, boolAtt, typeAtt)=>{
         if(attValue === 0 || attValue == null){
