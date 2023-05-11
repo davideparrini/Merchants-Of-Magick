@@ -71,7 +71,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                     }else{
                         if(lobby.status !== 'in-game'){
                             lobby.players.push(usernameInvited);
-                            
+
                             mapUsername_lobbyIndex.set(usernameInvited,indexLobby);
                             
                             userSocket.join(lobby.id);

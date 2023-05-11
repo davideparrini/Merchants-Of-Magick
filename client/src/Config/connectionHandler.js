@@ -64,14 +64,14 @@ function createSocketConfig() {
     }
 
     
-    //Mi iscrivo ai cambiamenti riguardanti i player della lobby,
-    // come "nuovo membro si è unito alla lobby"
-   //oppure "un membro ha lasciato la lobby", aggiornando la lobby corrente
-    function updatePlayersLobby(lobby,setLobby,setLeaderLobby,myUsername){
+   //Mi iscrivo ai cambiamenti che succedono nella lobby e passaggio di stato da lobby a game
+    function updateLobby(lobby,setLobby,myUsername,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn){
         socket.on("lobby-player-joined",(username)=>{
             lobby.players.push(username);
             setLobby(lobby);
+            setLobbyUpdated(true);
         });
+
         socket.on("lobby-player-left",(username)=>{
             const indexUsernameLeft = lobby.players.findIndex((u)=> u === username);
             lobby.players.splice(indexUsernameLeft,1);
@@ -79,36 +79,30 @@ function createSocketConfig() {
             if(myUsername === lobby.players[0]){
                 setLeaderLobby(true);
             }
-            setLobby(lobby)    
+            setLobby(lobby);
+            setLobbyUpdated(true); 
         });
-    }
 
-   //Mi iscrivo ai cambiamenti che succedono nella lobby, come "nuovo membro si è unito alla lobby"
-   //oppure "un membro ha lasciato la lobby", aggiornando la lobby corrente
-    function updateLobby(lobby,setLobby,myUsername,setLeaderLobby){
-        updatePlayersLobby(lobby,setLobby,setLeaderLobby,myUsername);
+        socket.on("game-start",(res)=>{
+            setGameInitState(res);
+            setGameStart(true);
+        })
+
+        socket.on("game-change-turn",(res)=>{
+            setGameOnNewTurn(res);
+            setGameUpdated(true);
+        })
 
     }
 
 
 
     //Manda una richiesta al server di iniziare il game, e quidni di darmi i dati necessari per farlo
-    function gameStartRequest(lobbyID, setGameState,setGameUpdated,cb){
+    function gameStartRequest(lobbyID,cb){
         socket.emit("game-start-request",lobbyID,cb);
-        subscribeUpdateGameTurn(setGameState,setGameUpdated);
-        socket.on("game-start",(res)=>{
-            setGameState(res);
-            setGameUpdated(true);
-        })
+        
     }
 
-    //Mi iscrivo agli update del game (quindi ogni volta che viene eseguito un turno)
-    function subscribeUpdateGameTurn(setGameState,setGameUpdated){
-        socket.on("game-change-turn",(res)=>{
-            setGameState(res);
-            setGameUpdated(true);
-        })
-    }
 
     //Avviso il server che ho finito il turno
     function finishTurn(lobbyID, username,playerGameState, cb){
@@ -127,9 +121,7 @@ function createSocketConfig() {
         invitePlayer,
         registerToInvite,
         gameStartRequest,
-        subscribeUpdateGameTurn,
         finishTurn
-
     }
 }
 

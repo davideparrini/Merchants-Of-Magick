@@ -38,9 +38,12 @@ function App() {
     const[username,setUsername] = useState('');
     const[lobby, setLobby] = useState(EMPTYLOBBY);
     const[leaderLobby,setLeaderLobby] = useState(null);
-    
+    const[lobbyUpdated,setLobbyUpdated] = useState(false);
+
+    const[gameStart, setGameStart] = useState(false);
     const[gameInitState, setGameInitState] = useState(-1);
     const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
+
 
     const[gameUpdated,setGameUpdated] = useState(false);
 
@@ -89,7 +92,7 @@ function App() {
             players : newPlayersArray
         }
         return init;
-    },[gameInitState])
+    },[gameInitState,username])
 
 
     const gameUpdate = useCallback(()=>{
@@ -107,10 +110,10 @@ function App() {
                 card2: thisPlayerCards.card2,
                 card3: thisPlayerCards.card3
             }, 
-            report: gameInitState.report
+            report: gameOnNewTurn.report
         }
         return updateState;
-    },[gameOnNewTurn])
+    },[gameOnNewTurn,username])
 
     const valueContext = useMemo(()=>({
         userAuthState, 
@@ -133,8 +136,8 @@ function App() {
         SET_USERNAME,
         GAME_PAGE,
         gameInit,
-        gameUpdate
-
+        gameUpdate,
+    
     }),[userAuthState,username,gameInitState,navigate,lobby,leaderLobby]);
 
     return (
@@ -144,8 +147,8 @@ function App() {
                     <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
                     <Route path={SET_USERNAME} element={<SetUsername />}/>
                     <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
-                    <Route path={LOGGED_PAGE} element={<Logged />}/>
-                    <Route path={LOGGED_PAGE+'/:id'} element={<Lobby setGameUpdated={setGameUpdated} />}/>
+                    <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated}  setGameStart={setGameStart} setGameUpdated={setGameUpdated}/>}/>
+                    <Route path={LOGGED_PAGE+'/:id'} element={<Lobby gameStart={gameStart} lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
                     <Route path={GAME_PAGE} element={<Game gameUpdated={gameUpdated} setGameUpdated={setGameUpdated} />}/>
                 </Routes>
             </AppContext.Provider>

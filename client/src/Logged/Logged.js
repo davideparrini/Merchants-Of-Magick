@@ -6,10 +6,10 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 
 
-function Logged() {
+function Logged({setGameStart,setGameUpdated,setLobbyUpdated}) {
 
 
-    const { username, setLeaderLobby, lobby, setLobby,setGameInitState, navigate, EMPTYLOBBY, LOGGED_PAGE} = useContext(AppContext);
+    const { username, setLeaderLobby, lobby, setLobby,setGameInitState, setGameOnNewTurn, navigate, EMPTYLOBBY, LOGGED_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -52,7 +52,7 @@ function Logged() {
                             onClick={()=>{
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby);
+                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn);
                                 })
                                 setLeaderLobby(true);
                         }}>Create New Lobby</button>
@@ -78,7 +78,7 @@ function Logged() {
                                 default: break;
                             }
                             setLobby(lobby);
-                            connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby);
+                            connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated,setGameOnNewTurn);
                         });
                         
                         

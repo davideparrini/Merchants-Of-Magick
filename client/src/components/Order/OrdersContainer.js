@@ -4,6 +4,8 @@ import Gold from '../Gold/Gold';
 
 const TYPE_GOLD_MEDIUM = 'MEDIUM';
 
+const TYPE_ENCHANTMENT = ['fiery','shocking','everlasting','divine'];
+
 function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldAttuale}) {
 
     const [nOrderDone,setNOrderDone] = useState(0);
@@ -54,9 +56,9 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
             <div className='order-gold' >
                 <Gold value={order.gold} size={TYPE_GOLD_MEDIUM} active={orderDone1 && orderDone2 && orderDone3}/>
             </div>
-            <div className={`request-order ${orderDone1 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.order1}</div>
-            <div className={`request-order ${orderDone2 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.order2}</div>
-            <div className={`request-order ${orderDone3 ? 'req-done' : ''}`}>{order.typeOrder +' '+ order.order3}</div>
+            <div className={`request-order ${orderDone1 ? 'req-done' : ''}`}>{TYPE_ENCHANTMENT.includes(order.typeOrder) ? order.typeOrder +' '+ order.order1 : order.order1 + ' ' + order.typeOrder}</div>
+            <div className={`request-order ${orderDone2 ? 'req-done' : ''}`}>{TYPE_ENCHANTMENT.includes(order.typeOrder) ? order.typeOrder +' '+ order.order2 : order.order2 + ' ' + order.typeOrder}</div>
+            <div className={`request-order ${orderDone3 ? 'req-done' : ''}`}>{TYPE_ENCHANTMENT.includes(order.typeOrder) ? order.typeOrder +' '+ order.order3 : order.order3 + ' ' + order.typeOrder}</div>
             <div className={`reward-orders ${nOrderDone > 0 ? 'req-done' : ''}`}>-1st Order Completed: Gain 3 potions</div>
             <div className={`reward-orders ${nOrderDone > 1 ? 'req-done' : ''}`}>-2st Order Completed: Mark any circle</div>
             <div className={`reward-orders ${nOrderDone > 2 ? 'req-done' : ''}`}>-3st Order Completed: Mark any circle and get order gold</div>

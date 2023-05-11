@@ -5,29 +5,34 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 
 
-function Lobby({setGameUpdated}) {
+function Lobby({gameStart,lobbyUpdated,setLobbyUpdated}) {
 
     const { username, leaderLobby, lobby, setLobby, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, LOGIN_PAGE, LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
-    const[gameStart, setGameStart] = useState(false);
+    
+    
     const[countdownGameStart,setCountdownGameStart] = useState(5);
 
-    // const [remainingTime, setRemainingTime] = useState(1000);
-    // useEffect(() => {
-    //     if(remainingTime > 0 ){
-    //         const intervalId = setInterval(() => {
-    //             setRemainingTime((t)=> t-1);
-    //             console.log(gameInitState);
-    //         }, 3000);
-    //         return () => clearInterval(intervalId);
-    //     }
+    const [remainingTime, setRemainingTime] = useState(1000);
+    useEffect(() => {
+        if(remainingTime > 0 ){
+            const intervalId = setInterval(() => {
+                setRemainingTime((t)=> t-1);
+                console.log(gameInitState);
+            }, 3000);
+            return () => clearInterval(intervalId);
+        }
 
-    // },[remainingTime]);
+    },[remainingTime]);
 
 
-
+    useEffect(()=>{
+        if(lobbyUpdated){
+            setLobbyUpdated(false);
+        }
+    },[lobbyUpdated])
 
     useEffect(()=>{
         if(lobby.id === -1){
@@ -112,10 +117,10 @@ function Lobby({setGameUpdated}) {
                             onClick={()=>{
                                 if(true){
                                     if(!gameStart){
-                                        connectionHandlerClient.gameStartRequest(lobby.id, setGameInitState,setGameUpdated, (res)=>{
+                                        connectionHandlerClient.gameStartRequest(lobby.id, (res)=>{
                                             switch(res){
                                                 case 'OK': 
-                                                    setGameStart(true);
+                                                    console.log("Game start");
                                                     break;
                                                 case 'ERROR':
                                                     alert("Error, something went wrong starting game!")
@@ -137,6 +142,7 @@ function Lobby({setGameUpdated}) {
                             setLeaderLobby(false);
                             setGameInitState(-1);
                             setCountdownGameStart(5);
+                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));  
                             userAuth.logout();
                             navigate(LOGIN_PAGE);  
                         }
