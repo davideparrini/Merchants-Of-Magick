@@ -7,7 +7,7 @@ function Exit() {
 
     const[exitWindowOpen, setExitWindowOpen] = useState(false);
     const[remainingTime,setRemainingTime] = useState(0);
-    const { username, setLobby, setLeaderLobby, navigate, EMPTYLOBBY, LOGGED_PAGE } = useContext(AppContext);
+    const { username, setLobby, setLeaderLobby, navigate, setGameStart, setGameInitState, setGameOnNewTurn,EMPTYLOBBY, LOGGED_PAGE } = useContext(AppContext);
 
     useEffect(() => {
         if(remainingTime > 0){
@@ -33,6 +33,9 @@ function Exit() {
                         <button className={remainingTime > 0 ? 'btn-exit wait-leave-btn' :'btn-exit leave-btn' } onClick={()=>{
                             setLobby(EMPTYLOBBY);
                             setLeaderLobby(false);
+                            setGameStart(false);
+                            setGameInitState(-1);
+                            setGameOnNewTurn(-1);
                             connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));     
                             navigate(LOGGED_PAGE);
                             }} >{remainingTime > 0 ? remainingTime : 'Leave'}</button>

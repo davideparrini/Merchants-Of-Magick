@@ -68,6 +68,12 @@ function App() {
                 console.log("logged out");
                 setUsername('');
                 setUserAuthState(null);
+                setLobby(EMPTYLOBBY);
+                setLeaderLobby(false);
+                setGameStart(false);
+                setGameInitState(-1);
+                setGameOnNewTurn(-1);
+                setGameUpdated(false);
                 navigate(LOGIN_PAGE);
                 connectionHandlerClient.disconnect();
             }
@@ -137,8 +143,10 @@ function App() {
         GAME_PAGE,
         gameInit,
         gameUpdate,
+        gameStart,
+        setGameStart
     
-    }),[userAuthState,username,gameInitState,navigate,lobby,leaderLobby]);
+    }),[userAuthState,username,gameInitState,navigate,lobby,leaderLobby,gameStart]);
 
     return (
         <div className='App'>
@@ -147,8 +155,8 @@ function App() {
                     <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
                     <Route path={SET_USERNAME} element={<SetUsername />}/>
                     <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
-                    <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated}  setGameStart={setGameStart} setGameUpdated={setGameUpdated}/>}/>
-                    <Route path={LOGGED_PAGE+'/:id'} element={<Lobby gameStart={gameStart} lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
+                    <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated}  setGameUpdated={setGameUpdated}/>}/>
+                    <Route path={LOGGED_PAGE+'/:id'} element={<Lobby lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
                     <Route path={GAME_PAGE} element={<Game gameUpdated={gameUpdated} setGameUpdated={setGameUpdated} />}/>
                 </Routes>
             </AppContext.Provider>

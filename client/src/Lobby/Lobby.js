@@ -5,28 +5,15 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 
 
-function Lobby({gameStart,lobbyUpdated,setLobbyUpdated}) {
+function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
-    const { username, leaderLobby, lobby, setLobby, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, LOGIN_PAGE, LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
+    const { username, leaderLobby, lobby, setLobby, gameStart, setGameStart, setGameOnNewTurn, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, LOGIN_PAGE, LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
     
     
     const[countdownGameStart,setCountdownGameStart] = useState(5);
-
-    const [remainingTime, setRemainingTime] = useState(1000);
-    useEffect(() => {
-        if(remainingTime > 0 ){
-            const intervalId = setInterval(() => {
-                setRemainingTime((t)=> t-1);
-                console.log(gameInitState);
-            }, 3000);
-            return () => clearInterval(intervalId);
-        }
-
-    },[remainingTime]);
-
 
     useEffect(()=>{
         if(lobbyUpdated){
@@ -40,29 +27,32 @@ function Lobby({gameStart,lobbyUpdated,setLobbyUpdated}) {
         }
     },[])
 
-    useEffect(()=>{
-        if(gameStart && gameInitState !== -1){
-            const gI = gameInit();
-            setGameInitState(gI);
-            navigate(GAME_PAGE)
-        }
-    },[gameStart,gameInitState])
-
     // useEffect(()=>{
-    //     if(gameStart){
-    //         if(countdownGameStart > 0){
-    //             const intervalId = setInterval(() => {
-    //                 setCountdownGameStart((t)=> t-1);
-    //             }, 1000);
-    //             return () => clearInterval(intervalId);
-    //         }
-    //         else{
-    //             navigate(GAME_PAGE);
-    //             setCountdownGameStart(5);
-    //         }
+    //     if(gameStart && gameInitState !== -1){
+            
+            
     //     }
+    // },[gameStart,gameInitState])
+
+
+    useEffect(()=>{
+        if(gameStart){
+            if(countdownGameStart > 0){
+                const intervalId = setInterval(() => {
+                    setCountdownGameStart((t)=> t-1);
+                }, 1000);
+                return () => clearInterval(intervalId);
+                
+            }
+            else{ 
+                const gI = gameInit();
+                setGameInitState(gI);
+                navigate(GAME_PAGE)
+                setCountdownGameStart(5);
+            }
+        }
         
-    // },[gameStart, countdownGameStart])
+    },[gameStart, countdownGameStart,gameInitState])
 
     const handleCopy = ()=>{
         navigator.clipboard.writeText(lobby.id);
@@ -113,23 +103,23 @@ function Lobby({gameStart,lobbyUpdated,setLobbyUpdated}) {
                         }}>Add Player</button>
                     </div>
                     <div className='container-btn-lobby'>
-                        <button className= {`start-game-btn ${ leaderLobby  ? '' : 'inactive-btn'}`}
+                        <button className= {`start-game-btn ${ leaderLobby && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
-                                if(true){
-                                    if(!gameStart){
-                                        connectionHandlerClient.gameStartRequest(lobby.id, (res)=>{
-                                            switch(res){
-                                                case 'OK': 
-                                                    console.log("Game start");
-                                                    break;
-                                                case 'ERROR':
-                                                    alert("Error, something went wrong starting game!")
-                                                    break;
-                                                default: break;
-                                            }
-                                        })
-                                    }
+                                if(!gameStart){
+                        
+                                    connectionHandlerClient.gameStartRequest(lobby.id, (res)=>{
+                                        switch(res){
+                                            case 'OK': 
+                                                console.log("Game start");
+                                                break;
+                                            case 'ERROR':
+                                                alert("Error, something went wrong starting game!")
+                                                break;
+                                            default: break;
+                                        }
+                                    })
                                 }
+                                
                                    
                             }}
                         >{gameStart ? countdownGameStart :'Start Game'}</button>
@@ -141,7 +131,9 @@ function Lobby({gameStart,lobbyUpdated,setLobbyUpdated}) {
                             setLobby(EMPTYLOBBY);
                             setLeaderLobby(false);
                             setGameInitState(-1);
+                            setGameOnNewTurn(-1);
                             setCountdownGameStart(5);
+                            setGameStart(false);
                             connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));  
                             userAuth.logout();
                             navigate(LOGIN_PAGE);  
@@ -156,6 +148,8 @@ function Lobby({gameStart,lobbyUpdated,setLobbyUpdated}) {
                             setLeaderLobby(false);
                             setCountdownGameStart(5);
                             setGameInitState(-1);
+                            setGameOnNewTurn(-1);
+                            setGameStart(false);
                             connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));              
                             navigate(LOGGED_PAGE);
                         }
