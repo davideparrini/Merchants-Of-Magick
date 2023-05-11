@@ -35,7 +35,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
         if (indexLobby != undefined){
             const lobby = lobbies[indexLobby];
             if(lobby.players.length >= 8){
-                cb("FULL",EMPTYLOBBY)
+                cb("FULL",EMPTYLOBBY);
             }else{
                 if(lobby.status !== 'in-game'){
                     lobby.players.push(username);
@@ -51,7 +51,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
             }
         }
         else{
-            cb("ERROR",EMPTYLOBBY)
+            cb("ERROR",EMPTYLOBBY);
         }
     }
 

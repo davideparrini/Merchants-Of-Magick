@@ -40,7 +40,7 @@
 }
 .find-next-card{
     position: absolute;
-    bottom: 258px;
+    bottom: 292px;
     right: 10px;
     border-radius: 50%;
     height: 35px;
@@ -109,7 +109,7 @@
     border-top-right-radius: 65px;
     width: 95%;
     z-index: 4;
-    background-color: rgb(207, 0, 0);
+    background-color: v.$primary-color-4;
     font-size: 17px;
     font-weight: 600;
     color: antiquewhite;

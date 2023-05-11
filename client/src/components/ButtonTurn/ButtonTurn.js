@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ButtonTurn.scss'
-function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse}) {
+function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse, gameRestart}) {
     
     //Ref al area dello finishTurnBtn, Close on out-click
     let finishTurnRef = useRef();
@@ -26,6 +26,11 @@ function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse}) {
           }
     });
 
+    useEffect(()=>{
+        if(gameRestart){
+            setTurnDone(false);
+        }
+    },[gameRestart]);
 
     useEffect(()=>{
         if(isTurnDone){

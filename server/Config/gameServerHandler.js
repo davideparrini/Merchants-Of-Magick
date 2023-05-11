@@ -56,6 +56,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
                 card2: playerGameState.cards.card2,
                 card3: playerGameState.cards.card3
             }
+            
             gameState.cards.push(cardsToSend); 
 
             const reportToSend = {

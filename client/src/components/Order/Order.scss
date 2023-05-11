@@ -36,8 +36,8 @@
 }
 .order-gold{
     position: relative;
-    left: 95px;
-    bottom: 25px; 
+    left: 100px;
+    bottom: 65px; 
 }
 
 .order-img{
@@ -47,7 +47,7 @@
     height: 270px;
     width: 270px;
     z-index: 0;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     opacity: 0.8;
 }
@@ -67,18 +67,18 @@
 }
 
 .order-img.elves{
-   background-image: url(../Card/image/elves2.png);
+   background-image: url(../Card/image/elves_white.png);
 }
 
 .order-img.dwarves{
-   background-image: url(../Card/image/dwarves_black.png);
+   background-image: url(../Card/image/dwarves_white.png);
 }
 
 .order-img.orcs{
-   background-image: url(../Card/image/orcs2.png); 
+   background-image: url(../Card/image/orcs_white.png); 
 }
 .order-img.dragons{
-  background-image: url(../Card/image/dragons.png);
+  background-image: url(../Card/image/dragons_white.png);
 }
 
 .request-order{

@@ -1,34 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import './Timer.css'
 
-function Timer({countdown,finishTurn, turnDone}) {
+const TIMER_COUNTDOWN = 300;
 
-    const [remainingTime, setRemainingTime] = useState(countdown);
+function Timer({finishTurn, turnDone, gameRestart}) {
+
+    //durata di un turno
+    const [countdown,setCountdown] = useState(TIMER_COUNTDOWN);
     const [clockWork,setClockWork] = useState(true);
 
+    useEffect(()=>{
+        if(gameRestart){
+            setCountdown(TIMER_COUNTDOWN);
+            setClockWork(true);
+        }
+    },[gameRestart, countdown]);
 
     useEffect(() => {
         if(!turnDone){
-            if(remainingTime > 0 ){
+            if(countdown > 0 ){
                 const intervalId = setInterval(() => {
-                    setRemainingTime((t)=> t-1);
+                    setCountdown((t)=> t-1);
                 }, 1000);
                 return () => clearInterval(intervalId);
             }
             else{
-                
-                if(!turnDone) finishTurn(turnDone);
+                // if(!turnDone) finishTurn(turnDone);
             }
         }else{
-            setRemainingTime(0);
+            setCountdown(0);
             setClockWork(false);
         }
         
-    },[remainingTime,clockWork,turnDone,finishTurn]);
+    },[countdown,clockWork,turnDone,finishTurn]);
 
 
     return (
-        <div className={`timer ${clockWork ? 'working' : 'no-working'}`}>{remainingTime}</div>
+        <div className={`timer ${clockWork ? 'working' : 'no-working'}`}>{countdown}</div>
     )
 }
 

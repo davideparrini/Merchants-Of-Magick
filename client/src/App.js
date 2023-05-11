@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Route,Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import {auth} from './Config/auth';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -14,6 +14,7 @@ import Game from './Game/Game';
 import Logged from './Logged/Logged'
 import SignUp from './LoginForm_SignUp/SignUp';
 import SetUsername from './SetUsername/SetUsername';
+import ReportBoard from './components/ReportPlayer/ReportPlayer';
 
 
 
@@ -161,6 +162,7 @@ function App() {
                     <Route path={GAME_PAGE} element={<Game />}/>
                 </Routes>
             </AppContext.Provider>
+            
         </div>
     )
 }

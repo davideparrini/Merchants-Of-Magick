@@ -144,8 +144,7 @@ function createGameLogic(){
                 newListCards.push(c);
             }
         })
-        console.log("NEWW CARDsS")
-        console.log(newListCards)
+        
         //slittamento di una carta,
         const cardSlip = newListCards.shift();
         newListCards.push(cardSlip);

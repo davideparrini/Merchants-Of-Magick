@@ -1,22 +1,21 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import './BoardPlayers.scss'
 import Card from '../Card/Card';
-import { AppContext } from '../../App';
 
-function BoardPlayers({boardListPlayers,boardChanged, setBoardChanged}) {
+
+function BoardPlayers({boardListPlayers,gameRestart}) {
 
     const[index,setIndex] = useState(0);
     const[playerShowed,setPlayerShowed] = useState(boardListPlayers[0]);
-    const {gameUpdated} = useContext(AppContext);
+    
 
    
     useEffect(()=>{
-        if(boardChanged){
+        if(gameRestart){
             setIndex(0);
             setPlayerShowed(boardListPlayers[0]);
-            setBoardChanged(false);
         }
-    },[boardChanged, gameUpdated]);
+    },[gameRestart, boardListPlayers]);
 
     const onClickShiftRight = useCallback(()=>{
         if(index === (boardListPlayers.length-1) ){
