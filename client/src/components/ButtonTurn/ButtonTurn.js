@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ButtonTurn.scss'
-function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse, gameRestart}) {
+function ButtonTurnDone({finishTurn,turnDone, nDiceLeft_toUse, gameRestart}) {
     
     //Ref al area dello finishTurnBtn, Close on out-click
     let finishTurnRef = useRef();
@@ -8,7 +8,7 @@ function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse, gameRestart}) {
     //bool openFinishTurn
     const [openFinishTurnAlert,setOpenFinishTurnAlert] = useState(false);
 
-    const [turnDone, setTurnDone] = useState(false);
+    const [btnStateDone, setBtnStateDone] = useState(false);
 
 
 
@@ -28,35 +28,35 @@ function ButtonTurnDone({finishTurn,isTurnDone, nDiceLeft_toUse, gameRestart}) {
 
     useEffect(()=>{
         if(gameRestart){
-            setTurnDone(false);
+            setBtnStateDone(false);
         }
     },[gameRestart]);
 
     useEffect(()=>{
-        if(isTurnDone){
-            setTurnDone(true);
+        if(turnDone ){
+            setBtnStateDone(true);
         }
-    },[isTurnDone]);
+    },[turnDone]);
 
     return (
         <>
-            <button className={`btn-turn ${turnDone ? 'turn-done' : ''}`} 
+            <button className={`btn-turn ${btnStateDone ? 'turn-done' : ''}`} 
                 onClick={()=>{ 
                 if(nDiceLeft_toUse > 0){
                     setOpenFinishTurnAlert(true);
                 }else{
-                    setTurnDone(true);
-                    finishTurn(turnDone);
+                    setBtnStateDone(true);
+                    finishTurn();
                 }
                 
             }
-            }>{!turnDone ? "Finish Turn" : "Waiting for others players..." }</button>
+            }>{!btnStateDone ? "Finish Turn" : "Waiting for others players..." }</button>
             <div className={`container-finish-turn-alert ${openFinishTurnAlert? 'active-finish-turn-alert' : 'inactive-finish-turn-alert'}`} ref={finishTurnRef}>
                 <div className='message-finish-turn-alert'>Are you sure to finish your turn? <br/>You have more dice to play!</div>
                 <div className='container-btn-finish-turn-alert'>
                     <button className='btn-finish-turn-alert yes-btn' onClick={()=>{
-                        setTurnDone(true);
-                        finishTurn(turnDone);
+                        setBtnStateDone(true);
+                        finishTurn(btnStateDone);
                         setOpenFinishTurnAlert(false);
                     }}>Yes</button>
                     <button className='btn-finish-turn-alert no-btn'onClick={()=>{

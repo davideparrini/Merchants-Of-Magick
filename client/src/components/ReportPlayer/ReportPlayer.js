@@ -31,18 +31,29 @@ function ReportBoard({ reportTime, setReportTime, reports, setReports,endTurn,se
                     reports.map((r,i)=>(
                         <div className='player-report' key={i} id={'pr'+ i}>
                             <div className='player-report-username'>{r.username}</div>
-                            {'Skills Gained :'}<br/> 
+                            <div className='player-report-title'>{'Skills Gained :'}</div><br/> 
                             {
-                                r.report.skills.map((s,j)=>(
-                                    <div className='player-report-skill' key={j}>{'- '+s}</div>
-                                ))
+                                r.report.skills.length > 0 ?
+                                    r.report.skills.map((s,j)=>(
+                                        <div className='player-report-skill' key={j}>{'- '+s}</div>
+                                    ))
+                                : 'No skill gained'
+
                             }
-                            {'New Items in the shop :'}<br/>
+                            <div className='player-report-title'>{'New Items in the shop :'}</div><br/>
                             {
-                                r.report.items.map((item,j)=>(
-                                    <div className='player-report-item' key={j}>{'- '+item}</div>
-                                ))
+                                r.report.items.length > 0 ?
+                                    r.report.items.map((item,j)=>(
+                                        <div className='player-report-item' key={j}>{'- '+item}</div>
+                                    ))
+                                : 'No new item'
                             }
+                            <div className='player-report-title quest-report'>
+                                {'Crafting quest: '}<div className='player-report-quest'>{r.report.quest1 ? 'Done!' : 'Not Done'}</div>
+                            </div>
+                            <div className='player-report-title quest-report'>
+                                {'Magic Research quest: '}<div className='player-report-quest'>{r.report.quest2  ? 'Done!' : 'Not Done'}</div>
+                            </div>
 
                         </div>
                     ))

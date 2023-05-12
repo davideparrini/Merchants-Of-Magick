@@ -48,11 +48,10 @@
     border-radius: 15px;
     border: v.$border-primary-4px;
     font-weight: 550;
-    color: v.$label-color-4;
+    color: rgb(212, 212, 212);
     text-shadow: v.$text-shadow-stroke2;
-    font-size: 20px;
-    font-family: Verdana, Geneva, sans-serif;
-
+    font-size: 15px;
+    font-family: Tahoma, Geneva, sans-serif;
 }
 #pr0{
     grid-area: pr0;
@@ -87,11 +86,16 @@
     margin-bottom: 5px;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
-
+.player-report-title{
+    font-weight: 550;
+    color: v.$label-color-4;
+    text-shadow: v.$text-shadow-stroke2;
+    font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+}
 .player-report-skill{
     color: v.$primary-color-5;
     font-weight: 500;
-    letter-spacing: 1px;
     font-size: 18px;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;
@@ -107,4 +111,18 @@
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
     font-size: 40px;
+}
+.player-report-title.quest-report{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-report-quest{
+    color: v.$blue-btn-5;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: Verdana, Geneva, sans-serif;
+    text-transform: capitalize;
 }

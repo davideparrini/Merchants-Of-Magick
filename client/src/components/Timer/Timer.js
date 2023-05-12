@@ -14,25 +14,28 @@ function Timer({finishTurn, turnDone, gameRestart}) {
             setCountdown(TIMER_COUNTDOWN);
             setClockWork(true);
         }
-    },[gameRestart, countdown]);
+    },[gameRestart]);
 
     useEffect(() => {
-        if(!turnDone){
-            if(countdown > 0 ){
-                const intervalId = setInterval(() => {
-                    setCountdown((t)=> t-1);
-                }, 1000);
-                return () => clearInterval(intervalId);
+        if(!gameRestart){
+            if(!turnDone){
+                if(countdown > 0 ){
+                    const intervalId = setInterval(() => {
+                        setCountdown((t)=> t-1);
+                    }, 1000);
+                    return () => clearInterval(intervalId);
+                }
+                else{
+                    finishTurn()
+                }
+            }else{
+                setCountdown(0);
+                setClockWork(false);
             }
-            else{
-                // if(!turnDone) finishTurn(turnDone);
-            }
-        }else{
-            setCountdown(0);
-            setClockWork(false);
         }
         
-    },[countdown,clockWork,turnDone,finishTurn]);
+        
+    },[countdown,clockWork,turnDone,finishTurn,gameRestart]);
 
 
     return (

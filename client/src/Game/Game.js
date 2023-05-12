@@ -147,12 +147,10 @@ function Game() {
     const[turnDone, setTurnDone] = useState(false);
     
 
-    
-
-
-    const [endTurn,setEndTurn] = useState(false);
-
     const [gameRestart, setGameRestart] = useState(false);
+
+
+    const [openReport,setOpenReport] = useState(false);
 
     const[reportSkills, setReportSkills] = useState([]);
 
@@ -356,11 +354,9 @@ function Game() {
 
 
 
-    const finishTurn = useCallback((turnDone)=>{
+    const finishTurn = useCallback(()=>{
         if(!turnDone){
             setTurnDone(true);
-            console.log("report items "+reportItems);
-            console.log("report skill "+reportSkills);
             const playerGameState ={
                 quest1: quest1Done,
                 quest2: quest2Done,
@@ -370,18 +366,21 @@ function Game() {
                     card3: card3
                 },
                 report: {
-                    skills: [...reportSkills], 
-                    items: [...reportItems]
+                    skills: reportSkills, 
+                    items: reportItems,
+                    quest1: quest1Done,
+                    quest2: quest2Done
                 }
             }
             connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
         }
-    },[turnDone]);
+    },[card1, card2, card3, lobby.id, quest1Done, quest2Done, reportItems, reportSkills, turnDone, username]);
 
     
     
     
     const newTurn = useCallback((newGameState)=>{
+
         setNTurn((n)=>(n+1));
         setNDiceLeft_toUse(2);
         setAllDiceNoUsed();
@@ -418,7 +417,7 @@ function Game() {
         setBoardListPlayers(newGameState.cards);
         setGameRestart(true);
         setReportTime(10);
-        setEndTurn(true);
+        setOpenReport(true);
     },[username])
 
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
@@ -446,7 +445,6 @@ function Game() {
     useEffect(()=>{
         if(turnDone && gameUpdated){
             newTurn(gameOnNewTurn);
-            setTurnDone(false);
             setGameUpdated(false);
         }
     },[turnDone, gameUpdated])
@@ -456,8 +454,8 @@ function Game() {
     return (
         <div className='Game'>
             <Exit/>
-            <ReportBoard reports={reportEndTurn} setReports={setReportEndTurn} endTurn={endTurn} setEndTurn={setEndTurn} setGameRestart={setGameRestart} setTurnDone={setTurnDone} reportTime={reportTime} setReportTime={setReportTime}/>
-            <div className={`game-container ${turnDone ? 'wait-state-game' :''}`}>   
+            <ReportBoard reports={reportEndTurn} setReports={setReportEndTurn} endTurn={openReport} setEndTurn={setOpenReport} setGameRestart={setGameRestart} setTurnDone={setTurnDone} reportTime={reportTime} setReportTime={setReportTime}/>
+            <div className={`game-container ${turnDone  ? 'wait-state-game' :''}`}>   
                 <div className='upper-container'>
                     <div className='container-extra-dices'>
                         <img src={titleExtraDices} alt='EXTRA DICES' className='upper-container-titles-extra-dices' ></img>
@@ -717,7 +715,7 @@ function Game() {
                 </div>
                 
                 <div className='btn-turn-container'>
-                    <ButtonTurnDone finishTurn={finishTurn} isTurnDone={turnDone} gameRestart={gameRestart} nDiceLeft_toUse={nDiceLeft_toUse} />
+                    <ButtonTurnDone finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart} nDiceLeft_toUse={nDiceLeft_toUse} />
                 </div>
                 
                 <div className='shop-container'>
