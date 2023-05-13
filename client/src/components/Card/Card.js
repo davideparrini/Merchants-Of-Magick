@@ -6,8 +6,23 @@ const TYPE_GOLD_SMALL = 'SMALL';
 
 const TYPE_GOLD_BIG = 'BIG';
 
+const enchantmentType = [ 
+    'fiery',
+    'shocking',
+    'everlasting',
+    'divine'
+];
+
 function Card({card, isShowed, smallSize}) {
     
+
+    const enchantmentClassName = useCallback(()=>{
+        if(enchantmentType.includes(card.enchantment)){
+            return card.enchantment;
+        }   
+        return 'no-enchantment'
+    },[card.enchantment]);
+
 
     const itemRightName = useCallback(()=>{
         switch(card.item){
@@ -23,7 +38,7 @@ function Card({card, isShowed, smallSize}) {
             case 'of the dwarves': return 'dwarves';
             case 'of the orcs': return 'orcs';
             case 'of the dragons': return 'dragons';
-           default: return '';
+           default: return 'no-origin';
         }
     },[card.origin]);
 
@@ -38,7 +53,7 @@ function Card({card, isShowed, smallSize}) {
             <Gold size={smallSize ?TYPE_GOLD_SMALL : TYPE_GOLD_BIG} active={true} value={card.gold}/>
         </div>
         <div className={`img-card ${smallSize ? 'img-card-small': ''}  ${itemRightName()}  ${isShowed ? "" : "no-visible"}`}></div>
-        <div className={`img-enchantment-card ${smallSize ? 'img-enchantment-card-small': ''}  ${card.enchantment}  ${isShowed ? "" : "no-visible"}`}></div>
+        <div className={`img-enchantment-card ${smallSize ? 'img-enchantment-card-small': ''}  ${enchantmentClassName()}  ${isShowed ? "" : "no-visible"}`}></div>
         <div className={`img-origin-card ${smallSize ? 'img-origin-card-small': ''} ${originRightName()}  ${isShowed ? "" : "no-visible"}`}></div>
     </div>
     )

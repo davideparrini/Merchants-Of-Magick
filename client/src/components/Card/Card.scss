@@ -23,10 +23,8 @@ $sizeSmall:0.7;
 
 .text-card{
     display: flex;
-    justify-items: center;
     align-items: center;
     justify-content: center;
-    align-content: center;
     justify-self: center;
     font-family: Georgia, serif;
     font-size: calc(25px * $sizeNormal);
@@ -60,16 +58,11 @@ $sizeSmall:0.7;
 
 .img-origin-card{
     grid-area: imgO;
-    display: flex;
-    justify-content: center;
-    justify-self: center;
-    align-self: center;
-    justify-items: center;
     position: relative;
-    bottom: 5px;
+    bottom: 13px;
+    right: 5px;
     height: calc(100px * $sizeNormal);
     width: calc(100px * $sizeNormal);
-    opacity: 0.7;
     z-index: 1;
     background-size: contain;
     background-repeat: no-repeat;
@@ -79,7 +72,7 @@ $sizeSmall:0.7;
     grid-area: imgE;
     height: calc(100px * $sizeNormal);
     width: calc(100px * $sizeNormal);
-    opacity: 1;
+
     z-index: 1;
     background-size: contain;
     background-repeat: no-repeat;
@@ -118,7 +111,6 @@ $sizeSmall:0.7;
     background: v.$card-color-0;
 }
 .no-showed{
-    // background: #242220;
     background: url(./image/backCard6_darker.png);
     background-size: cover;
     background-repeat:no-repeat ;
@@ -211,7 +203,23 @@ $sizeSmall:0.7;
 
 .orcs{
     background-image: url(./image/orcs_white.png); 
+    position: relative;
+    bottom: 6px;
 }
 .dragons{
    background-image: url(./image/dragons_white.png);
+}
+.no-origin{
+    background-image: url(./image/no-origin1.png);
+    position: relative;
+    right: 17px;
+    bottom: 17px;
+    scale: (1.1);
+}
+.no-enchantment{
+    background-image: url(./image/no-enchantment1.png);
+    position: relative;
+    scale:(1.1);
+    left: 5px;
+    top: 5px;
 }

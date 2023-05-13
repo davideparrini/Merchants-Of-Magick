@@ -165,7 +165,7 @@ function Game() {
 
 
     //numero pozioni
-    const [nPotion,setNPotion] = useState(10);
+    const [nPotion,setNPotion] = useState(0);
 
    
     //valori dei dadi

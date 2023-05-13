@@ -71,19 +71,15 @@ function ExtraDice({
                         } 
                     }
                     else{
-                        console.log("ENTRO1")
                         //questo controllo evita di avere valori negativi su DiceLeft_toUse
-                        console.log(totalPossibleDice_toUse)
-                        console.log(nDiceLeft_Used)
+
                         if(totalPossibleDice_toUse - nDiceLeft_Used >= 0){
-                            console.log("ENTRO2")
                             setNPotion((n)=>(n + nPotion_extraDice));
                             setNDiceLeft_toUse((n)=>(n-1));
                             setExtraDiceUsedTempList((l)=>l.filter(function(value, index, array){
                                 return value !== typeExtraDice;
                             }));
                             setTotalPossibleDice_toUse((n)=>(n-1));
-                            console.log("ENTRO3")
                             setUsedTemporarily(false);
                             setIsPlayble(true);
                         } 

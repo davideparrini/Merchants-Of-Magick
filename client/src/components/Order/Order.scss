@@ -24,10 +24,15 @@
     filter: v.$drop-show-order-quest-Done;
 }
 .order-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    text-align: center;
     position: relative;
     z-index: 3;
+    width: 100%;
     top: 20px;
-    right: 15px;
     font-family: 'Shizuru', cursive;
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
@@ -68,6 +73,7 @@
 
 .order-img.elves{
    background-image: url(../Card/image/elves_white.png);
+   scale: (0.9);
 }
 
 .order-img.dwarves{
