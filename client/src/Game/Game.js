@@ -74,8 +74,6 @@ const testActive = false;
 //CONFIGURAZIONI GIOCO
 
 const DICE_PER_TURN = 2;
-const N_POTION_TEST = 5;
-const TIMER_COUNTDOWN = 300;
 const MAX_N_TURN = 10;
 
  //lista skills crafting item
@@ -167,7 +165,7 @@ function Game() {
 
 
     //numero pozioni
-    const [nPotion,setNPotion] = useState(N_POTION_TEST);
+    const [nPotion,setNPotion] = useState(10);
 
    
     //valori dei dadi
@@ -262,8 +260,8 @@ function Game() {
     //Controllo se il giocatore possiede le skill necessarie per craftare la carta
     const checkSkillCard = useCallback((card)=>{
         const hasItemSkill = skillsGained.includes(card.item);
-        const hasEnchantmentSkill = card.enchantment == null || card.enchantment === '' ? true : skillsGained.includes(card.origin);
-        const hasOriginSkill = card.origin == null || card.origin === '' ? true : skillsGained.includes(card.origin);
+        const hasEnchantmentSkill = card.enchantment === '' ? true : skillsGained.includes(card.enchantment);
+        const hasOriginSkill = card.origin === '' ? true : skillsGained.includes(card.origin);
         return hasItemSkill && hasEnchantmentSkill && hasOriginSkill ;
     },[skillsGained])
 
@@ -308,49 +306,7 @@ function Game() {
         if(!extraDiceUsed4 && extraDiceUsedTempList.includes(TYPE_EXTRADICE4)) return setExtraDiceUsed4;
         if(!extraDiceUsed5 && extraDiceUsedTempList.includes(TYPE_EXTRADICE5)) return setExtraDiceUsed5;
         if(!extraDiceUsed6 && extraDiceUsedTempList.includes(TYPE_EXTRADICE6)) return setExtraDiceUsed6;
-        return null;
     },[extraDiceUsed1, extraDiceUsed2, extraDiceUsed3, extraDiceUsed4, extraDiceUsed5, extraDiceUsed6, extraDiceUsedTempList])
-
-
-    
-    //funzione passata al component per la gestione logica del extra-dice
-    const onClickHandlerExtraDice = useCallback((requireNPots,extraDiceUsedTemporarily, definitelyExtraDiceUsed,setExtraDiceUsedTemporarily, setIsPlayble,typeExtraDice) => {
-        //se l extra-dice è usato definitivamente non puoi fare niente
-        if(definitelyExtraDiceUsed) return;
-
-        //se l extra-dice non è stato usato (in modo temporaneo) (quindi è utilizzabile/"buono")
-        if(!extraDiceUsedTemporarily){
-            //controllo che si possano usare massimo 2 extra-dice per turno, in caso lo setto setIsPlayeble a false per far diventare gl'extra dice non usati Unclickable
-            if(extraDiceUsedTempList.length >= 2) {
-                setIsPlayble(false);
-                return;
-            }
-            // se i req delle pozioni e incremento i dice disponibili, 
-            // i dice che al massimo usero in quel turno (non sono la stessa cosa, dice disponibili vengono decrementati quando uso un dado, i totalPossibleDice_toUse no )
-            //quindi faccio una serie di incrementi e decrementi per implementare la logica del gioco e metto a true lo stato del diceUsedTemporarily
-            if(nPotion >= requireNPots){ 
-                setNPotion((n)=>(n-requireNPots));
-                setNDiceLeft_toUse((n)=>(n+1));
-                setExtraDiceUsedTempList((l)=>[...l,typeExtraDice]);
-                setTotalPossibleDice_toUse((n)=>(n+1));
-                setExtraDiceUsedTemporarily(true);
-            } 
-        }
-        else{
-            //questo controllo evita di avere valori negativi su DiceLeft_toUse
-            if(totalPossibleDice_toUse - nDiceLeft_Used > 0){
-                setNPotion((n)=>(n+requireNPots));
-                setNDiceLeft_toUse((n)=>(n-1));
-                setExtraDiceUsedTempList((l)=>l.filter(function(value, index, array){
-                    return value !== typeExtraDice;
-                }));
-                setTotalPossibleDice_toUse((n)=>(n-1));
-                setExtraDiceUsedTemporarily(false);
-                setIsPlayble(true);
-            }       
-        }
-    },[ extraDiceUsedTempList, nPotion,nDiceLeft_Used, totalPossibleDice_toUse])
-
 
 
 
@@ -383,6 +339,8 @@ function Game() {
 
         setNTurn((n)=>(n+1));
         setNDiceLeft_toUse(2);
+        setTotalPossibleDice_toUse(2);
+        setNDiceLeft_Used(0);
         setAllDiceNoUsed();
         d6startValue.current = newGameState.dices.d6;
         d8startValue.current = newGameState.dices.d8;
@@ -407,6 +365,10 @@ function Game() {
         setCard1(cardsCurrentPlayer.cards.card1);
         setCard2(cardsCurrentPlayer.cards.card2);
         setCard3(cardsCurrentPlayer.cards.card3);
+
+        setShowCard1(true);
+        setShowCard2(true);
+        setShowCard3(true);
 
         setReportEndTurn(newGameState.report);
 
@@ -462,39 +424,87 @@ function Game() {
                         <div className='extra-dices'>
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice1}
-                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                nPotion={nPotion}
+                                setNPotion={setNPotion}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                totalPossibleDice_toUse={totalPossibleDice_toUse}
+                                setTotalPossibleDice_toUse={setTotalPossibleDice_toUse}
+                                extraDiceUsedTempList={extraDiceUsedTempList}
+                                setExtraDiceUsedTempList={setExtraDiceUsedTempList}
                                 definitelyExtraDiceUsed={extraDiceUsed1}   
                                 typeExtraDice={TYPE_EXTRADICE1}        
+                                gameRestart={gameRestart}
                             />
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice2} 
-                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                nPotion={nPotion}
+                                setNPotion={setNPotion}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                totalPossibleDice_toUse={totalPossibleDice_toUse}
+                                setTotalPossibleDice_toUse={setTotalPossibleDice_toUse}
+                                extraDiceUsedTempList={extraDiceUsedTempList}
+                                setExtraDiceUsedTempList={setExtraDiceUsedTempList}
                                 definitelyExtraDiceUsed={extraDiceUsed2}     
-                                typeExtraDice={TYPE_EXTRADICE2}       
+                                typeExtraDice={TYPE_EXTRADICE2}      
+                                gameRestart={gameRestart} 
                             />
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice3}
-                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                nPotion={nPotion}
+                                setNPotion={setNPotion}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                totalPossibleDice_toUse={totalPossibleDice_toUse}
+                                setTotalPossibleDice_toUse={setTotalPossibleDice_toUse}
+                                extraDiceUsedTempList={extraDiceUsedTempList}
+                                setExtraDiceUsedTempList={setExtraDiceUsedTempList}
                                 definitelyExtraDiceUsed={extraDiceUsed3}              
-                                typeExtraDice={TYPE_EXTRADICE3}             
+                                typeExtraDice={TYPE_EXTRADICE3}    
+                                gameRestart={gameRestart}         
                             />
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice4}
-                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                nPotion={nPotion}
+                                setNPotion={setNPotion}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                totalPossibleDice_toUse={totalPossibleDice_toUse}
+                                setTotalPossibleDice_toUse={setTotalPossibleDice_toUse}
+                                extraDiceUsedTempList={extraDiceUsedTempList}
+                                setExtraDiceUsedTempList={setExtraDiceUsedTempList}
                                 definitelyExtraDiceUsed={extraDiceUsed4}               
-                                typeExtraDice={TYPE_EXTRADICE4}           
+                                typeExtraDice={TYPE_EXTRADICE4}  
+                                gameRestart={gameRestart}        
                             />
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice5}
-                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                nPotion={nPotion}
+                                setNPotion={setNPotion}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                totalPossibleDice_toUse={totalPossibleDice_toUse}
+                                setTotalPossibleDice_toUse={setTotalPossibleDice_toUse}
+                                extraDiceUsedTempList={extraDiceUsedTempList}
+                                setExtraDiceUsedTempList={setExtraDiceUsedTempList}
                                 definitelyExtraDiceUsed={extraDiceUsed5}           
-                                typeExtraDice={TYPE_EXTRADICE5}               
+                                typeExtraDice={TYPE_EXTRADICE5}          
+                                gameRestart={gameRestart}     
                             ></ExtraDice>
                             <ExtraDice
                                 nPotion_extraDice={nPotion_extraDice6}
-                                onClickHandlerExtraDice={onClickHandlerExtraDice}
+                                nPotion={nPotion}
+                                setNPotion={setNPotion}
+                                nDiceLeft_Used={nDiceLeft_Used}
+                                setNDiceLeft_toUse={setNDiceLeft_toUse}
+                                totalPossibleDice_toUse={totalPossibleDice_toUse}
+                                setTotalPossibleDice_toUse={setTotalPossibleDice_toUse}
+                                extraDiceUsedTempList={extraDiceUsedTempList}
+                                setExtraDiceUsedTempList={setExtraDiceUsedTempList}
                                 definitelyExtraDiceUsed={extraDiceUsed6}         
-                                typeExtraDice={TYPE_EXTRADICE6}               
+                                typeExtraDice={TYPE_EXTRADICE6}  
+                                gameRestart={gameRestart}
                             />  
                         </div>
                     </div>
@@ -594,7 +604,7 @@ function Game() {
                             isShowed={showCard1}
                             smallSize={false}
                         />
-                        <div className='card1-going-away' >ON GOING AWAY</div>
+                        <div className='card1-going-away' >OUTGOING</div>
                     </div>
                     <ForgeButton 
                         checkSkillCard={checkSkillCard}

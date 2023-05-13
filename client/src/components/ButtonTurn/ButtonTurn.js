@@ -26,6 +26,8 @@ function ButtonTurnDone({finishTurn,turnDone, nDiceLeft_toUse, gameRestart}) {
           }
     });
 
+    //useEffect di reset dopo la fine del turno
+    //Riporto il botton riclickabile
     useEffect(()=>{
         if(gameRestart){
             setBtnStateDone(false);

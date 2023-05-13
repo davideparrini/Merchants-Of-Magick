@@ -24,7 +24,7 @@
 }
 
 .container-report{
-    height: 60%;
+    height: 70%;
     width: 80%;
     border: v.$border-primary-6px;
     border-radius: 10px;
@@ -35,7 +35,7 @@
     'pr1 pr3 pr5 pr7';
     grid-template-columns: repeat(4,24%);
     grid-template-rows: repeat(2, 48%);
-    gap: 30px;
+    gap: 20px;
     padding: 30px;
 }
 .player-report{
@@ -92,19 +92,19 @@
     font-weight: 550;
     color: v.$label-color-4;
     text-shadow: v.$text-shadow-stroke2;
-    font-size: 18px;
+    font-size: 16px;
     font-family: Verdana, Geneva, sans-serif;
 }
 .player-report-skill{
     color: v.$primary-color-5;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;
 }
 .player-report-item{
     color: v.$card-color-4;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;
@@ -123,7 +123,7 @@
 
 .player-report-quest{
     color: v.$blue-btn-5;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;

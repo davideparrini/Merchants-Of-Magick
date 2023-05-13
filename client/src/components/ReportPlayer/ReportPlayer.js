@@ -31,7 +31,7 @@ function ReportBoard({ reportTime, setReportTime, reports, setReports,endTurn,se
                     reports.map((r,i)=>(
                         <div className='player-report' key={i} id={'pr'+ i}>
                             <div className='player-report-username'>{r.username}</div>
-                            <div className='player-report-title'>{'Skills Gained :'}</div><br/> 
+                            <div className='player-report-title'>{'Skills Gained :'}</div>
                             {
                                 r.report.skills.length > 0 ?
                                     r.report.skills.map((s,j)=>(
@@ -40,7 +40,7 @@ function ReportBoard({ reportTime, setReportTime, reports, setReports,endTurn,se
                                 : 'No skill gained'
 
                             }
-                            <div className='player-report-title'>{'New Items in the shop :'}</div><br/>
+                            <div className='player-report-title'>{'New Items in the shop :'}</div>
                             {
                                 r.report.items.length > 0 ?
                                     r.report.items.map((item,j)=>(
