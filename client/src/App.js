@@ -173,19 +173,18 @@ function App() {
                         dbFirestore.getUsername(user.uid).then(u => setUsername(u));
                     } 
                 })
-                connectionHandlerClient.connect();
-                
+                connectionHandlerClient.connect(); 
             }
             else {
-                
-               
+                logOut();   
             }
         })
         return ()=>{
+            
             unsub();
-            logOut();
+            
         }
-    },[logOut, navigate]);
+    },[]);
 
 
 

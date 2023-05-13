@@ -34,13 +34,13 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
     //Se non connesso al server, riportami fuori dalla lobby
     //DA RIVEDERE
-    useEffect(()=>{
-        console.log("QUANTE VOLTE")
-        if(!connectionHandlerClient.checkConnection()){
-            leaveLobby();
-            navigate(LOGGED_PAGE);
-        }
-    },[connectionHandlerClient.checkConnection()]);
+    // useEffect(()=>{
+    //     console.log("QUANTE VOLTE")
+    //     if(!connectionHandlerClient.checkConnection()){
+    //         leaveLobby();
+    //         navigate(LOGGED_PAGE);
+    //     }
+    // },[connectionHandlerClient.checkConnection()]);
 
 
     useEffect(()=>{
