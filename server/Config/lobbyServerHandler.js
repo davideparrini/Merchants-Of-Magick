@@ -122,7 +122,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
             cb("OK");
         }
         else{
-            cb("ERROR");
+            cb("PLAYER NOT FOUND");
         }
     }
 

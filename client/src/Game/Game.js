@@ -55,21 +55,22 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = false;
+const testActive = true;
+const NPOTION = 10;
 
- //Tipi dado
- const TYPE_D6 = 'd6';
- const TYPE_D8 = 'd8';
- const TYPE_D10 = 'd10';
- const TYPE_D12 = 'd12';
+//Tipi dado
+const TYPE_D6 = 'd6';
+const TYPE_D8 = 'd8';
+const TYPE_D10 = 'd10';
+const TYPE_D12 = 'd12';
 
- //Tipi dado
- const TYPE_EXTRADICE1 = 'ed1';
- const TYPE_EXTRADICE2 = 'ed2';
- const TYPE_EXTRADICE3 = 'ed3';
- const TYPE_EXTRADICE4 = 'ed4';
- const TYPE_EXTRADICE5 = 'ed5';
- const TYPE_EXTRADICE6 = 'ed6';
+//Tipi dado
+const TYPE_EXTRADICE1 = 'ed1';
+const TYPE_EXTRADICE2 = 'ed2';
+const TYPE_EXTRADICE3 = 'ed3';
+const TYPE_EXTRADICE4 = 'ed4';
+const TYPE_EXTRADICE5 = 'ed5';
+const TYPE_EXTRADICE6 = 'ed6';
 
 //CONFIGURAZIONI GIOCO
 
@@ -121,7 +122,8 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated} = useContext(AppContext);
+    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, leaveLobby, LOGGED_PAGE, navigate } = useContext(AppContext);
+    
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
@@ -136,7 +138,7 @@ function Game() {
     
 
     //gold player
-    const[goldAttuale,setGoldAttuale] = useState(0);
+    const[currentGold,setCurrentGold] = useState(0);
 
 
     //numero turno attuale
@@ -165,7 +167,7 @@ function Game() {
 
 
     //numero pozioni
-    const [nPotion,setNPotion] = useState(0);
+    const [nPotion,setNPotion] = useState(NPOTION);
 
    
     //valori dei dadi
@@ -242,6 +244,8 @@ function Game() {
     const[quest1Reward, setQuest1Reward] = useState(gameInitState.quest1.gold);
     const[quest2Reward, setQuest2Reward] = useState(gameInitState.quest2.gold);
 
+    const[adventurerQuestDone, setAdventurerQuestDone] = useState(false);
+
     //lista skill acquisite
     const[skillsGained,setSkillsGained] = useState([]);
 
@@ -252,7 +256,7 @@ function Game() {
 
     const addItemShop = (card) => {
         setShop((s) => [...s, card]);
-        setReportItems((ri)=>[...ri,card])
+        setReportItems((ri)=>[...ri,(card.enchantment + ' ' + card.item + ' ' + card.origin)])
       }
     
     
@@ -312,25 +316,45 @@ function Game() {
 
     const finishTurn = useCallback(()=>{
         if(!turnDone){
-            setTurnDone(true);
-            const playerGameState ={
-                quest1: quest1Done,
-                quest2: quest2Done,
-                cards:{
-                    card1: card1,
-                    card2: card2,
-                    card3: card3
-                },
-                report: {
-                    skills: reportSkills, 
-                    items: reportItems,
+            if(nTurn < MAX_N_TURN){
+                setTurnDone(true);
+                card1.inProgress = showCard1;
+                card2.inProgress = showCard2;
+                card3.inProgress = showCard3;
+
+                const playerGameState ={
                     quest1: quest1Done,
-                    quest2: quest2Done
+                    quest2: quest2Done,
+                    cards:{
+                        card1: card1,
+                        card2: card2,
+                        card3: card3
+                    },
+                    report: {
+                        skills: reportSkills, 
+                        items: reportItems,
+                        quest1: quest1Done,
+                        quest2: quest2Done
+                    }
                 }
+                connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
+            }else{
+               const finalReport = {
+                    skills: skillsGained,
+                    shop: shop,
+                    quest1: quest1Done,
+                    quest2: quest2Done,
+                    order: adventurerQuestDone,
+                    renownedAccessories: skillsGained.includes('renowned accessories'),
+                    weaponPrestige: skillsGained.includes('weapon prestige'),
+                    eliteArmor: skillsGained.includes('elite armor'),
+                    gold: currentGold
+               }
+               connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
             }
-            connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
+            
         }
-    },[card1, card2, card3, lobby.id, quest1Done, quest2Done, reportItems, reportSkills, turnDone, username]);
+    },[card1, card2, card3, lobby.id, quest1Done, quest2Done, reportItems, reportSkills, showCard1, showCard2, showCard3, turnDone, username]);
 
     
     
@@ -384,6 +408,7 @@ function Game() {
 
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
+
     
 
     //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
@@ -394,7 +419,6 @@ function Game() {
                 typeTouchedDiceRef.current = "";
                 valueTouchedDiceRef.current = null;
             }
-
         };
         document.addEventListener("mousedown", whileDiceTouched);
 
@@ -612,7 +636,7 @@ function Game() {
                         addItemShop={addItemShop}
                         showCard={showCard1}
                         card={card1}
-                        setgoldAttuale={setGoldAttuale}
+                        setCurrentGold={setCurrentGold}
                     />
 
                     <Card card = {card2} 
@@ -625,7 +649,7 @@ function Game() {
                         addItemShop={addItemShop}
                         showCard={showCard2}
                         card={card2}
-                        setgoldAttuale={setGoldAttuale}
+                        setCurrentGold={setCurrentGold}
                     />
 
                     <Card card = {card3} 
@@ -638,7 +662,7 @@ function Game() {
                         addItemShop={addItemShop}
                         showCard={showCard3}
                         card={card3}
-                        setgoldAttuale={setGoldAttuale}
+                        setCurrentGold={setCurrentGold}
                     />
                 </div>
                 <div className='players-table'>
@@ -672,7 +696,7 @@ function Game() {
                                             typeAttrQuest2={typeAttributeQuestMagicResearch}
                                             freeUpgrade={freeUpgrade > 0}
                                             setFreeUpgrade={setFreeUpgrade}
-                                            setgoldAttuale={setGoldAttuale}
+                                            setCurrentGold={setCurrentGold}
                                             testActive={testActive}
                                         />
                                     )
@@ -706,7 +730,7 @@ function Game() {
                                             typeAttrQuest2={typeAttributeQuestMagicResearch}
                                             freeUpgrade={freeUpgrade > 0}
                                             setFreeUpgrade={setFreeUpgrade}
-                                            setgoldAttuale={setGoldAttuale}
+                                            setCurrentGold={setCurrentGold}
                                             testActive={testActive}
                                         />
                                     )
@@ -716,11 +740,11 @@ function Game() {
                 </div>
                 <div className='container-order-quests'>
                     <div className='container-quests'>
-                        <Quest questAttribute={typeAttributeQuestCrafting} questRequest={6} goldReward={quest1Reward} setQuestDone={setQuest1Done} progress={nAttributeGained_QuestCrafting} setgoldAttuale={setGoldAttuale}/>
-                        <Quest questAttribute={typeAttributeQuestMagicResearch} questRequest={8} goldReward={quest2Reward} setQuestDone={setQuest2Done} progress={nAttributeGained_QuestMagicResearch} setgoldAttuale={setGoldAttuale}/>
+                        <Quest questAttribute={typeAttributeQuestCrafting} questRequest={6} goldReward={quest1Reward} setQuestDone={setQuest1Done} progress={nAttributeGained_QuestCrafting} setCurrentGold={setCurrentGold}/>
+                        <Quest questAttribute={typeAttributeQuestMagicResearch} questRequest={8} goldReward={quest2Reward} setQuestDone={setQuest2Done} progress={nAttributeGained_QuestMagicResearch} setCurrentGold={setCurrentGold}/>
                     </div>
                     <div className='container-order'>
-                        <OrdersContainer order={gameInitState.adventurer} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setgoldAttuale ={setGoldAttuale}/>
+                        <OrdersContainer order={gameInitState.adventurer} setAdventurerQuestDone={setAdventurerQuestDone} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setCurrentGold ={setCurrentGold}/>
                     </div>
                 </div>
                 

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
@@ -7,7 +7,7 @@ import { AppContext } from '../App';
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
-    const { username, leaderLobby, lobby, setLobby, gameStart, setGameStart, setGameOnNewTurn, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, LOGIN_PAGE, LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
+    const { username, leaderLobby, lobby, setLobby, gameStart, setGameStart, setGameOnNewTurn, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, leaveLobby,  LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
@@ -15,24 +15,32 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
     
     const[countdownGameStart,setCountdownGameStart] = useState(5);
 
+
+    
+
     useEffect(()=>{
         if(lobbyUpdated){
             setLobbyUpdated(false);
         }
-    },[lobbyUpdated])
+    },[lobbyUpdated]);
+
 
     useEffect(()=>{
-        if(lobby.id === -1){
+        if(lobby === -1){
             navigate(LOGGED_PAGE);
         }
-    },[])
+    },[lobby,navigate]);
 
-    // useEffect(()=>{
-    //     if(gameStart && gameInitState !== -1){
-            
-            
-    //     }
-    // },[gameStart,gameInitState])
+
+    //Se non connesso al server, riportami fuori dalla lobby
+    //DA RIVEDERE
+    useEffect(()=>{
+        console.log("QUANTE VOLTE")
+        if(!connectionHandlerClient.checkConnection()){
+            leaveLobby();
+            navigate(LOGGED_PAGE);
+        }
+    },[connectionHandlerClient.checkConnection()]);
 
 
     useEffect(()=>{
@@ -113,7 +121,9 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                                 console.log("Game start");
                                                 break;
                                             case 'ERROR':
-                                                alert("Error, something went wrong starting game!")
+                                                alert("Error, something went wrong starting game!");
+                                                leaveLobby();              
+                                                navigate(LOGGED_PAGE);
                                                 break;
                                             default: break;
                                         }
@@ -128,15 +138,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
-                            setLobby(EMPTYLOBBY);
-                            setLeaderLobby(false);
-                            setGameInitState(-1);
-                            setGameOnNewTurn(-1);
-                            setCountdownGameStart(5);
-                            setGameStart(false);
-                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));  
-                            userAuth.logout();
-                            navigate(LOGIN_PAGE);  
+                            userAuth.logout(); 
                         }
                     }}>
                     <label className='log-out-label'>LogOut</label>
@@ -144,13 +146,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
-                            setLobby(EMPTYLOBBY);
-                            setLeaderLobby(false);
-                            setCountdownGameStart(5);
-                            setGameInitState(-1);
-                            setGameOnNewTurn(-1);
-                            setGameStart(false);
-                            connectionHandlerClient.leaveLobby(username,(cb)=>console.log(cb));              
+                            leaveLobby();              
                             navigate(LOGGED_PAGE);
                         }
                     }}><label className='back-label'>Back</label>

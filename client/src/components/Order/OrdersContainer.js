@@ -6,7 +6,7 @@ const TYPE_GOLD_MEDIUM = 'MEDIUM';
 
 const TYPE_ENCHANTMENT = ['fiery','shocking','everlasting','divine'];
 
-function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldAttuale}) {
+function OrdersContainer({order, setAdventurerQuestDone, skillsGained,setNPotion,setFreeUpgrade,setCurrentGold}) {
 
     const [nOrderDone,setNOrderDone] = useState(0);
     const [orderDone1,setOrderDone1] = useState(false);
@@ -41,7 +41,8 @@ function OrdersContainer({order, skillsGained,setNPotion,setFreeUpgrade,setgoldA
             case 2: setFreeUpgrade((n)=>(n+1));
                 break;
             case 3: setFreeUpgrade((n)=>(n+1));
-                    setgoldAttuale((n)=>(n + order.gold));
+                    setCurrentGold((n)=>(n + order.gold));
+                    setAdventurerQuestDone(true);
                 break;
             default: break;
         }

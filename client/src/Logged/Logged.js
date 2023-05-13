@@ -9,7 +9,7 @@ import { AppContext } from '../App';
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameOnNewTurn, navigate, EMPTYLOBBY, LOGGED_PAGE} = useContext(AppContext);
+    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameOnNewTurn, navigate, LOGGED_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -36,7 +36,7 @@ function Logged({setLobbyUpdated}) {
     },[username])
 
     useEffect(()=>{
-        if(lobby.id  !== -1){
+        if(lobby !== -1){
             navigate(`${LOGGED_PAGE}/${lobby.id}`);
         }
     },[lobby])
@@ -88,10 +88,6 @@ function Logged({setLobbyUpdated}) {
                 <div className='log-out' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to Log Out?')){
-                            setLobby(EMPTYLOBBY);
-                            setLeaderLobby(false);
-                            setGameInitState(-1);
-                            setGameOnNewTurn(-1);
                             userAuth.logout();
                         }
                     }}>

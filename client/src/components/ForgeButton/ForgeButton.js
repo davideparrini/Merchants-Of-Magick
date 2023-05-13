@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+
 import './ForgeButton.scss'
 
-function ForgeButton({checkSkillCard, showCard,setShowCard ,card, addItemShop, setgoldAttuale}) {
+function ForgeButton({checkSkillCard, showCard,setShowCard ,card, setCard, addItemShop, setCurrentGold}) {
 
 
     return (
         <button className={`btn-crafting ' + ${checkSkillCard(card) && showCard ? "forge-cursor" : "cross-cursor" }`}
-            onClick={()=>{               
-                setShowCard(false);
-                addItemShop(card);
-                setgoldAttuale((n)=>(n + card.gold));
+            onClick={()=>{    
+                if(checkSkillCard(card) && showCard ){
+                    setShowCard(false);
+                    addItemShop(card);
+                    setCurrentGold((n)=>(n + card.gold));
+                }           
             }}
         />
     )

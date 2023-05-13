@@ -56,6 +56,8 @@ function createSocketConfig() {
         socket.off("lobby-player-left");
         socket.off("countdown-game-start");
         socket.off("game-start");
+        socket.off("game-change-turn");
+        socket.off("game-end");
     }
 
    //invita un player tramite username
@@ -98,6 +100,11 @@ function createSocketConfig() {
             setGameUpdated(true);
         })
 
+        //Mi metto in ascolto per la fine del gioco
+        socket.on("game-end",(res)=>{
+            //setGameInitState(res);
+            
+        })
     }
 
 
@@ -113,6 +120,11 @@ function createSocketConfig() {
         socket.emit("player-finish-turn", lobbyID, username, playerGameState, cb);
     }
 
+
+    function endGame(lobbyID, username,finalReport, cb){
+        socket.emit("player-end-game", lobbyID, username, finalReport, cb);
+    }
+
     return{
         connect,
         disconnect,
@@ -125,7 +137,8 @@ function createSocketConfig() {
         invitePlayer,
         registerToInvite,
         gameStartRequest,
-        finishTurn
+        finishTurn,
+        endGame
     }
 }
 

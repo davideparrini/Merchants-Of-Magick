@@ -6,16 +6,16 @@ const db = getFirestore(firebase);
 
 function createFirebaseStore() {
 
-    async function hasUsername(user){
-        const docRef = doc(db, "users", user.uid);
+    async function hasUsername(userID){
+        const docRef = doc(db, "users", userID);
         const docSnap = await getDoc(docRef);
         return docSnap.exists();
     }
 
-    async function setUsername(user, username){
+    async function setUsername(userID, username){
         //il check sull'unicità dell' username viene fatto durante l'inserimento dell'username
         //username = username.toLowerCase();
-        await setDoc(doc(db, "users", user.uid),{
+        await setDoc(doc(db, "users", userID),{
             username: username,
             friendList: []
         });
@@ -29,8 +29,8 @@ function createFirebaseStore() {
         return snapshot.data().count === 0;
     }
 
-    async function getUsername(user){
-        const docRef = doc(db, "users", user.uid);
+    async function getUsername(userID){
+        const docRef = doc(db, "users", userID);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -41,8 +41,8 @@ function createFirebaseStore() {
         return null;
     }
 
-    async function getFriendList(user){
-        const docRef = doc(db, "users", user.uid);
+    async function getFriendList(userID){
+        const docRef = doc(db, "users", userID);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -52,29 +52,29 @@ function createFirebaseStore() {
         return null;
     }
 
-    async function addFriend(user,friendUsername){
-        const docRef = doc(db, "users", user.uid);
+    async function addFriend(userID,friendUsername){
+        const docRef = doc(db, "users", userID);
         await updateDoc(docRef,{
             friendList: arrayUnion(friendUsername)
         });
     }
 
-    async function removeFriend(user,friendUsername){
-        const docRef = doc(db, "users", user.uid);
+    async function removeFriend(userID,friendUsername){
+        const docRef = doc(db, "users", userID);
         await updateDoc(docRef,{
             friendList: arrayRemove(friendUsername)
         });
     }
 
-    async function setSocketID(user,socketID){
-        const docRef = doc(db, "users", user.uid);
+    async function setSocketID(userID,socketID){
+        const docRef = doc(db, "users", userID);
         await updateDoc(docRef,{
             socketID: socketID
         });
     }
 
-    async function getSocketID(user){
-        const docRef = doc(db, "users", user.uid);
+    async function getSocketID(userID){
+        const docRef = doc(db, "users", userID);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             let socketID = docSnap.data().socketID;
@@ -82,8 +82,8 @@ function createFirebaseStore() {
         } 
         return null;
     }
-    async function deleteSocketID(user){
-        const docRef = doc(db, "users", user.uid);
+    async function deleteSocketID(userID){
+        const docRef = doc(db, "users", userID);
         await updateDoc(docRef,{
             socketID: deleteField()
         });

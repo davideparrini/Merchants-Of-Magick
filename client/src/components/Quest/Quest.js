@@ -5,12 +5,12 @@ import Gold from '../Gold/Gold';
 
 const TYPE_GOLD_MEDIUM = 'MEDIUM';
 
-function Quest({questAttribute, questRequest, progress, goldReward , setQuestDone, setgoldAttuale}) {
+function Quest({questAttribute, questRequest, progress, goldReward , setQuestDone, setCurrentGold}) {
     
     useEffect(()=>{
         if(progress === questRequest){
             setQuestDone(true);
-            setgoldAttuale((n)=>(n + goldReward));
+            setCurrentGold((n)=>(n + goldReward));
         }
     },[progress,goldReward]);
 

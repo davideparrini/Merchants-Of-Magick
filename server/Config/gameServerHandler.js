@@ -31,10 +31,6 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
         }
     }
 
-    //Risoluzione vittoria
-    function finishGame(){
-
-    }
 
     function playerFinishTurn(lobbyID, username, playerGameState, cb){
         const gameState = mapLobbyID_GameState.get(lobbyID);
@@ -91,9 +87,32 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
                     gameState.nTurn--;
                 }
                 else{
-                    finishGame();
+                    cb("ERROR ,END TURN??")
                 }
-                
+            }
+            cb("OK");
+        }else{
+            cb("ERROR")
+        }
+    }
+
+
+
+    function playerEndGame(lobbyID, username, playerFinalReport, cb){
+        const gameState = mapLobbyID_GameState.get(lobbyID);
+        if (gameState != undefined){
+            gameState.nPlayersEndTurn++;
+
+            const reportToSend = {
+                username: username,
+                report: playerFinalReport
+            }
+            //Aggiungo il report di fine turno
+            gameState.report.push(reportToSend);
+
+            if(gameState.nPlayersEndTurn === gameState.nPlayers){
+                io.to(lobbyID).emit("game-end", gameState.report);
+                mapLobbyID_GameState.delete(lobbyID);
             }
             cb("OK");
         }else{
@@ -103,6 +122,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
 
     socket.on("game-start-request", gameStartRequest);
     socket.on("player-finish-turn", playerFinishTurn);
+    socket.on("player-end-game", playerEndGame);
 } 
 
 

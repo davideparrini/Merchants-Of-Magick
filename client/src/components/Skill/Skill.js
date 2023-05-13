@@ -56,7 +56,7 @@ function matchTypeDice_Attribute(typeAtt, typeDice) {
 }
 
 
-function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used, setNDiceLeft_Used, setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade, setFreeUpgrade, setgoldAttuale, testActive }) {
+function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used, setNDiceLeft_Used, setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade, setFreeUpgrade, setCurrentGold, testActive }) {
 
     const [hasSkill, setHasSkill] = useState(false);
     const [att1, setAtt1] = useState(isThereAttribute(skill.attribute1));
@@ -68,20 +68,7 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
     const [helperOpen, setHelperOpen] = useState(false);
 
 
-
-    useEffect(() => {
-        let handlerHelper = (e) => {
-            if (!helperRef.current.contains(e.target)) {
-                setHelperOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handlerHelper);
-
-        return () => {
-            document.removeEventListener("mousedown", handlerHelper);
-        }
-    });
-
+    
 
 
 
@@ -123,7 +110,7 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
                 if (nDiceLeft_Used >= 2 && setExtraDiceUsed != null) {
                     setExtraDiceUsed(true);
                 }
-                setgoldAttuale((n) => (n + skill.gold));
+                setCurrentGold((n) => (n + skill.gold));
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;
@@ -142,13 +129,13 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
                 if (nDiceLeft_Used >= 2 && setExtraDiceUsed != null) {
                     setExtraDiceUsed(true);
                 }
-                setgoldAttuale((n) => (n + skill.gold));
+                setCurrentGold((n) => (n + skill.gold));
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;
             }
         }
-    }, [freeUpgrade, nDiceLeft_Used, setAllDicesNoTouched, setDiceUsed, setExtraDiceUsed, setFreeUpgrade, setNAttrQuest1, setNAttrQuest2, setNDiceLeft_Used, setNDiceLeft_toUse, setgoldAttuale, skill.gold, skill.typeItem, testActive, typeAttrQuest1, typeAttrQuest2, typeTouchedDiceRef, valueTouchedDiceRef]);
+    }, [freeUpgrade, nDiceLeft_Used, setAllDicesNoTouched, setDiceUsed, setExtraDiceUsed, setFreeUpgrade, setNAttrQuest1, setNAttrQuest2, setNDiceLeft_Used, setNDiceLeft_toUse, setCurrentGold, skill.gold, skill.typeItem, testActive, typeAttrQuest1, typeAttrQuest2, typeTouchedDiceRef, valueTouchedDiceRef]);
 
     const checkNoButton = useCallback((attValue, boolAtt, typeAtt) => {
         if (attValue === 0 || attValue == null) {
@@ -177,6 +164,22 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
 
 
 
+    //useEffect per il close on click out
+
+    useEffect(() => {
+        let handlerHelper = (e) => {
+            if (!helperRef.current.contains(e.target)) {
+                setHelperOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handlerHelper);
+
+        return () => {
+            document.removeEventListener("mousedown", handlerHelper);
+        }
+    });
+
+
     //useEffect di check, se tutti gli attributi sono stati acquisiti allora ottengo la Skill
     useEffect(() => {
         if (att1 && att2 && att3) {
@@ -184,6 +187,9 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
             setSkillsGained((l) => [...l, skill.name]);
             setReportSkills((l) => [...l, skill.name])
             setNPotion((n) => (n + 1));
+            if(skill.name === 'glamor potion supplier'){
+                setNPotion((n) => (n + 4));
+            }
         }
     }, [att1, att2, att3])
 

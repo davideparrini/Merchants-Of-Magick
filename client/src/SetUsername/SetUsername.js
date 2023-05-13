@@ -6,7 +6,7 @@ import { AppContext } from '../App';
 
 function SetUsername() {
 
-    const {userAuthState, setUsername,navigate, LOGGED_PAGE} = useContext(AppContext);
+    const {userID, setUsername,navigate, LOGGED_PAGE} = useContext(AppContext);
     
     const[nickname,setNickname] = useState('');
     const[validUsername, setValidUsername] = useState(null);
@@ -30,7 +30,7 @@ function SetUsername() {
             <button className={`btn-submit-username ${validUsername ? '' : 'btn-invalid-username'}`} 
                 onClick={()=>{
                     if(validUsername){
-                        dbFirestore.setUsername(userAuthState,nickname);
+                        dbFirestore.setUsername(userID, nickname);
                         setUsername(nickname);
                         setNickname('');
                         setValidUsername(null);

@@ -24,65 +24,29 @@ const SET_USERNAME =  '/setusername';
 const SIGN_UP_PAGE = '/signup';
 const LOGGED_PAGE = '/lobby';
 const GAME_PAGE = '/game';
-const EMPTYLOBBY = {
-    id : -1,
-    players : [],
-    leaderLobby : ''
-}
 
 
 export const AppContext = React.createContext();
 
 function App() {
 
-    const[userAuthState,setUserAuthState] = useState(null);
+    const[userAuthStateConnected,setUserAuthStateConnected] = useState(false);
+    const[userID, setUserID] = useState(-1);
     const[username,setUsername] = useState('');
-    const[lobby, setLobby] = useState(EMPTYLOBBY);
+    const[lobby, setLobby] = useState(-1);
     const[leaderLobby,setLeaderLobby] = useState(null);
     const[lobbyUpdated,setLobbyUpdated] = useState(false);
 
     const[gameStart, setGameStart] = useState(false);
     const[gameInitState, setGameInitState] = useState(-1);
     const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
+    const[gameEndState,setGameEndState] = useState(-1);
 
     const[gameUpdated,setGameUpdated] = useState(false);
 
     const navigate = useNavigate();
     
-    useEffect(()=>{
-        const unsub = onAuthStateChanged(auth, (user)=>{
-            if(user){
-                setUserAuthState(user);
-                dbFirestore.hasUsername(user).then(b =>{
-                    if(!b){
-                        navigate(SET_USERNAME);
-                    }
-                    else{
-                        dbFirestore.getUsername(user).then(u => setUsername(u));
-                    } 
-                })
-                connectionHandlerClient.connect();
-                
-            }
-            else {
-                console.log("logged out");
-                setUsername('');
-                setUserAuthState(null);
-                setLobby(EMPTYLOBBY);
-                setLeaderLobby(false);
-                setGameStart(false);
-                setGameInitState(-1);
-                setGameOnNewTurn(-1);
-                setGameUpdated(false);
-                navigate(LOGIN_PAGE);
-                connectionHandlerClient.disconnect();
-            }
-        })
-        return ()=>{
-            unsub();
-        }
-    },[]);
-
+    
     const gameInit = useCallback(()=>{
 
         const indexThisPlayer = gameInitState.players.findIndex((p)=> p.username === username);
@@ -121,9 +85,48 @@ function App() {
         return updateState;
     },[gameOnNewTurn,username])
 
+    const gameEnd = useCallback(()=>{
+
+    })
+
+    const logOut = useCallback(()=>{
+        connectionHandlerClient.leaveLobby(username,(c)=>console("Out of the lobby: " + c));
+        setUsername('');
+        setUserAuthStateConnected(false);
+        setUserID(-1);
+        setLobby(-1);
+        setLeaderLobby(false);
+        setLobbyUpdated(false);
+        setGameStart(false);
+        setGameInitState(-1);
+        setGameOnNewTurn(-1);
+        setGameEndState(-1);
+        setGameUpdated(false);
+        navigate(LOGIN_PAGE);
+        console.log("logged out");
+        connectionHandlerClient.disconnect();
+    },[username,navigate])
+
+
+    const leaveLobby = useCallback(()=>{
+        setLobby(-1);
+        setLeaderLobby(false);
+        setLobbyUpdated(false);
+        setGameStart(false);
+        setGameInitState(-1);
+        setGameOnNewTurn(-1);
+        setGameEndState(-1);
+        setGameUpdated(false);
+        connectionHandlerClient.leaveLobby(username,(c)=>console("Out of the lobby: " + c));
+        navigate(LOGIN_PAGE);
+    },[username,navigate])
+
+
+
     const valueContext = useMemo(()=>({
-        userAuthState, 
-        setUserAuthState, 
+        userAuthStateConnected, 
+        setUserAuthStateConnected, 
+        userID,
         username, 
         setUsername, 
         lobby, 
@@ -134,21 +137,58 @@ function App() {
         setGameInitState,
         gameOnNewTurn,
         setGameOnNewTurn,
-        navigate, 
-        EMPTYLOBBY, 
+        gameEndState,
+        setGameEndState,
+        navigate,  
         LOGIN_PAGE, 
         SIGN_UP_PAGE, 
         LOGGED_PAGE, 
         SET_USERNAME,
         GAME_PAGE,
-        gameInit,
-        gameUpdate,
         gameStart,
         setGameStart, 
         gameUpdated,
-        setGameUpdated
+        setGameUpdated,
+        gameInit,
+        gameUpdate,
+        gameEnd,
+        leaveLobby
     
-    }),[userAuthState, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, navigate, gameInit, gameUpdate, gameStart,gameUpdated]);
+    }),[userAuthStateConnected, userID, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, gameEndState, navigate, gameStart, gameUpdated, gameInit, gameUpdate, gameEnd, leaveLobby]);
+
+
+
+
+
+    useEffect(()=>{
+        const unsub = onAuthStateChanged(auth, (user)=>{
+            if(user){
+                setUserAuthStateConnected(true);
+                setUserID(user.uid);
+                dbFirestore.hasUsername(user.uid).then(hasUsername =>{
+                    if(!hasUsername){
+                        navigate(SET_USERNAME);
+                    }
+                    else{
+                        dbFirestore.getUsername(user.uid).then(u => setUsername(u));
+                    } 
+                })
+                connectionHandlerClient.connect();
+                
+            }
+            else {
+                
+               
+            }
+        })
+        return ()=>{
+            unsub();
+            logOut();
+        }
+    },[logOut, navigate]);
+
+
+
 
     return (
         <div className='App'>

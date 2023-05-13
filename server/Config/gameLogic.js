@@ -65,10 +65,11 @@ function createGameLogic(){
 
         return array;
     }
-    
+
     //Scelgo un tipo di ordine random 
     function chooseRandomTypeCard(){
         const r = Math.floor(Math.random() * 3);
+        
         switch (r){
             case 0: return typeCard_NO_ENCHANTMENT;
             case 1: return typeCard_NO_ORIGIN;
@@ -79,7 +80,7 @@ function createGameLogic(){
     //Crea una nuova carta specificando come paramento il tipo della carta
     function createNewCard(typeCard){
         
-        let t_card = typeCard == typeCard_RANDOM ? chooseRandomTypeCard() : typeCard;
+        let t_card = typeCard === typeCard_RANDOM ? chooseRandomTypeCard() : typeCard;
         var origin = '';
         var gold = 0;
         var enchantment = '';
@@ -137,7 +138,7 @@ function createGameLogic(){
         //sostituisco le carte giocate con delle nuove, pushando tutto in newListCards
         oldListCards.forEach((c)=>{
             if(!c.inProgress){
-                newCard = createNewCard(typeCard_RANDOM);
+                const newCard = createNewCard(typeCard_RANDOM);
                 newListCards.push(newCard);
             }
             else{

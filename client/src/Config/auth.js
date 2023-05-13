@@ -7,13 +7,6 @@ export const auth = getAuth(firebase);
 const provider = new GoogleAuthProvider();
 
 
-const SIGN_UP_STATE = 'SIGNUPFORM';
-const LOGIN_STATE = 'LOGINFORM';
-const LOGGED_STATE = 'LOGGED';
-const LOBBY_STATE = 'LOBBY';
-const GAME_STATE = 'GAME';
-
-
 function createAuthConfig() {
 
     async  function signUp(email,password) {
