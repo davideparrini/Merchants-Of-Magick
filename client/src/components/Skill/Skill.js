@@ -110,7 +110,6 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
                 if (nDiceLeft_Used >= 2 && setExtraDiceUsed != null) {
                     setExtraDiceUsed(true);
                 }
-                setCurrentGold((n) => (n + skill.gold));
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;
@@ -129,7 +128,6 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
                 if (nDiceLeft_Used >= 2 && setExtraDiceUsed != null) {
                     setExtraDiceUsed(true);
                 }
-                setCurrentGold((n) => (n + skill.gold));
                 setAllDicesNoTouched();
                 typeTouchedDiceRef.current = '';
                 valueTouchedDiceRef.current = null;
@@ -187,6 +185,7 @@ function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouch
             setSkillsGained((l) => [...l, skill.name]);
             setReportSkills((l) => [...l, skill.name])
             setNPotion((n) => (n + 1));
+            setCurrentGold((n) => (n + skill.gold));
             if(skill.name === 'glamor potion supplier'){
                 setNPotion((n) => (n + 4));
             }

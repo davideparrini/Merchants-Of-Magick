@@ -104,7 +104,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                             onClick={()=>{
                                 if(!gameStart){
                                     const config ={
-                                        nTurn : 3,
+                                        nTurn : 2,
                                         nPotion : 0
                                     }
                                     connectionHandlerClient.gameStartRequest(lobby.id, config,(res)=>{

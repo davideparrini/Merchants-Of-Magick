@@ -37,13 +37,13 @@ const player4 = {
     position: 3
 }
 
-const gameEndState = [player1,player2,player3, player4,player1,player2,player3, player4]
+// const gameEndState = [player1,player2,player3, player4,player1,player2,player3, player4]
 const TYPE_GOLD_MEDIUM = 'MEDIUM';
 const TYPE_GOLD_BIG = 'BIG';
 
 function Winner() {
 
-    // const {gameEndState} = useContext(AppContext);
+    const {gameEndState} = useContext(AppContext);
 
     return (
         <div className='Winner'>

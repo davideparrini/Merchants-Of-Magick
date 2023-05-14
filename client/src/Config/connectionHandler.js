@@ -114,6 +114,7 @@ function createSocketConfig() {
 
         //Mi metto in ascolto per la fine del gioco
         socket.on("game-end",(res)=>{
+            console.log("END STATE"+res)
             setGameEndState(res);
             setGameEnd(true);
         })

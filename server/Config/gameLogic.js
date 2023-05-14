@@ -231,55 +231,73 @@ function createGameLogic(){
     }
 
     function calculateGold(finalReport){
-        const newReport = finalReport.map((r)=>{
+        const newFinalReport = [];
+        finalReport.map((r)=>{
+            
+            const newReport = {
+                username: r.username,
+                position: -1,
+                report: r.report
+            }
             if(r.report.shop.length > 0){
                 if(r.report.renownedAccessories){
                     r.report.shop.map((item)=>{
-                        if(TYPE_ACCESSORIES.includes(item)){
-                            r.report.gold += 2;
+                        if(TYPE_ACCESSORIES.includes(item.item)){
+                            newReport.report.gold+= 2;
                         }
                     })
                 }
                 if(r.report.weaponPrestige){
                     r.report.shop.map((item)=>{
-                        if(TYPE_WEAPONS.includes(item)){
-                            r.report.gold += 2;
+                        if(TYPE_WEAPONS.includes(item.item)){
+                            newReport.report.gold += 2;
                         }
                     })
                 }
                 if(r.report.eliteArmor){
                     r.report.shop.map((item)=>{
-                        if(TYPE_ARMOR.includes(item)){
-                            r.report.gold += 2;
+                        if(TYPE_ARMOR.includes(item.item)){
+                            newReport.report.gold += 2;
                         }
                     })
                 }   
             }
 
+            newFinalReport.push(newReport);
+
         })
         
-        return newReport;
+        return newFinalReport;
     }
 
     function winnerResolution(finalReport){
+        console.log(finalReport)
         const addedGoldReport = calculateGold(finalReport);
-        const sortedReport = addedGoldReport.toSorted(compareByGold);
+        const sortedReport = addedGoldReport.sort(compareByGold);
         let positionValue = 0;
         let goldValue = Infinity;
-        const resolvedReport = sortedReport.map((r)=>{
+        const resolvedFinalReport = [];
+        sortedReport.map((r)=>{
+            const resolvedReport = {
+                username: r.username,
+                position: -1,
+                report: r.report
+            }
             if(r.report.gold < goldValue){
-                r.position = ++positionValue;
+                resolvedReport.position = ++positionValue;
                 goldValue = r.report.gold;
             }
             else if(r.report.gold === goldValue){
-                r.position = positionValue;
+                resolvedReport.position = positionValue;
             }
             else{
-                r.position = -2;
+                resolvedReport.position = -2;
             }
-
+            resolvedFinalReport.push(resolvedReport);
         })
-        return resolvedReport;
+
+        console.log(resolvedFinalReport);
+        return resolvedFinalReport;
     }
 
     return {

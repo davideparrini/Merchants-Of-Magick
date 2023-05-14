@@ -34,7 +34,6 @@ function Shop({shop}) {
 
     useEffect(()=>{
         if(shop.length > 0){
-            console.log(shop[1])
             const newItem = shop.at(shop.length-1);
             if(newItem !== undefined){
                 if(TYPE_ACCESSORIES.includes(newItem.item)){

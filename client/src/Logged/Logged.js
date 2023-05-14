@@ -9,7 +9,7 @@ import { AppContext } from '../App';
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameOnNewTurn, navigate, LOGGED_PAGE} = useContext(AppContext);
+    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd, setGameOnNewTurn, navigate, LOGGED_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -53,7 +53,7 @@ function Logged({setLobbyUpdated}) {
                             onClick={()=>{
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn);
+                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
                                 })
                                 setLeaderLobby(true);
                         }}>Create New Lobby</button>
@@ -79,7 +79,7 @@ function Logged({setLobbyUpdated}) {
                                 default: break;
                             }
                             setLobby(lobby);
-                            connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated,setGameOnNewTurn);
+                            connectionHandlerClient.updateLobby( lobby, setLobby, username, setLeaderLobby, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
                         });
                         
                         

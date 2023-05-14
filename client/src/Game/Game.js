@@ -232,9 +232,6 @@ function Game() {
     //numero freeUpgrade disponibili
     const [freeUpgrade,setFreeUpgrade] = useState(0);
 
-    
-    const typeAttributeQuestCrafting = gameInitState.quest1.attribute;
-    const typeAttributeQuestMagicResearch = gameInitState.quest2.attribute;
 
     const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
     const [nAttributeGained_QuestMagicResearch,setnAttributeGained_QuestMagicResearch] = useState(0);
@@ -322,7 +319,6 @@ function Game() {
                 card1.inProgress = showCard1;
                 card2.inProgress = showCard2;
                 card3.inProgress = showCard3;
-
                 const playerGameState ={
                     quest1: quest1Done,
                     quest2: quest2Done,
@@ -354,7 +350,7 @@ function Game() {
             }
             
         }
-    },[card1, card2, card3, lobby.id, quest1Done, quest2Done, reportItems, reportSkills, showCard1, showCard2, showCard3, turnDone, username]);
+    },[adventurerQuestDone, card1, card2, card3, currentGold, gameInitState.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, shop, showCard1, showCard2, showCard3, skillsGained, turnDone, username]);
 
     
     
@@ -375,10 +371,10 @@ function Game() {
         setD10Value(newGameState.dices.d10);
         setD12Value(newGameState.dices.d12);
 
-        if(newGameState.quest1){
+        if(newGameState.quest1 && !quest1Done){
             setQuest1Reward(4);
         }
-        if(newGameState.quest2){
+        if(newGameState.quest2 && !quest2Done){
             setQuest2Reward(4);
         }
 
@@ -404,7 +400,7 @@ function Game() {
         setGameRestart(true);
         setReportTime(10);
         setOpenReport(true);
-    },[username])
+    },[quest1Done, quest2Done, username])
 
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
@@ -443,6 +439,8 @@ function Game() {
     },[gameEnd]);
 
 
+
+   
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div className='Game'>
@@ -699,8 +697,8 @@ function Game() {
                                             setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                                             setNAttrQuest1={setnAttributeGained_QuestCrafting}
                                             setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                            typeAttrQuest1={typeAttributeQuestCrafting}
-                                            typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                            typeAttrQuest1={gameInitState.quest1.attribute}
+                                            typeAttrQuest2={gameInitState.quest2.attribute}
                                             freeUpgrade={freeUpgrade > 0}
                                             setFreeUpgrade={setFreeUpgrade}
                                             setCurrentGold={setCurrentGold}
@@ -733,8 +731,8 @@ function Game() {
                                             setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                                             setNAttrQuest1={setnAttributeGained_QuestCrafting}
                                             setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                            typeAttrQuest1={typeAttributeQuestCrafting}
-                                            typeAttrQuest2={typeAttributeQuestMagicResearch}
+                                            typeAttrQuest1={gameInitState.quest1.attribute}
+                                            typeAttrQuest2={gameInitState.quest2.attribute}
                                             freeUpgrade={freeUpgrade > 0}
                                             setFreeUpgrade={setFreeUpgrade}
                                             setCurrentGold={setCurrentGold}
@@ -747,8 +745,8 @@ function Game() {
                 </div>
                 <div className='container-order-quests'>
                     <div className='container-quests'>
-                        <Quest questAttribute={typeAttributeQuestCrafting} questRequest={6} goldReward={quest1Reward} setQuestDone={setQuest1Done} progress={nAttributeGained_QuestCrafting} setCurrentGold={setCurrentGold}/>
-                        <Quest questAttribute={typeAttributeQuestMagicResearch} questRequest={8} goldReward={quest2Reward} setQuestDone={setQuest2Done} progress={nAttributeGained_QuestMagicResearch} setCurrentGold={setCurrentGold}/>
+                        <Quest questAttribute={gameInitState.quest1.attribute} questRequest={6} goldReward={quest1Reward} questDone={quest1Done} setQuestDone={setQuest1Done} progress={nAttributeGained_QuestCrafting} setCurrentGold={setCurrentGold}/>
+                        <Quest questAttribute={gameInitState.quest2.attribute} questRequest={8} goldReward={quest2Reward} questDone={quest2Done} setQuestDone={setQuest2Done} progress={nAttributeGained_QuestMagicResearch} setCurrentGold={setCurrentGold}/>
                     </div>
                     <div className='container-order'>
                         <OrdersContainer order={gameInitState.adventurer} setAdventurerQuestDone={setAdventurerQuestDone} skillsGained={skillsGained} setNPotion={setNPotion} setFreeUpgrade={setFreeUpgrade} setCurrentGold ={setCurrentGold}/>
