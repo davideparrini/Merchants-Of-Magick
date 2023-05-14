@@ -56,7 +56,13 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
 const testActive = true;
-const NPOTION = 10;
+
+//CONFIGURAZIONI GIOCO
+
+const DICE_PER_TURN = 2;
+
+
+
 
 //Tipi dado
 const TYPE_D6 = 'd6';
@@ -71,11 +77,6 @@ const TYPE_EXTRADICE3 = 'ed3';
 const TYPE_EXTRADICE4 = 'ed4';
 const TYPE_EXTRADICE5 = 'ed5';
 const TYPE_EXTRADICE6 = 'ed6';
-
-//CONFIGURAZIONI GIOCO
-
-const DICE_PER_TURN = 2;
-const MAX_N_TURN = 10;
 
  //lista skills crafting item
  const skillListCraftingItem = [
@@ -122,7 +123,7 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, leaveLobby, LOGGED_PAGE, navigate } = useContext(AppContext);
+    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, WINNER_PAGE, navigate } = useContext(AppContext);
     
 
     //Ref al area dello table, Close on out-click
@@ -167,7 +168,7 @@ function Game() {
 
 
     //numero pozioni
-    const [nPotion,setNPotion] = useState(NPOTION);
+    const [nPotion,setNPotion] = useState(gameInitState.nPotion);
 
    
     //valori dei dadi
@@ -316,7 +317,7 @@ function Game() {
 
     const finishTurn = useCallback(()=>{
         if(!turnDone){
-            if(nTurn < MAX_N_TURN){
+            if(nTurn < gameInitState.nTurn){
                 setTurnDone(true);
                 card1.inProgress = showCard1;
                 card2.inProgress = showCard2;
@@ -340,7 +341,6 @@ function Game() {
                 connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
             }else{
                const finalReport = {
-                    skills: skillsGained,
                     shop: shop,
                     quest1: quest1Done,
                     quest2: quest2Done,
@@ -434,6 +434,13 @@ function Game() {
             setGameUpdated(false);
         }
     },[turnDone, gameUpdated])
+
+
+    useEffect(()=>{
+        if(gameEnd){
+            navigate(`${WINNER_PAGE}/${lobby.id}`);
+        }
+    },[gameEnd]);
 
 
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
@@ -540,7 +547,7 @@ function Game() {
                     
                     <div className='container-turn'>
                         <img src={titleNTurn} alt='NTURN TITLE' className='upper-container-titles' ></img>
-                        <div className='n-turn-label'>{nTurn +'/'+ MAX_N_TURN}</div>
+                        <div className='n-turn-label'>{nTurn +'/'+ gameInitState.nTurn}</div>
                     </div>
                     
                     <div className='timer-container'><Timer finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart}/></div>

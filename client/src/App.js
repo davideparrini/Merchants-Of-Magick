@@ -15,6 +15,7 @@ import Logged from './Logged/Logged'
 import SignUp from './LoginForm_SignUp/SignUp';
 import SetUsername from './SetUsername/SetUsername';
 import ReportBoard from './components/ReportPlayer/ReportPlayer';
+import Winner from './Winner/Winner';
 
 
 
@@ -24,6 +25,7 @@ const SET_USERNAME =  '/setusername';
 const SIGN_UP_PAGE = '/signup';
 const LOGGED_PAGE = '/lobby';
 const GAME_PAGE = '/game';
+const WINNER_PAGE = '/winner';
 
 
 export const AppContext = React.createContext();
@@ -39,10 +41,12 @@ function App() {
 
     const[gameStart, setGameStart] = useState(false);
     const[gameInitState, setGameInitState] = useState(-1);
+    const[gameUpdated,setGameUpdated] = useState(false);
     const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
+    const[gameEnd,setGameEnd] = useState(false);
     const[gameEndState,setGameEndState] = useState(-1);
 
-    const[gameUpdated,setGameUpdated] = useState(false);
+    
 
     const navigate = useNavigate();
     
@@ -59,7 +63,9 @@ function App() {
             quest1: gameInitState.quests.quest1,
             quest2: gameInitState.quests.quest2,
             dices: gameInitState.dices,
-            players : newPlayersArray
+            players : newPlayersArray,
+            nPotion : gameInitState.nPotion,
+            nTurn : gameInitState.nTurn
         }
         return init;
     },[gameInitState,username])
@@ -85,9 +91,6 @@ function App() {
         return updateState;
     },[gameOnNewTurn,username])
 
-    const gameEnd = useCallback(()=>{
-
-    })
 
     const logOut = useCallback(()=>{
         connectionHandlerClient.leaveLobby(username,(c)=>console("Out of the lobby: " + c));
@@ -102,6 +105,7 @@ function App() {
         setGameOnNewTurn(-1);
         setGameEndState(-1);
         setGameUpdated(false);
+        setGameEnd(false);
         navigate(LOGIN_PAGE);
         console.log("logged out");
         connectionHandlerClient.disconnect();
@@ -117,7 +121,8 @@ function App() {
         setGameOnNewTurn(-1);
         setGameEndState(-1);
         setGameUpdated(false);
-        connectionHandlerClient.leaveLobby(username,(c)=>console("Out of the lobby: " + c));
+        setGameEnd(false);
+        connectionHandlerClient.leaveLobby(username,(c)=>(console("Out of the lobby: " + c)));
         navigate(LOGIN_PAGE);
     },[username,navigate])
 
@@ -139,22 +144,24 @@ function App() {
         setGameOnNewTurn,
         gameEndState,
         setGameEndState,
+        gameEnd,
+        setGameEnd,
         navigate,  
         LOGIN_PAGE, 
         SIGN_UP_PAGE, 
         LOGGED_PAGE, 
         SET_USERNAME,
         GAME_PAGE,
+        WINNER_PAGE,
         gameStart,
         setGameStart, 
         gameUpdated,
         setGameUpdated,
         gameInit,
         gameUpdate,
-        gameEnd,
         leaveLobby
     
-    }),[userAuthStateConnected, userID, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, gameEndState, navigate, gameStart, gameUpdated, gameInit, gameUpdate, gameEnd, leaveLobby]);
+    }),[userAuthStateConnected, userID, username, lobby, leaderLobby, gameInitState, gameOnNewTurn, gameEndState, navigate, gameStart, gameUpdated, gameInit, gameUpdate, leaveLobby]);
 
 
 
@@ -179,10 +186,8 @@ function App() {
                 logOut();   
             }
         })
-        return ()=>{
-            
-            unsub();
-            
+        return ()=>{         
+            unsub();    
         }
     },[]);
 
@@ -197,9 +202,11 @@ function App() {
                     <Route path={SET_USERNAME} element={<SetUsername />}/>
                     <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
                     <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated} />}/>
-                    <Route path={LOGGED_PAGE+'/:id'} element={<Lobby lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
-                    <Route path={GAME_PAGE} element={<Game />}/>
+                    <Route path={LOGGED_PAGE +'/:id'} element={<Lobby lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
+                    <Route path={GAME_PAGE +'/:id'} element={<Game />}/>
+                    <Route path={WINNER_PAGE +'/:id'} element={<Winner/>} />
                 </Routes>
+                {/* <Winner/> */}
             </AppContext.Provider>
             
         </div>

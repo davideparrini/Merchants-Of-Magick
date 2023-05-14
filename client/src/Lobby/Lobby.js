@@ -7,7 +7,7 @@ import { AppContext } from '../App';
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
-    const { username, leaderLobby, lobby, setLobby, gameStart, setGameStart, setGameOnNewTurn, setLeaderLobby, gameInitState, setGameInitState, navigate, gameInit ,EMPTYLOBBY, leaveLobby,  LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
+    const { username, leaderLobby, lobby, gameStart,  gameInitState, setGameInitState, navigate, gameInit , leaveLobby,  LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
@@ -32,17 +32,6 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
     },[lobby,navigate]);
 
 
-    //Se non connesso al server, riportami fuori dalla lobby
-    //DA RIVEDERE
-    // useEffect(()=>{
-    //     console.log("QUANTE VOLTE")
-    //     if(!connectionHandlerClient.checkConnection()){
-    //         leaveLobby();
-    //         navigate(LOGGED_PAGE);
-    //     }
-    // },[connectionHandlerClient.checkConnection()]);
-
-
     useEffect(()=>{
         if(gameStart){
             if(countdownGameStart > 0){
@@ -55,7 +44,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
             else{ 
                 const gI = gameInit();
                 setGameInitState(gI);
-                navigate(GAME_PAGE)
+                navigate(`${GAME_PAGE}/${lobby.id}`)
                 setCountdownGameStart(5);
             }
         }
@@ -114,8 +103,11 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                         <button className= {`start-game-btn ${ leaderLobby && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
                                 if(!gameStart){
-                        
-                                    connectionHandlerClient.gameStartRequest(lobby.id, (res)=>{
+                                    const config ={
+                                        nTurn : 3,
+                                        nPotion : 0
+                                    }
+                                    connectionHandlerClient.gameStartRequest(lobby.id, config,(res)=>{
                                         switch(res){
                                             case 'OK': 
                                                 console.log("Game start");

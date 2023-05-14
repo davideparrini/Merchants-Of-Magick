@@ -27,7 +27,7 @@ function Logged({setLobbyUpdated}) {
 
         return() =>{
             document.removeEventListener("mousedown", handlerSubmitLobbyId);
-          }
+        }
     });
 
     useEffect(()=>{
@@ -40,6 +40,7 @@ function Logged({setLobbyUpdated}) {
             navigate(`${LOGGED_PAGE}/${lobby.id}`);
         }
     },[lobby])
+
 
     return (
         <div className='Logged'>
@@ -92,8 +93,7 @@ function Logged({setLobbyUpdated}) {
                         }
                     }}>
                     <label className='log-out-label'>LogOut</label>
-                </div>
-               
+                </div>      
             </div>
             <div className='username-log'>
                 <div className='user-logged'>{username}</div>

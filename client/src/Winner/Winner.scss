@@ -1,0 +1,153 @@
+@use '../variables' as v;
+
+.Winner{
+    background: rgba(0, 0, 0, 0.685);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.title-winner{
+    margin: 20px;
+    font-size: 70px;
+    font-family: Tahoma, Geneva, sans-serif;
+    letter-spacing: 2px;
+    color: white;
+    text-shadow: v.$text-shadow-primarycolor3;
+}
+
+
+.big-container-end-game{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+}
+.container-end-game{
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+   
+}
+.container-player-end-game{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 40px;
+    width: 400px;
+    background: v.$blue-btn-2;
+    border: v.$border-primary-6px;
+    border-radius: 20px;
+    padding: 20px;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: white;
+    
+    text-shadow: v.$text-shadow-primarycolor3;
+}
+
+.container-player-end-game.winner-player{
+    filter: drop-shadow(0px 0px 10px v.$primary-color);
+    animation: strech1  2s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    background: v.$primary-color-2;
+
+}
+.container-player-end-game.winner-player::before{
+    content: '';
+    position: absolute;
+    filter: drop-shadow(0px 0px 5px v.$primary-color);
+    left: 1%;
+    bottom: 62%;
+    transform: rotate(-15deg);
+    background-image: url(./crown.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+}
+
+.position-player-end-game{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 30px;
+    letter-spacing: 2px;
+    
+}
+
+.username-player-end-game{
+    
+}
+
+@keyframes strech1 {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+.container-end-game-extended{
+    display: flex;
+    margin: 10px;
+    gap: 10px;
+    
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 70%;
+    height: 90%;
+    
+}
+.container-player-end-game-extended{
+    background: rgb(110, 110, 110);
+    border-radius: 15px;
+    height: 460px;
+    width: 365px;
+    padding: 20px;
+    color: white;
+    text-shadow: v.$text-shadow-stroke2;
+    border: v.$border-primary-4px;
+}
+.container-header-player-end-game{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background: #5e1f1f;
+    border-radius: 15px;
+    height: 50px;
+}
+.stuff-player-end-game{
+    background: #ad7171;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 340px;
+    margin: 5px;
+    border-radius: 15px;
+
+}
+.container-shop-end-game{
+    overflow: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: v.$primary-color grey;
+    overflow-x: hidden
+}

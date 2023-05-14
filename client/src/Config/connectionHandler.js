@@ -67,7 +67,19 @@ function createSocketConfig() {
 
     
    //Mi iscrivo ai cambiamenti che succedono nella lobby e passaggio di stato da lobby a game
-    function updateLobby(lobby,setLobby,myUsername,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn){
+    function updateLobby(
+                    lobby,
+                    setLobby,
+                    myUsername,
+                    setLeaderLobby,
+                    setLobbyUpdated, 
+                    setGameStart, 
+                    setGameInitState, 
+                    setGameUpdated, 
+                    setGameOnNewTurn,
+                    setGameEndState,
+                    setGameEnd
+                ){
         
         //Aggiorno lobby se ha joinato qualcuno
         socket.on("lobby-player-joined",(username)=>{
@@ -102,16 +114,16 @@ function createSocketConfig() {
 
         //Mi metto in ascolto per la fine del gioco
         socket.on("game-end",(res)=>{
-            //setGameInitState(res);
-            
+            setGameEndState(res);
+            setGameEnd(true);
         })
     }
 
 
 
     //Manda una richiesta al server di iniziare il game
-    function gameStartRequest(lobbyID,cb){
-        socket.emit("game-start-request",lobbyID,cb);
+    function gameStartRequest(lobbyID, config, cb){
+        socket.emit("game-start-request",lobbyID, config, cb);
     }
 
 

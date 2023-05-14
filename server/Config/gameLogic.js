@@ -46,6 +46,9 @@ function createGameLogic(){
     const typeCard_NO_ORIGIN = 'NO_ORIGIN';
     const typeCard_BOTH = "BOTH";
     
+    const TYPE_ACCESSORIES=['backpack','scroll','ring','grimoire'];
+    const TYPE_ARMOR=['bracers','helmet','greaves','plate armor'];
+    const TYPE_WEAPONS=['staff','sword','crossbow','warhammer'];
 
     //Funzione utilis per mischiare un array
     //Shuffle algorithm -> Fisher-Yates Shuffle
@@ -172,8 +175,7 @@ function createGameLogic(){
     
     //Crea un obj con tutte le informazioni utili per inziare il game,
     //viene mandato dal server a tutti i client della lobby
-    function gameInit(players){
-        console.log(players);
+    function gameInit(players, config){
         //Creazione obj quests, scelgo gl' attribute in modo casuale 
         const quest1Attribute = CraftingAttributes[Math.floor(Math.random() * 3)] ;
         const quest2Attribute = MagicAttributes[Math.floor(Math.random() * 3)];
@@ -210,19 +212,78 @@ function createGameLogic(){
 
             playerArray.push(player);
         }
-
+        console.log(config)
         //Metto tutto dentro un unico obj
         const gameInitObj ={
             quests : quests,
             dices : dices,
-            players : playerArray
+            players : playerArray,
+            nPotion : config.nPotion,
+            nTurn : config.nTurn
         }
         return gameInitObj;
     }
 
 
+
+    function compareByGold(a,b){
+        return b.report.gold - a.report.gold;
+    }
+
+    function calculateGold(finalReport){
+        const newReport = finalReport.map((r)=>{
+            if(r.report.shop.length > 0){
+                if(r.report.renownedAccessories){
+                    r.report.shop.map((item)=>{
+                        if(TYPE_ACCESSORIES.includes(item)){
+                            r.report.gold += 2;
+                        }
+                    })
+                }
+                if(r.report.weaponPrestige){
+                    r.report.shop.map((item)=>{
+                        if(TYPE_WEAPONS.includes(item)){
+                            r.report.gold += 2;
+                        }
+                    })
+                }
+                if(r.report.eliteArmor){
+                    r.report.shop.map((item)=>{
+                        if(TYPE_ARMOR.includes(item)){
+                            r.report.gold += 2;
+                        }
+                    })
+                }   
+            }
+
+        })
+        
+        return newReport;
+    }
+
+    function winnerResolution(finalReport){
+        const addedGoldReport = calculateGold(finalReport);
+        const sortedReport = addedGoldReport.toSorted(compareByGold);
+        let positionValue = 0;
+        let goldValue = Infinity;
+        const resolvedReport = sortedReport.map((r)=>{
+            if(r.report.gold < goldValue){
+                r.position = ++positionValue;
+                goldValue = r.report.gold;
+            }
+            else if(r.report.gold === goldValue){
+                r.position = positionValue;
+            }
+            else{
+                r.position = -2;
+            }
+
+        })
+        return resolvedReport;
+    }
+
     return {
-        gameInit, updateCardsTurn, rollDices, createNewCard, craftingItemType, originType, enchantmentType
+        gameInit, updateCardsTurn, rollDices, createNewCard, winnerResolution, craftingItemType, originType, enchantmentType
     };
 }
 
