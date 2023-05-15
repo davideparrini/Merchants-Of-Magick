@@ -50,8 +50,8 @@ function createSocketConfig() {
     }
 
    //esci dalla lobby corrente e smetti di ascoltare i "canali" della lobby
-    function leaveLobby(username,cb){
-        socket.emit("leave-lobby",username,cb);
+    function leaveLobby(username){
+        socket.emit("leave-lobby",username);
         socket.off("lobby-player-joined");
         socket.off("lobby-player-left");
         socket.off("countdown-game-start");
@@ -84,6 +84,7 @@ function createSocketConfig() {
         //Aggiorno lobby se ha joinato qualcuno
         socket.on("lobby-player-joined",(username)=>{
             lobby.players.push(username);
+            setLeaderLobby(lobby.players[0]);
             setLobby(lobby);
             setLobbyUpdated(true);
         });
@@ -94,7 +95,7 @@ function createSocketConfig() {
             lobby.players.splice(indexUsernameLeft,1);
             lobby.leaderLobby = lobby.players[0]; 
             if(myUsername === lobby.players[0]){
-                setLeaderLobby(true);
+                setLeaderLobby(myUsername);
             }
             setLobby(lobby);
             setLobbyUpdated(true); 

@@ -43,7 +43,7 @@ const TYPE_GOLD_BIG = 'BIG';
 
 function Winner() {
 
-    const {gameEndState} = useContext(AppContext);
+    const {gameEndState, leaveLobby, navigate, LOGGED_PAGE} = useContext(AppContext);
 
     return (
         <div className='Winner'>
@@ -63,7 +63,10 @@ function Winner() {
                     })
 
                 }
-                <button>New game</button>
+                <button className='btn-end-game'onClick={()=>{
+                    navigate(LOGGED_PAGE);
+                    leaveLobby();
+                }}>New game</button>
                 </div>
                 <div className='container-end-game-extended'>          
                 {

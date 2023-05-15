@@ -37,7 +37,7 @@ function createGameLogic(){
         'divine'
     ];
     
-    const Adventurers = [barbarian,bountyHunter,cleric,knight,ranger,warrior,witch,wizard];
+    const Adventurers = [barbarian, bountyHunter, cleric, knight, ranger, warrior, witch, wizard];
     const CraftingAttributes = ['steel','wood', 'leather'];
     const MagicAttributes = ['elemental','arcane','wild'];
 
@@ -212,14 +212,14 @@ function createGameLogic(){
 
             playerArray.push(player);
         }
-        console.log(config)
+    
+
         //Metto tutto dentro un unico obj
         const gameInitObj ={
             quests : quests,
             dices : dices,
             players : playerArray,
-            nPotion : config.nPotion,
-            nTurn : config.nTurn
+            config : config
         }
         return gameInitObj;
     }
@@ -271,7 +271,6 @@ function createGameLogic(){
     }
 
     function winnerResolution(finalReport){
-        console.log(finalReport)
         const addedGoldReport = calculateGold(finalReport);
         const sortedReport = addedGoldReport.sort(compareByGold);
         let positionValue = 0;
@@ -296,7 +295,6 @@ function createGameLogic(){
             resolvedFinalReport.push(resolvedReport);
         })
 
-        console.log(resolvedFinalReport);
         return resolvedFinalReport;
     }
 

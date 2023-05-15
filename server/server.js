@@ -53,6 +53,7 @@ io.on("connection", (socket) => {
 
         //Recupero l'username e lo elimino dalle strutture dati
         const username = mapSocketID_Username.get(socket.id);
+
         mapSocketID_Username.delete(socket.id);
         mapUsername_socket.delete(username);
 
@@ -62,15 +63,24 @@ io.on("connection", (socket) => {
         if(indexLobby >= 0){
             const lobby = lobbies[indexLobby];
             const indexUser =  lobby.players.findIndex((u)=> u === username);
-
+            if(lobby.status === 'in-game'){
+                mapLobbyID_GameState.get(lobby.id).nPlayers--;
+                const indexPlayer =  mapLobbyID_GameState.get(lobby.id).players.findIndex((u)=> u === username);
+                mapLobbyID_GameState.get(lobby.id).players.splice(indexPlayer,1);
+                // ! SERVE UN ALTRO CHECK, SE CI SONO GIOCATORI IN ATTESA 
+            }
             if(indexUser >= 0){
                 //elimino l'utente dalla lobby
                 lobby.players.splice(indexUser,1); 
                 mapUsername_lobbyIndex.delete(username);
 
                 if(lobby.players.length < 1){
+                    if(lobby.status === 'in-game'){
+                        mapLobbyID_GameState.delete(lobby.id);
+                    }
                     //se è l'ultimo utente nella lobby, cancello la lobby
                     lobbies.splice(indexLobby,1);
+                    
                 }
             }
         }

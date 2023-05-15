@@ -36,7 +36,7 @@ import warhammer from '../components/Skill/skillsJson/warhammer.json'
 import bracers from '../components/Skill/skillsJson/bracers.json'
 import helmet from '../components/Skill/skillsJson/helmet.json'
 import greaves from '../components/Skill/skillsJson/greaves.json'
-import plotarmor from '../components/Skill/skillsJson/platearmor.json'
+import platearmor from '../components/Skill/skillsJson/platearmor.json'
 import fiery from '../components/Skill/skillsJson/fiery.json'
 import shocking from '../components/Skill/skillsJson/shocking.json'
 import everlasting from '../components/Skill/skillsJson/everlasting.json'
@@ -56,11 +56,6 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
 const testActive = true;
-
-//CONFIGURAZIONI GIOCO
-
-const DICE_PER_TURN = 2;
-
 
 
 
@@ -91,7 +86,7 @@ const TYPE_EXTRADICE6 = 'ed6';
     bracers,
     helmet,
     greaves,
-    plotarmor
+    platearmor
 ]
 
 //lista skills magic research
@@ -123,7 +118,8 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, WINNER_PAGE, navigate } = useContext(AppContext);
+    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, gameEnd,WINNER_PAGE, navigate } = useContext(AppContext);
+    
     
 
     //Ref al area dello table, Close on out-click
@@ -159,7 +155,7 @@ function Game() {
 
     const[reportEndTurn, setReportEndTurn ] = useState([]);
 
-    const[reportTime,setReportTime] = useState(10);
+    const[reportTime,setReportTime] = useState(gameInitState.config.reportTime);
 
 
 
@@ -168,7 +164,7 @@ function Game() {
 
 
     //numero pozioni
-    const [nPotion,setNPotion] = useState(gameInitState.nPotion);
+    const [nPotion,setNPotion] = useState(gameInitState.config.nPotion);
 
    
     //valori dei dadi
@@ -178,10 +174,11 @@ function Game() {
     const [d12Value,setD12Value]=useState(gameInitState.dices.d12);
 
     //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
-    let d6startValue = useRef(gameInitState.dices.d6);
-    let d8startValue = useRef(gameInitState.dices.d8);
-    let d10startValue = useRef(gameInitState.dices.d10);
-    let d12startValue = useRef(gameInitState.dices.d12);
+    const [d6startValue,setD6startValue] = useState(gameInitState.dices.d6);
+    const [d8startValue,setD8startValue] = useState(gameInitState.dices.d8);
+    const [d10startValue,setD10startValue] = useState(gameInitState.dices.d10);
+    const [d12startValue,setD12startValue] = useState(gameInitState.dices.d12);
+   
 
     //bool se i dadi sono stati toccati, diceTouched(true) -> focused 
     const [diceTouchedD6 ,setDiceTouchedD6] = useState(false);
@@ -196,10 +193,10 @@ function Game() {
     const[diceUsedD12,setDiceUsedD12] = useState(false);
 
     //numero di dadi rimanenti da usare (variabile incrementabile e decrementabile usando un extra dice(temporanamente), E decrementata ogni volta che usiamo un dado)
-    const [nDiceLeft_toUse,setNDiceLeft_toUse] = useState(DICE_PER_TURN);
+    const [nDiceLeft_toUse,setNDiceLeft_toUse] = useState(gameInitState.config.dicePerTurn);
 
     //numero dadi che sono possibili giocare nel turno attuale (variabile incrementabile e decrementabile usando  un extra dice(temporanamente))
-    const [totalPossibleDice_toUse,setTotalPossibleDice_toUse] = useState(DICE_PER_TURN);
+    const [totalPossibleDice_toUse,setTotalPossibleDice_toUse] = useState(gameInitState.config.dicePerTurn);
 
     //numero dadi usati
     const [nDiceLeft_Used,setNDiceLeft_Used] = useState(0);
@@ -272,9 +269,10 @@ function Game() {
     function isDiceTouched(){ 
         return typeTouchedDiceRef.current !== '';
     }
-
+    
     //funzione che setta tutti i dadi come non toccati diceTouched -> false
     function setAllDiceNoTouched(){
+        console.log("QUANTE VOLTE REREND")
         setDiceTouchedD6(false);
         setDiceTouchedD8(false)
         setDiceTouchedD10(false);
@@ -314,7 +312,7 @@ function Game() {
 
     const finishTurn = useCallback(()=>{
         if(!turnDone){
-            if(nTurn < gameInitState.nTurn){
+            if(nTurn < gameInitState.config.nTurn){
                 setTurnDone(true);
                 card1.inProgress = showCard1;
                 card2.inProgress = showCard2;
@@ -336,7 +334,7 @@ function Game() {
                 }
                 connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
             }else{
-               const finalReport = {
+                const finalReport = {
                     shop: shop,
                     quest1: quest1Done,
                     quest2: quest2Done,
@@ -345,61 +343,100 @@ function Game() {
                     weaponPrestige: skillsGained.includes('weapon prestige'),
                     eliteArmor: skillsGained.includes('elite armor'),
                     gold: currentGold
-               }
+                }
                connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
             }
             
         }
-    },[adventurerQuestDone, card1, card2, card3, currentGold, gameInitState.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, shop, showCard1, showCard2, showCard3, skillsGained, turnDone, username]);
+    },[adventurerQuestDone, card1, card2, card3, currentGold, gameInitState.config.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, shop, showCard1, showCard2, showCard3, skillsGained, turnDone, username]);
 
     
     
-    
+    //Cambio stato aggiornando il turno, facendo un refresh delle struttere dati
+    //seguendo la logica del gioco
     const newTurn = useCallback((newGameState)=>{
 
+        //aumento il turno
         setNTurn((n)=>(n+1));
+
+        //Refresh sul numero di dadi giocabili per turno
         setNDiceLeft_toUse(2);
         setTotalPossibleDice_toUse(2);
+        //Refresh sul numero di dadi giocati
         setNDiceLeft_Used(0);
+        //Refresh dei dadi -> ora sono tutti giocabili (non grigi/non clickabili)
         setAllDiceNoUsed();
-        d6startValue.current = newGameState.dices.d6;
-        d8startValue.current = newGameState.dices.d8;
-        d10startValue.current = newGameState.dices.d10;
-        d12startValue.current = newGameState.dices.d12;
+
+        //Aggiorno il valore dei dati ottenuti dal server
+        setD6startValue(newGameState.dices.d6);
+        setD8startValue(newGameState.dices.d8);
+        setD10startValue(newGameState.dices.d10);
+        setD12startValue(newGameState.dices.d12);
+        
         setD6Value(newGameState.dices.d6);
         setD8Value(newGameState.dices.d8);
         setD10Value(newGameState.dices.d10);
         setD12Value(newGameState.dices.d12);
 
+        //Check delle quest, se qualcuno ha risolto la quest e te non l hai fatto, dimezza il valore della ricompensa
         if(newGameState.quest1 && !quest1Done){
-            setQuest1Reward(4);
+            setQuest1Reward((n)=>(n/2));
         }
         if(newGameState.quest2 && !quest2Done){
-            setQuest2Reward(4);
+            setQuest2Reward((n)=>(n/2));
         }
 
+        //Cerco il mio index nell'array di tutte le carte , cella array -> mazzo di carte di un giocatore + username
         const indexCardsCurrentPlayer = newGameState.cards.findIndex((p)=> p.username === username );
         
         const cardsCurrentPlayer = newGameState.cards[indexCardsCurrentPlayer];
 
+        //elimino il mio set di carte dall'array di tutte le carte dei giocatori
+        newGameState.cards.splice(indexCardsCurrentPlayer,1);
+
+        //setto le mie carte 
         setCard1(cardsCurrentPlayer.cards.card1);
         setCard2(cardsCurrentPlayer.cards.card2);
         setCard3(cardsCurrentPlayer.cards.card3);
-
         setShowCard1(true);
         setShowCard2(true);
         setShowCard3(true);
 
-        setReportEndTurn(newGameState.report);
+        if(newGameState.cards.length === 0){
+            const finalReport = {
+                shop: shop,
+                quest1: quest1Done,
+                quest2: quest2Done,
+                order: adventurerQuestDone,
+                renownedAccessories: skillsGained.includes('renowned accessories'),
+                weaponPrestige: skillsGained.includes('weapon prestige'),
+                eliteArmor: skillsGained.includes('elite armor'),
+                gold: currentGold
+            }
+           return connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
+        }
 
-        newGameState.cards.splice(indexCardsCurrentPlayer,1);
+        //setto le carte remanenti come carte nella board
+        setBoardListPlayers(newGameState.cards);
+
+        //Setto il report di fine turno 
+        setReportEndTurn(newGameState.report);
         
+
+        //Refresh strutture dati utili per calcolare il proprio report di fine  turno
         setReportSkills([]);
         setReportItems([]);
-        setBoardListPlayers(newGameState.cards);
+        
+        //Setto il game come resettato, 
+        //in modo da aggiornare alcune strutture dati nested di alcuni child component
         setGameRestart(true);
-        setReportTime(10);
+
+        //Setto il timer del report di fine turno
+        setReportTime(gameInitState.config.reportTime);
+
+        //Apro il report di fine turno
         setOpenReport(true);
+
     },[quest1Done, quest2Done, username])
 
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
@@ -437,7 +474,6 @@ function Game() {
             navigate(`${WINNER_PAGE}/${lobby.id}`);
         }
     },[gameEnd]);
-
 
 
    
@@ -545,10 +581,10 @@ function Game() {
                     
                     <div className='container-turn'>
                         <img src={titleNTurn} alt='NTURN TITLE' className='upper-container-titles' ></img>
-                        <div className='n-turn-label'>{nTurn +'/'+ gameInitState.nTurn}</div>
+                        <div className='n-turn-label'>{nTurn +'/'+ gameInitState.config.nTurn}</div>
                     </div>
                     
-                    <div className='timer-container'><Timer finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart}/></div>
+                    <div className='timer-container'><Timer timerCountdown={gameInitState.config.countdown} finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart}/></div>
 
                 </div>
                 <div className='legend-container'><Legend/></div>
@@ -561,7 +597,7 @@ function Game() {
                         typeDice={TYPE_D6} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d6startValue.current} 
+                        startTurnDiceValue={d6startValue} 
                         diceValue={d6Value} 
                         setDiceValue={setD6Value} 
                         usedDice={diceUsedD6} 
@@ -579,7 +615,7 @@ function Game() {
                         typeDice={TYPE_D8} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d8startValue.current} 
+                        startTurnDiceValue={d8startValue} 
                         diceValue={d8Value} 
                         setDiceValue={setD8Value} 
                         usedDice={diceUsedD8} 
@@ -596,7 +632,7 @@ function Game() {
                         typeDice={TYPE_D10} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d10startValue.current} 
+                        startTurnDiceValue={d10startValue} 
                         diceValue={d10Value} 
                         setDiceValue={setD10Value} 
                         usedDice={diceUsedD10} 
@@ -613,7 +649,7 @@ function Game() {
                         typeDice={TYPE_D12} 
                         nPotion={nPotion} 
                         setnPotion={setNPotion} 
-                        startTurnDiceValue={d12startValue.current} 
+                        startTurnDiceValue={d12startValue} 
                         diceValue={d12Value} setDiceValue={setD12Value} 
                         usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
                         nActions={nDiceLeft_toUse} 

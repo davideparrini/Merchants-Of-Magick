@@ -56,7 +56,29 @@ function matchTypeDice_Attribute(typeAtt, typeDice) {
 }
 
 
-function Skill({ skill, setNPotion, setReportSkills, setSkillsGained, valueTouchedDiceRef, typeTouchedDiceRef, isDiceTouched, setAllDicesNoTouched, setNDiceLeft_toUse, nDiceLeft_Used, setNDiceLeft_Used, setDiceUsed, setExtraDiceUsed, setNAttrQuest1, typeAttrQuest1, setNAttrQuest2, typeAttrQuest2, freeUpgrade, setFreeUpgrade, setCurrentGold, testActive }) {
+function Skill({ 
+            skill, 
+            setNPotion, 
+            setReportSkills, 
+            setSkillsGained, 
+            valueTouchedDiceRef, 
+            typeTouchedDiceRef, 
+            isDiceTouched, 
+            setAllDicesNoTouched, 
+            setNDiceLeft_toUse, 
+            nDiceLeft_Used, 
+            setNDiceLeft_Used, 
+            setDiceUsed, 
+            setExtraDiceUsed, 
+            setNAttrQuest1, 
+            typeAttrQuest1, 
+            setNAttrQuest2, 
+            typeAttrQuest2, 
+            freeUpgrade, 
+            setFreeUpgrade, 
+            setCurrentGold, 
+            testActive 
+        }) {
 
     const [hasSkill, setHasSkill] = useState(false);
     const [att1, setAtt1] = useState(isThereAttribute(skill.attribute1));

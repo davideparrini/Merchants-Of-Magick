@@ -1,15 +1,6 @@
 
 import { v4 as uuid } from 'uuid';
 
-const EMPTYLOBBY = {
-    id : -1,
-    players : [],
-    leaderLobby : '',
-    nTurn : 0,
-    quest1: false,
-    quest2: false,
-    nPlayersEndTurn: 0  
-}
 
 function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUsername_Socket, mapUsername_lobbyIndex, mapLobbyID_GameState ) {
 
@@ -35,7 +26,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
         if (indexLobby != undefined){
             const lobby = lobbies[indexLobby];
             if(lobby.players.length >= 8){
-                cb("FULL",EMPTYLOBBY);
+                cb("FULL",-1);
             }else{
                 if(lobby.status !== 'in-game'){
                     lobby.players.push(username);
@@ -45,13 +36,13 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                     socket.broadcast.to(lobby.id).emit("lobby-player-joined",username);
                     cb("OK",lobby);
                 }else{
-                    cb("in-game",EMPTYLOBBY);
+                    cb("in-game",-1);
                 }
                 
             }
         }
         else{
-            cb("ERROR",EMPTYLOBBY);
+            cb("ERROR",-1);
         }
     }
 
@@ -92,8 +83,8 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
         }
     }
 
-    //utente esce dalla lobby, cb = messaggio di feedback
-    function leave(username, cb){
+    //utente esce dalla lobby
+    function leave(username){
         const indexLobby = mapUsername_lobbyIndex.get(username);
         if (indexLobby != undefined){
             const lobby = lobbies[indexLobby];
@@ -119,10 +110,6 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
             socket.broadcast.to(lobby.id).emit("lobby-player-left",username);
             socket.leave(lobby.id);
             
-            cb("OK");
-        }
-        else{
-            cb("PLAYER NOT FOUND");
         }
     }
 

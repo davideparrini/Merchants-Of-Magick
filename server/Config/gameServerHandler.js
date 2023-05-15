@@ -109,7 +109,6 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
             if(gameState.nPlayersEndTurn === gameState.nPlayers){
                 const winnerResolution  = gameLogic.winnerResolution(gameState.report);
                 io.to(lobbyID).emit("game-end",winnerResolution);
-                mapLobbyID_GameState.delete(lobbyID);
             }
             cb("OK");
         }else{

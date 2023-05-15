@@ -26,7 +26,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
 
     useEffect(()=>{
-        if(lobby === -1){
+        if(lobby === -1 || lobby === undefined){
             navigate(LOGGED_PAGE);
         }
     },[lobby,navigate]);
@@ -105,7 +105,10 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                 if(!gameStart){
                                     const config ={
                                         nTurn : 2,
-                                        nPotion : 0
+                                        nPotion : 0,
+                                        reportTime : 10,
+                                        countdown : 300,
+                                        dicePerTurn : 2
                                     }
                                     connectionHandlerClient.gameStartRequest(lobby.id, config,(res)=>{
                                         switch(res){
@@ -138,8 +141,8 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
-                            leaveLobby();              
                             navigate(LOGGED_PAGE);
+                            leaveLobby();              
                         }
                     }}><label className='back-label'>Back</label>
                 </div>

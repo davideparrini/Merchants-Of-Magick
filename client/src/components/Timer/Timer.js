@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './Timer.css'
 
-const TIMER_COUNTDOWN = 300;
 
-function Timer({finishTurn, turnDone, gameRestart}) {
+
+function Timer({finishTurn, turnDone, gameRestart, timerCountdown}) {
 
     //durata di un turno
-    const [countdown,setCountdown] = useState(TIMER_COUNTDOWN);
+    const [countdown,setCountdown] = useState(timerCountdown);
     const [clockWork,setClockWork] = useState(true);
 
     useEffect(()=>{
         if(gameRestart){
-            setCountdown(TIMER_COUNTDOWN);
+            setCountdown(timerCountdown);
             setClockWork(true);
         }
     },[gameRestart]);

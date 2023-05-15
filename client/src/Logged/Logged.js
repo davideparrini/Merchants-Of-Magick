@@ -9,7 +9,7 @@ import { AppContext } from '../App';
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd, setGameOnNewTurn, navigate, LOGGED_PAGE} = useContext(AppContext);
+    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd, setGameOnNewTurn, navigate, LOGGED_PAGE, leaveLobby} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -51,11 +51,12 @@ function Logged({setLobbyUpdated}) {
                     <div className='container-btn-logged'>
                         <button className={`logged-btn ${connectionHandlerClient.checkConnection()  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
+                                leaveLobby();
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
                                     connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
                                 })
-                                setLeaderLobby(true);
+                                setLeaderLobby(username);
                         }}>Create New Lobby</button>
                         <button className={`logged-btn ${connectionHandlerClient.checkConnection()  ? '' : 'inactive-btn'}`}
                             onClick={()=>setOpenSubmitLobbyId(true)}>Join A Lobby</button>
@@ -64,11 +65,10 @@ function Logged({setLobbyUpdated}) {
                 <div className={`submit-lobby-id ${openSubmitLobbyId ? 'open-submit-lobby-id' : 'closed-submit-lobby-id'}`} ref={submitLobbyIdRef}>
                     <input className='field-submit-lobby-id' placeholder={'ID LOBBY, try ask your friend!'} value={idLobbyJoin} onChange={ e => setIdLobbyJoin(e.target.value)}/>
                     <button className='btn-submit-lobby-id' onClick={()=>{
-                        
+                        leaveLobby();
                         connectionHandlerClient.joinLobby(idLobbyJoin,username,(res,lobby)=>{
                             switch(res){
                                 case 'OK': 
-                                    setLeaderLobby(false);
                                     break;
                                 case 'FULL':
                                     alert("Lobby full!")

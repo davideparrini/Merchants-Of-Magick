@@ -73,7 +73,7 @@
 
 .order-img.elves{
    background-image: url(../Card/image/elves_white.png);
-   scale: (0.9);
+  
 }
 
 .order-img.dwarves{
@@ -82,6 +82,10 @@
 
 .order-img.orcs{
    background-image: url(../Card/image/orcs_white.png); 
+   position: absolute;
+   scale: (0.95);
+   top: 100px;
+   //Non so perchè questa immagine non prende position absolute (dalla classe padre),ma relative 
 }
 .order-img.dragons{
   background-image: url(../Card/image/dragons_white.png);

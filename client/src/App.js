@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
 import {auth} from './Config/auth';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -28,6 +28,7 @@ const GAME_PAGE = '/game';
 const WINNER_PAGE = '/winner';
 
 
+
 export const AppContext = React.createContext();
 
 function App() {
@@ -47,7 +48,7 @@ function App() {
     const[gameEndState,setGameEndState] = useState(-1);
 
     
-
+    
     const navigate = useNavigate();
     
     
@@ -64,8 +65,7 @@ function App() {
             quest2: gameInitState.quests.quest2,
             dices: gameInitState.dices,
             players : newPlayersArray,
-            nPotion : gameInitState.nPotion,
-            nTurn : gameInitState.nTurn
+            config : gameInitState.config
         }
         return init;
     },[gameInitState,username])
@@ -98,7 +98,7 @@ function App() {
         setUserAuthStateConnected(false);
         setUserID(-1);
         setLobby(-1);
-        setLeaderLobby(false);
+        setLeaderLobby(null);
         setLobbyUpdated(false);
         setGameStart(false);
         setGameInitState(-1);
@@ -114,7 +114,7 @@ function App() {
 
     const leaveLobby = useCallback(()=>{
         setLobby(-1);
-        setLeaderLobby(false);
+        setLeaderLobby(null);
         setLobbyUpdated(false);
         setGameStart(false);
         setGameInitState(-1);
@@ -122,8 +122,7 @@ function App() {
         setGameEndState(-1);
         setGameUpdated(false);
         setGameEnd(false);
-        connectionHandlerClient.leaveLobby(username,(c)=>(console("Out of the lobby: " + c)));
-        navigate(LOGIN_PAGE);
+        connectionHandlerClient.leaveLobby(username);
     },[username,navigate])
 
 
@@ -187,13 +186,13 @@ function App() {
             }
         })
         return ()=>{         
-            unsub();    
+            unsub(); 
+           
         }
     },[]);
 
 
-
-
+    
     return (
         <div className='App'>
             <AppContext.Provider value={valueContext}>
@@ -206,7 +205,7 @@ function App() {
                     <Route path={GAME_PAGE +'/:id'} element={<Game />}/>
                     <Route path={WINNER_PAGE +'/:id'} element={<Winner/>} />
                 </Routes>
-                {/* <Winner/> */}
+                
             </AppContext.Provider>
             
         </div>
