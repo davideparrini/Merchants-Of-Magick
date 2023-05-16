@@ -1,5 +1,6 @@
 
 import { v4 as uuid } from 'uuid';
+import { gameLogic } from './gameLogic.js';
 
 
 function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUsername_Socket, mapUsername_lobbyIndex, mapLobbyID_GameState ) {
@@ -88,6 +89,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
         const indexLobby = mapUsername_lobbyIndex.get(username);
         if (indexLobby != undefined){
             const lobby = lobbies[indexLobby];
+            const lobbyID = lobby.id;
             const indexUsername = lobby.players.findIndex((u)=> u === username);
             if(indexUsername >= 0){
                 lobby.players.splice(indexUsername,1);
@@ -96,14 +98,37 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                 mapUsername_lobbyIndex.delete(username);
                 
                 if(lobby.status === 'in-game'){
-                    mapLobbyID_GameState.get(lobby.id).nPlayersEndTurn--;
-                    mapLobbyID_GameState.get(lobby.id).players.splice(indexUsername,1);
+                    const gameState = mapLobbyID_GameState.get(lobbyID);
+                    gameState.nPlayersEndTurn--;
+                    gameState.players.splice(indexUsername,1);
+
+                    if( gameState.nPlayers <= gameState.nPlayersEndTurn ){
+                        //Faccio l'update delle carte, ovvero ne creo di nuove, le sostituisco con quelle già giocate/craftate
+                        //ed eseguo uno slittamento di una carta al compagno vicino
+                        const cardsUpdated = gameLogic.updateCardsTurn(gameState.cards, gameState.players);
+    
+                        const response = {
+                            quest1: gameState.quest1,
+                            quest2: gameState.quest2,
+                            dices: gameLogic.rollDices(),
+                            cards: cardsUpdated,
+                            report: gameState.report
+                        }
+                
+                        io.to(lobbyID).emit("game-change-turn", response);
+    
+                        //Faccio un refresh delle strutture dati che non  contengono dati sono persisenti
+                        // (cards, report, nPlayersEndTurn vengo riaggiornati durante il turno di partita)
+                        gameState.cards = [];
+                        gameState.report = [];
+                        gameState.nPlayersEndTurn = 0;
+                    }
                 }
                 if(lobby.players.length < 1){
                     //se l'utente è ultimo membro della lobby, elimino la lobby
                     lobbies.splice(indexLobby,1);
-                    mapLobbyID_LobbyIndex.delete(lobby.id);
-                    mapLobbyID_GameState.delete(lobby.id);
+                    mapLobbyID_LobbyIndex.delete(lobbyID);
+                    mapLobbyID_GameState.delete(lobbyID);
                 }
             }
             

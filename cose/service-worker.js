@@ -65,13 +65,14 @@ registerRoute(
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
   const message = JSON.parse(event.data);
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+  if (message && message.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-
-  if(message && message.type === '' ){
-    
+  if (message && message.type === 'start-game-single-player') {
+    console.log("START")
   }
+  
+  
 });
 
 // Any other custom service worker logic can go here.

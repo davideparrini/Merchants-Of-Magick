@@ -6,20 +6,20 @@ import { AppContext } from '../App';
 
 function SignUp() {
 
-    const {userAuthStateConnected,navigate, SIGN_UP_PAGE, LOGIN_PAGE, LOGGED_PAGE} = useContext(AppContext);
+    const { userAuthenticated,navigate, SIGN_UP_PAGE, LOGIN_PAGE, LOGGED_PAGE} = useContext(AppContext);
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
 
 
     useEffect(()=>{
-        if(userAuthStateConnected){
+        if(userAuthenticated){
             navigate(LOGGED_PAGE)
         }
         else{
             navigate(SIGN_UP_PAGE)
         }
-    },[userAuthStateConnected])
+    },[userAuthenticated])
 
     return (
         <div className='LoginSignUpForm'>

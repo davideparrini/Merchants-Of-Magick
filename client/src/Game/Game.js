@@ -51,6 +51,7 @@ import weaponPrestige from '../components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 import { AppContext } from '../App';
 import { connectionHandlerClient } from '../Config/connectionHandler';
+import BoardCards from '../components/BoardCards/BoardCards';
 
 
 
@@ -115,10 +116,10 @@ const nPotion_extraDice5 = 3;
 const nPotion_extraDice6 = 4;
 
 
-function Game() {
+function Game({}) {
 
 
-    const { username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, gameEnd,WINNER_PAGE, navigate } = useContext(AppContext);
+    const { singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, gameEnd,WINNER_PAGE, navigate } = useContext(AppContext);
     
     
 
@@ -168,10 +169,10 @@ function Game() {
 
    
     //valori dei dadi
-    const [d6Value,setD6Value]=useState(gameInitState.dices.d6);
-    const [d8Value,setD8Value]=useState(gameInitState.dices.d8);
-    const [d10Value,setD10Value]=useState(gameInitState.dices.d10);
-    const [d12Value,setD12Value]=useState(gameInitState.dices.d12);
+    const [d6Value,setD6Value] = useState(gameInitState.dices.d6);
+    const [d8Value,setD8Value] = useState(gameInitState.dices.d8);
+    const [d10Value,setD10Value] = useState(gameInitState.dices.d10);
+    const [d12Value,setD12Value] = useState(gameInitState.dices.d12);
 
     //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
     const [d6startValue,setD6startValue] = useState(gameInitState.dices.d6);
@@ -214,8 +215,8 @@ function Game() {
     const [extraDiceUsed6,setExtraDiceUsed6] = useState(false);
 
 
-    const [boardListPlayers,setBoardListPlayers] = useState(gameInitState.players);
-    
+    const [boardListPlayers,setBoardListPlayers] = useState(singlePlayerGame ?  null : gameInitState.players);
+    const [boardCards,setBoardListCards] = useState(singlePlayerGame ? gameInitState.cards :  null);
 
     const [card1,setCard1] = useState(gameInitState.cards.card1);
     const [card2,setCard2] = useState(gameInitState.cards.card2);
@@ -312,40 +313,49 @@ function Game() {
 
     const finishTurn = useCallback(()=>{
         if(!turnDone){
-            if(nTurn < gameInitState.config.nTurn){
-                setTurnDone(true);
-                card1.inProgress = showCard1;
-                card2.inProgress = showCard2;
-                card3.inProgress = showCard3;
-                const playerGameState ={
-                    quest1: quest1Done,
-                    quest2: quest2Done,
-                    cards:{
-                        card1: card1,
-                        card2: card2,
-                        card3: card3
-                    },
-                    report: {
-                        skills: reportSkills, 
-                        items: reportItems,
+            if(!singlePlayerGame){
+                console.log("ENTRO?")
+                if(nTurn < gameInitState.config.nTurn){
+                    setTurnDone(true);
+                    card1.inProgress = showCard1;
+                    card2.inProgress = showCard2;
+                    card3.inProgress = showCard3;
+                    const playerGameState ={
                         quest1: quest1Done,
-                        quest2: quest2Done
+                        quest2: quest2Done,
+                        cards:{
+                            card1: card1,
+                            card2: card2,
+                            card3: card3
+                        },
+                        report: {
+                            skills: reportSkills, 
+                            items: reportItems,
+                            quest1: quest1Done,
+                            quest2: quest2Done
+                        }
                     }
+                    connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
+                }else{
+                    const finalReport = {
+                        shop: shop,
+                        quest1: quest1Done,
+                        quest2: quest2Done,
+                        order: adventurerQuestDone,
+                        renownedAccessories: skillsGained.includes('renowned accessories'),
+                        weaponPrestige: skillsGained.includes('weapon prestige'),
+                        eliteArmor: skillsGained.includes('elite armor'),
+                        gold: currentGold
+                    }
+                   connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
                 }
-                connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
-            }else{
-                const finalReport = {
-                    shop: shop,
-                    quest1: quest1Done,
-                    quest2: quest2Done,
-                    order: adventurerQuestDone,
-                    renownedAccessories: skillsGained.includes('renowned accessories'),
-                    weaponPrestige: skillsGained.includes('weapon prestige'),
-                    eliteArmor: skillsGained.includes('elite armor'),
-                    gold: currentGold
-                }
-               connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
             }
+            else{
+                setTurnDone(true);
+
+                //*Service-worker call
+            }
+            
             
         }
     },[adventurerQuestDone, card1, card2, card3, currentGold, gameInitState.config.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, shop, showCard1, showCard2, showCard3, skillsGained, turnDone, username]);
@@ -388,11 +398,8 @@ function Game() {
 
         //Cerco il mio index nell'array di tutte le carte , cella array -> mazzo di carte di un giocatore + username
         const indexCardsCurrentPlayer = newGameState.cards.findIndex((p)=> p.username === username );
-        
         const cardsCurrentPlayer = newGameState.cards[indexCardsCurrentPlayer];
 
-        //elimino il mio set di carte dall'array di tutte le carte dei giocatori
-        newGameState.cards.splice(indexCardsCurrentPlayer,1);
 
         //setto le mie carte 
         setCard1(cardsCurrentPlayer.cards.card1);
@@ -415,9 +422,20 @@ function Game() {
             }
            return connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
         }
-
+        
+        const newBoardPlayer = [];
+        let i = indexCardsCurrentPlayer + 1;
+        while(i < newGameState.cards.length){
+            newBoardPlayer.push(newGameState.cards[i]);
+            i++;
+        }
+        let j = 0;
+        while(j < indexCardsCurrentPlayer){
+            newBoardPlayer.push(newGameState.cards[j]);
+            j++;
+        }
         //setto le carte remanenti come carte nella board
-        setBoardListPlayers(newGameState.cards);
+        setBoardListPlayers(newBoardPlayer);
 
         //Setto il report di fine turno 
         setReportEndTurn(newGameState.report);
@@ -706,9 +724,19 @@ function Game() {
                         setCurrentGold={setCurrentGold}
                     />
                 </div>
-                <div className='players-table'>
-                    <BoardPlayers boardListPlayers={boardListPlayers} gameRestart={gameRestart} />
-                </div>
+                {
+                    (!singlePlayerGame) ? (
+                        <div className='players-table'>
+                            <BoardPlayers boardListPlayers={boardListPlayers} gameRestart={gameRestart} />
+                        </div>
+                    )
+                    : (
+                        <div  className='players-table'>
+                            <BoardCards boardCards={boardCards}  gameRestart={gameRestart} />
+                        </div>
+                    )
+                }
+                
             
 
                 <div className='skills-table' ref={skillTableRef}>

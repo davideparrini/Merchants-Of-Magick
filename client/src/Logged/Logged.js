@@ -9,7 +9,7 @@ import { AppContext } from '../App';
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setLeaderLobby, setGameStart, lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd, setGameOnNewTurn, navigate, LOGGED_PAGE, leaveLobby} = useContext(AppContext);
+    const { username, setGameStart,setSinglePlayerGame, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -49,23 +49,31 @@ function Logged({setLobbyUpdated}) {
                 <div className='container-logged'>
                     <div className='title-logged'/>
                     <div className='container-btn-logged'>
-                        <button className={`logged-btn ${connectionHandlerClient.checkConnection()  ? '' : 'inactive-btn'}`}
+                        <button className={`logged-btn ${statusOnline  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
-                                leaveLobby();
+                                refreshGame();
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLeaderLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
+                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
                                 })
-                                setLeaderLobby(username);
+                                
                         }}>Create New Lobby</button>
-                        <button className={`logged-btn ${connectionHandlerClient.checkConnection()  ? '' : 'inactive-btn'}`}
-                            onClick={()=>setOpenSubmitLobbyId(true)}>Join A Lobby</button>
+                        <button className={`logged-btn ${statusOnline  ? '' : 'inactive-btn'}`}
+                            onClick={()=>setOpenSubmitLobbyId(true)}
+                        >Join A Lobby</button>
+                        <button className='logged-btn'
+                        onClick={()=>{
+                            //EMIT AL SEVICE WORKER
+                            navigator.serviceWorker.controller.postMessage(JSON.stringify({type:'start-game-single-player'}));
+                            setSinglePlayerGame(true);
+                        }}
+                        >Single Player</button>
                     </div>
                 </div>
                 <div className={`submit-lobby-id ${openSubmitLobbyId ? 'open-submit-lobby-id' : 'closed-submit-lobby-id'}`} ref={submitLobbyIdRef}>
                     <input className='field-submit-lobby-id' placeholder={'ID LOBBY, try ask your friend!'} value={idLobbyJoin} onChange={ e => setIdLobbyJoin(e.target.value)}/>
                     <button className='btn-submit-lobby-id' onClick={()=>{
-                        leaveLobby();
+                        refreshGame();
                         connectionHandlerClient.joinLobby(idLobbyJoin,username,(res,lobby)=>{
                             switch(res){
                                 case 'OK': 
@@ -79,7 +87,7 @@ function Logged({setLobbyUpdated}) {
                                 default: break;
                             }
                             setLobby(lobby);
-                            connectionHandlerClient.updateLobby( lobby, setLobby, username, setLeaderLobby, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
+                            connectionHandlerClient.updateLobby( lobby, setLobby, username, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
                         });
                         
                         
@@ -97,7 +105,7 @@ function Logged({setLobbyUpdated}) {
             </div>
             <div className='username-log'>
                 <div className='user-logged'>{username}</div>
-                <div className={`connected-label ${connectionHandlerClient.checkConnection()  ? 'online-label' : 'offline-label'}`}>{connectionHandlerClient.checkConnection()  ? 'Online' : 'Offline'}</div>
+                <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
             </div>
         </div>
     )

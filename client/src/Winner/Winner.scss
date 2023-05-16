@@ -9,6 +9,33 @@
     flex-wrap: wrap;
     height: 100%;
     width: 100%;
+    
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+.raggi-winner{
+    position: absolute;
+    height:  2000px;
+    width: 2000px;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 1;
+    background: url(./raggi.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    
+    opacity: 0.3;
+    animation-name: spin ;
+    animation-duration: 35s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 .title-winner{
@@ -18,6 +45,7 @@
     letter-spacing: 2px;
     color: white;
     text-shadow: v.$text-shadow-primarycolor3;
+    z-index: 2;
 }
 
 
@@ -28,6 +56,7 @@
     align-items: flex-start;
     height: 100%;
     width: 100%;
+    z-index: 2;
 }
 .container-end-game{
     display: flex;
@@ -37,25 +66,24 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-   
 }
 .container-player-end-game{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
-    height: 40px;
+    height: 30px;
     width: 400px;
-    background: v.$blue-btn-2;
-    border: v.$border-primary-6px;
+    background: v.$blue-btn;
+    filter: grayscale(0.4);
+    border: solid 4px  v.$blue-btn-0;
     border-radius: 20px;
     padding: 20px;
     font-family: Tahoma, Geneva, sans-serif;
-    font-size: 32px;
+    font-size: 30px;
     letter-spacing: 2px;
     color: white;
-    
+
     text-shadow: v.$text-shadow-primarycolor3;
 }
 
@@ -65,6 +93,7 @@
     animation-iteration-count: infinite;
     animation-fill-mode: both;
     background: v.$primary-color-2;
+    border: v.$border-primary-4px;
 
 }
 .container-player-end-game.winner-player::before{
@@ -86,14 +115,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
     font-size: 30px;
     letter-spacing: 2px;
     
 }
 
-.username-player-end-game{
-    
+.btn-end-game{
+    margin-top: 30px;
+    z-index: 2;
+    height: 100px;
+    width: 400px;
+    filter: drop-shadow(0px 0px 10px #fa0202);
+    border-radius: 15px;
+    background: v.$bg-color-3-4;
+    border: 3px solid;
+    border-color: v.$primary-color-1;
+    color: white;
+    font-size: 40px;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
+}
+
+.btn-end-game:active{
+    filter: brightness(0.6);
 }
 
 @keyframes strech1 {
@@ -104,50 +150,120 @@
         transform: scale(1.05);
     }
 }
+
+
 .container-end-game-extended{
     display: flex;
-    margin: 10px;
     gap: 10px;
-    
     flex-direction: row;
-    flex-wrap: wrap;
-    width: 70%;
-    height: 90%;
-    
+    // flex-wrap: nowrap;
+    width: fit-content;
+    max-width: 70%;
+    height: 85%;
+    margin-top: 100px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+   
 }
+
+.container-end-game-extended::-webkit-scrollbar {
+    height: 8px;
+}
+
+   
+.container-end-game-extended::-webkit-scrollbar-thumb {
+    background: #49403f;
+    border-radius: 20px;
+}
+
+.container-end-game-extended::-webkit-scrollbar-track {
+    background: v.$card-color-3;
+    border-radius: 20px;
+}
+
 .container-player-end-game-extended{
-    background: rgb(110, 110, 110);
+    background: #242220;
     border-radius: 15px;
-    height: 460px;
-    width: 365px;
-    padding: 20px;
+    height: 95%;
+    min-width: 400px;
+    width: 400px;
+    padding: 15px;
     color: white;
     text-shadow: v.$text-shadow-stroke2;
     border: v.$border-primary-4px;
+    
+    
 }
 .container-header-player-end-game{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    background: #5e1f1f;
+    background: v.$primary-color;
     border-radius: 15px;
     height: 50px;
+    width: 100%;
+    margin: 5px;
+    margin-bottom: 20px;
+    font-family: Tahoma, Geneva, sans-serif; 
+}
+
+.container-header-player-end-game .username-player-end-game{
+    font-size: 30px;
+    
 }
 .stuff-player-end-game{
-    background: #ad7171;
+    background: #584c4b;
+    color: #edf03a;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+    align-items: flex-end;
     height: 30px;
-    width: 340px;
+    width: 88%;
     margin: 5px;
+    gap: 10px;
     border-radius: 15px;
 
 }
+
+.title-stuff-end-game{
+    font-size: 22px;
+    color: #ffffff;
+}
 .container-shop-end-game{
-    overflow: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: v.$primary-color grey;
-    overflow-x: hidden
+    
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+    max-height: 45%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+
+}
+
+.container-shop-end-game::-webkit-scrollbar {
+    width: 7px;
+  }
+   
+.container-shop-end-game::-webkit-scrollbar-thumb {
+    background: #49403f;
+    border-radius: 20px;
+}
+
+.container-shop-end-game::-webkit-scrollbar-track {
+    background: v.$card-color-3;
+    border-radius: 20px;
+}
+
+#shop-end-game{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-align: center;
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
@@ -7,7 +7,7 @@ import { AppContext } from '../App';
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
-    const { username, leaderLobby, lobby, gameStart,  gameInitState, setGameInitState, navigate, gameInit , leaveLobby,  LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
+    const { username, statusOnline, lobby, gameStart,  gameInitState, setGameInitState, navigate, gameInit , refreshGame,  LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
@@ -100,7 +100,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                         }}>Add Player</button>
                     </div>
                     <div className='container-btn-lobby'>
-                        <button className= {`start-game-btn ${ leaderLobby && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
+                        <button className= {`start-game-btn ${ lobby.leaderLobby === username && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
                             onClick={()=>{
                                 if(!gameStart){
                                     const config ={
@@ -117,7 +117,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                                 break;
                                             case 'ERROR':
                                                 alert("Error, something went wrong starting game!");
-                                                leaveLobby();              
+                                                refreshGame();              
                                                 navigate(LOGGED_PAGE);
                                                 break;
                                             default: break;
@@ -142,14 +142,14 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
                             navigate(LOGGED_PAGE);
-                            leaveLobby();              
+                            refreshGame();              
                         }
                     }}><label className='back-label'>Back</label>
                 </div>
             </div>  
             <div className='username-log'>
                 <div className='user-logged'>{username}</div>
-                <div className={`connected-label ${connectionHandlerClient.checkConnection()  ? 'online-label' : 'offline-label'}`}>{connectionHandlerClient.checkConnection()  ? 'Online' : 'Offline'}</div>
+                <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline ? 'Online' : 'Offline'}</div>
             </div>
         </div>
         

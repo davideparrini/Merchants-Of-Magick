@@ -260,6 +260,9 @@
     grid-area: tablePlayers;
     position: relative;
     bottom: 55px;    
+    display: flex;
+    justify-content: center;
+    width: 550px;
 }
 
 .skills-table{

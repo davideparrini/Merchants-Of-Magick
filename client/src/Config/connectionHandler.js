@@ -6,14 +6,8 @@ const serverUrl = "http://localhost:" + serverPort;
 
 function createSocketConfig() {
 
-    const socket = io(serverUrl, {
-        autoConnect: false
-    });
+    const socket = io(serverUrl);
     
-    //equivalente di isConnected(), connesso -> true, non connesso -> false
-    function checkConnection(){
-        return socket.connected;
-    }
 
     //Metto il socket in ascolto su namespace univoco/privato, per ricevere inviti da altri giocatori
     function registerToInvite(setLobby){
@@ -23,8 +17,15 @@ function createSocketConfig() {
     }  
     
     //connetti
-    function connect(){
-        socket.connect();
+    function connect(setStatusOnline){
+        socket.on("connect", () => {
+            setStatusOnline(true)
+            console.log("CONNECTED"); 
+          });
+        socket.on("disconnect", () => {
+            setStatusOnline(false);
+            console.log("DISCONNECTED")
+        });
     }
 
     //disconnetti e disiscriviti dal namespace "privato"
@@ -71,7 +72,6 @@ function createSocketConfig() {
                     lobby,
                     setLobby,
                     myUsername,
-                    setLeaderLobby,
                     setLobbyUpdated, 
                     setGameStart, 
                     setGameInitState, 
@@ -84,7 +84,6 @@ function createSocketConfig() {
         //Aggiorno lobby se ha joinato qualcuno
         socket.on("lobby-player-joined",(username)=>{
             lobby.players.push(username);
-            setLeaderLobby(lobby.players[0]);
             setLobby(lobby);
             setLobbyUpdated(true);
         });
@@ -94,9 +93,6 @@ function createSocketConfig() {
             const indexUsernameLeft = lobby.players.findIndex((u)=> u === username);
             lobby.players.splice(indexUsernameLeft,1);
             lobby.leaderLobby = lobby.players[0]; 
-            if(myUsername === lobby.players[0]){
-                setLeaderLobby(myUsername);
-            }
             setLobby(lobby);
             setLobbyUpdated(true); 
         });
@@ -142,7 +138,6 @@ function createSocketConfig() {
     return{
         connect,
         disconnect,
-        checkConnection,
         sendUsername,
         createLobby,
         joinLobby,
@@ -152,7 +147,8 @@ function createSocketConfig() {
         registerToInvite,
         gameStartRequest,
         finishTurn,
-        endGame
+        endGame,
+        socket
     }
 }
 
