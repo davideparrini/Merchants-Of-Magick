@@ -1,0 +1,8 @@
+{
+    "adventurer" : "The Cleric",
+    "typeOrder" : "divine",
+    "order1" :"backpack",
+    "order2" : "sword", 
+    "order3" : "helmet", 
+    "gold": 6
+}

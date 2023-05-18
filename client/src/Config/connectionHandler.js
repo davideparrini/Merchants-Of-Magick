@@ -6,7 +6,11 @@ const serverUrl = "http://localhost:" + serverPort;
 
 function createSocketConfig() {
 
-    const socket = io(serverUrl);
+    const socket = io(serverUrl,{
+        reconnectionAttempts : 100,
+        reconnectionDelay: 5000,
+        reconnectionDelayMax: 10000
+    });
     
 
     //Metto il socket in ascolto su namespace univoco/privato, per ricevere inviti da altri giocatori

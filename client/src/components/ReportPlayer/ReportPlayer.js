@@ -35,7 +35,7 @@ function ReportBoard({ reportTime, setReportTime, reports, setReports,endTurn,se
                             {
                                 r.report.skills.length > 0 ?
                                     r.report.skills.map((s,j)=>(
-                                        <div className='player-report-skill' key={j}>{'- '+s}</div>
+                                        <div className='player-report-skill' key={j}>{'- '+ s}</div>
                                     ))
                                 : 'No skill gained'
 
@@ -44,7 +44,7 @@ function ReportBoard({ reportTime, setReportTime, reports, setReports,endTurn,se
                             {
                                 r.report.items.length > 0 ?
                                     r.report.items.map((item,j)=>(
-                                        <div className='player-report-item' key={j}>{'- '+item}</div>
+                                        <div className='player-report-item' key={j}>{'- '+ item}</div>
                                     ))
                                 : 'No new item'
                             }

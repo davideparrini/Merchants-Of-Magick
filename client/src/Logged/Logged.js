@@ -9,11 +9,12 @@ import { AppContext } from '../App';
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setGameStart,setSinglePlayerGame, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame} = useContext(AppContext);
+    const { username, setGameStart,setSinglePlayerGame, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
+    const[countdownGameStart,setCountdownGameStart] = useState(5);
     const submitLobbyIdRef = useRef();
 
     //Close submitLobbyId on out click
@@ -42,6 +43,23 @@ function Logged({setLobbyUpdated}) {
     },[lobby])
 
 
+    useEffect(()=>{
+        if(singlePlayerGame){
+            if(countdownGameStart > 0){
+                const intervalId = setInterval(() => {
+                    setCountdownGameStart((t)=> t-1);
+                }, 1000);
+                return () => clearInterval(intervalId);
+                
+            }
+            else{ 
+                navigate(`${GAME_PAGE}/singlePlayer`)
+                setCountdownGameStart(5);
+            }
+        }
+        
+    },[singlePlayerGame,countdownGameStart])
+
     return (
         <div className='Logged'>
             <div className='opacity-logged'>
@@ -63,11 +81,32 @@ function Logged({setLobbyUpdated}) {
                         >Join A Lobby</button>
                         <button className='logged-btn'
                         onClick={()=>{
-                            //EMIT AL SEVICE WORKER
-                            navigator.serviceWorker.controller.postMessage(JSON.stringify({type:'start-game-single-player'}));
-                            setSinglePlayerGame(true);
+                            if(!singlePlayerGame){
+                                refreshGame();
+                                const config ={
+                                    config:{
+                                            nTurn : 2,
+                                            nPotion : 0,
+                                            reportTime : 10,
+                                            countdown : 300,
+                                            dicePerTurn : 2
+                                        }
+                                }
+                                window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage( {type:'start-game-single-player', data: config} )
+                                ).catch((e)=>console.log(e));
+                                window.navigator.serviceWorker.onmessage = event => {
+                                    const message = event.data;
+                                    if(message && message.type === 'start-game-single-player'){
+                                        console.log(message)
+                                        setGameInitState(message.data);
+                                        setSinglePlayerGame(true);
+                                        console.log("Start single player game")
+                                    }
+                                };
+                            }
+                            
                         }}
-                        >Single Player</button>
+                        >{singlePlayerGame ? countdownGameStart :'Single Player'}</button>
                     </div>
                 </div>
                 <div className={`submit-lobby-id ${openSubmitLobbyId ? 'open-submit-lobby-id' : 'closed-submit-lobby-id'}`} ref={submitLobbyIdRef}>

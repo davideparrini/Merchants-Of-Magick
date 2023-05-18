@@ -15,8 +15,13 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
     
     const[countdownGameStart,setCountdownGameStart] = useState(5);
 
-
     
+    const[configNTurn, setConfigNTurn] = useState(10);
+    const[configNPotion, setConfigNPotion] = useState(0);
+    const[configReportTime, setConfigReportTime] = useState(10);
+    const[configCountdown, setConfigCountdown] = useState(300);
+    const[configDicePerTurn, setConfigDicePerTurn] = useState(2);
+
 
     useEffect(()=>{
         if(lobbyUpdated){
@@ -104,11 +109,11 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                             onClick={()=>{
                                 if(!gameStart){
                                     const config ={
-                                        nTurn : 2,
-                                        nPotion : 0,
-                                        reportTime : 10,
-                                        countdown : 300,
-                                        dicePerTurn : 2
+                                        nTurn : configNTurn,
+                                        nPotion : configNPotion,
+                                        reportTime : configReportTime,
+                                        countdown : configCountdown,
+                                        dicePerTurn : configDicePerTurn
                                     }
                                     connectionHandlerClient.gameStartRequest(lobby.id, config,(res)=>{
                                         switch(res){
@@ -129,6 +134,76 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                             }}
                         >{gameStart ? countdownGameStart :'Start Game'}</button>
                     </div>
+                    {   
+                        lobby.leaderLobby === username &&
+                        (
+                            <div className='configs-wrapper'>
+                                <div className ='config-box'>
+                                    <label className = 'label-config'>Time per turn</label>
+                                    <select name='countdown' className= 'select-config' onChange={(e)=>{
+                                        setConfigCountdown(e.target.value)
+                                    }}>
+                                        <option value={30}>30 s</option>
+                                        <option value={60}>60 s</option>
+                                        <option value={120}>120 s</option>
+                                        <option value={250}>250 s</option>
+                                        <option value={300}>300 s</option>
+                                        <option value={400}>400 s</option>
+                                        <option value={500}>500 s</option>
+                                    </select>
+                                </div>
+                                <div className ='config-box'>
+                                    <label className = 'label-config'>Number of turns</label>
+                                    <select name='nTurn' className= 'select-config' onChange={(e)=>{
+                                        setConfigNTurn(e.target.value)
+                                    }}>
+                                        <option value={2}>4</option>
+                                        <option value={2}>5</option>
+                                        <option value={8}>8</option>
+                                        <option value={10}>10</option>
+                                        <option value={15}>15</option>
+                                        <option value={20}>20</option>
+                                    </select>
+                                </div>
+                                <div className ='config-box'>
+                                    <label className = 'label-config'>Start potions</label>
+                                    <select name='nPotion' className= 'select-config'onChange={(e)=>{
+                                        setConfigNPotion(e.target.value)
+                                    }}>
+                                        <option value={0}>0</option>
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                        <option value={4}>4</option>
+                                        <option value={5}>5</option>
+                                    </select>
+                                </div>
+                                <div className ='config-box'>
+                                    <label className = 'label-config'>Report Time</label>
+                                    <select name='reportTime' className= 'select-config'onChange={(e)=>{
+                                        setConfigReportTime(e.target.value)
+                                    }}>
+                                        <option value={5}>5 s</option>
+                                        <option value={10}>10 s</option>
+                                        <option value={15}>15 s</option>
+                                        <option value={20}>20 s</option>
+                                        <option value={30}>30 s</option>
+                                    </select>
+                                </div>
+                                <div className ='config-box'>
+                                    <label className = 'label-config'>Dices per turn</label>
+                                    <select name='dicePerTurn' className= 'select-config'onChange={(e)=>{
+                                        setConfigDicePerTurn(e.target.value)
+                                    }}>
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        )
+                    }
+                    
                 </div>
                 <div className='log-out' 
                     onClick={()=>{

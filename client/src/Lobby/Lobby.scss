@@ -24,8 +24,8 @@
     display: grid;
     grid-template-areas:
         'idLobby .'
-        'players .'
-        'players .'
+        'players config'
+        'players config'
         'addPlayer btnStart';
     grid-template-columns: 1fr 1fr ;
     grid-template-rows: repeat(4,0.5fr);
@@ -338,3 +338,39 @@
     border-radius: 30%;
 }
 
+.configs-wrapper{
+    grid-area: config;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px ;
+}
+.config-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+.label-config{
+    color: white;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    word-spacing: 2px;
+}
+.select-config{
+    background: v.$primary-color-1-2;
+    border: v.$border-primary-2px;
+    border-radius: 8px;
+    color: white;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke2;
+    padding: 7px;
+    padding-left: 15px;
+    cursor: pointer;
+}

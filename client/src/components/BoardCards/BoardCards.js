@@ -1,80 +1,67 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './BoardCards.scss'
-import Card from '../Card/Card';
 
-const card1={
-    item: 'scroll',
-    gold: 5,
-    enchantment: 'fiery',
-    origin:'of the dragons',
-    inProgress: true
-}
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
 
-const card2={
-    item: 'ring',
-    gold: 5,
-    enchantment: 'everlasting',
-    origin:'of the dragons',
-    inProgress: true
-}
-const card3={
-    item: 'sword',
-    gold: 5,
-    enchantment: 'shocking',
-    origin:'of the dragons',
-    inProgress: true
-}
-const boardCards = [card1,card2,card3];
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
 
-function BoardCards({ gameRestart}) {
 
-    const[index,setIndex] = useState(0);
-    const[cardShowed,setCardShowed] = useState(boardCards[0]);
-    
+// import required modules
+import { EffectCards } from "swiper";
+import Card from "../Card/Card";
 
-   
-    useEffect(()=>{
-        if(gameRestart){
-            setIndex(0);
-            setCardShowed(boardCards[0]);
-        }
-    },[gameRestart, boardCards]);
+// const card1={
+//     item: 'scroll',
+//     gold: 5,
+//     enchantment: 'fiery',
+//     origin:'of the dragons',
+//     inProgress: true
+// }
 
-    const onClickShiftRight = useCallback(()=>{
-        if(index === (boardCards.length-1) ){
-            setCardShowed(boardCards[0]);
-            setIndex(0);
-        }
-        else{
-            setCardShowed(boardCards[index+1]);
-            setIndex((i)=>(i+1));
-        }
-    },[index, boardCards])
+// const card2={
+//     item: 'ring',
+//     gold: 5,
+//     enchantment: 'everlasting',
+//     origin:'of the dragons',
+//     inProgress: true
+// }
+// const card3={
+//     item: 'sword',
+//     gold: 5,
+//     enchantment: 'shocking',
+//     origin:'of the dragons',
+//     inProgress: true
+// }
+// const boardCards = [card1,card2,card3];
 
-    const onClickShiftLeft = useCallback(()=>{
-        if(index === 0){
-            setCardShowed(boardCards[boardCards.length-1]);
-            setIndex(boardCards.length-1);
-        }
-        else{
-            setCardShowed(boardCards[index-1]);
-            setIndex((i)=>(i-1));
-        }
-    },[index, boardCards])
+function BoardCards({boardCards, gameRestart}) {
+
     
     return (
         <div className='board-cards'>
-            <div className='index-cards-bc'>{"(" + (index+1)+"/"+ boardCards.length +")"}</div>
-            <button className='find-next-card-bc' onClick={()=>{setIndex(0); setCardShowed(boardCards[0])}}>NC</button>
-            <div className='arrow-bc shift-left' onClick={onClickShiftLeft}/>
-            <div className='container-next-card-BC'>
-                <div className={`${index === 0 ? 'next-card-bc visible' : 'next-card-bc no-visible'}`}>NEXT CARD</div>
-                <Card isShowed={cardShowed.inProgress} card={cardShowed} smallSize={true}/>
-            </div>
-            <div className='arrow-bc shift-right' onClick={onClickShiftRight}/>
-            
-            
-        </div>
+        <Swiper
+            effect={"cards"}
+            grabCursor={true}
+            modules={[EffectCards]}
+            className="my-swiper"
+        >
+            {   boardCards.length > 0 &&
+                boardCards.map((c,i)=>(
+                    <SwiperSlide className="swiper-slide" key={i}>
+                        <div className='container-next-card-BC'>
+                            <div className={`${i === 0 ? 'next-card-bc visible' : 'next-card-bc no-visible'}`}>NEXT CARD</div>
+                            <Card isShowed={c.inProgress} card={c} smallSize={true}/>
+                        </div>
+                    </SwiperSlide>
+                ))
+                
+            }
+        </Swiper>
+        <div className={boardCards.length > 0 ? '' : 'bg-board-cards'}/>
+    </div>
     )
 }
 

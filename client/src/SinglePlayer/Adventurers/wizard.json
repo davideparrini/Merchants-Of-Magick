@@ -1,0 +1,8 @@
+{
+    "adventurer" : "The Wizard",
+    "typeOrder" : "shocking",
+    "order1" :"ring",
+    "order2" : "crossbow", 
+    "order3" : "greaves", 
+    "gold": 4
+}

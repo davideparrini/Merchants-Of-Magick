@@ -52,6 +52,7 @@ import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 import { AppContext } from '../App';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import BoardCards from '../components/BoardCards/BoardCards';
+import Gold from '../components/Gold/Gold';
 
 
 
@@ -59,6 +60,7 @@ import BoardCards from '../components/BoardCards/BoardCards';
 const testActive = true;
 
 
+const TYPE_GOLD_BIG = 'BIG';
 
 //Tipi dado
 const TYPE_D6 = 'd6';
@@ -116,10 +118,10 @@ const nPotion_extraDice5 = 3;
 const nPotion_extraDice6 = 4;
 
 
-function Game({}) {
+function Game() {
 
 
-    const { singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn, gameUpdated, setGameUpdated, gameEnd,WINNER_PAGE, navigate } = useContext(AppContext);
+    const { refreshGame, singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
     
     
 
@@ -169,7 +171,7 @@ function Game({}) {
 
    
     //valori dei dadi
-    const [d6Value,setD6Value] = useState(gameInitState.dices.d6);
+    const [d6Value,setD6Value] = useState( gameInitState.dices.d6);
     const [d8Value,setD8Value] = useState(gameInitState.dices.d8);
     const [d10Value,setD10Value] = useState(gameInitState.dices.d10);
     const [d12Value,setD12Value] = useState(gameInitState.dices.d12);
@@ -216,7 +218,7 @@ function Game({}) {
 
 
     const [boardListPlayers,setBoardListPlayers] = useState(singlePlayerGame ?  null : gameInitState.players);
-    const [boardCards,setBoardListCards] = useState(singlePlayerGame ? gameInitState.cards :  null);
+    const [boardCards,setBoardListCards] = useState(singlePlayerGame ? gameInitState.cardsBoard :  null);
 
     const [card1,setCard1] = useState(gameInitState.cards.card1);
     const [card2,setCard2] = useState(gameInitState.cards.card2);
@@ -245,7 +247,7 @@ function Game({}) {
     //lista skill acquisite
     const[skillsGained,setSkillsGained] = useState([]);
 
-
+    const[openScoreSinglePlayer, setOpenScoreSinglePlayer] = useState(false);
     
     
 ////////////////////////////////////FUCTIONS//////////////////////////////////////////////////////////////////////////////////////
@@ -267,22 +269,23 @@ function Game({}) {
 
 
     //predicato per vedere se un dado è stato toccato
-    function isDiceTouched(){ 
+    const isDiceTouched = useCallback(()=>{ 
+        
         return typeTouchedDiceRef.current !== '';
-    }
+    },[])
     
     //funzione che setta tutti i dadi come non toccati diceTouched -> false
-    function setAllDiceNoTouched(){
-        console.log("QUANTE VOLTE REREND")
+    const setAllDiceNoTouched = useCallback(()=>{
+        
         setDiceTouchedD6(false);
         setDiceTouchedD8(false)
         setDiceTouchedD10(false);
         setDiceTouchedD12(false);
-    }
+    },[]);
 
     
     //funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
-    function choose_fun_setDiceUsed(){
+    const choose_fun_setDiceUsed = useCallback(()=>{
         switch(typeTouchedDiceRef.current){
             case TYPE_D6: return setDiceUsedD6;
             case TYPE_D8: return setDiceUsedD8;
@@ -290,14 +293,15 @@ function Game({}) {
             case TYPE_D12: return setDiceUsedD12;     
             default: return;
         }
-    }
+    },[])
+
     //funzione che setta tutti i dadi come non toccati diceUsed -> false
-    function setAllDiceNoUsed(){
+    const setAllDiceNoUsed= useCallback(()=>{
         setDiceUsedD6(false);
         setDiceUsedD8(false)
         setDiceUsedD10(false);
         setDiceUsedD12(false);
-    }
+    },[]);
     
     // funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
     const choose_fun_setExtraDiceUsed = useCallback(()=>{
@@ -314,13 +318,12 @@ function Game({}) {
     const finishTurn = useCallback(()=>{
         if(!turnDone){
             if(!singlePlayerGame){
-                console.log("ENTRO?")
                 if(nTurn < gameInitState.config.nTurn){
                     setTurnDone(true);
                     card1.inProgress = showCard1;
                     card2.inProgress = showCard2;
                     card3.inProgress = showCard3;
-                    const playerGameState ={
+                    const playerGameState = {
                         quest1: quest1Done,
                         quest2: quest2Done,
                         cards:{
@@ -351,14 +354,51 @@ function Game({}) {
                 }
             }
             else{
-                setTurnDone(true);
-
-                //*Service-worker call
+                if(nTurn < gameInitState.config.nTurn){
+                    setTurnDone(true);
+                    const dataToSend = {
+                        cards:{
+                            card1: card1,
+                            card2: card2,
+                            card3: card3
+                        },
+                        cardsBoard: boardCards
+                    }
+                    window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage({type:'update-game-single-player', data: dataToSend}));
+                    window.navigator.serviceWorker.onmessage = event => {
+                        if(event.data && event.data.type === 'update-game-single-player'){
+                            console.log("Update single player game")
+                            setGameOnNewTurn(event.data.data);
+                            setGameUpdated(true);
+                        }
+                    };
+                }
+                else{
+                    setTurnDone(true);
+                    const dataToSend = {
+                        currentGold: currentGold,
+                        shop: shop,
+                        renownedAccessories: skillsGained.includes('renowned accessories'),
+                        weaponPrestige: skillsGained.includes('weapon prestige'),
+                        eliteArmor: skillsGained.includes('elite armor')
+                    }
+                    
+                    window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage({ type:'end-game-single-player', data: dataToSend} ));
+                    window.navigator.serviceWorker.onmessage = event => {
+                        
+                        if(event.data && event.data.type === 'end-game-single-player'){
+                            console.log("End single player game")
+                            setCurrentGold(event.data.data);
+                            setGameEnd(true);
+                            setOpenScoreSinglePlayer(true);
+                        }
+                    };
+                }
             }
             
             
         }
-    },[adventurerQuestDone, card1, card2, card3, currentGold, gameInitState.config.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, shop, showCard1, showCard2, showCard3, skillsGained, turnDone, username]);
+    },[adventurerQuestDone, boardCards, card1, card2, card3, currentGold, gameInitState.config.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, shop, showCard1, showCard2, showCard3, singlePlayerGame, skillsGained, turnDone, username]);
 
     
     
@@ -437,6 +477,7 @@ function Game({}) {
         //setto le carte remanenti come carte nella board
         setBoardListPlayers(newBoardPlayer);
 
+        
         //Setto il report di fine turno 
         setReportEndTurn(newGameState.report);
         
@@ -455,7 +496,72 @@ function Game({}) {
         //Apro il report di fine turno
         setOpenReport(true);
 
-    },[quest1Done, quest2Done, username])
+    },[quest1Done, quest2Done, username, adventurerQuestDone, skillsGained,shop, currentGold]);
+
+
+
+    const newTurnSinglePlayer = useCallback((newGameState)=>{
+
+        //aumento il turno
+        setNTurn((n)=>(n+1));
+
+        //Refresh sul numero di dadi giocabili per turno
+        setNDiceLeft_toUse(2);
+        setTotalPossibleDice_toUse(2);
+        //Refresh sul numero di dadi giocati
+        setNDiceLeft_Used(0);
+        //Refresh dei dadi -> ora sono tutti giocabili (non grigi/non clickabili)
+        setAllDiceNoUsed();
+
+        //Aggiorno il valore dei dati ottenuti dal server
+        setD6startValue(newGameState.dices.d6);
+        setD8startValue(newGameState.dices.d8);
+        setD10startValue(newGameState.dices.d10);
+        setD12startValue(newGameState.dices.d12);
+        
+        setD6Value(newGameState.dices.d6);
+        setD8Value(newGameState.dices.d8);
+        setD10Value(newGameState.dices.d10);
+        setD12Value(newGameState.dices.d12);
+
+        
+        setCard1(newGameState.cards.card1);
+        setCard2(newGameState.cards.card2);
+        setCard3(newGameState.cards.card3);
+        setShowCard1(true);
+        setShowCard2(true);
+        setShowCard3(true);
+
+        
+        setBoardListCards(newGameState.cardsBoard);
+
+        const report = [{
+            username: username,
+            report: {
+                skills: reportSkills, 
+                items: reportItems,
+                quest1: quest1Done,
+                quest2: quest2Done
+            }
+        }];
+
+        //Setto il report di fine turno 
+        setReportEndTurn(report);
+        //Refresh strutture dati utili per calcolare il proprio report di fine  turno
+        setReportSkills([]);
+        setReportItems([]);
+        
+        //Setto il game come resettato, 
+        //in modo da aggiornare alcune strutture dati nested di alcuni child component
+        setGameRestart(true);
+
+        //Setto il timer del report di fine turno
+        setReportTime(gameInitState.config.reportTime);
+
+        //Apro il report di fine turno
+        setOpenReport(true);
+
+    },[ quest1Done, quest2Done, reportItems, reportSkills, username])
 
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
@@ -481,7 +587,13 @@ function Game({}) {
 
     useEffect(()=>{
         if(turnDone && gameUpdated){
-            newTurn(gameOnNewTurn);
+            if(singlePlayerGame){
+                newTurnSinglePlayer(gameOnNewTurn);
+            }
+            else{
+                newTurn(gameOnNewTurn);
+            }
+            
             setGameUpdated(false);
         }
     },[turnDone, gameUpdated])
@@ -489,7 +601,11 @@ function Game({}) {
 
     useEffect(()=>{
         if(gameEnd){
-            navigate(`${WINNER_PAGE}/${lobby.id}`);
+            if(!singlePlayerGame){
+                navigate(`${WINNER_PAGE}/${lobby.id}`);
+            }else{
+                setOpenScoreSinglePlayer(true);
+            }
         }
     },[gameEnd]);
 
@@ -499,6 +615,23 @@ function Game({}) {
     return (
         <div className='Game'>
             <Exit/>
+            {
+                singlePlayerGame && openScoreSinglePlayer &&
+                    (
+                        <div className='score-end-game'>
+                            <div className='container-gold-score'>
+                                Your score:
+                                <Gold value={currentGold} size={TYPE_GOLD_BIG} active={true}/>
+                            </div>
+                            <button className='btn-score-end-game' onClick={()=>{
+                                navigate(LOGGED_PAGE);
+                                refreshGame();
+                            }}>New Game</button>
+                        </div>
+                    ) 
+                 
+                
+            }
             <ReportBoard reports={reportEndTurn} setReports={setReportEndTurn} endTurn={openReport} setEndTurn={setOpenReport} setGameRestart={setGameRestart} setTurnDone={setTurnDone} reportTime={reportTime} setReportTime={setReportTime}/>
             <div className={`game-container ${turnDone  ? 'wait-state-game' :''}`}>   
                 <div className='upper-container'>

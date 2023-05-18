@@ -1,3 +1,5 @@
+
+
 import barbarian from '../Adventurers/barbarian.json' assert { type: "json" };
 import bountyHunter from '../Adventurers/bountyHunter.json' assert { type: "json" };
 import cleric from '../Adventurers/cleric.json' assert { type: "json" };
@@ -50,6 +52,20 @@ function createGameLogic(){
     const TYPE_ARMOR=['bracers','helmet','greaves','plate armor'];
     const TYPE_WEAPONS=['staff','sword','crossbow','warhammer'];
 
+
+    let counter = 1;
+    let prevRand = 1;
+
+    const rand = (min, max) => {
+        if(counter < 0) counter = Math.floor(Math.random()*9887);
+        if(prevRand < 0) prevRand = Math.floor(Math.random()*9199);
+        const time = new Date().getTime();
+        const randValue = (((time / counter) / (prevRand + 1)) % (max-min+1)) + min;
+        counter++;
+        prevRand = randValue;
+        return parseInt(randValue);
+    }
+
     //Funzione utilis per mischiare un array
     //Shuffle algorithm -> Fisher-Yates Shuffle
     function shuffle(array) {
@@ -57,8 +73,7 @@ function createGameLogic(){
         var randomIndex;
         
         while(currentIndex > 0){
-            
-            randomIndex = Math.floor(Math.random() * currentIndex);
+            randomIndex = rand(0, currentIndex-1);
             currentIndex--;
 
             //scambio gl'elementi dell'array agl'indici currentIndex e randomIndex
@@ -71,40 +86,42 @@ function createGameLogic(){
 
     //Scelgo un tipo di ordine random 
     function chooseRandomTypeCard(){
-        const r = Math.floor(Math.random() * 3);
-        
-        switch (r){
+        const value = rand(0, 2);
+        switch (value){
             case 0: return typeCard_NO_ENCHANTMENT;
             case 1: return typeCard_NO_ORIGIN;
             case 2: return typeCard_BOTH;
+            default: console.error("Err chooseRandom typeCard"); return;
         }
     }
     
-    //Crea una nuova carta specificando come paramento il tipo della carta
-    function createNewCard(typeCard){
+     //Crea una nuova carta specificando come paramento il tipo della carta
+     function createNewCard(typeCard){
         
         let t_card = typeCard === typeCard_RANDOM ? chooseRandomTypeCard() : typeCard;
         var origin = '';
         var gold = 0;
         var enchantment = '';
+        
         switch(t_card){
             case typeCard_NO_ENCHANTMENT:
-                origin = originType[Math.floor(Math.random() * originType.length)];
-                gold = Math.floor(Math.random() * 4) + 3;
+                origin = originType[rand(0,originType.length-1)];
+                gold = rand(3,5);
                 break;
             case typeCard_NO_ORIGIN:
-                enchantment = enchantmentType[Math.floor(Math.random() * enchantmentType.length)];
-                gold = Math.floor(Math.random() * 3) + 3;
+                enchantment = enchantmentType[rand(0,enchantmentType.length-1)];
+                gold = rand(3,5);
                 break;
             case typeCard_BOTH:
-                enchantment = enchantmentType[Math.floor(Math.random() * enchantmentType.length)];
-                origin = originType[Math.floor(Math.random() * originType.length)];
-                gold = Math.floor(Math.random() * 4) + 4;
+                enchantment = enchantmentType[rand(0,enchantmentType.length-1)];
+                origin = originType[rand(0,originType.length-1)];
+                gold = rand(5,7);
                 break;
+            default: console.error("Err createNewCard"); return;
         }
         
         const card = {
-            item: craftingItemType[Math.floor(Math.random() * craftingItemType.length)],
+            item: craftingItemType[rand(0,craftingItemType.length-1)],
             gold: gold,
             enchantment: enchantment,
             origin: origin,
@@ -115,14 +132,16 @@ function createGameLogic(){
     
     //funzione che crea un obj con i tiri dei dadi scelti a caso
     function rollDices(){
+        
         var dices = {
-            d6 : Math.floor(Math.random() * 6) + 1,
-            d8 : Math.floor(Math.random() * 8) + 1,
-            d10 : Math.floor(Math.random() * 10) + 1,
-            d12 : Math.floor(Math.random() * 12) + 1
+            d6 : rand(1,6),
+            d8 : rand(1,8),
+            d10 : rand(1,10),
+            d12 : rand(1,12)
         }
         return dices;
     }
+    
     
     
     function updateCardsTurn(cards , players){
@@ -177,8 +196,8 @@ function createGameLogic(){
     //viene mandato dal server a tutti i client della lobby
     function gameInit(players, config){
         //Creazione obj quests, scelgo gl' attribute in modo casuale 
-        const quest1Attribute = CraftingAttributes[Math.floor(Math.random() * 3)] ;
-        const quest2Attribute = MagicAttributes[Math.floor(Math.random() * 3)];
+        const quest1Attribute = CraftingAttributes[rand(0,2)] ;
+        const quest2Attribute = MagicAttributes[rand(0,2)];
 
         const quests = {
             quest1 : {
@@ -232,35 +251,29 @@ function createGameLogic(){
 
     function calculateGold(finalReport){
         const newFinalReport = [];
-        finalReport.map((r)=>{
+        finalReport.forEach((r)=>{
             
             const newReport = {
                 username: r.username,
                 position: -1,
                 report: r.report
             }
+            const renownedAccessories = r.report.renownedAccessories;
+            const weaponPrestige = r.report.weaponPrestige;
+            const eliteArmor = r.report.eliteArmor;
+            
             if(r.report.shop.length > 0){
-                if(r.report.renownedAccessories){
-                    r.report.shop.map((item)=>{
-                        if(TYPE_ACCESSORIES.includes(item.item)){
-                            newReport.report.gold+= 2;
-                        }
-                    })
-                }
-                if(r.report.weaponPrestige){
-                    r.report.shop.map((item)=>{
-                        if(TYPE_WEAPONS.includes(item.item)){
-                            newReport.report.gold += 2;
-                        }
-                    })
-                }
-                if(r.report.eliteArmor){
-                    r.report.shop.map((item)=>{
-                        if(TYPE_ARMOR.includes(item.item)){
-                            newReport.report.gold += 2;
-                        }
-                    })
-                }   
+                r.report.shop.forEach((item)=>{
+                    if(renownedAccessories && TYPE_ACCESSORIES.includes(item.item)){
+                        newReport.report.gold+= 2;
+                    }
+                    if(weaponPrestige && TYPE_WEAPONS.includes(item.item)){
+                        newReport.report.gold += 2;
+                    }
+                    if(eliteArmor && TYPE_ARMOR.includes(item.item)){
+                        newReport.report.gold += 2;
+                    }
+                })  
             }
 
             newFinalReport.push(newReport);

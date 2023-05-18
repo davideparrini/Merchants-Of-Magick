@@ -1,9 +1,11 @@
-import {getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc, deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove} from 'firebase/firestore';
+import {getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc, deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove, persistentLocalCache, persistentMultipleTabManager} from 'firebase/firestore';
 import {firebase } from './FireBaseConfig';
 
 const db = getFirestore(firebase);
 
-
+// , {localCache: 
+//     persistentLocalCache({tabManager: persistentMultipleTabManager()})
+//   }
 function createFirebaseStore() {
 
     async function hasUsername(userID){

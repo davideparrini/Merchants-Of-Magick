@@ -6,7 +6,9 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(
+
+document.documentElement.requestFullscreen().catch(console.log);
+root.render(
     <React.StrictMode>
         <BrowserRouter>
             <App/>

@@ -50,7 +50,7 @@ function Card({card, isShowed, smallSize}) {
         <div className={`text-card ${smallSize ? 'text-card-small': ''}  t2 ${isShowed ? "" : "no-visible"}`} >{card.item}</div>
         <div className={`text-card ${smallSize ? 'text-card-small': ''}  t3 ${isShowed ? "" : "no-visible"}`}>{card.origin}</div>
         <div className={`goldContainerCard ${isShowed ? "" : "no-visible"}`}>
-            <Gold size={smallSize ?TYPE_GOLD_SMALL : TYPE_GOLD_BIG} active={true} value={card.gold}/>
+            <Gold size={smallSize ? TYPE_GOLD_SMALL : TYPE_GOLD_BIG} active={true} value={card.gold}/>
         </div>
         <div className={`img-card ${smallSize ? 'img-card-small': ''}  ${itemRightName()}  ${isShowed ? "" : "no-visible"}`}></div>
         <div className={`img-enchantment-card ${smallSize ? 'img-enchantment-card-small': ''}  ${enchantmentClassName()}  ${isShowed ? "" : "no-visible"}`}></div>
