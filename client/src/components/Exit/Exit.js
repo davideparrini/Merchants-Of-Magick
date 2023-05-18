@@ -23,7 +23,7 @@ function Exit() {
     },[remainingTime]);
 
     return (
-        <>            
+        <div>            
             <div className='exit-btn' onClick={()=>{setExitWindowOpen(true); setRemainingTime(5)}}>
                 <label className='exit-label'>Exit</label>
             </div>
@@ -39,7 +39,7 @@ function Exit() {
                     </div>      
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

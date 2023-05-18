@@ -3,6 +3,7 @@ import './Lobby.scss'
 import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
+import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
@@ -31,10 +32,12 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
 
     useEffect(()=>{
-        if(lobby === -1 || lobby === undefined){
+        if(lobby === -1 || lobby === undefined || !statusOnline){
+            alert("Something went wrong or server is offile!");
+            refreshGame();
             navigate(LOGGED_PAGE);
         }
-    },[lobby,navigate]);
+    },[lobby,navigate,statusOnline]);
 
 
     useEffect(()=>{
@@ -49,6 +52,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
             else{ 
                 const gI = gameInit();
                 setGameInitState(gI);
+                
                 navigate(`${GAME_PAGE}/${lobby.id}`)
                 setCountdownGameStart(5);
             }
@@ -240,6 +244,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline ? 'Online' : 'Offline'}</div>
             </div>
+            <FullScreenBtn/>
         </div>
         
     )

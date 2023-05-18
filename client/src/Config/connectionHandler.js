@@ -7,6 +7,8 @@ const serverUrl = "http://localhost:" + serverPort;
 function createSocketConfig() {
 
     const socket = io(serverUrl,{
+        autoConnect: false,
+        reconnection: false,
         reconnectionAttempts : 100,
         reconnectionDelay: 5000,
         reconnectionDelayMax: 10000
@@ -46,6 +48,7 @@ function createSocketConfig() {
     
     //connetti
     function connect(setStatusOnline){
+        socket.connect();
         socket.on("connect", () => {
             setStatusOnline(true)
             console.log("CONNECTED"); 

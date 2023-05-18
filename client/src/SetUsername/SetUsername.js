@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import './SetUsername.scss'
 import { dbFirestore} from '../Config/firestoreDB';
 import { AppContext } from '../App';
+import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 
 
 function SetUsername() {
@@ -36,7 +37,9 @@ function SetUsername() {
                         setValidUsername(null);
                         navigate(LOGGED_PAGE);
                     }
-                }}>Submit</button>
+                }}
+            >Submit</button>
+            <FullScreenBtn/>
         </div>
     )
 }

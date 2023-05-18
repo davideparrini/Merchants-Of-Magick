@@ -53,6 +53,7 @@ import { AppContext } from '../App';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import BoardCards from '../components/BoardCards/BoardCards';
 import Gold from '../components/Gold/Gold';
+import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 
 
 
@@ -121,7 +122,7 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { refreshGame, singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
+    const { fullScreen, refreshGame, singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
     
     
 
@@ -615,7 +616,7 @@ function Game() {
 ////////////////////////////////////////////  RETURN  //////////////////////////////////////////////////////
     return (
         <div className='Game'>
-            <Exit/>
+            
             {
                 singlePlayerGame && openScoreSinglePlayer &&
                     (
@@ -634,7 +635,10 @@ function Game() {
                 
             }
             <ReportBoard reports={reportEndTurn} setReports={setReportEndTurn} endTurn={openReport} setEndTurn={setOpenReport} setGameRestart={setGameRestart} setTurnDone={setTurnDone} reportTime={reportTime} setReportTime={setReportTime}/>
-            <div className={`game-container ${turnDone  ? 'wait-state-game' :''}`}>   
+            <div className={`game-container ${fullScreen ? 'fullscreen' : ''} ${turnDone  ? 'wait-state-game' :''}`}> 
+                <div className='exit-wrapper'>
+                    <Exit/>
+                </div>  
                 <div className='upper-container'>
                     <div className='container-extra-dices'>
                         <img src={titleExtraDices} alt='EXTRA DICES' className='upper-container-titles-extra-dices' ></img>
@@ -959,6 +963,7 @@ function Game() {
                     <Shop shop={shop}/>
                 </div>
             </div>
+            <FullScreenBtn/>
         </div>
     );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext} from 'react'
 import { userAuth } from '../Config/auth';
 import './LoginForm_SignUp.scss'
 import { AppContext } from '../App';
+import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 
 
 function SignUp() {
@@ -63,7 +64,7 @@ function SignUp() {
             <div className='back-btn' 
                 onClick={()=>{navigate(LOGIN_PAGE)}}><label className='back-label'>Back</label>
             </div>
-           
+           <FullScreenBtn/>
         </div>
     )
 }

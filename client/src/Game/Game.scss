@@ -8,34 +8,11 @@
     right: 0px;
 }
 
-.end-turn{
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.877);
-    z-index: 100000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.no-visible-end-turn{
-    visibility: hidden;
-}
-.report-turn{
-    background-color: rgb(209, 122, 71);
-    border-radius: 5px;
-    z-index: 100001;
-    height: 60%;
-    width: 70%; 
-}
 
 .game-container {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop exit exit containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
@@ -43,11 +20,14 @@
     'cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer cardContainer  tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers tablePlayers . btnTurn . .';
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
-    gap: 3px;
+    gap: 5px;
+    margin-top: 10px;
+}
 
-    //DA INSERIRE CON FULL SCREEN
-    // margin-top: 60px;
-    
+.fullscreen{
+    margin-top: 70px;
+    margin-left: 10px;
+    gap:20px;
 }
 .wait-state-game{
     pointer-events: none;
@@ -162,16 +142,17 @@
 }
 
 .container-potion{
+    position: relative;
+    // left: 10px;
+    bottom: 10px;
+    padding-left: 5px;
     display: flex;
-    justify-content: space-between;
-    
+    justify-content: flex-end;
+    align-items: flex-start;
     flex-direction: row;
-    margin: 7px;
-    margin-left: 22px;
-    margin-bottom: 50px;
-    margin-top: 10px;
-
-}
+    gap: 30px;
+    width: 150px;
+}   
 
 .potion-img{
     grid-area: potionImg;
@@ -263,6 +244,7 @@
     display: flex;
     justify-content: center;
     width: 550px;
+    pointer-events: all;
 }
 
 .skills-table{
@@ -302,6 +284,7 @@
     height: 100%;
     width: 100%;
     row-gap: 10px;
+    pointer-events: all;
 }
 
 .legend-container{
@@ -315,7 +298,8 @@
 .shop-container{
     grid-area: btnShop;
     justify-self: center;
-    align-self: center;    
+    align-self: center;   
+    pointer-events: all; 
 }
 
 .score-end-game{
@@ -370,6 +354,13 @@
     filter: brightness(0.6);
 }
 
+.exit-wrapper{
+    grid-area: exit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+}
 
 // @media (max-width:1440px) {
 //     .btn-shop{

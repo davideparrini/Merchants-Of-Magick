@@ -5,12 +5,13 @@ import FriendList from '../components/FriendList/FriendList';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 import ToastNotication from '../components/ToastNotification/ToastNotication';
+import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 
 
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setGameStart, setSinglePlayerGame, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { username, setGameStart, setStatusOnline, setSinglePlayerGame, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -66,6 +67,8 @@ function Logged({setLobbyUpdated}) {
         
     },[singlePlayerGame,countdownGameStart])
 
+
+    
     return (
         <div className='Logged'>
             <div className='opacity-logged'>
@@ -152,6 +155,9 @@ function Logged({setLobbyUpdated}) {
             <div className='username-log'>
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
+                <div className='btn-refresh-connection' onClick={()=> connectionHandlerClient.connect(setStatusOnline)}>
+                    <div className='img-fresh-connection'/>
+                </div>
             </div>
             { 
                 infoInviterLobby !== -1 && (
@@ -186,6 +192,7 @@ function Logged({setLobbyUpdated}) {
                     />
                 )
             }
+            <FullScreenBtn/>
         </div>
     )
 }

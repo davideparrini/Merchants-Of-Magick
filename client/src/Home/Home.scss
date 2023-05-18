@@ -1,0 +1,47 @@
+@use '../variables' as v;
+
+
+
+.full-screen-btn{
+    height: 60px;
+    width: 50%;
+    background: blueviolet;
+
+}
+
+
+.btn-home-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+
+
+.btn-home{
+    height: 60px;
+    width: 50%;
+    color: white;
+    border-radius: 15px;
+    font-size: 21px;
+    text-shadow: v.$text-shadow-stroke;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    cursor: pointer;
+
+}
+
+.btn-home.btn-log-in{
+    background: v.$bg-color-3;
+    border-color: v.$skill-table-color;
+}
+.btn-home.btn-log-in:active{
+    background-color: v.$skill-table-color;
+}
+.btn-home.btn-sign-up{
+    background: v.$primary-color-4;
+    border-color: v.$primary-color;
+}
+.btn-home.btn-sign-up:active{
+    background-color: v.$primary-color;
+}

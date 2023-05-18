@@ -15,12 +15,13 @@ import Logged from './Logged/Logged'
 import SignUp from './LoginForm_SignUp/SignUp';
 import SetUsername from './SetUsername/SetUsername';
 import Winner from './Winner/Winner';
+import Home from './Home/Home';
 
 
 
 
 
-const LOGIN_PAGE = '/';
+const LOGIN_PAGE = '/login';
 const SET_USERNAME =  '/setusername';
 const SIGN_UP_PAGE = '/signup';
 const LOGGED_PAGE = '/lobby';
@@ -32,6 +33,8 @@ const WINNER_PAGE = '/winner';
 export const AppContext = React.createContext();
 
 function App() {
+
+    const[fullScreen,setFullScreen] = useState(false);
 
     const[userAuthenticated,setUserAuthenticated] = useState(false);
     const[userID, setUserID] = useState(-1);
@@ -114,6 +117,9 @@ function App() {
 
 
     const valueContext = useMemo(()=>({
+        fullScreen,
+        setStatusOnline,
+        setFullScreen,
         userAuthenticated, 
         setUserAuthenticated, 
         userID,
@@ -148,7 +154,7 @@ function App() {
         gameInit,
         refreshGame
     
-    }),[userAuthenticated, userID, username, lobby, statusOnline, openToastNotification, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
+    }),[fullScreen, userAuthenticated, userID, username, lobby, statusOnline, openToastNotification, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
 
 
 
@@ -179,16 +185,13 @@ function App() {
         }
     },[]);
 
-    //Use effect per aggiornare lo status Online quando si ha una riconessione
-    useEffect(()=>{
-        setStatusOnline(connectionHandlerClient.socket.connected);
-    },[connectionHandlerClient.socket.connected])
 
 
     return (    
         <div className='App'>
             <AppContext.Provider value={valueContext}>
                 <Routes>
+                    <Route path={'/'} element={<Home/>}/>
                     <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
                     <Route path={SET_USERNAME} element={<SetUsername />}/>
                     <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>

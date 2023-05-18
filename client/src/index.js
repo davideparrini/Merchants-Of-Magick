@@ -11,6 +11,8 @@ Notification.requestPermission(permission => {
     else console.error("Permission was not granted.")
   })
 
+
+  
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 

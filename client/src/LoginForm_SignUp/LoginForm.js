@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import './LoginForm_SignUp.scss'
 import { userAuth } from '../Config/auth';
 import { AppContext } from '../App';
+import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 
 
 
@@ -59,9 +60,10 @@ function LoginForm() {
                     <form className='log-with-form google' 
                         onClick={userAuth.googleLogin} >Log In with Google</form>
                     <form className='log-with-form github'>Log In with GitHub</form>
+                    <button onClick={()=>navigate('/home')}></button>
                 </div>
             </div>
-           
+           <FullScreenBtn/>
         </div>
     )
 }
