@@ -12,6 +12,22 @@ function createSocketConfig() {
         reconnectionDelayMax: 10000
     });
     
+    function sendNotification(message) {
+        if (!("Notification" in window)) {
+          alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+          const notification = new Notification(message);
+        } else if (Notification.permission !== "denied") {
+          // We need to ask the user for permission
+          Notification.requestPermission().then((permission) => {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+              const notification = new Notification(message);
+            }
+          });
+        }
+      }
+
 
     //Metto il socket in ascolto su namespace univoco/privato, per ricevere inviti da altri giocatori
     function registerToInvite(setInfoInviterLobby, setOpenToastNotification){
@@ -24,23 +40,7 @@ function createSocketConfig() {
             setOpenToastNotification(true);
 
             const message = `You are invited in a lobby by ${usernameInviter}.  Would you like to join him?`;
-
-            //send notification
-            if (!("Notification" in window)) {
-                alert("This browser does not support desktop notification");
-              } else if (Notification.permission === "granted") {
-                const notification = new Notification(message);
-            
-              } else if (Notification.permission !== "denied") {
-                // We need to ask the user for permission
-                Notification.requestPermission().then((permission) => {
-                  // If the user accepts, let's create a notification
-                  if (permission === "granted") {
-                    const notification = new Notification(message);
-                    
-                  }
-                });
-              }
+            sendNotification(message);
         });
     }  
     
