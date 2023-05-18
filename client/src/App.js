@@ -37,6 +37,8 @@ function App() {
     const[userID, setUserID] = useState(-1);
     const[statusOnline, setStatusOnline] = useState(true);
     const[username,setUsername] = useState('');
+    const[openToastNotification,setOpenToastNotification] = useState(false);
+
     const[lobby, setLobby] = useState(-1);
    
     const[lobbyUpdated,setLobbyUpdated] = useState(false);
@@ -83,28 +85,6 @@ function App() {
     },[gameInitState,username])
 
 
-
-
-    const logOut = useCallback(()=>{
-        connectionHandlerClient.leaveLobby(username,(c)=>console("Out of the lobby: " + c));
-        setUsername('');
-        setUserAuthenticated(false);
-        setUserID(-1);
-        setLobby(-1);
-        setLobbyUpdated(false);
-        setSinglePlayerGame(false);
-        setGameStart(false);
-        setGameInitState(-1);
-        setGameOnNewTurn(-1);
-        setGameEndState(-1);
-        setGameUpdated(false);
-        setGameEnd(false);
-        navigate(LOGIN_PAGE);
-        console.log("logged out");
-        connectionHandlerClient.disconnect();
-    },[username,navigate])
-
-
     const refreshGame = useCallback(()=>{
         setLobby(-1);
         setLobbyUpdated(false);
@@ -116,8 +96,21 @@ function App() {
         setGameEnd(false);
         setSinglePlayerGame(false);
         connectionHandlerClient.leaveLobby(username);
-    },[username,navigate])
+    },[username])
 
+
+    const logOut = useCallback(()=>{
+        refreshGame();
+        setUsername('');
+        setUserAuthenticated(false);
+        setUserID(-1);
+        navigate(LOGIN_PAGE);
+        console.log("logged out");
+        connectionHandlerClient.disconnect();
+    },[refreshGame, navigate])
+
+
+    
 
 
     const valueContext = useMemo(()=>({
@@ -129,6 +122,8 @@ function App() {
         lobby, 
         setLobby, 
         statusOnline,
+        openToastNotification,
+        setOpenToastNotification,
         gameInitState,
         setGameInitState,
         gameOnNewTurn,
@@ -151,10 +146,9 @@ function App() {
         gameUpdated,
         setGameUpdated,
         gameInit,
-
         refreshGame
     
-    }),[userAuthenticated, userID, singlePlayerGame,statusOnline, username, lobby, gameInitState, gameOnNewTurn, gameEndState, navigate, gameStart, gameUpdated, gameInit, refreshGame]);
+    }),[userAuthenticated, userID, username, lobby, statusOnline, openToastNotification, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
 
 
 

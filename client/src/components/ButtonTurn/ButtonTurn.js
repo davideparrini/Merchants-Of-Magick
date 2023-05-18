@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ButtonTurn.scss'
+import ToastNotication from '../ToastNotification/ToastNotication';
 function ButtonTurnDone({finishTurn,turnDone, nDiceLeft_toUse, gameRestart}) {
     
     //Ref al area dello finishTurnBtn, Close on out-click
@@ -53,19 +54,19 @@ function ButtonTurnDone({finishTurn,turnDone, nDiceLeft_toUse, gameRestart}) {
                 
             }
             }>{!btnStateDone ? "Finish Turn" : "Waiting for others players..." }</button>
-            <div className={`container-finish-turn-alert ${openFinishTurnAlert? 'active-finish-turn-alert' : 'inactive-finish-turn-alert'}`} ref={finishTurnRef}>
-                <div className='message-finish-turn-alert'>Are you sure to finish your turn? <br/>You have more dice to play!</div>
-                <div className='container-btn-finish-turn-alert'>
-                    <button className='btn-finish-turn-alert yes-btn' onClick={()=>{
+            <div ref={finishTurnRef}>
+                <ToastNotication 
+                    question={ 'Are you sure to finish your turn? You have more dice to play!'}
+                    positiveRespose={'Yes'}
+                    negativeRespose={'No'}
+                    handlerPositiveRespose={()=>{ 
                         setBtnStateDone(true);
-                        finishTurn(btnStateDone);
-                        setOpenFinishTurnAlert(false);
-                    }}>Yes</button>
-                    <button className='btn-finish-turn-alert no-btn'onClick={()=>{
-                        setOpenFinishTurnAlert(false);
-                    }}>No</button>
-                </div>
-                
+                        finishTurn();
+                    }}
+                    handlerNegativeRespose={()=>{}}
+                    openState={openFinishTurnAlert}
+                    setOpenState={setOpenFinishTurnAlert}
+                />
             </div>
         </>
         )

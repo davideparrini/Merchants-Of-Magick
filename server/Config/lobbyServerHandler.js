@@ -18,7 +18,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
         lobbies.push(lobby);
         socket.join(lobby.id);
         cb(lobby);
-
+        console.log(username+ ' create a new lobby');
     }
 
     //l'utente joina una lobby tramite ID e con la cb diamo un messaggio di feedback e la lobby joinata
@@ -35,6 +35,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                     socket.join(lobby.id);
                     //dico alla lobby che si è connesso un utente e gli passo l'username
                     socket.broadcast.to(lobby.id).emit("lobby-player-joined",username);
+                    console.log(username + ' joined '+ lobby.leaderLobby +'\'s lobby');
                     cb("OK",lobby);
                 }else{
                     cb("in-game",-1);
@@ -48,7 +49,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
     }
 
     //permette di invitare un utente tramite l'username, la callback da solo un messaggio di feedback
-    function invitePlayer(lobbyID, usernameInvited, cb){
+    function requestInvitePlayer(lobbyID, usernameInviter ,usernameInvited, cb){
         const userSocket = mapUsername_Socket.get(usernameInvited);
         if(userSocket !== undefined){
             if(mapUsername_lobbyIndex.has(usernameInvited)){
@@ -62,16 +63,10 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                         cb("FULL")
                     }else{
                         if(lobby.status !== 'in-game'){
-                            lobby.players.push(usernameInvited);
-
-                            mapUsername_lobbyIndex.set(usernameInvited,indexLobby);
-                            
-                            userSocket.join(lobby.id);
                             //comunico all'utente che fa parte della lobby e gli spedisco la lobby, tramite il namespace registrato all'inizio della connessione
                             // dell' utente
-                            io.emit("invite" + userSocket.id, lobby);
-                            //comunico alla lobby che si è unito un utente e mando il suo username
-                            io.to(lobby.id).emit("lobby-player-joined",usernameInvited);
+                            io.emit("invite" + userSocket.id, lobbyID, usernameInviter);
+                            console.log("Inviter: " + usernameInviter + ' Invited: ' + usernameInvited)
                             cb("OK")
                         }else{
                             cb('in-game')
@@ -96,17 +91,16 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                 
                 lobby.leaderLobby = lobby.players[0];
                 mapUsername_lobbyIndex.delete(username);
-                
+                console.log(username + ' want to left '+ lobby.leaderLobby +'\'s lobby');
                 if(lobby.status === 'in-game'){
                     const gameState = mapLobbyID_GameState.get(lobbyID);
-                    gameState.nPlayersEndTurn--;
+                    gameState.nPlayers--;
                     gameState.players.splice(indexUsername,1);
-
+                    console.log(lobby.leaderLobby +'\'s lobby is in game');
                     if( gameState.nPlayers <= gameState.nPlayersEndTurn ){
                         //Faccio l'update delle carte, ovvero ne creo di nuove, le sostituisco con quelle già giocate/craftate
                         //ed eseguo uno slittamento di una carta al compagno vicino
                         const cardsUpdated = gameLogic.updateCardsTurn(gameState.cards, gameState.players);
-    
                         const response = {
                             quest1: gameState.quest1,
                             quest2: gameState.quest2,
@@ -114,7 +108,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                             cards: cardsUpdated,
                             report: gameState.report
                         }
-                
+                        console.log(lobby.leaderLobby +'\'s lobby update turn');
                         io.to(lobbyID).emit("game-change-turn", response);
     
                         //Faccio un refresh delle strutture dati che non  contengono dati sono persisenti
@@ -131,9 +125,10 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                     mapLobbyID_GameState.delete(lobbyID);
                 }
             }
-            
+            console.log(username + ' left '+ lobby.leaderLobby +'\'s lobby');
             socket.broadcast.to(lobby.id).emit("lobby-player-left",username);
             socket.leave(lobby.id);
+
             
         }
     }
@@ -143,7 +138,8 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
     socket.on("create-lobby", create);
     socket.on("join-lobby", join);
     socket.on("leave-lobby", leave);
-    socket.on("invite-player", invitePlayer);
+    socket.on("invite-player", requestInvitePlayer);
+
 }
 
 export const lobbyHandler = lobbyConnectionHandler;

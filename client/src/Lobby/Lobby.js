@@ -99,8 +99,22 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
                         <button className='btn-add-player' onClick={()=>{
-                            connectionHandlerClient.invitePlayer(lobby.id,playerToAdd,(res)=>{
-                                console.log(res)
+                            connectionHandlerClient.invitePlayer(lobby.id, username, playerToAdd,(res)=>{
+                                switch(res){
+                                    case 'OK': 
+                                        console.log('Ok invited');
+                                        break;
+                                    case 'FULL':
+                                        alert("Lobby full!")
+                                        break;
+                                    case 'in-game':
+                                        alert("The player is in game")
+                                        break;
+                                    case 'ERROR':
+                                        alert("Error, something went wrong!")
+                                        break;
+                                    default: break;
+                                }
                             })
                         }}>Add Player</button>
                     </div>

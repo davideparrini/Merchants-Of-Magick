@@ -4,46 +4,48 @@ import { AppContext } from '../App'
 import ItemShop from '../components/Shop/ItemShop';
 import Gold from '../components/Gold/Gold';
 
-const item = {
-    item: 'warhammer',
-    enchantment: 'fiery',
-    origin: 'of the elvis',
-    gold: 6
-}
+// const item = {
+//     item: 'warhammer',
+//     enchantment: 'fiery',
+//     origin: 'of the elvis',
+//     gold: 6
+// }
 
-const finalReport = {
-    shop: [item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item],
-    quest1: true,
-    quest2: false,
-    order: true,
-    renownedAccessories: true,
-    weaponPrestige: false,
-    eliteArmor: false,
-    gold: 100
-}
+// const finalReport = {
+//     shop: [item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item,item],
+//     quest1: true,
+//     quest2: false,
+//     order: true,
+//     renownedAccessories: true,
+//     weaponPrestige: false,
+//     eliteArmor: false,
+//     gold: 100
+// }
 
-const player1 = {
-    username:'Distraaaaa',
-    report: finalReport,
-    position: 1
-}
-const player2 = {
-    username:'Gioeee',
-    report: finalReport,
-    position: 2
-}
-const player3 = {
-    username:'Brix',
-    report: finalReport,
-    position: 2
-}
-const player4 = {
-    username:'Alfonso',
-    report: finalReport,
-    position: 3
-}
+// const player1 = {
+//     username:'Distraaaaa',
+//     report: finalReport,
+//     position: 1
+// }
+// const player2 = {
+//     username:'Gioeee',
+//     report: finalReport,
+//     position: 2
+// }
+// const player3 = {
+//     username:'Brix',
+//     report: finalReport,
+//     position: 2
+// }
+// const player4 = {
+//     username:'Alfonso',
+//     report: finalReport,
+//     position: 3
+// }
 
-const gameEndState = [player1,player2, player3,player3]
+// const gameEndState = [player1,player2, player3,player3]
+
+
 const TYPE_GOLD_MEDIUM = 'MEDIUM';
 const TYPE_GOLD_BIG = 'BIG';
 
@@ -92,10 +94,11 @@ function Winner() {
                                     <div className='stuff-player-end-game'><div className='title-stuff-end-game'>Elite Armor :</div> {r.report.eliteArmor ? 'Has the skill' : 'No skill'}</div>
                                     <div className='title-stuff-end-game' id='shop-end-game'>SHOP</div>
                                     <div className='container-shop-end-game'>
-                                    {
+                                    {   r.report.shop.length > 0 ?
                                         r.report.shop.map((item,k)=>(
                                             <ItemShop item={item} key={k}/>
                                         ))    
+                                        : <div className='stuff-player-end-game'><div className='title-stuff-end-game'>No item in shop</div></div>
                                     }
                                     </div>
                                 </div>

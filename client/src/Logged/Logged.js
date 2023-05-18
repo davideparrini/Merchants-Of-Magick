@@ -1,21 +1,27 @@
-import React, { useContext, useEffect, useRef, useState} from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState} from 'react'
 import './Logged.scss'
 import { userAuth} from '../Config/auth';
 import FriendList from '../components/FriendList/FriendList';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
+import ToastNotication from '../components/ToastNotification/ToastNotication';
 
 
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setGameStart,setSinglePlayerGame, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { username, setGameStart, setSinglePlayerGame, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
     const[countdownGameStart,setCountdownGameStart] = useState(5);
+
+    const[infoInviterLobby, setInfoInviterLobby] = useState(-1);
+
     const submitLobbyIdRef = useRef();
+
+
 
     //Close submitLobbyId on out click
     useEffect(()=>{
@@ -33,7 +39,7 @@ function Logged({setLobbyUpdated}) {
 
     useEffect(()=>{
         connectionHandlerClient.sendUsername(username);
-        connectionHandlerClient.registerToInvite(setLobby);
+        connectionHandlerClient.registerToInvite(setInfoInviterLobby,setOpenToastNotification);
     },[username])
 
     useEffect(()=>{
@@ -72,7 +78,7 @@ function Logged({setLobbyUpdated}) {
                                 refreshGame();
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
                                     setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby,setLobby,username,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
+                                    connectionHandlerClient.updateLobby(lobby,setLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
                                 })
                                 
                         }}>Create New Lobby</button>
@@ -93,7 +99,7 @@ function Logged({setLobbyUpdated}) {
                                         }
                                 }
                                 window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage( {type:'start-game-single-player', data: config} )
-                                ).catch((e)=>console.log(e));
+                                );
                                 window.navigator.serviceWorker.onmessage = event => {
                                     const message = event.data;
                                     if(message && message.type === 'start-game-single-player'){
@@ -116,6 +122,8 @@ function Logged({setLobbyUpdated}) {
                         connectionHandlerClient.joinLobby(idLobbyJoin,username,(res,lobby)=>{
                             switch(res){
                                 case 'OK': 
+                                    setLobby(lobby);
+                                    connectionHandlerClient.updateLobby( lobby, setLobby, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
                                     break;
                                 case 'FULL':
                                     alert("Lobby full!")
@@ -125,8 +133,7 @@ function Logged({setLobbyUpdated}) {
                                     break;
                                 default: break;
                             }
-                            setLobby(lobby);
-                            connectionHandlerClient.updateLobby( lobby, setLobby, username, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
+                            
                         });
                         
                         
@@ -146,6 +153,39 @@ function Logged({setLobbyUpdated}) {
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
             </div>
+            { 
+                infoInviterLobby !== -1 && (
+                    <ToastNotication 
+                        question={`You are invited in a lobby by ${infoInviterLobby.usernameInviter}.  Would you like to join him?`}
+                        positiveRespose={'Yes'}
+                        negativeRespose={'No'}
+                        handlerNegativeRespose={()=>{
+                            setInfoInviterLobby(-1);
+                        }}
+                        handlerPositiveRespose={()=>{
+                            refreshGame();
+                            connectionHandlerClient.joinLobby(infoInviterLobby.lobbyID, username,(res,newLobby)=>{
+                                switch(res){
+                                    case 'OK': 
+                                        setLobby(newLobby);
+                                        connectionHandlerClient.updateLobby(newLobby, setLobby, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
+                                        setInfoInviterLobby(-1);
+                                        break;
+                                    case 'FULL':
+                                        alert("Lobby full!")
+                                        break;
+                                    case 'ERROR':
+                                        alert("Error, wrong id!")
+                                        break;
+                                    default: break;
+                                }
+                                 
+                            })}}
+                        openState={openToastNotification}
+                        setOpenState={setOpenToastNotification}
+                    />
+                )
+            }
         </div>
     )
 }

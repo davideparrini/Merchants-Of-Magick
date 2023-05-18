@@ -16,8 +16,9 @@
     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
     7px 7px 20px 0px rgba(0,0,0,.1),
     4px 4px 5px 0px rgba(0,0,0,.1);
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: 2px;
+    padding: 20px;
     font-family: "Lucida Console", Monaco, monospace;
     text-shadow: v.$text-shadow-stroke;
     display: flex;
@@ -31,85 +32,4 @@
 .turn-done{
     background:  v.$blue-btn;
     pointer-events: none;
-}
-
-.container-finish-turn-alert{
-    position: absolute;
-    right: 100px;
-    bottom: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 250px;
-    width: 300px;
-    border-radius: 15px;
-    border: v.$border-primary-6px;
-    background: v.$bg-color-2;
-}
-
-.active-finish-turn-alert{
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    transition: 500ms ease;
-    z-index: 1000;
-}
-
-.inactive-finish-turn-alert{
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px);
-    transition: 500ms ease;
-}
-
-.message-finish-turn-alert{
-    height:  50%;
-    width: 80%;
-    background: v.$label-color;
-    color: v.$primary-color;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 7px;
-    font-size: 20px;
-    font-weight: 700;
-    padding: 10px;
-    border: v.$border-primary-4px;
-    display: flex;
-    font-family: "Lucida Console", Monaco, monospace;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap:2px;
-
-}
-.container-btn-finish-turn-alert{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 5px;
-
-}
-
-.btn-finish-turn-alert{
-    height: 50px;
-    width: 120px;
-    border-radius: 10px;
-    border:v.$border-primary-4px;
-    color: white;
-    font-size: 24px;
-    letter-spacing: 2px;
-    font-family: Impact, Charcoal, sans-serif;
-    text-shadow: v.$text-shadow-stroke;
-    margin-bottom: 10px;
-}
-
-.btn-finish-turn-alert:active{
-    filter: contrast(0.7);
-}
-.btn-finish-turn-alert.yes-btn{
-    background:  v.$blue-btn;
-}
-.btn-finish-turn-alert.no-btn{
-    background: #b91b1b;
 }

@@ -11,7 +11,7 @@ $perc-size-x-small:0.6;
     background-size: contain;
     background-repeat: no-repeat;
     background-clip: content-box;
-    z-index: 1000000000000;
+    z-index: 1000;
     height: calc(40px * $perc-size-normal);
     width: calc(40px * $perc-size-normal);
     border-radius: 50%;

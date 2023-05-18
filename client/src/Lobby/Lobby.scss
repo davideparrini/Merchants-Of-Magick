@@ -136,11 +136,12 @@
 
 }
 .field-add-player{
-    height: 50px;
-    width: 350px;
+    height: 30px;
+    width: 330px;
     border-radius: 10px;
     border: 3px solid v.$primary-color;
     font-size: 30px;
+    padding: 10px;
 }
 .btn-add-player{
     height: 40px;
@@ -348,9 +349,10 @@
 }
 .config-box{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: row;
+    width: 50%;
     gap: 10px;
 }
 .label-config{

@@ -449,7 +449,7 @@ function Game() {
         setShowCard2(true);
         setShowCard3(true);
 
-        if(newGameState.cards.length === 0){
+        if(newGameState.cards.length === 1){
             const finalReport = {
                 shop: shop,
                 quest1: quest1Done,
@@ -591,6 +591,7 @@ function Game() {
                 newTurnSinglePlayer(gameOnNewTurn);
             }
             else{
+                
                 newTurn(gameOnNewTurn);
             }
             

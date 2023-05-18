@@ -24,7 +24,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
             const gameInit = gameLogic.gameInit(lobby.players, config);
             io.to(lobbyID).emit("game-start",gameInit);
             cb("OK");
-            console.log("ok")
+            console.log(lobby.leaderLobby + '\'s lobby start the game');
         }else{
             cb("ERROR")
             console.log("err")

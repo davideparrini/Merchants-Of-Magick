@@ -14,9 +14,33 @@ function createSocketConfig() {
     
 
     //Metto il socket in ascolto su namespace univoco/privato, per ricevere inviti da altri giocatori
-    function registerToInvite(setLobby){
-        socket.on("invite" + socket.id,(lobby)=>{
-            setLobby(lobby);
+    function registerToInvite(setInfoInviterLobby, setOpenToastNotification){
+        socket.on("invite" + socket.id,(lobbyID, usernameInviter)=>{
+            const infoInviterLobby = {
+                lobbyID: lobbyID,
+                usernameInviter: usernameInviter
+            }
+            setInfoInviterLobby(infoInviterLobby);
+            setOpenToastNotification(true);
+
+            const message = `You are invited in a lobby by ${usernameInviter}.  Would you like to join him?`;
+
+            //send notification
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+              } else if (Notification.permission === "granted") {
+                const notification = new Notification(message);
+            
+              } else if (Notification.permission !== "denied") {
+                // We need to ask the user for permission
+                Notification.requestPermission().then((permission) => {
+                  // If the user accepts, let's create a notification
+                  if (permission === "granted") {
+                    const notification = new Notification(message);
+                    
+                  }
+                });
+              }
         });
     }  
     
@@ -66,8 +90,8 @@ function createSocketConfig() {
     }
 
    //invita un player tramite username
-    function invitePlayer(lobbyID ,usernameToInvite, cb){
-        socket.emit("invite-player",lobbyID,usernameToInvite,cb);
+    function invitePlayer(lobbyID ,usernameInviter ,usernameToInvite, cb){
+        socket.emit("invite-player",lobbyID, usernameInviter,usernameToInvite,cb);
     }
 
     
@@ -75,7 +99,6 @@ function createSocketConfig() {
     function updateLobby(
                     lobby,
                     setLobby,
-                    myUsername,
                     setLobbyUpdated, 
                     setGameStart, 
                     setGameInitState, 
@@ -90,6 +113,7 @@ function createSocketConfig() {
             lobby.players.push(username);
             setLobby(lobby);
             setLobbyUpdated(true);
+            console.log("Player " + username + " join");
         });
 
         //Aggiorno lobby se qualche player è uscito dalla lobby
@@ -99,6 +123,7 @@ function createSocketConfig() {
             lobby.leaderLobby = lobby.players[0]; 
             setLobby(lobby);
             setLobbyUpdated(true); 
+            console.log("Player " + username + " left");
         });
 
         //Mi metto in ascolto ai cambi di stato (Lobby State -> Game State)
@@ -115,7 +140,7 @@ function createSocketConfig() {
 
         //Mi metto in ascolto per la fine del gioco
         socket.on("game-end",(res)=>{
-            console.log("END STATE"+res)
+            console.log("END STATE "+res)
             setGameEndState(res);
             setGameEnd(true);
         })

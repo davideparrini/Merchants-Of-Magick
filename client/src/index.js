@@ -4,10 +4,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
+Notification.requestPermission(permission => {
+    if (permission === 'granted') {
+  
+    }
+    else console.error("Permission was not granted.")
+  })
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-document.documentElement.requestFullscreen().catch(console.log);
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>
