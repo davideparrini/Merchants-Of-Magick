@@ -6,6 +6,7 @@ const db = getFirestore(firebase);
 // , {localCache: 
 //     persistentLocalCache({tabManager: persistentMultipleTabManager()})
 //   }
+
 function createFirebaseStore() {
 
     async function hasUsername(userID){

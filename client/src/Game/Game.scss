@@ -12,7 +12,7 @@
 .game-container {
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop exit exit containerOrderQuest containerOrderQuest .'
+    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . . . exit'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
@@ -27,7 +27,7 @@
 .fullscreen{
     margin-top: 70px;
     margin-left: 10px;
-    gap:20px;
+    row-gap:20px;
 }
 .wait-state-game{
     pointer-events: none;
@@ -182,7 +182,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    bottom: 30px;
+    bottom: 50px;
 }
 
 .card-container{
@@ -218,24 +218,21 @@
     grid-area: containerOrderQuest;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
 }
 
 .container-quests{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    height: 40%;
+    justify-content: flex-start;
+    gap: 30px;
+    height: 35%;
 }
 .container-order{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-start;
     height: 55%;
-    margin-left: 28px;
-    position: relative;
-    bottom: 10px;
+   
 }
 .players-table{
     grid-area: tablePlayers;
@@ -244,6 +241,7 @@
     display: flex;
     justify-content: center;
     width: 550px;
+    
     pointer-events: all;
 }
 
@@ -260,7 +258,9 @@
     padding: 10px;
     margin: 5px;
     border-radius: 15px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    position: relative;
+    left: 30px;
 }
 
 .container-title-skills{
@@ -357,8 +357,10 @@
 .exit-wrapper{
     grid-area: exit;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    position: relative;
+    right: 10px;
     pointer-events: all;
 }
 

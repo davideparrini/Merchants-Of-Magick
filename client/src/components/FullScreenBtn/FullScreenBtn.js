@@ -7,7 +7,7 @@ function FullScreenBtn() {
     const{fullScreen, setFullScreen} = useContext(AppContext);
 
     return (
-        <div className={`fullscreen-btn ${fullScreen ? 'on-fullscreen' : 'off-fullscreen'}`} 
+        <div className={`fullscreen-btn ${fullScreen ? 'off-fullscreen' : 'on-fullscreen'}`} 
             onClick={()=>{
                 let e = document.getElementById('app-fullscreen');
                 if(!fullScreen){

@@ -55,7 +55,6 @@ function Winner() {
 
     return (
         <div className='Winner'>
-            <div className='raggi-winner'/>
             <div className='big-container-end-game'>
                 <div className='container-end-game'>
                     <div className='title-winner'>RANKING</div>

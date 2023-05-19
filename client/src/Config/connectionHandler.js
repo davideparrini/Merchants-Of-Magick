@@ -1,5 +1,6 @@
 
 import { io } from "socket.io-client";
+import momIcon from './icon-48x48.png'
 
 const serverPort = 8888;
 const serverUrl = "http://localhost:" + serverPort;
@@ -18,13 +19,18 @@ function createSocketConfig() {
         if (!("Notification" in window)) {
           alert("This browser does not support desktop notification");
         } else if (Notification.permission === "granted") {
-          const notification = new Notification(message);
+          const notification = new Notification(message,{
+            icon: momIcon,
+ 
+          });
         } else if (Notification.permission !== "denied") {
           // We need to ask the user for permission
           Notification.requestPermission().then((permission) => {
             // If the user accepts, let's create a notification
             if (permission === "granted") {
-              const notification = new Notification(message);
+              const notification = new Notification(message,{
+                icon: momIcon
+              });
             }
           });
         }
@@ -40,7 +46,6 @@ function createSocketConfig() {
             }
             setInfoInviterLobby(infoInviterLobby);
             setOpenToastNotification(true);
-
             const message = `You are invited in a lobby by ${usernameInviter}.  Would you like to join him?`;
             sendNotification(message);
         });

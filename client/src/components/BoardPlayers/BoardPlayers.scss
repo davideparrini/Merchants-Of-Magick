@@ -95,21 +95,25 @@
 }
 .container-card1-BP{
     height: 100%;
+    width: 156px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    
+    background-color: v.$primary-color-4;
+    border-top: v.$border-primary-4px;
+    border-left: v.$border-primary-4px;
+    border-right: v.$border-primary-4px;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.box-card1-BP{
+    position: relative;
+    right: 4px;
 }
 .next-card{
-    position: relative;
-    top: 12px;
-    height: 30px;
-    border: v.$border-primary-4px;
-    border-top-left-radius: 65px;
-    border-top-right-radius: 65px;
-    width: 95%;
     z-index: 4;
-    background-color: v.$primary-color-4;
     font-size: 17px;
     font-weight: 600;
     color: antiquewhite;

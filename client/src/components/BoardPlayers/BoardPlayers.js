@@ -50,7 +50,10 @@ function BoardPlayers({boardListPlayers,gameRestart}) {
             <div className='container-cards-BP'>
                 <div className='container-card1-BP'>
                     <div className={`${index === 0 ? 'next-card visible' : 'next-card no-visible'}`}>NEXT CARD</div>
-                    <Card isShowed={true} card={playerShowed.cards.card1} smallSize={true}/>
+                    <div className='box-card1-BP'>
+                        <Card isShowed={true} card={playerShowed.cards.card1} smallSize={true}/>
+                    </div>
+                    
                 </div>
                 <Card isShowed={true} card={playerShowed.cards.card2} smallSize={true}/>
                 <Card isShowed={true} card={playerShowed.cards.card3} smallSize={true}/>

@@ -38,7 +38,7 @@ function App() {
 
     const[userAuthenticated,setUserAuthenticated] = useState(false);
     const[userID, setUserID] = useState(-1);
-    const[statusOnline, setStatusOnline] = useState(true);
+    const[statusOnline, setStatusOnline] = useState(false);
     const[username,setUsername] = useState('');
     const[openToastNotification,setOpenToastNotification] = useState(false);
 

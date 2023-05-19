@@ -72,11 +72,12 @@ function Logged({setLobbyUpdated}) {
     return (
         <div className='Logged'>
             <div className='opacity-logged'>
-                <div className='bg-img'/>
+                
                 <div className='container-logged'>
+                    <div className='bg-img'/>
                     <div className='title-logged'/>
                     <div className='container-btn-logged'>
-                        <button className={`logged-btn ${statusOnline  ? '' : 'inactive-btn'}`}
+                        <button className={`logged-btn ${statusOnline && username ? '' : 'inactive-btn'}`}
                             onClick={()=>{
                                 refreshGame();
                                 connectionHandlerClient.createLobby(username,(lobby)=>{
@@ -85,7 +86,7 @@ function Logged({setLobbyUpdated}) {
                                 })
                                 
                         }}>Create New Lobby</button>
-                        <button className={`logged-btn ${statusOnline  ? '' : 'inactive-btn'}`}
+                        <button className={`logged-btn ${statusOnline && username  ? '' : 'inactive-btn'}`}
                             onClick={()=>setOpenSubmitLobbyId(true)}
                         >Join A Lobby</button>
                         <button className='logged-btn'
