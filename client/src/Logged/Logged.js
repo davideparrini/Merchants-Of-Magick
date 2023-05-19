@@ -6,6 +6,7 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 import ToastNotication from '../components/ToastNotification/ToastNotication';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
+import LogOut from '../components/LogOut/LogOut';
 
 
 function Logged({setLobbyUpdated}) {
@@ -143,15 +144,7 @@ function Logged({setLobbyUpdated}) {
                         
                         
                     }}>Join !</button>
-                </div>
-                <div className='log-out' 
-                    onClick={()=>{
-                        if(window.confirm('Are you sure to Log Out?')){
-                            userAuth.logout();
-                        }
-                    }}>
-                    <label className='log-out-label'>LogOut</label>
-                </div>      
+                </div>  
             </div>
             <div className='username-log'>
                 <div className='user-logged'>{username}</div>
@@ -193,6 +186,7 @@ function Logged({setLobbyUpdated}) {
                     />
                 )
             }
+            <LogOut/> 
             <FullScreenBtn/>
         </div>
     )

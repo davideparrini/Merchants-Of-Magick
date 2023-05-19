@@ -161,27 +161,33 @@ function App() {
 
 
     useEffect(()=>{
+        //Controllo lo stato di autenticazione dell'utente, e mi registro ai cambiamenti di tale stato
         const unsub = onAuthStateChanged(auth, (user)=>{
             if(user){
+                //Utente autenticato
                 setUserAuthenticated(true);
                 setUserID(user.uid);
+                //Faccio un check dell'username
+                //hasUsername true -> Ottengo l'username da firestore
+                //false -> L'utente non ha ancora registrato un username (unico), lo forzo a settare un username se vuole procedere 
                 dbFirestore.hasUsername(user.uid).then(hasUsername =>{
                     if(!hasUsername){
                         navigate(SET_USERNAME);
                     }
-                    else{
+                    else{ 
                         dbFirestore.getUsername(user.uid).then(u => setUsername(u));
                     } 
                 })
+                //Connetto l'utente al server
                 connectionHandlerClient.connect(setStatusOnline); 
             }
             else {
+                //utente non autenticato
                 logOut();   
             }
         })
         return ()=>{         
             unsub(); 
-           
         }
     },[]);
 

@@ -76,26 +76,6 @@
     color:rgb(136, 136, 136);
     pointer-events: none;
 }
-.log-out{
-    position: absolute;
-    right: 40px;
-    top: 40px;
-    height: 50px;
-    width: 50px;
-    background-image: url(../images/logOut.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 3;
-    cursor: pointer;
-}
-.log-out-label{
-    color: white;
-    position: relative;
-    top:48px;  
-}
-.log-out:focus,.log-out:active{
-    filter: contrast(0.4);
-}
 .username-log{
     position: absolute;
     top:50px;

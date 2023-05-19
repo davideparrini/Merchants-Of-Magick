@@ -3,6 +3,7 @@ import './SetUsername.scss'
 import { dbFirestore} from '../Config/firestoreDB';
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
+import LogOut from '../components/LogOut/LogOut';
 
 
 function SetUsername() {
@@ -39,6 +40,7 @@ function SetUsername() {
                     }
                 }}
             >Submit</button>
+            <LogOut/>
             <FullScreenBtn/>
         </div>
     )

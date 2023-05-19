@@ -4,6 +4,7 @@ import { userAuth } from '../Config/auth';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
+import LogOut from '../components/LogOut/LogOut';
 
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
@@ -223,14 +224,6 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     }
                     
                 </div>
-                <div className='log-out' 
-                    onClick={()=>{
-                        if(window.confirm('Are you sure to Log Out?')){
-                            userAuth.logout(); 
-                        }
-                    }}>
-                    <label className='log-out-label'>LogOut</label>
-                </div>
                 <div className='back-btn' 
                     onClick={()=>{
                         if(window.confirm('Are you sure to leave the lobby?')){
@@ -244,6 +237,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline ? 'Online' : 'Offline'}</div>
             </div>
+            <LogOut/>
             <FullScreenBtn/>
         </div>
         
