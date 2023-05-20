@@ -24,7 +24,7 @@
 }
 
 .timer{
-    background-image: url('./clock.png');
+    background-image: url(./clock.webp);
     background-size: contain;
     height: 120px;
     width: 120px;

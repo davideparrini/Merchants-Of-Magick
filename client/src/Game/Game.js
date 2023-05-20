@@ -635,10 +635,7 @@ function Game() {
                 
             }
             <ReportBoard reports={reportEndTurn} setReports={setReportEndTurn} endTurn={openReport} setEndTurn={setOpenReport} setGameRestart={setGameRestart} setTurnDone={setTurnDone} reportTime={reportTime} setReportTime={setReportTime}/>
-            <div className={`game-container ${fullScreen ? 'fullscreen' : ''} ${turnDone  ? 'wait-state-game' :''}`}> 
-                <div className='exit-wrapper'>
-                    <Exit/>
-                </div>  
+            <div className={`game-container ${fullScreen ? 'fullscreen' : ''} ${turnDone  ? 'wait-state-game' :''}`}>   
                 <div className='upper-container'>
                     <div className='container-extra-dices'>
                         <img src={titleExtraDices} alt='EXTRA DICES' className='upper-container-titles-extra-dices' ></img>
@@ -963,6 +960,7 @@ function Game() {
                     <Shop shop={shop}/>
                 </div>
             </div>
+            <Exit/>
             <FullScreenBtn/>
         </div>
     );

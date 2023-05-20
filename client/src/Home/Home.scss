@@ -1,14 +1,9 @@
 @use '../variables' as v;
 
-
-
-.full-screen-btn{
-    height: 60px;
-    width: 50%;
-    background: blueviolet;
-
+.Home{
+    height: 100%;
+    width: 100%;
 }
-
 
 .btn-home-container{
     display: flex;
@@ -44,4 +39,12 @@
 }
 .btn-home.btn-sign-up:active{
     background-color: v.$primary-color;
+}
+
+.img-home{
+    background-image: url(./home3.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 60%;
+    height: 60%;
 }

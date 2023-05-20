@@ -197,28 +197,7 @@
 }
 
 
-.back-btn{
-    position: absolute;
-    right: 40px;
-    top: 150px;
-    height: 50px;
-    width: 45px;
-    background-image: url(../images/back.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 1000;
-    cursor: pointer;
-}
-.back-btn:focus,.back-btn:active{
-    filter: contrast(0.4);
-}
 
-.back-label{
-    color: white;
-    position: relative;
-    top: 50px;
-    text-align: center;
-}
 
 .username-log{
     position: absolute;

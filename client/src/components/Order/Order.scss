@@ -41,8 +41,8 @@
 }
 .order-gold{
     position: relative;
-    left: 100px;
-    bottom: 65px; 
+    left: 105px;
+    bottom: 55px; 
 }
 
 .order-img{
@@ -57,39 +57,39 @@
     opacity: 0.8;
 }
 .order-img.fiery{
-    background-image:url(../Card/image/fiery1.png); 
+    background-image:url(../Card/image/fiery1.webp); 
 }
 .order-img.shocking{
-   background-image: url(../Card/image/shocking3.png);
+   background-image: url(../Card/image/shocking3.webp);
 }
 
 .order-img.everlasting{
-   background-image: url(../Card/image/everlasting4.png);
+   background-image: url(../Card/image/everlasting4.webp);
 }
 
 .order-img.divine{
-   background-image: url(../Card/image/divine.png); 
+   background-image: url(../Card/image/divine.webp); 
 }
 
 .order-img.elves{
-   background-image: url(../Card/image/elves_white.png);
+   background-image: url(../Card/image/elves-white.webp);
    scale: (0.95);
   
 }
 
 .order-img.dwarves{
-   background-image: url(../Card/image/dwarves_white.png);
+   background-image: url(../Card/image/dwarves-white.webp);
 }
 
 .order-img.orcs{
-   background-image: url(../Card/image/orcs_white.png); 
+   background-image: url(../Card/image/orcs-white.webp); 
    position: absolute;
    scale: (0.95);
    top: 100px;
    //Non so perchè questa immagine non prende position absolute (dalla classe padre),ma relative 
 }
 .order-img.dragons{
-  background-image: url(../Card/image/dragons_white.png);
+  background-image: url(../Card/image/dragons-white.webp);
 }
 
 .request-order{

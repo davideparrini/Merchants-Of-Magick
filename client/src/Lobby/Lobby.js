@@ -5,6 +5,7 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
+import BackBtn from '../components/BackBtn/BackBtn';
 
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
@@ -224,19 +225,13 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     }
                     
                 </div>
-                <div className='back-btn' 
-                    onClick={()=>{
-                        if(window.confirm('Are you sure to leave the lobby?')){
-                            navigate(LOGGED_PAGE);
-                            refreshGame();              
-                        }
-                    }}><label className='back-label'>Back</label>
-                </div>
+                
             </div>  
             <div className='username-log'>
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline ? 'Online' : 'Offline'}</div>
             </div>
+            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={refreshGame}/>
             <LogOut/>
             <FullScreenBtn/>
         </div>

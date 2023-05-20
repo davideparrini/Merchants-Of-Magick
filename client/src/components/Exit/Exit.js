@@ -23,11 +23,11 @@ function Exit() {
     },[remainingTime]);
 
     return (
-        <div>            
+        <>            
             <div className='exit-btn' onClick={()=>{setExitWindowOpen(true); setRemainingTime(5)}}>
                 <label className='exit-label'>Exit</label>
             </div>
-            <div className={exitWindowOpen ? 'black-bg': 'no-showed-window'}>
+            <div className={exitWindowOpen ? 'black-bg-exit': 'no-showed-window'}>
                 <div className='exit-window'>Are you sure to leave the game?
                     <div className='btn-exit-container'>
                         <button className={remainingTime > 0 ? 'btn-exit wait-leave-btn' :'btn-exit leave-btn' } onClick={()=>{
@@ -39,7 +39,7 @@ function Exit() {
                     </div>      
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

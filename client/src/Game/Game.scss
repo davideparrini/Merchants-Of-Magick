@@ -3,16 +3,16 @@
 .Game{
     height: 100%;
     width: 100%;
-    position: absolute;
-    top: 0px;
-    right: 0px;
+    
 }
 
 
 .game-container {
+    height: 100%;
+    width: 100%;
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
-    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . . . exit'
+    'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . . . .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
     'containerDices_Potion containerDices_Potion skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable skillTable containerOrderQuest containerOrderQuest .'
@@ -21,13 +21,14 @@
     grid-template-rows: 0.5fr repeat(5,1fr);
     grid-template-columns: repeat(22,1fr);
     gap: 5px;
-    margin-top: 10px;
+    position: relative;
+    top: 30px;
 }
 
 .fullscreen{
-    margin-top: 70px;
-    margin-left: 10px;
-    row-gap:20px;
+    top: 60px;
+    left: 10px;
+    row-gap:10px;
 }
 .wait-state-game{
     pointer-events: none;
@@ -90,7 +91,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 
 .dice-left-label{
@@ -182,7 +182,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    bottom: 50px;
+    bottom: 40px;
 }
 
 .card-container{
@@ -220,7 +220,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    
+    gap: 10px;
 }
 
 .container-quests{
@@ -231,7 +231,7 @@
     height: 35%;
 }
 .container-order{
-    height: 55%;
+    height: 57%;
    
 }
 .players-table{
@@ -354,15 +354,6 @@
     filter: brightness(0.6);
 }
 
-.exit-wrapper{
-    grid-area: exit;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    right: 10px;
-    pointer-events: all;
-}
 
 // @media (max-width:1440px) {
 //     .btn-shop{
