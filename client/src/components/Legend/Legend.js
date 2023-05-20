@@ -7,10 +7,10 @@ import leatherImg from '../Skill/iconsAttribute/leather.png'
 import elementalImg from '../Skill/iconsAttribute/elemental.png'
 import arcaneImg from '../Skill/iconsAttribute/arcane.png'
 import wildImg from '../Skill/iconsAttribute/wild.png'
-import d6img from '../ContainerDice/d6.png'
-import d8img from '../ContainerDice/d8.png'
-import d10img from '../ContainerDice/d10.png'
-import d12img from '../ContainerDice/d12.png'
+import d6img from '../ContainerDice/d6.webp'
+import d8img from '../ContainerDice/d8.webp'
+import d10img from '../ContainerDice/d10.webp'
+import d12img from '../ContainerDice/d12.webp'
 
 function Legend() {
 

@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
-import d6img from './d6.png'
-import d8img from './d8.png'
-import d10img from './d10.png'
-import d12img from './d12.png'
+import d6img from './d6.webp'
+import d8img from './d8.webp'
+import d10img from './d10.webp'
+import d12img from './d12.webp'
 import './ContainerDice.scss'
 
 //Tipi dado

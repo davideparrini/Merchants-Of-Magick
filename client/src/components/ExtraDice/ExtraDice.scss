@@ -1,7 +1,7 @@
 @use '../../variables' as v;
 
 .e-dice{
-    background-image: url(./extraDice.png);
+    background-image: url(./extradice.webp);
     background-size: cover;
     height: 55px;
     width: 55px;
@@ -15,7 +15,7 @@
 
 
 .extra-dice-potion{
-    background-image: url(../../Game/images/potion4.png);
+    background-image: url(../../Game/images/potion4.webp);
     background-size: cover;
     display: flex;
     align-items: center;
