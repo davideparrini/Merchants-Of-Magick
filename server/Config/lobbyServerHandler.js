@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { gameLogic } from './gameLogic.js';
 
 
-function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUsername_Socket, mapUsername_lobbyIndex, mapLobbyID_GameState ) {
+function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUsername_Socket, mapUsername_lobbyIndex, handlePlayerLeftGame ) {
 
     //l'utente crea la lobby assegnando un id random, la cb permette di passare la lobby creata all'utente
     function create(username, cb){
@@ -29,7 +29,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
             if(lobby.players.length >= 8){
                 cb("FULL",-1);
             }else{
-                if(lobby.status !== 'in-game'){
+                if(lobby.status === 'in-lobby'){
                     lobby.players.push(username);
                     mapUsername_lobbyIndex.set(username,indexLobby);
                     socket.join(lobby.id);
@@ -80,57 +80,11 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
     }
 
     //utente esce dalla lobby
-    function leave(username){
-        const indexLobby = mapUsername_lobbyIndex.get(username);
-        if (indexLobby != undefined){
-            const lobby = lobbies[indexLobby];
-            const lobbyID = lobby.id;
-            const indexUsername = lobby.players.findIndex((u)=> u === username);
-            if(indexUsername >= 0){
-                lobby.players.splice(indexUsername,1);
-                
-                lobby.leaderLobby = lobby.players[0];
-                mapUsername_lobbyIndex.delete(username);
-                console.log(username + ' want to left '+ lobby.leaderLobby +'\'s lobby');
-                if(lobby.status === 'in-game'){
-                    const gameState = mapLobbyID_GameState.get(lobbyID);
-                    gameState.nPlayers--;
-                    gameState.players.splice(indexUsername,1);
-                    console.log(lobby.leaderLobby +'\'s lobby is in game');
-                    if( gameState.nPlayers <= gameState.nPlayersEndTurn ){
-                        //Faccio l'update delle carte, ovvero ne creo di nuove, le sostituisco con quelle già giocate/craftate
-                        //ed eseguo uno slittamento di una carta al compagno vicino
-                        const cardsUpdated = gameLogic.updateCardsTurn(gameState.cards, gameState.players);
-                        const response = {
-                            quest1: gameState.quest1,
-                            quest2: gameState.quest2,
-                            dices: gameLogic.rollDices(),
-                            cards: cardsUpdated,
-                            report: gameState.report
-                        }
-                        console.log(lobby.leaderLobby +'\'s lobby update turn');
-                        io.to(lobbyID).emit("game-change-turn", response);
-    
-                        //Faccio un refresh delle strutture dati che non  contengono dati sono persisenti
-                        // (cards, report, nPlayersEndTurn vengo riaggiornati durante il turno di partita)
-                        gameState.cards = [];
-                        gameState.report = [];
-                        gameState.nPlayersEndTurn = 0;
-                    }
-                }
-                if(lobby.players.length < 1){
-                    //se l'utente è ultimo membro della lobby, elimino la lobby
-                    lobbies.splice(indexLobby,1);
-                    mapLobbyID_LobbyIndex.delete(lobbyID);
-                    mapLobbyID_GameState.delete(lobbyID);
-                }
-            }
-            console.log(username + ' left '+ lobby.leaderLobby +'\'s lobby');
-            socket.broadcast.to(lobby.id).emit("lobby-player-left",username);
-            socket.leave(lobby.id);
-
-            
-        }
+    function leave(username,lobbyID){
+        handlePlayerLeftGame(username);
+        console.log(username + ' left the lobby ' + lobbyID);
+        socket.broadcast.to(lobbyID).emit("lobby-player-left",username);
+        socket.leave(lobbyID);
     }
 
 

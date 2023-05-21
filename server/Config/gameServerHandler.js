@@ -96,8 +96,10 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
     function playerEndGame(lobbyID, username, playerFinalReport, cb){
         const gameState = mapLobbyID_GameState.get(lobbyID);
         if (gameState != undefined){
+            const indexLobby = mapLobbyID_LobbyIndex.get(lobbyID);
+            const lobby = lobbies[indexLobby];
+            lobby.status = 'end-game';
             gameState.nPlayersEndTurn++;
-
             const reportToSend = {
                 username: username,
                 position:-1,
@@ -107,6 +109,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyI
             gameState.report.push(reportToSend);
 
             if(gameState.nPlayersEndTurn === gameState.nPlayers){
+                lobby.status = 'game-over';
                 const winnerResolution  = gameLogic.winnerResolution(gameState.report);
                 io.to(lobbyID).emit("game-end",winnerResolution);
             }

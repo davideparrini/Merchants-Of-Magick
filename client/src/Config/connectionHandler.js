@@ -87,8 +87,8 @@ function createSocketConfig() {
     }
 
    //esci dalla lobby corrente e smetti di ascoltare i "canali" della lobby
-    function leaveLobby(username){
-        socket.emit("leave-lobby",username);
+    function leaveLobby(username,lobbyID){
+        socket.emit("leave-lobby",username, lobbyID);
         socket.off("lobby-player-joined");
         socket.off("lobby-player-left");
         socket.off("countdown-game-start");

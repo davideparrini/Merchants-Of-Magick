@@ -89,6 +89,7 @@ function App() {
 
 
     const refreshGame = useCallback(()=>{
+        const lobbyID = lobby.id;
         setLobby(-1);
         setLobbyUpdated(false);
         setGameStart(false);
@@ -98,7 +99,7 @@ function App() {
         setGameUpdated(false);
         setGameEnd(false);
         setSinglePlayerGame(false);
-        connectionHandlerClient.leaveLobby(username);
+        connectionHandlerClient.leaveLobby(username,lobbyID);
     },[username])
 
 

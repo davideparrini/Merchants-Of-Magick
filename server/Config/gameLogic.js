@@ -152,6 +152,7 @@ function createGameLogic(){
 
         players.forEach((username) =>{
             let indexPlayer = cards.findIndex((u)=> u.username === username);
+            
             oldListCards.push(cards[indexPlayer].card1);
             oldListCards.push(cards[indexPlayer].card2);
             oldListCards.push(cards[indexPlayer].card3);
