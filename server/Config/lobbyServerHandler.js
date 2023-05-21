@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { gameLogic } from './gameLogic.js';
 
 
-function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_Lobby,mapUsername_Socket, mapUsername_lobbyIndex, handlePlayerLeftGame ) {
+function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket, mapUsername_lobbyID, handlePlayerLeftGame ) {
 
     //l'utente crea la lobby assegnando un id random, la cb permette di passare la lobby creata all'utente
     function create(username, cb){
@@ -13,9 +13,8 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_Lobby,mapUsernam
             leaderLobby : username,
             status: 'in-lobby'
         } 
-        mapUsername_lobbyIndex.set(username, lobbies.length);
-        mapLobbyID_Lobby.set(lobby.id, lobbies.length)
-        lobbies.push(lobby);
+        mapUsername_lobbyID.set(username, lobby);
+        mapLobbyID_Lobby.set(lobby.id, lobby)
         socket.join(lobby.id);
         cb(lobby);
         console.log(username + ' create a new lobby');
@@ -23,22 +22,20 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_Lobby,mapUsernam
 
     //l'utente joina una lobby tramite ID e con la cb diamo un messaggio di feedback e la lobby joinata
     function join(lobbyID, username,cb){
-        const indexLobby = mapLobbyID_Lobby.get(lobbyID);
-        console.log("indexLobby on join "+ indexLobby)
-        if (indexLobby != undefined){
-            const lobby = lobbies[indexLobby];
-            console.log("Lobby on join ")
-            console.log(lobby);
 
+        const lobby = mapLobbyID_Lobby.get(lobbyID);
+
+        if (lobby != undefined){
+            
             if(lobby.players.length >= 8){
                 cb("FULL",-1);
             }else{
                 if(lobby.status === 'in-lobby'){
                     lobby.players.push(username);
-                    mapUsername_lobbyIndex.set(username,indexLobby);
-                    socket.join(lobby.id);
+                    mapUsername_lobbyID.set(username,lobbyID);
+                    socket.join(lobbyID);
                     //dico alla lobby che si è connesso un utente e gli passo l'username
-                    socket.broadcast.to(lobby.id).emit("lobby-player-joined",username);
+                    socket.broadcast.to(lobbyID).emit("lobby-player-joined",username);
                     console.log(username + ' joined '+ lobby.leaderLobby +'\'s lobby');
                     cb("OK",lobby);
                 }else{
@@ -56,13 +53,12 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_Lobby,mapUsernam
     function requestInvitePlayer(lobbyID, usernameInviter ,usernameInvited, cb){
         const userSocket = mapUsername_Socket.get(usernameInvited);
         if(userSocket !== undefined){
-            if(mapUsername_lobbyIndex.has(usernameInvited)){
+            if(mapUsername_lobbyID.has(usernameInvited)){
                 cb("ALREADY_IN_A_LOBBY");
             }
             else{
-                const indexLobby = mapLobbyID_Lobby.get(lobbyID);
-                if(indexLobby != undefined){
-                    const lobby = lobbies[indexLobby];
+                const lobby = mapLobbyID_Lobby.get(lobbyID);
+                if(lobby != undefined){
                     if(lobby.players.length >= 8){
                         cb("FULL")
                     }else{

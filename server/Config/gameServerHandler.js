@@ -2,14 +2,13 @@ import { gameLogic } from "./gameLogic.js";
 
 
 
-function createGameHandler(io, socket, lobbies, mapLobbyID_Lobby, mapLobbyID_GameState){
+function createGameHandler(io, socket, mapLobbyID_Lobby, mapLobbyID_GameState){
 
 
     function gameStartRequest(lobbyID,config,cb){
         
         const lobby = mapLobbyID_Lobby.get(lobbyID);
         if (lobby != undefined){
-            const lobby = lobbies[indexLobby];
             const gameState = {
                 players: [...lobby.players],
                 nPlayers : lobby.players.length,
@@ -96,8 +95,7 @@ function createGameHandler(io, socket, lobbies, mapLobbyID_Lobby, mapLobbyID_Gam
     function playerEndGame(lobbyID, username, playerFinalReport, cb){
         const gameState = mapLobbyID_GameState.get(lobbyID);
         if (gameState != undefined){
-            const indexLobby = mapLobbyID_Lobby.get(lobbyID);
-            const lobby = lobbies[indexLobby];
+            const lobby = mapLobbyID_Lobby.get(lobbyID);
             lobby.status = 'end-game';
             gameState.nPlayersEndTurn++;
             const reportToSend = {
