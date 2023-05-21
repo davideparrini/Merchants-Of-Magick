@@ -131,7 +131,7 @@ $sizeSmall:0.7;
     visibility: hidden;
 }
 .img-card.backpack{
-    background-image: url(./image/backpack3.png);
+    background-image: url(./image/backpack4.png);
 }
 
 .img-card.scroll{
@@ -148,11 +148,15 @@ $sizeSmall:0.7;
 }
 
 .img-card.sword{
-    background-image: url(./image/sword3.png);
+    background-image: url(./image/sword4.png);
+    scale: (1.1);
+    position: relative;
+    left: 15px;
+    top: 10px;
 }
 
 .img-card.staff{
-    background-image: url(./image/staff.png); 
+    background-image: url(./image/staff2.png); 
 }
 
 .img-card.crossbow{
@@ -165,6 +169,12 @@ $sizeSmall:0.7;
 
 .img-card.bracers{
     background-image: url(./image/bracers1.png);
+    scale: (0.9);
+}
+
+.img-card-small.bracers{
+    position: relative;
+    left: 8px;
 }
 
 .img-card.helmet{
@@ -176,9 +186,17 @@ $sizeSmall:0.7;
 }
 
 .img-card.plateArmor{
-    background-image: url(./image/platearmor3.png);
+    background-image: url(./image/platearmor4.png);
     position: relative;
-    left: 20px;
+    left: 35px;
+    top: 15px;
+    scale: (1.1);
+}
+
+.img-card-small.plateArmor{
+    position: relative;
+    left: 25px;
+    top: 10px;
 }
 
 .img-enchantment-card.fiery{
@@ -193,7 +211,7 @@ $sizeSmall:0.7;
 }
 
 .img-enchantment-card.divine{
-    background-image: url(./image/divine.png); 
+    background-image: url(./image/divine2.png); 
 }
 
 .img-origin-card.elves{

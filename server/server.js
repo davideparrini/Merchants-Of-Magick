@@ -18,7 +18,7 @@ const io = new Server(httpServer, {
 const lobbies = [];
 
 //Mapping lobbyID_LobbyIndex nell'array di lobbies
-const mapLobbyID_LobbyIndex = new Map();
+const mapLobbyID_Lobby = new Map();
 
 //Mapping username-socket
 const mapUsername_socket = new Map();
@@ -104,10 +104,13 @@ function handlePlayerLeftGame(username){
 
             //se l'utente era l'ultimo rimasto elimino la lobby
             if(lobby.players.length < 1){
+                console.log("END LOBBYY   OVER UYYSYBSY")
+                
                 //se l'utente è ultimo membro della lobby, elimino la lobby
                 lobbies.splice(indexLobby,1);
-                mapLobbyID_LobbyIndex.delete(lobbyID);
+                mapLobbyID_Lobby.delete(lobbyID);
                 mapLobbyID_GameState.delete(lobbyID);
+                console.log(lobbies)
             }
         }
         
@@ -128,9 +131,9 @@ io.on("connection", (socket) => {
 
     })
     //lobbyHandler è la funzione che mi permette di gestire le interazioni che ci sono tra l'utente e la lobby con cui andrà ad interagire
-    lobbyHandler( io, socket, lobbies,mapLobbyID_LobbyIndex, mapUsername_socket , mapUsername_lobbyIndex, handlePlayerLeftGame );
+    lobbyHandler( io, socket, lobbies,mapLobbyID_Lobby, mapUsername_socket , mapUsername_lobbyIndex, handlePlayerLeftGame );
 
-    gameHandler(io, socket, lobbies, mapLobbyID_LobbyIndex, mapLobbyID_GameState);
+    gameHandler(io, socket, lobbies, mapLobbyID_Lobby, mapLobbyID_GameState);
 
     socket.on("disconnect", () => {
         //Disconnesso
@@ -139,12 +142,14 @@ io.on("connection", (socket) => {
         //Recupero l'username e lo elimino dalle strutture dati
         const username = mapSocketID_Username.get(socket.id);
         const lobbyIndex = mapUsername_lobbyIndex.get(username);
-        const lobby = lobbies[lobbyIndex];
-        handlePlayerLeftGame(username);
-
-        console.log(username + ' left '+ lobby.leaderLobby +'\'s lobby');
-        socket.broadcast.to(lobby.id).emit("lobby-player-left",username);
-        socket.leave(lobby.id);
+        if(lobbyIndex >= 0){
+            const lobby = lobbies[lobbyIndex];
+            handlePlayerLeftGame(username);
+            console.log(username + ' left '+ 'the lobby');
+            socket.broadcast.to(lobby.id).emit("lobby-player-left",username);
+            socket.leave(lobby.id);
+        }
+        
     });
 });
 

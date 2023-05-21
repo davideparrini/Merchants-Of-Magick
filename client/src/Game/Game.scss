@@ -159,6 +159,8 @@
     height: 70px;
     align-self: center;
     justify-self: center;
+    position: relative;
+    left: 10px;
 }
 .potion-label{
     grid-area: nPotions;

@@ -71,8 +71,8 @@ function Winner() {
 
                     }
                     <button className='btn-end-game'onClick={()=>{
-                        navigate(LOGGED_PAGE);
                         refreshGame();
+                        navigate(LOGGED_PAGE);
                     }}>New game</button>
                     </div>
                     <div className='container-end-game-extended'>          

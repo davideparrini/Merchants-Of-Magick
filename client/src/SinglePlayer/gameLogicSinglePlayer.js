@@ -54,6 +54,14 @@ function createGameLogic(){
     const TYPE_ARMOR=['bracers','helmet','greaves','plate armor'];
     const TYPE_WEAPONS=['staff','sword','crossbow','warhammer'];
 
+    const TYPE_DECK_ITEM = 'TYPE_DECK_ITEM';
+    const TYPE_DECK_ENCHANTMENT = 'TYPE_DECK_ENCHANTMENT';
+    const TYPE_DECK_ORIGIN = 'TYPE_DECK_ORIGIN';
+
+    let deckItem = [];
+    let deckEnchantment = [];
+    let deckOrigin = [];
+
     let counter = 1;
     let prevRand = 1;
     const rand = (min, max) => {
@@ -77,7 +85,42 @@ function createGameLogic(){
             default: console.error("Err chooseRandom typeCard"); return;
         }
     }
+
     
+    //Funzione utilis per mischiare un array
+    //Shuffle algorithm -> Fisher-Yates Shuffle
+    function shuffle(array) {
+        var currentIndex = array.length;
+        var randomIndex;
+        
+        while(currentIndex > 0){
+            randomIndex = rand(0, currentIndex-1);
+            currentIndex--;
+
+            //scambio gl'elementi dell'array agl'indici currentIndex e randomIndex
+            [ array[currentIndex], array[randomIndex] ] = [ array[randomIndex] , array[currentIndex]];
+            
+        }
+
+        return array;
+    }
+
+    function createDeck(typeDeck){
+        switch(typeDeck){
+            case TYPE_DECK_ITEM:
+                const newDeckItem = [...craftingItemType].concat([...craftingItemType], [...craftingItemType]);
+                return shuffle(newDeckItem);
+            case TYPE_DECK_ENCHANTMENT:
+                const newDeckEnchantment = [...enchantmentType].concat([...enchantmentType], [...enchantmentType]);
+                return shuffle(newDeckEnchantment);
+            case TYPE_DECK_ORIGIN:
+                const newDeckOrigin = [...originType].concat([...originType], [...originType]);
+                return shuffle(newDeckOrigin);
+            default: return;
+        }
+
+    }
+
     //Crea una nuova carta specificando come paramento il tipo della carta
     function createNewCard(typeCard){
         
@@ -85,27 +128,29 @@ function createGameLogic(){
         var origin = '';
         var gold = 0;
         var enchantment = '';
-        
-        
+        if(deckItem.length === 0) deckItem = createDeck(TYPE_DECK_ITEM);
+        if(deckEnchantment.length === 0) deckEnchantment = createDeck(TYPE_DECK_ENCHANTMENT);
+        if(deckOrigin.length === 0) deckOrigin = createDeck(TYPE_DECK_ORIGIN);
+
         switch(t_card){
             case typeCard_NO_ENCHANTMENT:
-                origin = originType[rand(0,originType.length-1)];
+                origin = deckOrigin.pop();
                 gold = rand(3,5);
                 break;
             case typeCard_NO_ORIGIN:
-                enchantment = enchantmentType[rand(0,enchantmentType.length-1)];
+                enchantment = deckEnchantment.pop();
                 gold = rand(3,5);
                 break;
             case typeCard_BOTH:
-                enchantment = enchantmentType[rand(0,enchantmentType.length-1)];
-                origin = originType[rand(0,originType.length-1)];
+                enchantment = deckEnchantment.pop();
+                origin = deckOrigin.pop();
                 gold = rand(5,7);
                 break;
             default: console.error("Err createNewCard"); return;
         }
         
         const card = {
-            item: craftingItemType[rand(0,craftingItemType.length-1)],
+            item: deckItem.pop(),
             gold: gold,
             enchantment: enchantment,
             origin: origin,

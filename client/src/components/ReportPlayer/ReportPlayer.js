@@ -26,6 +26,7 @@ function ReportBoard({ reportTime, setReportTime, reports, setReports,endTurn,se
     return (
         <div className={`ReportPlayer ${endTurn ? '' : 'no-active-report'}`}> 
             <div className='title-report-player'>Report of the turn</div>
+            <div className='bg-img-report'/>
             <div className='container-report'>
                 {
                     reports.map((r,i)=>(

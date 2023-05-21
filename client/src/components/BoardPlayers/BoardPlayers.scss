@@ -99,6 +99,15 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background-color: transparent;
+    border: none;
+}
+.container-card1-nc-BP{
+    height: 100%;
+    width: 156px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     background-color: v.$primary-color-4;
     border-top: v.$border-primary-4px;
     border-left: v.$border-primary-4px;

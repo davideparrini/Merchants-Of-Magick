@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { gameLogic } from './gameLogic.js';
 
 
-function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUsername_Socket, mapUsername_lobbyIndex, handlePlayerLeftGame ) {
+function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_Lobby,mapUsername_Socket, mapUsername_lobbyIndex, handlePlayerLeftGame ) {
 
     //l'utente crea la lobby assegnando un id random, la cb permette di passare la lobby creata all'utente
     function create(username, cb){
@@ -14,18 +14,22 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
             status: 'in-lobby'
         } 
         mapUsername_lobbyIndex.set(username, lobbies.length);
-        mapLobbyID_LobbyIndex.set(lobby.id, lobbies.length)
+        mapLobbyID_Lobby.set(lobby.id, lobbies.length)
         lobbies.push(lobby);
         socket.join(lobby.id);
         cb(lobby);
-        console.log(username+ ' create a new lobby');
+        console.log(username + ' create a new lobby');
     }
 
     //l'utente joina una lobby tramite ID e con la cb diamo un messaggio di feedback e la lobby joinata
     function join(lobbyID, username,cb){
-        const indexLobby = mapLobbyID_LobbyIndex.get(lobbyID);
+        const indexLobby = mapLobbyID_Lobby.get(lobbyID);
+        console.log("indexLobby on join "+ indexLobby)
         if (indexLobby != undefined){
             const lobby = lobbies[indexLobby];
+            console.log("Lobby on join ")
+            console.log(lobby);
+
             if(lobby.players.length >= 8){
                 cb("FULL",-1);
             }else{
@@ -56,7 +60,7 @@ function lobbyConnectionHandler(io, socket, lobbies, mapLobbyID_LobbyIndex,mapUs
                 cb("ALREADY_IN_A_LOBBY");
             }
             else{
-                const indexLobby = mapLobbyID_LobbyIndex.get(lobbyID);
+                const indexLobby = mapLobbyID_Lobby.get(lobbyID);
                 if(indexLobby != undefined){
                     const lobby = lobbies[indexLobby];
                     if(lobby.players.length >= 8){

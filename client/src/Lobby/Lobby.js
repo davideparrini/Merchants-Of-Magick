@@ -35,7 +35,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
     useEffect(()=>{
         if(lobby === -1 || lobby === undefined || !statusOnline){
-            alert("Something went wrong or server is offile!");
+            alert("Something went wrong or server is offline!");
             refreshGame();
             navigate(LOGGED_PAGE);
         }
@@ -167,7 +167,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                         <option value={60}>60 s</option>
                                         <option value={120}>120 s</option>
                                         <option value={250}>250 s</option>
-                                        <option value={300}>300 s</option>
+                                        <option value={300} selected>300 s</option>
                                         <option value={400}>400 s</option>
                                         <option value={500}>500 s</option>
                                     </select>
@@ -177,10 +177,10 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                     <select name='nTurn' className= 'select-config' onChange={(e)=>{
                                         setConfigNTurn(e.target.value)
                                     }}>
-                                        <option value={2}>4</option>
-                                        <option value={2}>5</option>
+                                        <option value={4}>4</option>
+                                        <option value={5}>5</option>
                                         <option value={8}>8</option>
-                                        <option value={10}>10</option>
+                                        <option value={10} selected>10</option>
                                         <option value={15}>15</option>
                                         <option value={20}>20</option>
                                     </select>
@@ -190,7 +190,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                     <select name='nPotion' className= 'select-config'onChange={(e)=>{
                                         setConfigNPotion(e.target.value)
                                     }}>
-                                        <option value={0}>0</option>
+                                        <option value={0} selected>0</option>
                                         <option value={1}>1</option>
                                         <option value={2}>2</option>
                                         <option value={3}>3</option>
@@ -204,7 +204,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                         setConfigReportTime(e.target.value)
                                     }}>
                                         <option value={5}>5 s</option>
-                                        <option value={10}>10 s</option>
+                                        <option value={10} selected>10 s</option>
                                         <option value={15}>15 s</option>
                                         <option value={20}>20 s</option>
                                         <option value={30}>30 s</option>
@@ -216,7 +216,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                         setConfigDicePerTurn(e.target.value)
                                     }}>
                                         <option value={1}>1</option>
-                                        <option value={2}>2</option>
+                                        <option value={2} selected>2</option>
                                         <option value={3}>3</option>
                                     </select>
                                 </div>

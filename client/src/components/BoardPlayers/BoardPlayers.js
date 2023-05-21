@@ -48,7 +48,7 @@ function BoardPlayers({boardListPlayers,gameRestart}) {
             </div>
              <button className='find-next-card' onClick={()=>{setIndex(0); setPlayerShowed(boardListPlayers[0])}}>NC</button>
             <div className='container-cards-BP'>
-                <div className='container-card1-BP'>
+                <div className={`${index === 0 ? 'container-card1-nc-BP' : 'container-card1-BP'}`}>
                     <div className={`${index === 0 ? 'next-card visible' : 'next-card no-visible'}`}>NEXT CARD</div>
                     <div className='box-card1-BP'>
                         <Card isShowed={true} card={playerShowed.cards.card1} smallSize={true}/>
