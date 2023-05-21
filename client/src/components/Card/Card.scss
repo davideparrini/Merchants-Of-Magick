@@ -111,7 +111,7 @@ $sizeSmall:0.7;
     background: v.$card-color-0;
 }
 .no-showed{
-    background: url(./image/backcard6-darker.webp);
+    background: url(./image/backCard6_darker.png);
     background-size: cover;
     background-repeat:no-repeat ;
     transform: rotateY(180deg);
@@ -130,95 +130,98 @@ $sizeSmall:0.7;
 .no-visible{
     visibility: hidden;
 }
-.backpack{
-    background-image: url(./image/backpack3.webp);
+.img-card.backpack{
+    background-image: url(./image/backpack3.png);
 }
 
-.scroll{
-    background-image: url(./image/scroll1.webp);
+.img-card.scroll{
+    background-image: url(./image/scroll1.png);
 }
 
-.ring{
-    background-image: url(./image/ring2.webp);
+.img-card.ring{
+    background-image: url(./image/ring1.png);
+    
 }
 
-.grimoire{
-    background-image: url(./image/grimoire3.webp);
+.img-card.grimoire{
+    background-image: url(./image/grimoire3.png);
 }
 
-.sword{
-    background-image: url(./image/sword3.webp);
+.img-card.sword{
+    background-image: url(./image/sword3.png);
 }
 
-.staff{
-    background-image: url(./image/staff.webp); 
+.img-card.staff{
+    background-image: url(./image/staff.png); 
 }
 
-.crossbow{
-    background-image: url(./image/crossbow2.webp);
+.img-card.crossbow{
+    background-image: url(./image/crossbow2.png);
 }
 
-.warhammer{
-    background-image: url(./image/warhammer.webp);
+.img-card.warhammer{
+    background-image: url(./image/warhammer.png);
 }
 
-.bracers{
-    background-image: url(./image/bracers2.webp);
+.img-card.bracers{
+    background-image: url(./image/bracers1.png);
 }
 
-.helmet{
-    background-image: url(./image/helmet.webp);
+.img-card.helmet{
+    background-image: url(./image/helmet1.png);
 }
 
-.greaves{
-    background-image: url(./image/greaves.webp);
+.img-card.greaves{
+    background-image: url(./image/greaves1.png);
 }
 
-.plateArmor{
-    background-image: url(./image/platearmor1.webp);
+.img-card.plateArmor{
+    background-image: url(./image/platearmor3.png);
+    position: relative;
+    left: 20px;
 }
 
-.fiery{
-     background-image:url(./image/fiery1.webp); 
+.img-enchantment-card.fiery{
+     background-image:url(./image/fiery1.png); 
 }
-.shocking{
-    background-image: url(./image/shocking3.webp);
-}
-
-.everlasting{
-    background-image: url(./image/everlasting4.webp);
+.img-enchantment-card.shocking{
+    background-image: url(./image/shocking3.png);
 }
 
-.divine{
-    background-image: url(./image/divine.webp); 
+.img-enchantment-card.everlasting{
+    background-image: url(./image/everlasting4.png);
 }
 
-.elves{
-    background-image: url(./image/elves-white.webp);
+.img-enchantment-card.divine{
+    background-image: url(./image/divine.png); 
 }
 
-.dwarves{
-    background-image: url(./image/dwarves-white.webp);
+.img-origin-card.elves{
+    background-image: url(./image/elves_white.png);
 }
 
-.orcs{
-    background-image: url(./image/orcs-white.webp); 
+.img-origin-card.dwarves{
+    background-image: url(./image/dwarves_white.png);
+}
+
+.img-origin-card.orcs{
+    background-image: url(./image/orcs_white.png); 
     position: relative;
     bottom: 10px;
     scale: (0.9);
 }
-.dragons{
-   background-image: url(./image/dragons-white.webp);
+.img-origin-card.dragons{
+   background-image: url(./image/dragons_white.png);
 }
-.no-origin{
-    background-image: url(./image/no-origin1.webp);
+.img-origin-card.no-origin{
+    background-image: url(./image/no-origin1.png);
     position: relative;
     right: 17px;
     bottom: 17px;
     scale: (1.1);
 }
-.no-enchantment{
-    background-image: url(./image/no-enchantment1.webp);
+.img-enchantment-card.no-enchantment{
+    background-image: url(./image/no-enchantment1.png);
     position: relative;
     scale:(1.1);
     left: 5px;

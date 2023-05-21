@@ -18,12 +18,12 @@ import Skill from '../components/Skill/Skill';
 import Card from '../components/Card/Card';
 import Legend from '../components/Legend/Legend';
 
-import titleCraftingSkills from './images/craftingskilltitle2.webp'
-import titleMagicResearch from './images/magicresearchtitle2.webp'
-import titleDiceLeft from './images/dicelefttitle2.webp'
-import titleNTurn from './images/turnntitle.webp'
-import titleExtraDices from './images/extradicestitle.webp'
-import potionImg from './images/potion4.webp'
+import titleCraftingSkills from './images/craftingSkillTitle2.png'
+import titleMagicResearch from './images/magicResearchTitle2.png'
+import titleDiceLeft from './images/diceLeftTitle2.png'
+import titleNTurn from './images/turnNTitle.png'
+import titleExtraDices from './images/extraDicesTitle.png'
+import potionImg from './images/potion4.png'
 
 import backpack from '../components/Skill/skillsJson/backpack.json'
 import scroll from '../components/Skill/skillsJson/scroll.json'

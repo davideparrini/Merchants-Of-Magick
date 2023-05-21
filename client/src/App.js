@@ -107,7 +107,7 @@ function App() {
         setUsername('');
         setUserAuthenticated(false);
         setUserID(-1);
-        navigate(LOGIN_PAGE);
+        navigate('/');
         console.log("logged out");
         connectionHandlerClient.disconnect();
     },[refreshGame, navigate])

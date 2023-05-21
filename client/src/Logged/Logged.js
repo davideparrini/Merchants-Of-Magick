@@ -9,6 +9,7 @@ import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
 
 
+
 function Logged({setLobbyUpdated}) {
 
 
@@ -186,7 +187,7 @@ function Logged({setLobbyUpdated}) {
                     />
                 )
             }
-            <LogOut/> 
+            <LogOut/>           
             <FullScreenBtn/>
         </div>
     )

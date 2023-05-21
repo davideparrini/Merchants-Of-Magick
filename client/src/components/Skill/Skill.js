@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './Skill.scss'
-import steelImg from './iconsAttribute/steel.webp'
-import woodImg from './iconsAttribute/wood7.webp'
-import leatherImg from './iconsAttribute/leather.webp'
-import elementalImg from './iconsAttribute/elemental.webp'
-import arcaneImg from './iconsAttribute/arcane.webp'
-import wildImg from './iconsAttribute/wild.webp'
+import steelImg from './iconsAttribute/steel.png'
+import woodImg from './iconsAttribute/wood7.png'
+import leatherImg from './iconsAttribute/leather.png'
+import elementalImg from './iconsAttribute/elemental.png'
+import arcaneImg from './iconsAttribute/arcane.png'
+import wildImg from './iconsAttribute/wild.png'
 import Gold from '../Gold/Gold'
 
 

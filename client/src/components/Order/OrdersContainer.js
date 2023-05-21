@@ -18,6 +18,17 @@ function OrdersContainer({order, setAdventurerQuestDone, skillsGained,setNPotion
     },[skillsGained, order.typeOrder]);
 
     
+    const originRightName = useCallback(()=>{
+        switch(order.typeOrder){
+            case 'of the elves': return 'elves';
+            case 'of the dwarves': return 'dwarves';
+            case 'of the orcs': return 'orcs';
+            case 'of the dragons': return 'dragons';
+           default: return order.typeOrder;
+        }
+    },[order.typeOrder]);
+
+
     useEffect(()=>{
         if(checkOrderRequest(order.order1) && !orderDone1) {
             setNOrderDone((n)=>(n+1));
@@ -53,7 +64,7 @@ function OrdersContainer({order, setAdventurerQuestDone, skillsGained,setNPotion
     return (
         <div className={`order-card ${orderDone1 && orderDone2 && orderDone3 ? 'order-done' : ''}`}>
             <div className='order-title'>{order.adventurer}</div>
-            <div className ={`order-img ${order.typeOrder}`}/>
+            <div className ={`order-img ${originRightName()}`}/>
             <div className='order-gold' >
                 <Gold value={order.gold} size={TYPE_GOLD_MEDIUM} active={orderDone1 && orderDone2 && orderDone3}/>
             </div>

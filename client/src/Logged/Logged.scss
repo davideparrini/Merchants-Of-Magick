@@ -9,7 +9,7 @@
 .opacity-logged{
     height: 100%;
     width: 100%;
-    background: #00000098;
+    background: v.$black-bg;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +26,7 @@
 }
 
 .title-logged{
-    background-image: url(./titleLogged4.png);
+    background-image: url(../images/title-merchants-of-magick.png);
     background-size: contain;
     background-repeat: no-repeat;
     height: 50%;
@@ -35,12 +35,14 @@
 }
 .bg-img{
     position: absolute;
-    background-image: url(./bgLogged4.png);
-    background-size: contain;
+    background-image: url(./bg2.jpg);
+    
+    background-size: cover;
     background-repeat: no-repeat;
+    // aspect-ratio: 4/3;
     height: 70%;
     width: 60%;
-    opacity: 0.4;
+    opacity: 0.2;
     z-index: 2;
 
 }
@@ -192,7 +194,7 @@
 .img-fresh-connection{
     height: 100%;
     width: 100%;
-    background-image: url(./refresh.png);
+    background-image: url(./refresh.webp);
     background-size: contain;
     background-repeat: no-repeat;
     filter: drop-shadow(1px 1px 1px black);

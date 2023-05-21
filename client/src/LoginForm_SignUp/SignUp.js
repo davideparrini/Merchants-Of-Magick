@@ -3,6 +3,7 @@ import { userAuth } from '../Config/auth';
 import './LoginForm_SignUp.scss'
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
+import BackBtn from '../components/BackBtn/BackBtn';
 
 
 function SignUp() {
@@ -61,10 +62,8 @@ function SignUp() {
                     <form className='log-with-form github'>Sign Up with GitHub</form>
                 </div>
             </div>
-            <div className='back-btn' 
-                onClick={()=>{navigate(LOGIN_PAGE)}}><label className='back-label'>Back</label>
-            </div>
            <FullScreenBtn/>
+           <BackBtn pageToBack={'/'} alert={false} actionToDo={()=>{}}/>
         </div>
     )
 }

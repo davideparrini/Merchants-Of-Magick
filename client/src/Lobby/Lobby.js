@@ -231,7 +231,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                 <div className='user-logged'>{username}</div>
                 <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline ? 'Online' : 'Offline'}</div>
             </div>
-            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={refreshGame}/>
+            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={refreshGame} message={'Are you sure to leave the lobby?'}/>
             <LogOut/>
             <FullScreenBtn/>
         </div>

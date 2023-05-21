@@ -3,8 +3,33 @@
 .Home{
     height: 100%;
     width: 100%;
+    display: flex;
 }
-
+.bg-black-home{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background:v.$black-bg;
+    z-index: 1;
+}
+.wrapper-home{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    z-index: 2;
+}
+.wrapper-right-home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    gap: 70px;
+    
+}
 .btn-home-container{
     display: flex;
     flex-direction: row;
@@ -14,11 +39,11 @@
 
 
 .btn-home{
-    height: 60px;
-    width: 50%;
+    height: 80px;
+    width: 300px;
     color: white;
     border-radius: 15px;
-    font-size: 21px;
+    font-size: 30px;
     text-shadow: v.$text-shadow-stroke;
     word-spacing: 3px;
     font-family: Impact, Charcoal, sans-serif;
@@ -42,9 +67,48 @@
 }
 
 .img-home{
-    background-image: url(./home3.webp);
+    // position: absolute;
+    // top: 10%;
+    // left: 10%;
+    background-image: url(./home3.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    aspect-ratio: 16/9;
+    height: 70%;
+    width: 35%;
+    border-radius: 20px;
+}
+.wrapper-title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+.title-home{
+    background-image: url(../images/title-merchants-of-magick.png);
     background-size: contain;
     background-repeat: no-repeat;
-    width: 60%;
-    height: 60%;
+    height: 300px;
+    width: 100%;
+}
+.credit-home{
+    background-image: url(../images/clarance-simpson.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height:40px;
+    width: 50%;
+    position: relative;
+    bottom: 30px;
+}
+.crafted-by{
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    background-image: url(../images/crafted-by.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height:50px;
+    width: 400px;
+    z-index: 3;
 }

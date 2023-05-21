@@ -67,14 +67,14 @@
 }
 .inc-btn{
     grid-area: btnInc;
-    background: url(./plus.webp);
+    background: url(./plus.png);
     background-size: cover;
     justify-self: self-end;
     
 }
 .dec-btn{
     grid-area: btnDec;
-    background: url(./menus.webp);
+    background: url(./menus.png);
     background-size: cover;
     justify-self: self-start;
 }

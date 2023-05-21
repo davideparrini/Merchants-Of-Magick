@@ -3,6 +3,7 @@ import './LoginForm_SignUp.scss'
 import { userAuth } from '../Config/auth';
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
+import BackBtn from '../components/BackBtn/BackBtn';
 
 
 
@@ -63,6 +64,7 @@ function LoginForm() {
                 </div>
             </div>
            <FullScreenBtn/>
+           <BackBtn actionToDo={()=>{}} pageToBack={'/'} alert={false}/>
         </div>
     )
 }

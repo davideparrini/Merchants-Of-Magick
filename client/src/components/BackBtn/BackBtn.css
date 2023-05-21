@@ -4,7 +4,7 @@
     top: 150px;
     height: 50px;
     width: 45px;
-    background-image: url(./back.png);
+    background-image: url(./back.webp);
     background-size: contain;
     background-repeat: no-repeat;
     z-index: 1000;
