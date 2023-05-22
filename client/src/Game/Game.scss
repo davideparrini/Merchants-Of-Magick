@@ -3,12 +3,12 @@
 .Game{
     height: 100%;
     width: 100%;
-    
 }
 
 
 .game-container {
     height: 100%;
+    max-height: 1050px;
     width: 100%;
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
@@ -145,13 +145,13 @@
     position: relative;
     // left: 10px;
     bottom: 10px;
-    padding-left: 5px;
+    
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: flex-start;
     flex-direction: row;
-    gap: 30px;
-    width: 150px;
+    gap: 18px;
+    width: 100%;
 }   
 
 .potion-img{
@@ -159,8 +159,8 @@
     height: 70px;
     align-self: center;
     justify-self: center;
-    position: relative;
-    left: 10px;
+    padding-left: 20px;
+    padding-right: 10px;
 }
 .potion-label{
     grid-area: nPotions;
@@ -247,53 +247,123 @@
     pointer-events: all;
 }
 
+// .skills-table{
+//     grid-area: skillTable;
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     min-width: fit-content;
+//     max-width: max-content;
+//     min-height: 330px;
+//     height: 80%;
+//     background: v.$skill-table-color;
+//     padding: 10px;
+//     margin: 5px;
+//     border-radius: 15px;
+//     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+//     position: relative;
+//     left: 30px;
+// }
+
+// .container-title-skills{
+//     display: flex;
+//     flex-direction: column;
+//     width: 50%;
+//     height: 100%;
+//     max-height: 290px;
+// }
+
+// .title-skills{
+//     align-self: center;
+//     height: 60px;
+//     width: 365px;
+//     margin-bottom: 20px;
+// }
+// .skills-container{
+//     display: flex;
+//     flex-direction: column;
+//     flex-wrap: wrap;
+//     height: 100%;
+//     width: 100%;
+//     row-gap: 10px;
+//     pointer-events: all;
+// }
+
+
 .skills-table{
     grid-area: skillTable;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-width: 1350px;
-    max-width: max-content;
-    min-height: 330px;
+    display: grid;
+    grid-template-areas: 
+    'titleSkill1 titleSkill2'
+    'skills1 skills2';
+    grid-template-rows: 10% 85%;
+    grid-template-columns: 50% 50%;
+    row-gap: 20px;
+    min-width: 1220px;
+    width: 95%;
+    min-height: 380px;
+    max-height: 420px;
     height: 80%;
     background: v.$skill-table-color;
     padding: 10px;
+    padding-top: 20px;
     margin: 5px;
     border-radius: 15px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     position: relative;
     left: 30px;
 }
-
-.container-title-skills{
+.title-skills-table-container{
     display: flex;
-    flex-direction: column;
-    width: 50%;
-    height: 100%;
-    max-height: 290px;
+    align-items: center;
+    justify-content: center;
 }
-
 .title-skills{
-    align-self: center;
     height: 60px;
     width: 365px;
-    margin-bottom: 20px;
+    
 }
+
+#title-skills1{
+    grid-area: titleSkill1;
+}
+
+#title-skills2{
+    grid-area: titleSkill2;
+}
+
 .skills-container{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    
+    justify-content: flex-start;
+    column-gap: 5px;
     height: 100%;
     width: 100%;
-    row-gap: 10px;
+    row-gap: 15px;
     pointer-events: all;
 }
+
+
+#crafting-skills{
+    grid-area: skills1;
+    align-items: flex-start;
+}
+
+#magic-research-skills{
+    grid-area: skills2;
+    align-items: flex-end;
+}
+
+
 
 .legend-container{
     grid-area: legenda;
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    z-index: 6;
 }
 
 
@@ -357,11 +427,230 @@
 }
 
 
-// @media (max-width:1440px) {
-//     .btn-shop{
-//         border: 2px solid v.$primary-color;
-//         height: 80px;
-//         width: 80px;
+$scaling-small-screen : (0.9);
+$scaling-big-screen : (1.2);
 
-//     }
-// }
+@media (height < 900px ) ,(width < 1900px) {
+    
+    
+
+    .container-dices-potion{
+        scale:($scaling-small-screen);
+        width: 130%;
+    }
+    .container-potion{
+        position: relative;
+        left: 15px;
+        gap: 27px;
+    }
+
+    .potion-img{
+        position: relative;
+        right: 10px;
+    }
+    .btn-turn-container{
+        scale:($scaling-small-screen);
+    }
+
+    .card-container{
+        scale:($scaling-small-screen);
+        width: 111%;
+    }
+    
+    .container-order-quests{
+        scale:($scaling-small-screen);
+    }
+    .container-quests{
+        scale:($scaling-small-screen);
+    }
+    .container-order{
+        scale:($scaling-small-screen);
+    }
+    .players-table{
+        scale:($scaling-small-screen);
+    }
+
+    .skills-table{
+        height: 60%;
+        min-height: 374px;
+        padding: 5px;
+        padding-top: 10px;
+        row-gap: 10px;
+    }
+
+    .title-skills-table-container{
+        scale:($scaling-small-screen);
+    }
+    .title-skills{
+        scale:($scaling-small-screen);
+    }
+    .skills-container{
+        scale:($scaling-small-screen);
+        width:  109%;
+    }
+
+    #crafting-skills{
+        position: relative;
+        right: 30px;
+        align-items: flex-start;
+    }
+    
+    #magic-research-skills{
+        position: relative;
+        right: 30px;
+        align-items: flex-end;
+    }
+    .legend-container{
+        scale:($scaling-small-screen);
+        position: relative;
+        top: 10px;
+        left: 30px;
+    }
+    .shop-container{
+        scale:($scaling-small-screen);
+    }
+    .score-end-game{
+        scale:($scaling-small-screen);
+    }
+    .container-gold-score{
+        scale:($scaling-small-screen);
+    }
+    .btn-score-end-game{
+        scale:($scaling-small-screen);
+    }
+}
+
+
+
+@media (height > 1200px ) and (width > 2400px) {
+    
+    .game-container{
+        padding-top: 50px;
+        padding-left: 50px;
+        padding-right: 50px;
+        max-height: 1200px;
+    }
+    .upper-container{
+        scale:(1.1);
+        margin-bottom: 40px;
+    }
+
+    .upper-container-titles{
+        scale:($scaling-big-screen);
+    }
+
+    .upper-container-titles-extra-dices{
+        scale:($scaling-big-screen);
+    }
+    .timer{
+        scale:($scaling-big-screen);
+    }
+    .container-extra-dices{
+        scale:($scaling-big-screen);
+    }
+    .extra-dices{
+        scale:($scaling-big-screen);
+    }
+    .container-dice-left{
+        scale:($scaling-big-screen);
+    }
+    .dice-left-label{
+        scale:($scaling-big-screen);
+    }
+    .container-turn{
+        scale:($scaling-big-screen);
+    }
+
+    .n-turn-label{
+        scale:($scaling-big-screen);
+    }
+
+    .container-dices-potion{
+        scale:(1.35);
+        height: 70%;
+        position: relative;
+        top: 100px;
+    }
+    
+    
+    .container-potion{
+        gap: 41px;
+        position: relative;
+        left: 7px;
+        width: 100%;
+    }
+
+    .btn-turn-container{
+        scale:($scaling-big-screen);
+        position: relative;
+        top: 10px;
+    }
+
+    .card-container{
+        scale:($scaling-big-screen);
+        width: 80%;
+        height: 70%;
+        margin-left: 100px;
+        position: relative;
+        top:3px;
+    }
+    
+    .container-order-quests{
+        scale:(1.1);
+    }
+    .container-quests{
+        scale:(1.1);
+    }
+    .container-order{
+        scale:(1.1);
+        position: relative;
+        left:3px;
+    }
+    .players-table{
+        scale:($scaling-big-screen);
+        position: relative;
+        top:3px;
+    }
+
+    .skills-table{
+        max-height: 650px;
+        width: 93.5%;
+        margin-right: 20px;
+    }
+
+    .title-skills-table-container{
+        scale:($scaling-big-screen);
+    }
+    .title-skills{
+        scale:($scaling-big-screen);
+    }
+    .skills-container{
+        scale:(1.25);
+        width: 30%;
+        height: 80%;
+        position: relative;
+        top: 60px;
+        position: relative;
+        left: 40px;
+    }
+
+    
+    .legend-container{
+        scale:($scaling-big-screen);
+        z-index: 4;
+        position: relative;
+        top: 23px;
+    }
+    .shop-container{
+        scale:($scaling-big-screen);
+    }
+    .score-end-game{
+        scale:($scaling-big-screen);
+    }
+    .container-gold-score{
+        scale:($scaling-big-screen);
+    }
+    .btn-score-end-game{
+        scale:($scaling-big-screen);
+    }
+}

@@ -19,8 +19,7 @@
 }
 .box-container-legend{
     position: absolute;
-    top: 100px;
-    left: 240px;
+    
     display: flex;
     flex-direction: column;
 }
@@ -30,7 +29,7 @@
     visibility: visible;
     transform: translateY(0);
     transition: 500ms ease;
-    z-index: 1000;
+    
 }
 
 .box-container-legend.inactive-legend{

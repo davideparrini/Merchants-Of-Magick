@@ -35,30 +35,34 @@ function ExtraDice({
     //Nel caso in cui avevo un extra dice in sospeso, resetto l'extradice ridando le pozioni usate 
     useEffect(()=>{
         if(gameRestart){
-            if(usedTemporarily){
+            if(usedTemporarily && !definitelyExtraDiceUsed){
                 setUsedTemporarily(false);
-                setIsPlayble(true);
                 setNPotion((n)=>(n+nPotion_extraDice));
+                setIsPlayble(true);
             }
+            
         }
     },[gameRestart]);
 
+
+    useEffect(()=>{
+        if(extraDiceUsedTempList.length  >= 2 && !usedTemporarily){
+            setIsPlayble(false);
+        }else{
+            setIsPlayble(true);
+        }
+    },[extraDiceUsedTempList]);
 
     return (
         <div className={ 'e-dice ' + choose_className()} 
             onClick={()=>{
 
                  //se l extra-dice è usato definitivamente non puoi fare niente
-                if(!definitelyExtraDiceUsed ){
+                if(!definitelyExtraDiceUsed){
 
                     //se l extra-dice non è stato usato (in modo temporaneo) (quindi è utilizzabile/"buono")
                     if(!usedTemporarily){
 
-                        //controllo che si possano usare massimo 2 extra-dice per turno, in caso lo setto setIsPlayeble a false per far diventare gl'extra dice non usati Unclickable
-                        if(extraDiceUsedTempList.length >= 2) {
-                            setIsPlayble(false);
-                            return;
-                        }
                         // se i req delle pozioni e incremento i dice disponibili, 
                         // i dice che al massimo usero in quel turno (non sono la stessa cosa, dice disponibili vengono decrementati quando uso un dado, i totalPossibleDice_toUse no )
                         //quindi faccio una serie di incrementi e decrementi per implementare la logica del gioco e metto a true lo stato del diceUsedTemporarily

@@ -173,6 +173,7 @@ function createGameLogic(){
     
     function updateTurn(data){
         const {cards, cardsBoard } = data;
+
         const newCards = {
             card1: (cards.card2.inProgress ? cards.card2 : createNewCard(typeCard_RANDOM)),
             card2: (cards.card3.inProgress ? cards.card3 : createNewCard(typeCard_RANDOM)),
@@ -241,22 +242,23 @@ function createGameLogic(){
 
 
     function calculateGold(data){
-        const {currentGold,shop, renownedAccessories, weaponPrestige, eliteArmor } = data;
+        const {currentGold, shop, renownedAccessories, weaponPrestige, eliteArmor } = data;
+        let resGold = currentGold
         if(shop.length > 0){
             shop.forEach((item)=>{
                 if(renownedAccessories && TYPE_ACCESSORIES.includes(item.item)){
-                    currentGold += 2;
+                    resGold += 2;
                 }
                 if(weaponPrestige && TYPE_WEAPONS.includes(item.item)){
-                    currentGold += 2;
+                    resGold += 2;
                 }
                 if(eliteArmor && TYPE_ARMOR.includes(item.item)){
-                    currentGold += 2;
+                    resGold += 2;
                 }
             })  
         }
   
-        return currentGold;
+        return resGold;
     }
 
     

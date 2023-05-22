@@ -1,7 +1,7 @@
 
 import './ForgeButton.scss'
 
-function ForgeButton({checkSkillCard, showCard,setShowCard ,card, setCard, addItemShop, setCurrentGold}) {
+function ForgeButton({checkSkillCard, showCard,setShowCard ,card,addItemShop, setCurrentGold}) {
 
 
     return (

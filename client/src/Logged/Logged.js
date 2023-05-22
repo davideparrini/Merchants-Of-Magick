@@ -97,11 +97,11 @@ function Logged({setLobbyUpdated}) {
                                 refreshGame();
                                 const config ={
                                     config:{
-                                            nTurn : 2,
+                                            nTurn : 10,
                                             nPotion : 0,
                                             reportTime : 10,
                                             countdown : 300,
-                                            dicePerTurn : 2
+                                            dicePerTurn :2
                                         }
                                 }
                                 window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage( {type:'start-game-single-player', data: config} )
