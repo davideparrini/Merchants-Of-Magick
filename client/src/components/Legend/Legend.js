@@ -24,6 +24,7 @@ function Legend() {
     //Legend useEffect, Close on out-click
     useEffect(()=>{
         let handlerLegend = (e)=>{
+            console.log("sss")
             if(!legendRef.current.contains(e.target)){
                 setOpenLegend(false);
             }   
@@ -37,9 +38,9 @@ function Legend() {
 
 
     return (
-        <div className='Legend'>
-            <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)}>L</button>
-            <div className={`box-container-legend ${openLegend? 'active-legend' : 'inactive-legend'}`} ref={legendRef}>
+        <div className='Legend' ref={legendRef}>
+            <button className='legend-btn' onClick={()=>setOpenLegend(!openLegend)} >L</button>
+            <div className={`box-container-legend ${openLegend? 'active-legend' : 'inactive-legend'}`}>
                 <div className='title-legend'>Legend</div>
                 <div className='legend-attributes'>
                     <div className='row-legend-attribute'>

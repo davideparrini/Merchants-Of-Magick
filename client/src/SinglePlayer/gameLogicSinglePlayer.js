@@ -217,11 +217,20 @@ function createGameLogic(){
         
         const adventurer = Adventurers[rand(0,Adventurers.length-1)];
                 
-            
+        const easyItemArray = ['backpack', 'scroll', 'ring', 'staff', 'sword', 'bracers', 'helmet'];
+        const item1 = easyItemArray[rand(0,easyItemArray.length-1)]
+        
+        const c1 = {
+            item: item1,
+            gold: TYPE_ACCESSORIES.includes(item1) ? 2 : 3,
+            enchantment: '',
+            origin: '',
+            inProgress: true
+        }     
         const cards ={
-            card1: createNewCard(typeCard_NO_ENCHANTMENT),
-            card2: createNewCard(typeCard_NO_ORIGIN),
-            card3: createNewCard(typeCard_BOTH),
+            card1: c1,
+            card2:  createNewCard(typeCard_NO_ENCHANTMENT),
+            card3:  createNewCard(typeCard_NO_ORIGIN)
         }
           
         

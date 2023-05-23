@@ -1,6 +1,6 @@
 @use '../../variables' as v;
 
-
+$perc-size-x-big: 2;
 $perc-size-big:1.2;
 $perc-size-normal:1;
 $perc-size-small:0.8;
@@ -47,4 +47,10 @@ $perc-size-x-small:0.6;
     height: calc(40px * $perc-size-big);
     width: calc(40px * $perc-size-big);
     font-size: calc(20px * $perc-size-big);;
+}
+
+.x-big-size-gold{
+    height: calc(40px * $perc-size-x-big);
+    width: calc(40px * $perc-size-x-big);
+    font-size: calc(20px * 1.5);;
 }

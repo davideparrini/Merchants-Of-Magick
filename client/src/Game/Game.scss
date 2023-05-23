@@ -147,31 +147,33 @@
     bottom: 10px;
     
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: space-around;
+    align-items: center;
     flex-direction: row;
-    gap: 18px;
+    
     width: 100%;
+    min-width: 140px;
+    max-width: 165px;
 }   
 
 .potion-img{
-    grid-area: potionImg;
+    position: relative;
+    right: 5px;
     height: 70px;
-    align-self: center;
-    justify-self: center;
     padding-left: 20px;
-    padding-right: 10px;
+    padding-right: 21px;
 }
 .potion-label{
-    grid-area: nPotions;
+    position: relative;
+    right: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
-    align-self: center;
-    justify-self: center;
+    
     background-color: v.$label-color;
     height: v.$label-height;
     width: v.$label-width;
+    max-width: v.$label-width;
     border-radius: v.$label-border-radius;
     color: v.$primary-color;
     font: 23px Arial, sans-serif;
@@ -310,8 +312,7 @@
     margin: 5px;
     border-radius: 15px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    position: relative;
-    left: 30px;
+    justify-self: center;
 }
 .title-skills-table-container{
     display: flex;
@@ -426,11 +427,123 @@
     filter: brightness(0.6);
 }
 
+$scaling-x-small-screen : (0.8);
 
-$scaling-small-screen : (0.9);
+$scaling-small-screen : (0.92);
 $scaling-big-screen : (1.2);
 
-@media (height < 900px ) ,(width < 1900px) {
+
+@media (height < 900px ) ,(width < 1700px) {
+    
+    .upper-container{
+        scale:($scaling-small-screen); 
+    }
+
+    .container-dices-potion{
+        scale:($scaling-small-screen);
+        width: 130%;
+    }
+    .container-potion{
+        position: relative;
+        left: 7px;
+        
+    }
+    .potion-img{
+        scale: (1.1);
+        position: relative;
+        right: 3px;
+    }
+    
+    .potion-label{
+        min-width: 45px;
+    }
+
+    .btn-turn-container{
+        scale:($scaling-small-screen);
+        position: relative;
+        bottom: 60px;
+        right: 25px;
+    }
+
+    .card-container{
+        scale:(0.95);
+        width: 125%;
+        position: relative;
+        right: 20px;
+    }
+    .players-table{
+        scale:(1);
+        position: relative;
+        left: 0px;
+    }
+    .container-order-quests{
+        scale:($scaling-small-screen);
+        position: relative;
+        right: 35px;
+        
+    }
+    .container-quests{
+        scale:($scaling-small-screen);
+    }
+    .container-order{
+        scale:($scaling-small-screen);
+    }
+    
+
+    .skills-table{
+        position: relative;
+        left: 30px;
+        height: 60%;
+        min-height: 374px;
+        max-width: 1230px;
+        padding: 5px;
+        padding-top: 10px;
+        row-gap: 10px;
+        
+    }
+
+    .title-skills-table-container{
+        scale:($scaling-small-screen);
+    }
+    
+    .skills-container{
+        scale:($scaling-small-screen);
+        width:  109%;
+    }
+
+    #crafting-skills{
+        position: relative;
+        right: 30px;
+        align-items: flex-start;
+    }
+    
+    #magic-research-skills{
+        position: relative;
+        right: 30px;
+        align-items: flex-end;
+    }
+    .legend-container{
+        scale:($scaling-small-screen);
+        position: relative;
+        top: 20px;
+        left: 70px;
+    }
+    .shop-container{
+        scale:($scaling-small-screen);
+    }
+    .score-end-game{
+        scale:($scaling-small-screen);
+    }
+    .container-gold-score{
+        scale:($scaling-small-screen);
+    }
+    .btn-score-end-game{
+        scale:($scaling-small-screen);
+    }
+}
+
+
+@media (1700px <= width <= 1900px) {
     
     
 
@@ -440,20 +553,27 @@ $scaling-big-screen : (1.2);
     }
     .container-potion{
         position: relative;
-        left: 15px;
-        gap: 27px;
+        
+        
+    }
+    .potion-img{
+        scale: (1.1);
+        position: relative;
+        right: 3px;
+    }
+    
+    .potion-label{
+        // position: relative;
+        // left: 7px;
+        min-width: 45px;
     }
 
-    .potion-img{
-        position: relative;
-        right: 10px;
-    }
     .btn-turn-container{
         scale:($scaling-small-screen);
     }
 
     .card-container{
-        scale:($scaling-small-screen);
+        scale:(0.95);
         width: 111%;
     }
     
@@ -467,23 +587,23 @@ $scaling-big-screen : (1.2);
         scale:($scaling-small-screen);
     }
     .players-table{
-        scale:($scaling-small-screen);
+        scale:(1);
     }
 
     .skills-table{
         height: 60%;
         min-height: 374px;
+        max-width: 1230px;
         padding: 5px;
         padding-top: 10px;
         row-gap: 10px;
+        
     }
 
     .title-skills-table-container{
         scale:($scaling-small-screen);
     }
-    .title-skills{
-        scale:($scaling-small-screen);
-    }
+    
     .skills-container{
         scale:($scaling-small-screen);
         width:  109%;
@@ -533,6 +653,8 @@ $scaling-big-screen : (1.2);
     .upper-container{
         scale:(1.1);
         margin-bottom: 40px;
+        position: relative;
+        left: 40px;
     }
 
     .upper-container-titles{
@@ -547,43 +669,38 @@ $scaling-big-screen : (1.2);
     }
     .container-extra-dices{
         scale:($scaling-big-screen);
+        gap: 20px;
     }
     .extra-dices{
         scale:($scaling-big-screen);
+        
     }
     .container-dice-left{
         scale:($scaling-big-screen);
+        gap: 20px;
     }
-    .dice-left-label{
-        scale:($scaling-big-screen);
-    }
+    
     .container-turn{
         scale:($scaling-big-screen);
+        gap: 20px;
     }
 
-    .n-turn-label{
-        scale:($scaling-big-screen);
-    }
+    
 
     .container-dices-potion{
         scale:(1.35);
         height: 70%;
         position: relative;
-        top: 100px;
+        top: 80px;
     }
     
     
-    .container-potion{
-        gap: 41px;
-        position: relative;
-        left: 7px;
-        width: 100%;
-    }
+    
 
     .btn-turn-container{
         scale:($scaling-big-screen);
         position: relative;
-        top: 10px;
+        bottom: 70px;
     }
 
     .card-container{
@@ -592,7 +709,7 @@ $scaling-big-screen : (1.2);
         height: 70%;
         margin-left: 100px;
         position: relative;
-        top:3px;
+        bottom:40px;
     }
     
     .container-order-quests{
@@ -603,13 +720,15 @@ $scaling-big-screen : (1.2);
     }
     .container-order{
         scale:(1.1);
+        height: 50%;
         position: relative;
         left:3px;
+        bottom: 25px;
     }
     .players-table{
         scale:($scaling-big-screen);
         position: relative;
-        top:3px;
+        bottom:25px;
     }
 
     .skills-table{
@@ -643,6 +762,8 @@ $scaling-big-screen : (1.2);
     }
     .shop-container{
         scale:($scaling-big-screen);
+        position: relative;
+        left: 40px;
     }
     .score-end-game{
         scale:($scaling-big-screen);

@@ -6,6 +6,8 @@
     grid-template-areas: 
         'imgDice labelD labelD'
         'imgDice btnInc btnDec';
+        min-width: 140px;
+    max-width: 165px;
 }
 .dice-img{
     grid-area: imgDice;

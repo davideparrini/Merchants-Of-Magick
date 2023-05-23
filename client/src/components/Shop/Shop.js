@@ -51,9 +51,9 @@ function Shop({shop}) {
     },[shop])
 
     return (
-        <div className='shop'> 
-            <button  className= 'btn-shop' onClick={()=>setOpenShop(!openShop)} ref={shopRef}/>
-            <div className={`box-container-title-shop ${openShop? 'active-shop' : 'inactive-shop'}`} ref={shopRef}>
+        <div className='shop' ref={shopRef}> 
+            <button  className= 'btn-shop' onClick={()=>setOpenShop(!openShop)} />
+            <div className={`box-container-title-shop ${openShop? 'active-shop' : 'inactive-shop'}`} >
                 <div className='title-shop'>Shop</div>
                 <div className='dropdown-shop'>
                     <div className='item-container'>

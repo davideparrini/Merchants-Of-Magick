@@ -42,11 +42,11 @@ function ButtonTurnDone({finishTurn,turnDone, nDiceLeft_toUse, gameRestart}) {
     },[turnDone]);
 
     return (
-        <>
+        <div ref={finishTurnRef}>
             <button className={`btn-turn ${btnStateDone ? 'turn-done' : ''}`} 
                 onClick={()=>{ 
                 if(nDiceLeft_toUse > 0){
-                    setOpenFinishTurnAlert(true);
+                    setOpenFinishTurnAlert(!openFinishTurnAlert);
                 }else{
                     setBtnStateDone(true);
                     finishTurn();
@@ -54,21 +54,21 @@ function ButtonTurnDone({finishTurn,turnDone, nDiceLeft_toUse, gameRestart}) {
                 
             }
             }>{!btnStateDone ? "Finish Turn" : "Waiting for others players..." }</button>
-            <div ref={finishTurnRef}>
-                <ToastNotication 
-                    question={ 'Are you sure to finish your turn? You have more dice to play!'}
-                    positiveRespose={'Yes'}
-                    negativeRespose={'No'}
-                    handlerPositiveRespose={()=>{ 
-                        setBtnStateDone(true);
-                        finishTurn();
-                    }}
-                    handlerNegativeRespose={()=>{}}
-                    openState={openFinishTurnAlert}
-                    setOpenState={setOpenFinishTurnAlert}
-                />
-            </div>
-        </>
+            
+            <ToastNotication 
+                question={ 'Are you sure to finish your turn? You have more dice to play!'}
+                positiveRespose={'Yes'}
+                negativeRespose={'No'}
+                handlerPositiveRespose={()=>{ 
+                    setBtnStateDone(true);
+                    finishTurn();
+                }}
+                handlerNegativeRespose={()=>{}}
+                openState={openFinishTurnAlert}
+                setOpenState={setOpenFinishTurnAlert}
+            />
+            
+        </div>
         )
 }
 

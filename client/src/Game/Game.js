@@ -61,7 +61,7 @@ import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 const testActive = false;
 
 
-const TYPE_GOLD_BIG = 'BIG';
+const TYPE_GOLD_X_BIG = 'XBIG';
 
 //Tipi dado
 const TYPE_D6 = 'd6';
@@ -128,6 +128,9 @@ function Game() {
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
+
+    //Ref al area dello table, Close on out-click
+    let dicesRef = useRef();
 
     //Ref per mantenere il dado toccato
     let typeTouchedDiceRef = useRef();
@@ -578,7 +581,7 @@ function Game() {
     //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
     useEffect(()=>{
         let whileDiceTouched = (e)=>{
-            if(!skillTableRef.current.contains(e.target)){
+            if(!skillTableRef.current.contains(e.target) && !dicesRef.current.contains(e.target)){
                 setAllDiceNoTouched();
                 typeTouchedDiceRef.current = "";
                 valueTouchedDiceRef.current = null;
@@ -629,7 +632,7 @@ function Game() {
                         <div className='score-end-game'>
                             <div className='container-gold-score'>
                                 Your score:
-                                <Gold value={currentGold} size={TYPE_GOLD_BIG} active={true}/>
+                                <Gold value={currentGold} size={TYPE_GOLD_X_BIG} active={true}/>
                             </div>
                             <button className='btn-score-end-game' onClick={()=>{
                                 navigate(LOGGED_PAGE);
@@ -747,10 +750,10 @@ function Game() {
 
                 </div>
                 <div className='legend-container'><Legend/></div>
-                <div className='container-dices-potion'>
+                <div className='container-dices-potion' ref={dicesRef} >
                     <div className='container-potion'>
                         <img src={potionImg} className='potion-img' alt='POTION'></img>
-                        <label className='potion-label'>{nPotion}</label>
+                        <div className='potion-label'>{nPotion}</div>
                     </div>
                     <ContainerDice 
                         typeDice={TYPE_D6} 
@@ -762,11 +765,22 @@ function Game() {
                         usedDice={diceUsedD6} 
                         diceTouched={diceTouchedD6} 
                         nActions={nDiceLeft_toUse} 
+                        typeTouchedDiceRef={typeTouchedDiceRef}
+                        valueTouchedDiceRef={valueTouchedDiceRef}
                         onClickImgHandler={()=>{
-                            typeTouchedDiceRef.current = TYPE_D6;
-                            valueTouchedDiceRef.current = d6Value;
-                            setAllDiceNoTouched(); 
-                            setDiceTouchedD6(true);
+                            if(diceTouchedD6){
+                                typeTouchedDiceRef.current = '';
+                                valueTouchedDiceRef.current = null;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD6(false);
+                            }
+                            else{
+                                typeTouchedDiceRef.current = TYPE_D6;
+                                valueTouchedDiceRef.current = d6Value;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD6(true);
+                            }
+                            
                         }}
                         
                     />
@@ -780,11 +794,21 @@ function Game() {
                         usedDice={diceUsedD8} 
                         diceTouched={diceTouchedD8} 
                         nActions={nDiceLeft_toUse} 
+                        typeTouchedDiceRef={typeTouchedDiceRef}
+                        valueTouchedDiceRef={valueTouchedDiceRef}
                         onClickImgHandler={()=>{
-                            typeTouchedDiceRef.current = TYPE_D8;
-                            valueTouchedDiceRef.current = d8Value;
-                            setAllDiceNoTouched(); 
-                            setDiceTouchedD8(true);
+                            if(diceTouchedD8){
+                                typeTouchedDiceRef.current = '';
+                                valueTouchedDiceRef.current = null;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD8(false);
+                            }
+                            else{
+                                typeTouchedDiceRef.current = TYPE_D8;
+                                valueTouchedDiceRef.current = d8Value;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD8(true);
+                            }
                         }}
                     />
                     <ContainerDice 
@@ -797,11 +821,21 @@ function Game() {
                         usedDice={diceUsedD10} 
                         diceTouched={diceTouchedD10} 
                         nActions={nDiceLeft_toUse} 
+                        typeTouchedDiceRef={typeTouchedDiceRef}
+                        valueTouchedDiceRef={valueTouchedDiceRef}
                         onClickImgHandler={()=>{
-                            typeTouchedDiceRef.current = TYPE_D10;
-                            valueTouchedDiceRef.current = d10Value;
-                            setAllDiceNoTouched(); 
-                            setDiceTouchedD10(true);
+                            if(diceTouchedD10){
+                                typeTouchedDiceRef.current = '';
+                                valueTouchedDiceRef.current = null;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD10(false);
+                            }
+                            else{
+                                typeTouchedDiceRef.current = TYPE_D10;
+                                valueTouchedDiceRef.current = d10Value;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD10(true);
+                            }
                         }}
                     />
                     <ContainerDice 
@@ -812,11 +846,21 @@ function Game() {
                         diceValue={d12Value} setDiceValue={setD12Value} 
                         usedDice={diceUsedD12} diceTouched={diceTouchedD12} 
                         nActions={nDiceLeft_toUse} 
+                        typeTouchedDiceRef={typeTouchedDiceRef}
+                        valueTouchedDiceRef={valueTouchedDiceRef}
                         onClickImgHandler={()=>{
-                            typeTouchedDiceRef.current = TYPE_D12;
-                            valueTouchedDiceRef.current = d12Value;
-                            setAllDiceNoTouched(); 
-                            setDiceTouchedD12(true);
+                            if(diceTouchedD12){
+                                typeTouchedDiceRef.current = '';
+                                valueTouchedDiceRef.current = null;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD12(false);
+                            }
+                            else{
+                                typeTouchedDiceRef.current = TYPE_D12;
+                                valueTouchedDiceRef.current = d12Value;
+                                setAllDiceNoTouched(); 
+                                setDiceTouchedD12(true);
+                            }
                         }}
                     />
                 </div>

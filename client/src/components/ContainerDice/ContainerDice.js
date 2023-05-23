@@ -11,7 +11,7 @@ const TYPE_D8 = 'd8';
 const TYPE_D10 = 'd10';
 const TYPE_D12 = 'd12';
 
-function ContainerDice({typeDice,nPotion,setnPotion,startTurnDiceValue, diceValue ,setDiceValue, usedDice ,diceTouched, onClickImgHandler, nActions}) {
+function ContainerDice({typeTouchedDiceRef, valueTouchedDiceRef, typeDice, nPotion, setnPotion, startTurnDiceValue, diceValue ,setDiceValue, usedDice ,diceTouched, onClickImgHandler, nActions}) {
 
     
     const chooseImg = useCallback(()=>{
@@ -28,11 +28,17 @@ function ContainerDice({typeDice,nPotion,setnPotion,startTurnDiceValue, diceValu
         if(nPotion >0 && diceValue < 12 && nActions > 0 && !usedDice){
             setnPotion(nPotion+((diceValue+1) > startTurnDiceValue ? -1 : 1));
             setDiceValue(1+diceValue);
+            if(typeDice === typeTouchedDiceRef.current){
+                valueTouchedDiceRef.current++;
+            }
         }
         else{
             if(nPotion ===0 && diceValue < 12 && nActions > 0 && !usedDice && (diceValue < startTurnDiceValue)){
                 setnPotion(nPotion+1);
                 setDiceValue(1+diceValue);
+                if(typeDice === typeTouchedDiceRef.current){
+                    valueTouchedDiceRef.current++;
+                }
             }
         }      
 	},[nPotion, diceValue, nActions, usedDice, startTurnDiceValue])
@@ -41,18 +47,24 @@ function ContainerDice({typeDice,nPotion,setnPotion,startTurnDiceValue, diceValu
         if(nPotion >0 && diceValue > 1 && nActions > 0 && !usedDice){
             setnPotion(nPotion+((diceValue-1) < startTurnDiceValue ? -1 : 1));
             setDiceValue(diceValue-1);
+            if(typeDice === typeTouchedDiceRef.current){
+                valueTouchedDiceRef.current--;
+            }
         }
         else{
             if(nPotion ===0 && diceValue > 1 && nActions > 0 && !usedDice && (diceValue > startTurnDiceValue) ){
                 setnPotion(nPotion+1);
                 setDiceValue(diceValue-1);
+                if(typeDice === typeTouchedDiceRef.current){
+                    valueTouchedDiceRef.current--;
+                }
             }
         }
 	},[nPotion, diceValue, nActions, usedDice, startTurnDiceValue]);
 
     return (
         <div className={`dice-contenitor`}>
-            <img src={chooseImg()} alt={typeDice} className={`dice-img ${usedDice ? 'no-active' : ''} ${diceTouched && !usedDice ? 'touched-dice' : ''}`}onClick={nActions > 0 ? onClickImgHandler : ()=>{return;}} ></img>
+            <img src={chooseImg()} alt={typeDice} className={`dice-img ${usedDice ? 'no-active' : ''} ${diceTouched && !usedDice ? 'touched-dice' : ''}`} onClick={nActions > 0 ? onClickImgHandler : ()=>{return;}} ></img>
             <div className='dice-rolled'>{diceValue}</div>
             <button className='inc-btn' onClick={incDice}></button>
             <button className='dec-btn' onClick={decDice}></button>

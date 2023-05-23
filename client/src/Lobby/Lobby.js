@@ -20,7 +20,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
     
     const[configNTurn, setConfigNTurn] = useState(10);
-    const[configNPotion, setConfigNPotion] = useState(0);
+    const[configNPotion, setConfigNPotion] = useState(3);
     const[configReportTime, setConfigReportTime] = useState(10);
     const[configCountdown, setConfigCountdown] = useState(300);
     const[configDicePerTurn, setConfigDicePerTurn] = useState(2);
@@ -190,10 +190,10 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                     <select name='nPotion' className= 'select-config'onChange={(e)=>{
                                         setConfigNPotion(e.target.value)
                                     }}>
-                                        <option value={0} selected>0</option>
+                                        <option value={0}>0</option>
                                         <option value={1}>1</option>
                                         <option value={2}>2</option>
-                                        <option value={3}>3</option>
+                                        <option value={3} selected>3</option>
                                         <option value={4}>4</option>
                                         <option value={5}>5</option>
                                     </select>
