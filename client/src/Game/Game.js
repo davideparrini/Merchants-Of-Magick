@@ -893,48 +893,55 @@ function Game() {
                 </div>
 
 
-                <div className='card-container'>
-                    <div>
-                        <Card card = {card1} 
-                            isShowed={showCard1}
+                <div className='cards-container'>
+                    <div  className='card-wrapper'>
+                        <div>
+                            <Card card = {card1} 
+                                isShowed={showCard1}
+                                smallSize={false}
+                            />
+                            <div className='card1-going-away' >OUTGOING</div>
+                        </div>
+                        <div className='forge-btn-wrapper'>
+                            <ForgeButton 
+                                checkSkillCard={checkSkillCard}
+                                setShowCard={setShowCard1}
+                                addItemShop={addItemShop}
+                                showCard={showCard1}
+                                card={card1}
+                                setCurrentGold={setCurrentGold}
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className='card-wrapper'>
+                        <Card card = {card2} 
+                            isShowed={showCard2} 
                             smallSize={false}
                         />
-                        <div className='card1-going-away' >OUTGOING</div>
+                        <ForgeButton 
+                            checkSkillCard={checkSkillCard}
+                            setShowCard={setShowCard2}
+                            addItemShop={addItemShop}
+                            showCard={showCard2}
+                            card={card2}
+                            setCurrentGold={setCurrentGold}
+                        />
                     </div>
-                    <ForgeButton 
-                        checkSkillCard={checkSkillCard}
-                        setShowCard={setShowCard1}
-                        addItemShop={addItemShop}
-                        showCard={showCard1}
-                        card={card1}
-                        setCurrentGold={setCurrentGold}
-                    />
-
-                    <Card card = {card2} 
-                        isShowed={showCard2} 
-                        smallSize={false}
-                    />
-                    <ForgeButton 
-                        checkSkillCard={checkSkillCard}
-                        setShowCard={setShowCard2}
-                        addItemShop={addItemShop}
-                        showCard={showCard2}
-                        card={card2}
-                        setCurrentGold={setCurrentGold}
-                    />
-
-                    <Card card = {card3} 
-                        isShowed={showCard3}
-                        smallSize={false}
-                    />
-                    <ForgeButton 
-                        checkSkillCard={checkSkillCard}
-                        setShowCard={setShowCard3}
-                        addItemShop={addItemShop}
-                        showCard={showCard3}
-                        card={card3}
-                        setCurrentGold={setCurrentGold}
-                    />
+                    <div className='card-wrapper'>
+                        <Card card = {card3} 
+                            isShowed={showCard3}
+                            smallSize={false}
+                        />
+                        <ForgeButton 
+                            checkSkillCard={checkSkillCard}
+                            setShowCard={setShowCard3}
+                            addItemShop={addItemShop}
+                            showCard={showCard3}
+                            card={card3}
+                            setCurrentGold={setCurrentGold}
+                        />
+                    </div>
                 </div>
                 {
                     (!singlePlayerGame) ? (

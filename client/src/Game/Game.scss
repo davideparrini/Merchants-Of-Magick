@@ -189,7 +189,7 @@
     bottom: 40px;
 }
 
-.card-container{
+.cards-container{
     grid-area: cardContainer;
     display: flex;
     flex-direction: row;
@@ -198,6 +198,12 @@
     height: 90%;
     position: relative;
     bottom: 55px;    
+}
+.card-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 2px;
 }
 .card1-going-away{
     position: relative;
@@ -217,7 +223,10 @@
     justify-content: center;
     align-items: center;
 }
-
+.forge-btn-wrapper{
+    position: relative;
+    bottom: 33px;
+}
 .container-order-quests{
     grid-area: containerOrderQuest;
     display: flex;
@@ -501,7 +510,7 @@ $scaling-big-screen : (1.2);
         right: 25px;
     }
 
-    .card-container{
+    .cards-container{
         scale:(0.95);
         width: 125%;
         position: relative;
@@ -607,7 +616,7 @@ $scaling-big-screen : (1.2);
         scale:($scaling-small-screen);
     }
 
-    .card-container{
+    .cards-container{
         scale:(0.95);
         width: 111%;
     }
@@ -736,7 +745,7 @@ $scaling-big-screen : (1.2);
         bottom: 70px;
     }
 
-    .card-container{
+    .cards-container{
         scale:($scaling-big-screen);
         width: 80%;
         height: 70%;

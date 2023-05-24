@@ -1,11 +1,12 @@
-import { getAuth, GoogleAuthProvider,  signInWithPopup, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, GithubAuthProvider ,  signInWithPopup, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, FacebookAuthProvider  } from "firebase/auth";
 
 
 import {firebase } from './FireBaseConfig';
 
 export const auth = getAuth(firebase);
-const provider = new GoogleAuthProvider();
-
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 function createAuthConfig() {
 
@@ -31,8 +32,17 @@ function createAuthConfig() {
     }
 
     function googleLogin() {
-        return signInWithPopup(auth, provider);
+        return signInWithPopup(auth, googleProvider);
     }
+
+    function facebookLogin() {
+        return signInWithPopup(auth, facebookProvider);
+    }
+
+    function githubLogin() {
+        return signInWithPopup(auth, githubProvider);
+    }
+
 
     async function logout() {
         await signOut(auth);
@@ -41,7 +51,7 @@ function createAuthConfig() {
 
     
     return {
-        signUp, login, googleLogin, logout
+        signUp, login, googleLogin, logout, facebookLogin,githubLogin
     };
 }
 
