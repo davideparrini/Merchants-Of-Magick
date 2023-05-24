@@ -1,7 +1,7 @@
 
 import './ForgeButton.scss'
 
-function ForgeButton({checkSkillCard, showCard,setShowCard ,card,addItemShop, setCurrentGold}) {
+function ForgeButton({checkSkillCard, showCard,setShowCard ,card,addItemShop, setCurrentGold,setNPotion}) {
 
 
     return (
@@ -11,6 +11,7 @@ function ForgeButton({checkSkillCard, showCard,setShowCard ,card,addItemShop, se
                     setShowCard(false);
                     addItemShop(card);
                     setCurrentGold((n)=>(n + card.gold));
+                    setNPotion((n)=>(n+1));
                 }           
             }}
         />

@@ -910,6 +910,7 @@ function Game() {
                                 showCard={showCard1}
                                 card={card1}
                                 setCurrentGold={setCurrentGold}
+                                setNPotion={setNPotion}
                             />
                         </div>
                     </div>
@@ -926,6 +927,7 @@ function Game() {
                             showCard={showCard2}
                             card={card2}
                             setCurrentGold={setCurrentGold}
+                            setNPotion={setNPotion}
                         />
                     </div>
                     <div className='card-wrapper'>
@@ -940,6 +942,7 @@ function Game() {
                             showCard={showCard3}
                             card={card3}
                             setCurrentGold={setCurrentGold}
+                            setNPotion={setNPotion}
                         />
                     </div>
                 </div>
