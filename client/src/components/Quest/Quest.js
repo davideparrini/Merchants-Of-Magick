@@ -9,7 +9,6 @@ function Quest({questAttribute, questRequest, progress, goldReward , questDone, 
     
     useEffect(()=>{
         if(progress >= questRequest && !questDone){
-            console.log("soso ")
             setQuestDone(true);
             setCurrentGold((n)=>(n + goldReward));
         }

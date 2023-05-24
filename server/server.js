@@ -4,6 +4,7 @@ import { lobbyHandler } from "./Config/lobbyServerHandler.js";
 import { gameHandler } from "./Config/gameServerHandler.js";
 import { gameLogic } from "./Config/gameLogic.js";
 
+const PORT = 8888;
 const httpServer = createServer();
 
 const io = new Server(httpServer, {
@@ -100,9 +101,7 @@ function handlePlayerLeftGame(username){
                 }
 
                 //se l'utente era l'ultimo rimasto elimino la lobby
-                if(lobby.players.length < 1){
-                    console.log("END LOBBYY   OVER UYYSYBSY")
-                    
+                if(lobby.players.length < 1){   
                     //se l'utente è ultimo membro della lobby, elimino la lobby
                     mapLobbyID_Lobby.delete(lobbyID);
                     mapLobbyID_GameState.delete(lobbyID);
@@ -155,4 +154,4 @@ io.on("connection", (socket) => {
 
 
 
-httpServer.listen(8888);
+httpServer.listen(PORT);

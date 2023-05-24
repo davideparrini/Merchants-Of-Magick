@@ -54,6 +54,7 @@ import { connectionHandlerClient } from '../Config/connectionHandler';
 import BoardCards from '../components/BoardCards/BoardCards';
 import Gold from '../components/Gold/Gold';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
+import ItemShop from '../components/Shop/ItemShop';
 
 
 
@@ -62,6 +63,8 @@ const testActive = false;
 
 
 const TYPE_GOLD_X_BIG = 'XBIG';
+const TYPE_GOLD_SMALL = 'SMALL';
+const TYPE_GOLD_MEDIUM = 'MEDIUM';
 
 //Tipi dado
 const TYPE_D6 = 'd6';
@@ -144,6 +147,7 @@ function Game() {
     //gold player
     const[currentGold,setCurrentGold] = useState(0);
 
+    const[goldFromSkills, setGoldFromSkills] = useState(0);
 
     //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
@@ -628,11 +632,34 @@ function Game() {
             
             {
                 singlePlayerGame && openScoreSinglePlayer &&
+                   
                     (
                         <div className='score-end-game'>
-                            <div className='container-gold-score'>
-                                Your score:
-                                <Gold value={currentGold} size={TYPE_GOLD_X_BIG} active={true}/>
+                            <div className='container-score-end-game'>
+                                <label>Shop : </label>
+                                <div className='shop-score-end-game'>
+                                    
+                                {
+                                    shop.length > 0 ?
+                                    shop.map((item,k)=>(
+                                        <ItemShop item={item} key={k}/>
+                                    ))
+                                    :'No Item'
+                  
+                                }</div>
+                                <div className='gold-score-end-game'>Gold from skills : <Gold value={goldFromSkills} size={TYPE_GOLD_MEDIUM} active={true}/></div>
+                                <div className='gold-score-end-game'>Quest 1 : {quest1Done ? <Gold value={8} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
+                                <div className='gold-score-end-game'>Quest 2 : {quest2Done ? <Gold value={8} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
+                                <div className='gold-score-end-game'>Adventurer quest : {adventurerQuestDone ? <Gold value={gameInitState.adventurer.gold} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
+                                <div className='gold-score-end-game'>Bonus Renowned Accessories : { skillsGained.includes('renowned accessories') ? ' Yes' : ' No'}</div>
+                                <div className='gold-score-end-game'>Bonus Weapon Prestige : { skillsGained.includes('weapon prestige') ? ' Yes' : ' No'}</div>
+                                <div className='gold-score-end-game'>Bonus Elite Armor : { skillsGained.includes('elite armor') ? ' Yes' : ' No'}</div>
+                                <div className='bar-score-end-game'/>
+                                <div className='final-score-end-game'>
+                                    Your score:
+                                    <Gold value={currentGold} size={TYPE_GOLD_X_BIG} active={true}/>
+                                </div>
+                               
                             </div>
                             <button className='btn-score-end-game' onClick={()=>{
                                 navigate(LOGGED_PAGE);
@@ -953,6 +980,7 @@ function Game() {
                                         freeUpgrade={freeUpgrade > 0}
                                         setFreeUpgrade={setFreeUpgrade}
                                         setCurrentGold={setCurrentGold}
+                                        setGoldFromSkills={setGoldFromSkills}
                                         testActive={testActive}
                                     />
                                 )
@@ -987,6 +1015,7 @@ function Game() {
                                         freeUpgrade={freeUpgrade > 0}
                                         setFreeUpgrade={setFreeUpgrade}
                                         setCurrentGold={setCurrentGold}
+                                        setGoldFromSkills={setGoldFromSkills}
                                         testActive={testActive}
                                     />
                                 )

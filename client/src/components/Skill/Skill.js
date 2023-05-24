@@ -77,6 +77,7 @@ function Skill({
             freeUpgrade, 
             setFreeUpgrade, 
             setCurrentGold, 
+            setGoldFromSkills,
             testActive 
         }) {
 
@@ -208,6 +209,7 @@ function Skill({
             setReportSkills((l) => [...l, skill.name])
             setNPotion((n) => (n + 1));
             setCurrentGold((n) => (n + skill.gold));
+            setGoldFromSkills((n) => (n + skill.gold));
             if(skill.name === 'glamor potion supplier'){
                 setNPotion((n) => (n + 4));
             }

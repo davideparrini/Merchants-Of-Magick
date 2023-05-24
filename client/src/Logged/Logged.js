@@ -109,7 +109,6 @@ function Logged({setLobbyUpdated}) {
                                 window.navigator.serviceWorker.onmessage = event => {
                                     const message = event.data;
                                     if(message && message.type === 'start-game-single-player'){
-                                        console.log(message)
                                         setGameInitState(message.data);
                                         setSinglePlayerGame(true);
                                         console.log("Start single player game")

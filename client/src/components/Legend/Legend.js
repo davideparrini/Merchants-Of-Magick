@@ -24,7 +24,7 @@ function Legend() {
     //Legend useEffect, Close on out-click
     useEffect(()=>{
         let handlerLegend = (e)=>{
-            console.log("sss")
+  
             if(!legendRef.current.contains(e.target)){
                 setOpenLegend(false);
             }   
