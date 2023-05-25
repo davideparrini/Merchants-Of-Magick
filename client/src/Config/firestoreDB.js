@@ -1,7 +1,10 @@
-import {getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc, deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove, persistentLocalCache, persistentMultipleTabManager} from 'firebase/firestore';
+import {getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc,enableIndexedDbPersistence ,deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove, persistentMultipleTabManager} from 'firebase/firestore';
 import {firebase } from './FireBaseConfig';
 
 const db = getFirestore(firebase);
+
+//Deprecated ma funziona
+enableIndexedDbPersistence(db).catch(e => console.log(e))
 
 // , {localCache: 
 //     persistentLocalCache({tabManager: persistentMultipleTabManager()})

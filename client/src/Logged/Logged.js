@@ -1,7 +1,5 @@
-import React, { useCallback, useContext, useEffect, useRef, useState} from 'react'
+import React, { useContext, useEffect, useRef, useState} from 'react'
 import './Logged.scss'
-import { userAuth} from '../Config/auth';
-import FriendList from '../components/FriendList/FriendList';
 import { connectionHandlerClient } from '../Config/connectionHandler';
 import { AppContext } from '../App';
 import ToastNotication from '../components/ToastNotification/ToastNotication';
@@ -97,10 +95,10 @@ function Logged({setLobbyUpdated}) {
                                 refreshGame();
                                 const config ={
                                     config:{
-                                            nTurn : 10,
+                                            nTurn : 12,
                                             nPotion : 3,
                                             reportTime : 5,
-                                            countdown : 300,
+                                            countdown : 150,
                                             dicePerTurn : 2
                                         }
                                 }
