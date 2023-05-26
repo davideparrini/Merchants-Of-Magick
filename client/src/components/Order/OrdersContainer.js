@@ -12,6 +12,7 @@ function OrdersContainer({order, setAdventurerQuestDone, skillsGained,setNPotion
     const [orderDone1,setOrderDone1] = useState(false);
     const [orderDone2,setOrderDone2] = useState(false);
     const [orderDone3,setOrderDone3] = useState(false);
+    const [countRewardToGet, setCountRewardToGet] = useState(0);
 
     const checkOrderRequest = useCallback((request)=>{
         return skillsGained.includes(request) && skillsGained.includes(order.typeOrder);
@@ -32,14 +33,17 @@ function OrdersContainer({order, setAdventurerQuestDone, skillsGained,setNPotion
     useEffect(()=>{
         if(checkOrderRequest(order.order1) && !orderDone1) {
             setNOrderDone((n)=>(n+1));
+            setCountRewardToGet((n)=>(n+1));
             setOrderDone1(true);
         }
         if(checkOrderRequest(order.order2) && !orderDone2) {
             setNOrderDone((n)=>(n+1));
+            setCountRewardToGet((n)=>(n+1));
             setOrderDone2(true);
         }
         if(checkOrderRequest(order.order3) && !orderDone3) {
             setNOrderDone((n)=>(n+1));
+            setCountRewardToGet((n)=>(n+1));
             setOrderDone3(true);
         }
     },[skillsGained]);
@@ -48,10 +52,28 @@ function OrdersContainer({order, setAdventurerQuestDone, skillsGained,setNPotion
     useEffect(()=>{
         switch(nOrderDone){
             case 1: setNPotion((n)=>(n+5));
+                    setCountRewardToGet((n)=>(n-1));
                 break;
-            case 2: setFreeUpgrade((n)=>(n+1));
+            case 2: 
+                    if(countRewardToGet === 2){
+                        setNPotion((n)=>(n+5));
+                        setCountRewardToGet((n)=>(n-1));
+                    }  
+                    setFreeUpgrade((n)=>(n+1));
+                    setCountRewardToGet((n)=>(n-1));
                 break;
-            case 3: setFreeUpgrade((n)=>(n+1));
+            case 3: 
+                    if(countRewardToGet === 3){
+                        setNPotion((n)=>(n+5));
+                        setFreeUpgrade((n)=>(n+1));
+                        setCountRewardToGet((n)=>(n-2));
+                    }
+                    else if(countRewardToGet === 2){
+                        setFreeUpgrade((n)=>(n+1));
+                        setCountRewardToGet((n)=>(n-1));
+                    }
+                    setFreeUpgrade((n)=>(n+1));
+                    setCountRewardToGet((n)=>(n-1));
                     setCurrentGold((n)=>(n + order.gold));
                     setAdventurerQuestDone(true);
                 break;
