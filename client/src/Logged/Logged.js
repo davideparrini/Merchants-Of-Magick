@@ -5,13 +5,14 @@ import { AppContext } from '../App';
 import ToastNotication from '../components/ToastNotification/ToastNotication';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
+import Gold from '../components/Gold/Gold';
 
-
+const TYPE_GOLD_X_BIG = 'XBIG';
 
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setGameStart, setStatusOnline, setSinglePlayerGame, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { username, setGameStart, setStatusOnline, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -144,13 +145,24 @@ function Logged({setLobbyUpdated}) {
                     }}>Join !</button>
                 </div>  
             </div>
-            <div className='username-log'>
-                <div className='user-logged'>{username}</div>
-                <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
-                <div className='btn-refresh-connection' onClick={()=> connectionHandlerClient.connect(setStatusOnline)}>
-                    <div className='img-fresh-connection'/>
+            <div className='left-wrapper-logged'>
+                <div className='username-logged'>
+                    <div className='user-logged'>{username}</div>
+                    <div className='connection-wrapper'>
+                        <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
+                        <div className='btn-refresh-connection' onClick={()=> connectionHandlerClient.connect(setStatusOnline)}>
+                        <div className='img-fresh-connection'/>
+                    </div>
+                    
+                        
+                    </div>
+                </div>
+                <div className='record-single-player'>
+                    Record Single Player :
+                    <Gold value={recordSinglePlayer} size={TYPE_GOLD_X_BIG} active={true}/>
                 </div>
             </div>
+            
             { 
                 infoInviterLobby !== -1 && (
                     <ToastNotication 

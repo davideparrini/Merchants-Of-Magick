@@ -87,7 +87,9 @@ function Skill({
     const [att3, setAtt3] = useState(isThereAttribute(skill.attribute3));
 
 
+
     const helperRef = useRef();
+    const btnHelperRef = useRef();
     const [helperOpen, setHelperOpen] = useState(false);
 
 
@@ -189,7 +191,7 @@ function Skill({
 
     useEffect(() => {
         let handlerHelper = (e) => {
-            if (!helperRef.current.contains(e.target)) {
+            if (!helperRef.current.contains(e.target) && !btnHelperRef.current.contains(e.target)) {
                 setHelperOpen(false);
             }
         };
@@ -237,7 +239,7 @@ function Skill({
                 {skill.attribute3}
                 <div className={getCappuccio()}>{getCappuccio()}</div>
             </button>
-            <button className={skill.typeItem === 'Charms' ? 'charms-helper' : 'charms-helper no-button'} onClick={() => setHelperOpen(true)}>?</button>
+            <button className={skill.typeItem === 'Charms' ? 'charms-helper' : 'charms-helper no-button'} onClick={() => setHelperOpen(!helperOpen)} ref={btnHelperRef}>?</button>
             <div className={helperOpen ? 'helper' : "helper no-button"} ref={helperRef}>
                 <div className={skill.name !== "glamor potion supplier" ? '' : 'no-gold-helper'}><Gold size={TYPE_GOLD_SMALL} active={true} value={2} /></div>
                 {skill.helperText}

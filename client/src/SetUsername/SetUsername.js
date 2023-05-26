@@ -8,7 +8,7 @@ import LogOut from '../components/LogOut/LogOut';
 
 function SetUsername() {
 
-    const {userID, setUsername,navigate, LOGGED_PAGE} = useContext(AppContext);
+    const {userID, setUsername, setRecordSinglePlayer, navigate, LOGGED_PAGE} = useContext(AppContext);
     
     const[nickname,setNickname] = useState('');
     const[validUsername, setValidUsername] = useState(null);
@@ -34,6 +34,7 @@ function SetUsername() {
                     if(validUsername){
                         dbFirestore.setUsername(userID, nickname);
                         setUsername(nickname);
+                        setRecordSinglePlayer(0);
                         setNickname('');
                         setValidUsername(null);
                         navigate(LOGGED_PAGE);

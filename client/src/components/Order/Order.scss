@@ -107,7 +107,14 @@
     margin: 4px;
     text-transform: capitalize;
 }
-
+.bar-order{
+    position: absolute;
+    align-self: center;
+    width: 90%;
+    height: 3px;
+    background: v.$primary-color;
+    filter: drop-shadow(0px 0px 5px red)
+}
 .reward-orders{
     display: flex;
     justify-content: center;
@@ -126,7 +133,8 @@
     z-index:2;
 }
 *.req-done{
-    text-decoration: line-through v.$primary-color 3px;
     filter: drop-shadow(0px 0px 5px red)
 }
-
+.reward-orders.req-done{
+    background: v.$primary-color;
+}

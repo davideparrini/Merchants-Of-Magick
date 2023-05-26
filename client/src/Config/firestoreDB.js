@@ -26,7 +26,8 @@ function createFirebaseStore() {
         //username = username.toLowerCase();
         await setDoc(doc(db, USERS_COLLECTION_NAME, userID),{
             username: username,
-            friendList: []
+            friendList: [],
+            record: 0
         });
     }
 
@@ -38,16 +39,32 @@ function createFirebaseStore() {
         return snapshot.data().count === 0;
     }
 
-    async function getUsername(userID){
+    async function getUserData(userID){
         const docRef = doc(db, USERS_COLLECTION_NAME, userID);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             let username = docSnap.data().username;
+            let record =  docSnap.data().record;
+            if(record === undefined){
+                await updateDoc(docRef, {
+                    record : 0
+                })
+            }
             console.log(username);
-            return username;
+            return {
+                username : username,
+                record : record
+            };
         } 
         return null;
+    }
+
+    async function updateRecord(userID, newRecord){
+        const docRef = doc(db, USERS_COLLECTION_NAME, userID);
+        await updateDoc(docRef,{
+            record: newRecord
+        })
     }
 
     async function getFriendList(userID){
@@ -102,13 +119,14 @@ function createFirebaseStore() {
         hasUsername,
         setUsername, 
         checkUsername, 
-        getUsername, 
+        getUserData, 
         getFriendList, 
         addFriend,
         removeFriend,
         setSocketID,
         getSocketID,
-        deleteSocketID
+        deleteSocketID,
+        updateRecord
     }
 
 }

@@ -68,6 +68,9 @@ function registerValidSW(swUrl, config) {
                 'New content is available and will be used when all ' +
                 'tabs for this page are closed.'
             );
+            
+            alert('New content is available and will be used when all ' +
+            'tabs for this page are closed. Please open a new tab!')
 
             // Execute callback
             if (config && config.onUpdate) {

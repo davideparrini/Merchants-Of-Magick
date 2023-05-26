@@ -169,7 +169,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
     background-color: v.$label-color;
     height: v.$label-height;
     width: v.$label-width;
@@ -198,6 +197,7 @@
     height: 90%;
     position: relative;
     bottom: 55px;    
+    z-index: 2;
 }
 .card-wrapper{
     display: flex;
@@ -254,8 +254,8 @@
     display: flex;
     justify-content: center;
     width: 550px;
-    
     pointer-events: all;
+    z-index: 0;
 }
 
 // .skills-table{
@@ -389,7 +389,7 @@
     height: 100%;
     width: 100%;
     background: v.$black-bg;
-    z-index: 10000000000000;
+    z-index: 10;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -471,14 +471,122 @@
     text-shadow: v.$text-shadow-primarycolor3;
     font-size: 50px;
 }
-
-
+$scaling-xx-small-screen: (0.7);
 $scaling-x-small-screen : (0.8);
 $scaling-small-screen : (0.92);
+$scaling-27-screen : (1.1);
 $scaling-big-screen : (1.2);
 
+@media (width < 1400px) {
+    
+    .upper-container{
+        scale:($scaling-x-small-screen); 
+    }
 
-@media (height < 900px ) ,(width < 1700px) {
+    .container-dices-potion{
+        scale:($scaling-x-small-screen);
+        width: 130%;
+    }
+    .container-potion{
+        position: relative;
+        left: 7px;
+        
+    }
+    .potion-img{
+        scale: (1.1);
+        position: relative;
+        right: 3px;
+    }
+    
+    .potion-label{
+        min-width: 45px;
+    }
+
+    .btn-turn-container{
+        scale:($scaling-small-screen);
+        position: relative;
+        bottom: 60px;
+        right: 25px;
+        z-index: 11;
+    }
+
+    .cards-container{
+        scale:($scaling-x-small-screen);
+        width: 125%;
+        position: relative;
+        right: 20px;
+    }
+    .players-table{
+        scale:($scaling-x-small-screen);
+        position: relative;
+        left: 0px;
+    }
+    .container-order-quests{
+        scale:($scaling-small-screen);
+        position: relative;
+        right: 35px;
+        
+    }
+    .container-quests{
+        scale:($scaling-small-screen);
+    }
+    .container-order{
+        scale:($scaling-small-screen);
+    }
+    
+
+    .skills-table{
+        position: relative;
+        left: 30px;
+        height: 60%;
+        min-height: 374px;
+        max-width: 1230px;
+        padding: 5px;
+        padding-top: 10px;
+        row-gap: 10px;
+        scale:($scaling-small-screen);
+    }
+
+    .title-skills-table-container{
+        scale:($scaling-small-screen);
+    }
+    
+    .skills-container{
+        scale:($scaling-small-screen);
+        width:  109%;
+    }
+
+    #crafting-skills{
+        position: relative;
+        right: 30px;
+        align-items: flex-start;
+    }
+    
+    #magic-research-skills{
+        position: relative;
+        right: 30px;
+        align-items: flex-end;
+    }
+    .legend-container{
+        scale:($scaling-small-screen);
+        position: relative;
+        top: 20px;
+        left: 70px;
+    }
+    .shop-container{
+        scale:($scaling-small-screen);
+    }
+    
+    .container-score-end-game{
+        scale:($scaling-small-screen);
+    }
+    .btn-score-end-game{
+        scale:($scaling-small-screen);
+    }
+
+}
+
+@media (1400px <= width <= 1700px) {
     
     .upper-container{
         scale:($scaling-small-screen); 
@@ -508,6 +616,7 @@ $scaling-big-screen : (1.2);
         position: relative;
         bottom: 60px;
         right: 25px;
+        z-index: 11;
     }
 
     .cards-container{
@@ -681,7 +790,6 @@ $scaling-big-screen : (1.2);
         scale:($scaling-small-screen);
     }
 }
-
 
 
 @media (height > 1200px ) and (width > 2400px) {

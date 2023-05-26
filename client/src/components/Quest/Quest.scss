@@ -52,7 +52,7 @@ $quest-height: 85px;
     font-size: 18px;
     color: rgb(255, 255, 255);
     text-shadow: v.$text-shadow-primarycolor2;
-    z-index: 100;
+    z-index: 3;
 }
 .quest-text::before{
     content: '';
@@ -63,7 +63,7 @@ $quest-height: 85px;
     width: 14px;
     background: v.$primary-color;
     transform: rotate(45deg);
-    z-index: 100;
+    z-index: 3;
 }
 
 .gold-container-quest{

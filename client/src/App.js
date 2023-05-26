@@ -40,6 +40,7 @@ function App() {
     const[userID, setUserID] = useState(-1);
     const[statusOnline, setStatusOnline] = useState(false);
     const[username,setUsername] = useState('');
+    const[recordSinglePlayer, setRecordSinglePlayer] = useState(-1);
     const[openToastNotification,setOpenToastNotification] = useState(false);
 
     const[lobby, setLobby] = useState(-1);
@@ -113,7 +114,13 @@ function App() {
         connectionHandlerClient.disconnect();
     },[refreshGame, navigate])
 
-
+    const checkPersonalScore = useCallback((score)=>{
+        if(score > recordSinglePlayer){
+            dbFirestore.updateRecord(userID,score);
+            setRecordSinglePlayer(score);
+        }
+            
+    },[recordSinglePlayer, userID])
     
 
 
@@ -126,6 +133,9 @@ function App() {
         userID,
         username, 
         setUsername, 
+        checkPersonalScore,
+        recordSinglePlayer,
+        setRecordSinglePlayer,
         lobby, 
         setLobby, 
         statusOnline,
@@ -155,7 +165,7 @@ function App() {
         gameInit,
         refreshGame
     
-    }),[fullScreen, userAuthenticated, userID, username, lobby, statusOnline, openToastNotification, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
+    }),[fullScreen, checkPersonalScore, recordSinglePlayer, userAuthenticated, userID, username, lobby, statusOnline, openToastNotification, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
 
 
 
@@ -176,7 +186,10 @@ function App() {
                         navigate(SET_USERNAME);
                     }
                     else{ 
-                        dbFirestore.getUsername(user.uid).then(u => setUsername(u));
+                        dbFirestore.getUserData(user.uid).then((res) =>{
+                            setUsername(res.username);
+                            setRecordSinglePlayer(res.record)
+                        } );
                     } 
                 })
                 //Connetto l'utente al server

@@ -78,47 +78,8 @@
     color:rgb(136, 136, 136);
     pointer-events: none;
 }
-.username-log{
-    position: absolute;
-    top:50px;
-    left: 50px;
-    color: white;
-    display: flex;
-    height: 50px;
-    width: 240px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-}
 
-.user-logged{
-    height: 50px;
-    width: 250px;
-    font-size: 40px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-.friend-list-container{
-    position: absolute;
-    left: 40px;
-    height: 70%;
-    width: 15%;
-}
-.connected-label{
-    font-size: 25px;
-    position: relative;
-    left: 110px;
-    top: 10px;
-    letter-spacing: 2px;
-}
-.online-label{
-    color:rgb(113, 255, 47);
-}
-.offline-label{
-    color:rgb(255, 47, 47);
-}
+
 
 .submit-lobby-id{
     position: absolute;
@@ -173,13 +134,61 @@
     filter: brightness(0.6);
 }
 
+
+
+
+
+.left-wrapper-logged{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.username-logged{
+    color: white;
+    display: flex;
+    height: 300px;
+    width: 240px;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.user-logged{
+    height: 50px;
+    width: 250px;
+    font-size: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.connection-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 5px;
+}
+.connected-label{
+    font-size: 25px;
+    letter-spacing: 2px;
+}
+.online-label{
+    color:rgb(113, 255, 47);
+}
+.offline-label{
+    color:rgb(255, 47, 47);
+}
 .btn-refresh-connection{
     height: 20px;
     width: 20px;
     background: #b84141;
-    position: relative;
-    left: 120px;
-    top: 10px;
     border-radius: 50%;
     padding: 5px;
     background-color: v.$primary-color;
@@ -198,4 +207,20 @@
     background-size: contain;
     background-repeat: no-repeat;
     filter: drop-shadow(1px 1px 1px black);
+}
+
+
+.record-single-player{
+    font-family: Tahoma, Geneva, sans-serif;
+    letter-spacing: 2px;
+    color: white;
+    text-shadow: v.$text-shadow-primarycolor3;
+    font-size: 28px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    width: 400px;
+    bottom: 30px;
+    left: 30px;
 }

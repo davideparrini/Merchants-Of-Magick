@@ -7,7 +7,7 @@
     background-image: url(./logout.webp);
     background-size: contain;
     background-repeat: no-repeat;
-    z-index: 1000;
+    z-index: 10;
     cursor: pointer;
 }
 .log-out-label{

@@ -125,7 +125,7 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { fullScreen, refreshGame, singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
+    const { fullScreen, refreshGame, checkPersonalScore, singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
     
     
 
@@ -400,6 +400,7 @@ function Game() {
                         if(event.data && event.data.type === 'end-game-single-player'){
                             console.log("End single player game")
                             setCurrentGold(event.data.data);
+                            checkPersonalScore(event.data.data);
                             setGameEnd(true);
                             setOpenScoreSinglePlayer(true);
                         }
@@ -409,7 +410,7 @@ function Game() {
             
             
         }
-    },[adventurerQuestDone, boardCards, card1, card2, card3, currentGold, gameInitState.config.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, shop, showCard1, showCard2, showCard3, singlePlayerGame, skillsGained, turnDone, username]);
+    },[adventurerQuestDone, boardCards, card1, card2, card3, checkPersonalScore, currentGold, gameInitState.config.nTurn, lobby.id, nTurn, quest1Done, quest2Done, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, shop, showCard1, showCard2, showCard3, singlePlayerGame, skillsGained, turnDone, username]);
 
     
     
