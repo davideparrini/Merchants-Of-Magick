@@ -148,13 +148,11 @@ function Logged({setLobbyUpdated}) {
             <div className='left-wrapper-logged'>
                 <div className='username-logged'>
                     <div className='user-logged'>{username}</div>
-                    <div className='connection-wrapper'>
-                        <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
-                        <div className='btn-refresh-connection' onClick={()=> connectionHandlerClient.connect(setStatusOnline)}>
-                        <div className='img-fresh-connection'/>
-                    </div>
-                    
-                        
+                        <div className='connection-wrapper'>
+                            <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
+                            <div className='btn-refresh-connection' onClick={()=> connectionHandlerClient.connect(setStatusOnline)}>
+                            <div className='img-fresh-connection'/>
+                        </div>  
                     </div>
                 </div>
                 <div className='record-single-player'>

@@ -197,29 +197,6 @@
 }
 
 
-
-
-.username-log{
-    position: absolute;
-    top:50px;
-    left: 50px;
-    color: white;
-    display: flex;
-    height: 50px;
-    width: 240px;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-}
-
-.user-logged{
-    height: 50px;
-    width: 150px;
-    font-size: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .container-id-lobby{
     grid-area: idLobby;
     display: grid;

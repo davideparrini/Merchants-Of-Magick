@@ -144,7 +144,7 @@ function createGameLogic(){
             case typeCard_BOTH:
                 enchantment = deckEnchantment.pop();
                 origin = deckOrigin.pop();
-                gold = rand(5,7);
+                gold = rand(6,8);
                 break;
             default: console.error("Err createNewCard"); return;
         }
