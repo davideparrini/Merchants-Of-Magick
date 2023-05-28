@@ -20,7 +20,7 @@ The game revolves around managing resources, making shrewd business decisions. A
 
 ## Test app demo
 
-Go to  merchants-of-magick.firebaseapp.com  sign up and play the single player mode!
+Go to  [Click here to visit my website](merchants-of-magick.firebaseapp.com)  sign up and play the single player mode!
 The current version of Merchants-Of-Magick deployed does not include a multiplayer mode. I need to deploy the server somewhere for testing the multiplayer!
 
 ## Game Rules
@@ -89,11 +89,11 @@ Single PLayer Mode
 
 After each round, a slip of cards is passed in a leftward direction. Let's explore this mechanism in detail:
 
-    At the end of each round, the slip of cards moves from right to left.
-    The first card from the deck (black) ,replaces the rightmost card in your card collection.
-    The rightmost card in your collection then shifts to the middle position.
-    The card in the middle position moves to the leftmost position.
-    Finally, the leftmost card is removed from the game and is no longer available for use.
+   At the end of each round, the slip of cards moves from right to left.
+   The first card from the deck (black) ,replaces the rightmost card in your card collection.
+   The rightmost card in your collection then shifts to the middle position.
+   The card in the middle position moves to the leftmost position.
+   Finally, the leftmost card is removed from the game and is no longer available for use.
 
 Multiplayer Mode
 
@@ -116,8 +116,8 @@ Additionally, there are two quests available in the game. Completing these quest
 The game concludes at the end of the last round. At this point, the game calculates the total gold you have earned throughout the game. Let's explore the gold calculation process:
 
    The calculation takes into account various factors, including your Shop, skills gold, Adventurer order, quests and skills bonus.
-    The gold earned from your Shop is determined by the completed orders stored in the Shop. Each completed order contributes to your total gold.
-    Skills gold refers to the gold value associated with the skills you have acquired during the game
-    Adventurer order grants a specific gold reward as indicated on the card.
-    Quests provide additional chances to gain gold. By successfully completing the quests, you can earn the gold rewards mentioned on the quests themselves.
-    Skills bonus provided by charm skills.
+   The gold earned from your Shop is determined by the completed orders stored in the Shop. Each completed order contributes to your total gold.
+   Skills gold refers to the gold value associated with the skills you have acquired during the game
+   Adventurer order grants a specific gold reward as indicated on the card.
+   Quests provide additional chances to gain gold. By successfully completing the quests, you can earn the gold rewards mentioned on the quests themselves.
+   Skills bonus provided by charm skills.
