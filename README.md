@@ -28,22 +28,22 @@ The current version of Merchants-Of-Magick deployed does not include a multiplay
 In "Merchants of Magick," players have four dice with different values: d6, d8, d10, and d12. These dice represent attributes that can be upgraded throughout the game. Let's dive into the rules:
 
 
-**Dice Upgrades**
+-**Dice Upgrades**
 
 At the beginning of each round, the values on the dice may change. Players can click on the dice to reveal which attribute they can upgrade. During a round, you can use a maximum of two dice for your actions. However, if you wish to use additional dice, you can do so by using an extra dice. Each player starts the game with six extra dice.
 
 
-**Extra Dice Usage**
+-**Extra Dice Usage**
 
 You can use your extra dice strategically to add more dice to your current round. For example, if you initially have two dice for the round (e.g., d6 and d8), but you want to use a d12 as well, you can spend one of your extra dice to include it in your current round. This allows you to use three dice instead of the usual two. Use your extra dice wisely to optimize your actions.
 
 
-**Potions and Dice Values**
+-**Potions and Dice Values**
 
 You can change the values on the dice using potions. Potions can be obtained by Adveturer's order reward, Charm skills like "Glamor Potion Supplier" or gaining skills, for each skill gained you obtain 1 potion. Each potion allows you to increment or decrement the value of a specific dice. This enables you to customize your dice values to better suit your strategy and objectives.
 
 
-**Attributes**
+-**Attributes**
 
    Materials:
     Steel: Upgraded using a d6 dice.
@@ -55,12 +55,12 @@ You can change the values on the dice using potions. Potions can be obtained by 
     Arcane: Upgraded using a d10 or d12 dice.
     Wild: Upgraded using a d12 dice.
 
-**Skill Acquisition**
+-**Skill Acquisition**
 
 To gain a skill, you need to possess all the necessary materials or magic components for that skill. For example, to acquire a crafting skill, you must have all the required materials (Steel, Wood, and Leather). Similarly, for magic research skills, you need the corresponding magic components (Elemental, Arcane, and Wild).
 
 
-**Attribute Upgrades**
+-**Attribute Upgrades**
 
 You can use any available dice to upgrade an attribute. The specific dice values required for each attribute are as follows:
 
@@ -78,12 +78,12 @@ You can use any available dice to upgrade an attribute. The specific dice values
 
 Any doubts? Press the Legend ('L') red circle button! It will be helpful!
 
-**Crafting Cards Order**
+-**Crafting Cards Order**
 
 To fulfill an order, you must possess the necessary crafting and magic skills indicated on the order card. For example, let's say you have a card for the "Fiery Scroll of the Dragons." To successfully craft this order, you must possess the skills corresponding to "Fiery," "Scroll," and "Dragons." If you have all the required skills, you can craft the "Fiery Scroll of the Dragons" and complete the order. 
 When you successfully complete an order, it is moved to the Shop
 
-**Card Slip Mechanism**
+-**Card Slip Mechanism**
 
 Single PLayer Mode
 
@@ -100,18 +100,18 @@ Multiplayer Mode
  It's a bit different, there is no deck of cards and the slip of cards is passed in a leftward direction to another player
  So it's a circle of cards. 
 
-**The Shop**
+-**The Shop**
 
 Located near the timer, the Shop button is where all completed order cards are stored. Once an order is successfully crafted, it will be moved to the Shop. Keep track of your completed orders and manage your shop effectively.
 
-**Adventurer Card and Quests**
+-**Adventurer Card and Quests**
 
 The blue Adventurer card features three orders to complete. Each completed order grants a specific reward, as indicated on the card. Focus on fulfilling these orders to earn valuable rewards.
 
 Additionally, there are two quests available in the game. Completing these quests will reward you with the specified amount of gold, as mentioned on the quests themselves.
 
 
-**End of Game and Gold Calculation**
+-**End of Game and Gold Calculation**
 
 The game concludes at the end of the last round. At this point, the game calculates the total gold you have earned throughout the game. Let's explore the gold calculation process:
 
