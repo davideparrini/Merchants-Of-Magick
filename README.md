@@ -20,7 +20,7 @@ The game revolves around managing resources, making shrewd business decisions. A
 
 ## Test app demo
 
-Go to  [Click here to visit my website](merchants-of-magick.firebaseapp.com)  sign up and play the single player mode!
+Go to  [merchants-of-magick.firebaseapp.com](https://merchants-of-magick.firebaseapp.com/)  sign up and play the single player mode!
 The current version of Merchants-Of-Magick deployed does not include a multiplayer mode. I need to deploy the server somewhere for testing the multiplayer!
 
 ## Game Rules
