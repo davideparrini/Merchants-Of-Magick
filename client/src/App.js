@@ -101,7 +101,7 @@ function App() {
         setGameEnd(false);
         setSinglePlayerGame(false);
         connectionHandlerClient.leaveLobby(username,lobbyID);
-    },[username])
+    },[lobby.id, username])
 
 
     const logOut = useCallback(()=>{

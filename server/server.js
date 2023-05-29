@@ -31,87 +31,92 @@ const mapLobbyID_GameState = new Map();
 
 
 function handlePlayerLeftGame(username){
+
     const lobbyID = mapUsername_lobbyID.get(username);
 
-    if (lobbyID !== undefined){
-        const lobby = mapLobbyID_Lobby.get(lobbyID);
-        //Recupero la lobby dell'utente che sta lasciando la lobby
-        if(lobby !== undefined){
-            //Cerco l'index dell'utente tra frai players della lobby
-            const indexUsername = lobby.players.findIndex((u)=> u === username);
+    if (lobbyID === undefined){
+        return;
+    }
 
-            if(indexUsername >= 0){
-                //elimino il player dalla lobby
-                lobby.players.splice(indexUsername,1);
+    const lobby = mapLobbyID_Lobby.get(lobbyID);
 
-                //setto il leader al giocatore di index 0
-                lobby.leaderLobby = lobby.players[0];
+    //Recupero la lobby dell'utente che sta lasciando la lobby
+    if(lobby === undefined || lobby.players === undefined){
+        return;
+    }
+    //Cerco l'index dell'utente tra frai players della lobby
+    const indexUsername = lobby.players.findIndex((u)=> u === username);
 
-                //elimino l'utente dalla map username-lobbyIndex
-                mapUsername_lobbyID.delete(username);
+    if(indexUsername < 0){
+        return;
+    }
+    //elimino il player dalla lobby
+    lobby.players.splice(indexUsername,1);
 
-                console.log(username + ' want to left '+ lobby.leaderLobby +'\'s lobby');
+    //setto il leader al giocatore di index 0
+    lobby.leaderLobby = lobby.players[0];
 
-                //Check sullo stato della lobby
+    //elimino l'utente dalla map username-lobbyIndex
+    mapUsername_lobbyID.delete(username);
 
-                //in-game, mi assicuro che il game continui
-                if(lobby.status === 'in-game'){
-                    const gameState = mapLobbyID_GameState.get(lobbyID);
-                    gameState.nPlayers--;
-                    gameState.players.splice(indexUsername,1);
-                    console.log(lobby.leaderLobby +'\'s lobby is in game');
+    console.log(username + ' wants to leave '+ lobby.leaderLobby +'\'s lobby');
 
-                    //Se tutti i giocatori rimanenti hanno finito il turno, aggiorno il turno
-                    if( gameState.nPlayers === gameState.nPlayersEndTurn ){
+    //Check sullo stato della lobby
 
-                        //Faccio l'update delle carte, ovvero ne creo di nuove, le sostituisco con quelle già giocate/craftate
-                        //ed eseguo uno slittamento di una carta al compagno vicino
-                        const cardsUpdated = gameLogic.updateCardsTurn(gameState.cards, gameState.players);
-                        const response = {
-                            quest1: gameState.quest1,
-                            quest2: gameState.quest2,
-                            dices: gameLogic.rollDices(),
-                            cards: cardsUpdated,
-                            report: gameState.report
-                        }
-                        console.log(lobby.leaderLobby +'\'s lobby update turn');
-                        io.to(lobbyID).emit("game-change-turn", response);
+    switch(lobby.status){
+        case 'in-game':
+            const gameState_inGame = mapLobbyID_GameState.get(lobbyID);
+            gameState_inGame.nPlayers--;
+            gameState_inGame.players.splice(indexUsername,1);
+            console.log(lobby.leaderLobby +'\'s lobby is in game');
 
-                        //Faccio un refresh delle strutture dati che non  contengono dati sono persisenti
-                        // (cards, report, nPlayersEndTurn vengo riaggiornati durante il turno di partita)
-                        gameState.cards = [];
-                        gameState.report = [];
-                        gameState.nPlayersEndTurn = 0;
-                    }
+            //Se tutti i giocatori rimanenti hanno finito il turno, aggiorno il turno
+            if( gameState_inGame.nPlayers === gameState_inGame.nPlayersEndTurn ){
+
+                //Faccio l'update delle carte, ovvero ne creo di nuove, le sostituisco con quelle già giocate/craftate
+                //ed eseguo uno slittamento di una carta al compagno vicino
+                const cardsUpdated = gameLogic.updateCardsTurn(gameState_inGame.cards, gameState_inGame.players);
+                const response = {
+                    quest1: gameState_inGame.quest1,
+                    quest2: gameState_inGame.quest2,
+                    dices: gameLogic.rollDices(),
+                    cards: cardsUpdated,
+                    report: gameState_inGame.report
                 }
+                console.log(lobby.leaderLobby +'\'s lobby update turn');
+                io.to(lobbyID).emit("game-change-turn", response);
 
-                //end-game, il game è in fase di conclusione 
-                if(lobby.status === 'end-game'){
-                    const gameState = mapLobbyID_GameState.get(lobbyID);
-                    gameState.nPlayers--;
-                    gameState.players.splice(indexUsername,1);
-                    console.log(lobby.leaderLobby +'\'s lobby is ending the game');
-
-                    if(gameState.nPlayersEndTurn === gameState.nPlayers){
-                        const winnerResolution  = gameLogic.winnerResolution(gameState.report);
-                        lobby.status = 'game-over';
-                        io.to(lobbyID).emit("game-end",winnerResolution);
-                    }
-
-                }
-
-                //se l'utente era l'ultimo rimasto elimino la lobby
-                if(lobby.players.length < 1){   
-                    //se l'utente è ultimo membro della lobby, elimino la lobby
-                    mapLobbyID_Lobby.delete(lobbyID);
-                    mapLobbyID_GameState.delete(lobbyID);
-                }
+                //Faccio un refresh delle strutture dati che non  contengono dati sono persisenti
+                // (cards, report, nPlayersEndTurn vengo riaggiornati durante il turno di partita)
+                gameState_inGame.cards = [];
+                gameState_inGame.report = [];
+                gameState_inGame.nPlayersEndTurn = 0;
             }
-        }  
-        
-        
+            break;
+        case 'end-game':
+            const gameState_endGame = mapLobbyID_GameState.get(lobbyID);
+            gameState_endGame.nPlayers--;
+            gameState_endGame.players.splice(indexUsername,1);
+            console.log(lobby.leaderLobby +'\'s lobby is ending the game');
+
+            if(gameState_endGame.nPlayersEndTurn === gameState_endGame.nPlayers){
+                const winnerResolution  = gameLogic.winnerResolution(gameState_endGame.report);
+                lobby.status = 'game-over';
+                io.to(lobbyID).emit("game-end",winnerResolution);
+            }
+        break;
+        default: break;
+
     }
    
+    //se l'utente era l'ultimo rimasto elimino la lobby
+    if(lobby.players.length < 1){   
+        //se l'utente è ultimo membro della lobby, elimino la lobby
+        mapLobbyID_Lobby.delete(lobbyID);
+        mapLobbyID_GameState.delete(lobbyID);
+    }
+
+        
 }
 
 io.on("connection", (socket) => {
@@ -137,7 +142,9 @@ io.on("connection", (socket) => {
         
         //Recupero l'username e lo elimino dalle strutture dati
         const username = mapSocketID_Username.get(socket.id);
+        console.log(username)
         const lobbyID = mapUsername_lobbyID.get(username);
+        console.log("ssda "+lobbyID)
         if(lobbyID !== undefined){
             const lobby = mapLobbyID_Lobby.get(lobbyID);
             if(lobby !== undefined){

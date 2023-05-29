@@ -57,11 +57,11 @@ function SignUp() {
 
                 <div className='log-with-form-container'>
                     <form className='log-with-form facebook'
-                        onClick={userAuth.facebookLogin}>Sign Up with Facebook</form>
+                        onClick={()=>userAuth.facebookLogin()}>Sign Up with Facebook</form>
                     <form className='log-with-form google' 
-                        onClick={userAuth.googleLogin} >Sign Up with Google</form>
+                        onClick={()=>userAuth.googleLogin()} >Sign Up with Google</form>
                     <form className='log-with-form github'
-                        onClick={userAuth.githubLogin}>Sign Up with GitHub</form>
+                        onClick={()=>userAuth.githubLogin()}>Sign Up with GitHub</form>
                 </div>
             </div>
            <FullScreenBtn/>

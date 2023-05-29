@@ -1,16 +1,13 @@
-import {getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc,enableIndexedDbPersistence ,deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove, persistentMultipleTabManager} from 'firebase/firestore';
-import {firebase } from './FirebaseConfig';
+import { collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc, deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove, persistentMultipleTabManager, persistentLocalCache, initializeFirestore} from 'firebase/firestore';
 
-const db = getFirestore(firebase);
+import { firebase } from './FirebaseConfig';
 
-//Deprecated ma funziona
-enableIndexedDbPersistence(db).catch(e => console.log(e))
 
-// , {localCache: 
-//     persistentLocalCache({tabManager: persistentMultipleTabManager()})
-//   })
+const db = initializeFirestore(firebase, {localCache: 
+    persistentLocalCache({tabManager: persistentMultipleTabManager()})
+});
 
-// 'usersDataMOM';
+
 const USERS_COLLECTION_NAME = 'users';
 
 function createFirebaseStore() {
@@ -91,29 +88,7 @@ function createFirebaseStore() {
             friendList: arrayRemove(friendUsername)
         });
     }
-
-    async function setSocketID(userID,socketID){
-        const docRef = doc(db, USERS_COLLECTION_NAME, userID);
-        await updateDoc(docRef,{
-            socketID: socketID
-        });
-    }
-
-    async function getSocketID(userID){
-        const docRef = doc(db, USERS_COLLECTION_NAME, userID);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            let socketID = docSnap.data().socketID;
-            return socketID;
-        } 
-        return null;
-    }
-    async function deleteSocketID(userID){
-        const docRef = doc(db, USERS_COLLECTION_NAME, userID);
-        await updateDoc(docRef,{
-            socketID: deleteField()
-        });
-    }
+  
 
     return {
         hasUsername,
@@ -123,9 +98,6 @@ function createFirebaseStore() {
         getFriendList, 
         addFriend,
         removeFriend,
-        setSocketID,
-        getSocketID,
-        deleteSocketID,
         updateRecord
     }
 

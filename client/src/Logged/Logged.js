@@ -40,8 +40,14 @@ function Logged({setLobbyUpdated}) {
     });
 
     useEffect(()=>{
+        
         connectionHandlerClient.sendUsername(username);
         connectionHandlerClient.registerToInvite(setInfoInviterLobby,setOpenToastNotification);
+
+        return ()=>{
+            connectionHandlerClient.unRegisterToInvite();
+        }
+
     },[username])
 
     useEffect(()=>{

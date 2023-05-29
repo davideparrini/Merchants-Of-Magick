@@ -10,9 +10,6 @@ function createSocketConfig() {
     const socket = io(serverUrl,{
         autoConnect: false,
         reconnection: false,
-        reconnectionAttempts : 100,
-        reconnectionDelay: 5000,
-        reconnectionDelayMax: 10000
     });
     
     function sendNotification(message) {
@@ -50,6 +47,10 @@ function createSocketConfig() {
             sendNotification(message);
         });
     }  
+
+    function unRegisterToInvite(){
+        socket.off("invite"+socket.id);
+    } 
     
     //connetti
     function connect(setStatusOnline){
@@ -155,7 +156,6 @@ function createSocketConfig() {
     }
 
 
-
     //Manda una richiesta al server di iniziare il game
     function gameStartRequest(lobbyID, config, cb){
         socket.emit("game-start-request",lobbyID, config, cb);
@@ -182,6 +182,7 @@ function createSocketConfig() {
         updateLobby,
         invitePlayer,
         registerToInvite,
+        unRegisterToInvite,
         gameStartRequest,
         finishTurn,
         endGame,

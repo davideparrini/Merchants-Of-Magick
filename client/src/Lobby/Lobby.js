@@ -235,7 +235,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     </div>
                 </div>
             </div>
-            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={refreshGame} message={'Are you sure to leave the lobby?'}/>
+            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={refreshGame} message={'Are you sure to leave the lobby?'} alert={true}/>
             <LogOut/>
             <FullScreenBtn/>
         </div>

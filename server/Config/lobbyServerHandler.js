@@ -13,7 +13,7 @@ function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket,
             leaderLobby : username,
             status: 'in-lobby'
         } 
-        mapUsername_lobbyID.set(username, lobby);
+        mapUsername_lobbyID.set(username, lobby.id);
         mapLobbyID_Lobby.set(lobby.id, lobby)
         socket.join(lobby.id);
         cb(lobby);
@@ -25,63 +25,71 @@ function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket,
 
         const lobby = mapLobbyID_Lobby.get(lobbyID);
 
-        if (lobby != undefined){
-            
-            if(lobby.players.length >= 8){
-                cb("FULL",-1);
-            }else{
-                if(lobby.status === 'in-lobby'){
-                    lobby.players.push(username);
-                    mapUsername_lobbyID.set(username,lobbyID);
-                    socket.join(lobbyID);
-                    //dico alla lobby che si è connesso un utente e gli passo l'username
-                    socket.broadcast.to(lobbyID).emit("lobby-player-joined",username);
-                    console.log(username + ' joined '+ lobby.leaderLobby +'\'s lobby');
-                    cb("OK",lobby);
-                }else{
-                    cb("in-game",-1);
-                }
-                
-            }
-        }
-        else{
+        if (lobby === undefined || lobby.players === undefined){
             cb("ERROR",-1);
         }
+            
+        if(lobby.players.length >= 8){
+            cb("FULL",-1);
+        }
+
+
+        if(lobby.status === 'in-lobby'){
+
+            lobby.players.push(username);
+            mapUsername_lobbyID.set(username,lobbyID);
+            socket.join(lobbyID);
+            //dico alla lobby che si è connesso un utente e gli passo l'username
+            socket.broadcast.to(lobbyID).emit("lobby-player-joined",username);
+            console.log(username + ' joined '+ lobby.leaderLobby +'\'s lobby');
+            cb("OK",lobby);
+
+        }else{
+            cb("in-game",-1);
+        }
+                
     }
 
     //permette di invitare un utente tramite l'username, la callback da solo un messaggio di feedback
     function requestInvitePlayer(lobbyID, usernameInviter ,usernameInvited, cb){
+               
+        const lobby = mapLobbyID_Lobby.get(lobbyID);
         const userSocket = mapUsername_Socket.get(usernameInvited);
-        if(userSocket !== undefined){
-            if(mapUsername_lobbyID.has(usernameInvited)){
-                cb("ALREADY_IN_A_LOBBY");
-            }
-            else{
-                const lobby = mapLobbyID_Lobby.get(lobbyID);
-                if(lobby != undefined){
-                    if(lobby.players.length >= 8){
-                        cb("FULL")
-                    }else{
-                        if(lobby.status !== 'in-game'){
-                            //comunico all'utente che fa parte della lobby e gli spedisco la lobby, tramite il namespace registrato all'inizio della connessione
-                            // dell' utente
-                            io.emit("invite" + userSocket.id, lobbyID, usernameInviter);
-                            console.log("Inviter: " + usernameInviter + ' Invited: ' + usernameInvited)
-                            cb("OK")
-                        }else{
-                            cb('in-game')
-                        }
-                    }
-                }else {
-                    cb("ERROR");
-                }
-            }
+
+        if(lobby === undefined || lobby.players === undefined || userSocket === undefined ){
+            cb("ERROR");
+            return;
         }
+
+        if(mapUsername_lobbyID.has(usernameInvited)){
+            cb("ALREADY_IN_A_LOBBY");
+        }
+
+        if(lobby.players.length >= 8){
+            cb("FULL")
+        }
+
+        if(lobby.status === 'in-lobby'){
+            //comunico all'utente che fa parte della lobby e gli spedisco la lobby, tramite il namespace registrato all'inizio della connessione
+            // dell' utente
+            io.emit("invite" + userSocket.id, lobbyID, usernameInviter);
+            console.log("Inviter: " + usernameInviter + ' Invited: ' + usernameInvited)
+            cb("OK")
+
+        }else{
+            cb('in-game')
+        }   
+       
     }
 
     //utente esce dalla lobby
     function leave(username,lobbyID){
+        //faccio comunque una pulizia delle strutture dati per sicurezza
         handlePlayerLeftGame(username);
+
+        if(lobbyID === null){
+            return;
+        }
         console.log(username + ' left the lobby ' + lobbyID);
         socket.broadcast.to(lobbyID).emit("lobby-player-left",username);
         socket.leave(lobbyID);

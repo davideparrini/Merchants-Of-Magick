@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, GithubAuthProvider ,  signInWithPopup, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, FacebookAuthProvider  } from "firebase/auth";
 
 
-import {firebase } from './FireBaseConfig';
+import {firebase } from './FirebaseConfig';
 
 export const auth = getAuth(firebase);
 const googleProvider = new GoogleAuthProvider();
@@ -31,16 +31,28 @@ function createAuthConfig() {
         }
     }
 
-    function googleLogin() {
-        return signInWithPopup(auth, googleProvider);
+    async function googleLogin() {
+       await signInWithPopup(auth, googleProvider).catch((error) => {
+            // The email of the user's account used.
+            const email = error.customData.email;
+            alert(email + " has been used already");
+        })
     }
 
-    function facebookLogin() {
-        return signInWithPopup(auth, facebookProvider);
+    async function facebookLogin() {
+        await signInWithPopup(auth, facebookProvider).catch((error) => {
+            // The email of the user's account used.
+            const email = error.customData.email;
+            alert(email + " has been used already");
+        })
     }
 
-    function githubLogin() {
-        return signInWithPopup(auth, githubProvider);
+    async function githubLogin() {
+        await signInWithPopup(auth, githubProvider).catch((error) => {
+            // The email of the user's account used.
+            const email = error.customData.email;
+            alert(email + " has been used already");
+        })
     }
 
 
