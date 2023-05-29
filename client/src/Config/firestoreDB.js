@@ -1,5 +1,5 @@
 import {getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc , updateDoc,enableIndexedDbPersistence ,deleteDoc,deleteField, query, where, getCountFromServer, arrayUnion, arrayRemove, persistentMultipleTabManager} from 'firebase/firestore';
-import {firebase } from './FireBaseConfig';
+import {firebase } from './FirebaseConfig';
 
 const db = getFirestore(firebase);
 
