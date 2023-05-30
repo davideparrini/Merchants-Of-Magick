@@ -37,10 +37,10 @@ function handlePlayerLeftGame(username){
     if (lobbyID === undefined){
         return;
     }
-
+//Recupero la lobby dell'utente che sta lasciando la lobby
     const lobby = mapLobbyID_Lobby.get(lobbyID);
 
-    //Recupero la lobby dell'utente che sta lasciando la lobby
+    
     if(lobby === undefined || lobby.players === undefined){
         return;
     }
