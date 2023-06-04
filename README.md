@@ -85,7 +85,7 @@ When you successfully complete an order, it is moved to the Shop
 
 -**Card Slip Mechanism**
 
-Single PLayer Mode
+Single Player Mode
 
 After each round, a slip of cards is passed in a leftward direction. Let's explore this mechanism in detail:
 
@@ -98,7 +98,7 @@ After each round, a slip of cards is passed in a leftward direction. Let's explo
 Multiplayer Mode
 
  It's a bit different, there is no deck of cards and the slip of cards is passed in a leftward direction to another player
- So it's a circle of cards. 
+ So it's a recycle of cards between players. 
 
 -**The Shop**
 
