@@ -12,7 +12,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
     "react-scripts": "^5.0.1",
-    "sass": "^1.62.0",
+    "sass": "^1.62.1",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "swiper": "^9.3.2",
@@ -22,13 +22,15 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "react-scripts build && firebase deploy"
-    
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "devDependencies": {
+    "babel-preset-react-app":"@babel/plugin-proposal-private-property-in-object"
   },
   "browserslist": {
     "production": [
@@ -41,8 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "node-sass": "^8.0.0"
   }
 }
