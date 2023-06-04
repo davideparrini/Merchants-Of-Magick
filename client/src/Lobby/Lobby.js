@@ -113,14 +113,18 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                     case 'FULL':
                                         alert("Lobby full!")
                                         break;
+                                    case 'ALREADY_IN_A_LOBBY':
+                                        alert(playerToAdd + " is already in a lobby!")
+                                    break;
                                     case 'in-game':
-                                        alert("The player is in game")
+                                        alert(playerToAdd + " is alrready in game!")
                                         break;
                                     case 'ERROR':
                                         alert("Error, something went wrong!")
                                         break;
                                     default: break;
                                 }
+                                setPlayerToAdd('');
                             })
                         }}>Add Player</button>
                     </div>

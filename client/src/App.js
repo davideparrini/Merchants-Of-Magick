@@ -42,6 +42,7 @@ function App() {
     const[username,setUsername] = useState('');
     const[recordSinglePlayer, setRecordSinglePlayer] = useState(-1);
     const[openToastNotification,setOpenToastNotification] = useState(false);
+    const[infoInviterLobby, setInfoInviterLobby] = useState(-1);
 
     const[lobby, setLobby] = useState(-1);
    
@@ -96,6 +97,7 @@ function App() {
         setGameStart(false);
         setGameInitState(-1);
         setGameOnNewTurn(-1);
+        setInfoInviterLobby(-1);
         setGameEndState(-1);
         setGameUpdated(false);
         setGameEnd(false);
@@ -141,6 +143,8 @@ function App() {
         statusOnline,
         openToastNotification,
         setOpenToastNotification,
+        infoInviterLobby, 
+        setInfoInviterLobby,
         gameInitState,
         setGameInitState,
         gameOnNewTurn,
@@ -165,7 +169,7 @@ function App() {
         gameInit,
         refreshGame
     
-    }),[fullScreen, checkPersonalScore, recordSinglePlayer, userAuthenticated, userID, username, lobby, statusOnline, openToastNotification, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
+    }),[fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
 
 
 
@@ -188,12 +192,13 @@ function App() {
                     else{ 
                         dbFirestore.getUserData(user.uid).then((res) =>{
                             setUsername(res.username);
-                            setRecordSinglePlayer(res.record)
+                            setRecordSinglePlayer(res.record === undefined ? 0 : res.record)
                         } );
                     } 
                 })
                 //Connetto l'utente al server
-                connectionHandlerClient.connect(setStatusOnline); 
+                connectionHandlerClient.registerToConnection(setStatusOnline,setInfoInviterLobby, setOpenToastNotification)
+                connectionHandlerClient.connect(); 
             }
             else {
                 //utente non autenticato
@@ -202,6 +207,8 @@ function App() {
         })
         return ()=>{         
             unsub(); 
+            connectionHandlerClient.unRegisterToConnection();
+            connectionHandlerClient.unRegisterToInvite();
         }
     },[]);
 

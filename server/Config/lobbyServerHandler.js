@@ -6,6 +6,7 @@ import { gameLogic } from './gameLogic.js';
 function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket, mapUsername_lobbyID, handlePlayerLeftGame ) {
 
     //l'utente crea la lobby assegnando un id random, la cb permette di passare la lobby creata all'utente
+    //username -> utente che ha chiesto di creare la lobby, cb -> callback
     function create(username, cb){
         const lobby = {
             id : uuid(),
@@ -21,16 +22,19 @@ function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket,
     }
 
     //l'utente joina una lobby tramite ID e con la cb diamo un messaggio di feedback e la lobby joinata
+    //lobbyID -> id della lobby da joinare ,username -> utente che ha chiesto di joinare la lobby, cb -> callback
     function join(lobbyID, username,cb){
 
         const lobby = mapLobbyID_Lobby.get(lobbyID);
 
-        if (lobby === undefined || lobby.players === undefined){
+        if (lobby == undefined || lobby.players == undefined){
             cb("ERROR",-1);
+            return;
         }
             
         if(lobby.players.length >= 8){
             cb("FULL",-1);
+            return;
         }
 
 
@@ -51,22 +55,25 @@ function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket,
     }
 
     //permette di invitare un utente tramite l'username, la callback da solo un messaggio di feedback
+    //lobbyID -> id della lobby che deve essere invitato l'utente ,usernameInviter -> utente che invita, usernameInvited-> utente invitato, cb -> callback
     function requestInvitePlayer(lobbyID, usernameInviter ,usernameInvited, cb){
                
         const lobby = mapLobbyID_Lobby.get(lobbyID);
         const userSocket = mapUsername_Socket.get(usernameInvited);
 
-        if(lobby === undefined || lobby.players === undefined || userSocket === undefined ){
+        if(lobby == undefined || lobby.players == undefined || userSocket == undefined ){
             cb("ERROR");
             return;
         }
 
         if(mapUsername_lobbyID.has(usernameInvited)){
             cb("ALREADY_IN_A_LOBBY");
+            return;
         }
 
         if(lobby.players.length >= 8){
             cb("FULL")
+            return;
         }
 
         if(lobby.status === 'in-lobby'){

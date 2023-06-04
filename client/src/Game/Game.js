@@ -152,20 +152,25 @@ function Game() {
     //numero turno attuale
     const [nTurn,setNTurn] = useState(1);
 
+    //turnDone == true -> turno completato, in attesa di passare al turno successivo
     const[turnDone, setTurnDone] = useState(false);
     
-
+    
     const [gameRestart, setGameRestart] = useState(false);
 
-
+    //aprire il report di fine turno
     const [openReport,setOpenReport] = useState(false);
 
+    //lista skills ottenute durante il turno, utile per il report di fine turno (ad ogni turno viene resettata)
     const[reportSkills, setReportSkills] = useState([]);
 
+    //lista items ottenuti durante il turno, utile per il report di fine turno (ad ogni turno viene resettata)
     const[reportItems, setReportItems] = useState([]);
 
+    //lista report di tutti i player
     const[reportEndTurn, setReportEndTurn ] = useState([]);
 
+    //report timer
     const[reportTime,setReportTime] = useState(gameInitState.config.reportTime);
 
 
@@ -184,7 +189,7 @@ function Game() {
     const [d10Value,setD10Value] = useState(gameInitState.dices.d10);
     const [d12Value,setD12Value] = useState(gameInitState.dices.d12);
 
-    //valori dei dadi a inizio turno, utile saperlo per applicare logica funzionamento pozioni
+    //valori dei dadi a inizio turno, utile per applicare logica pozioni/incremento-decremento dadi
     const [d6startValue,setD6startValue] = useState(gameInitState.dices.d6);
     const [d8startValue,setD8startValue] = useState(gameInitState.dices.d8);
     const [d10startValue,setD10startValue] = useState(gameInitState.dices.d10);
@@ -224,7 +229,7 @@ function Game() {
     const [extraDiceUsed5,setExtraDiceUsed5] = useState(false);
     const [extraDiceUsed6,setExtraDiceUsed6] = useState(false);
 
-
+    
     const [boardListPlayers,setBoardListPlayers] = useState(singlePlayerGame ?  null : gameInitState.players);
     const [boardCards,setBoardListCards] = useState(singlePlayerGame ? gameInitState.cardsBoard :  null);
 

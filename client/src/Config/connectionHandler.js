@@ -52,23 +52,35 @@ function createSocketConfig() {
         socket.off("invite"+socket.id);
     } 
     
-    //connetti
-    function connect(setStatusOnline){
-        socket.connect();
+    function registerToConnection(setStatusOnline,setInfoInviterLobby, setOpenToastNotification){
         socket.on("connect", () => {
-            setStatusOnline(true)
+            setStatusOnline(true);
+            registerToInvite(setInfoInviterLobby, setOpenToastNotification);
             console.log("CONNECTED"); 
           });
         socket.on("disconnect", () => {
             setStatusOnline(false);
+            unRegisterToInvite();
             console.log("DISCONNECTED")
+           
         });
+    }
+    function unRegisterToConnection(){
+        socket.off("connect");
+        socket.off("disconnect");
+    }
+
+    //connetti
+    function connect(){
+        socket.connect();
     }
 
     //disconnetti e disiscriviti dal namespace "privato"
     function disconnect(){
-        socket.off("invite"+socket.id);
         socket.disconnect();
+        socket.off("invite" + socket.id);
+        socket.off("connect");
+        socket.off("disconnect");
     }
     
     //invia l'username al server
@@ -175,13 +187,14 @@ function createSocketConfig() {
     return{
         connect,
         disconnect,
+        registerToConnection,
+        unRegisterToConnection,
         sendUsername,
         createLobby,
         joinLobby,
         leaveLobby,
         updateLobby,
         invitePlayer,
-        registerToInvite,
         unRegisterToInvite,
         gameStartRequest,
         finishTurn,

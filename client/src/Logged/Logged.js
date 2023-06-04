@@ -12,14 +12,14 @@ const TYPE_GOLD_X_BIG = 'XBIG';
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setGameStart, setStatusOnline, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { username, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
     const[countdownGameStart,setCountdownGameStart] = useState(5);
 
-    const[infoInviterLobby, setInfoInviterLobby] = useState(-1);
+    
 
     const submitLobbyIdRef = useRef();
 
@@ -40,14 +40,7 @@ function Logged({setLobbyUpdated}) {
     });
 
     useEffect(()=>{
-        
         connectionHandlerClient.sendUsername(username);
-        connectionHandlerClient.registerToInvite(setInfoInviterLobby,setOpenToastNotification);
-
-        return ()=>{
-            connectionHandlerClient.unRegisterToInvite();
-        }
-
     },[username])
 
     useEffect(()=>{
@@ -156,7 +149,10 @@ function Logged({setLobbyUpdated}) {
                     <div className='user-logged'>{username}</div>
                         <div className='connection-wrapper'>
                             <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
-                            <div className='btn-refresh-connection' onClick={()=> connectionHandlerClient.connect(setStatusOnline)}>
+                            <div className='btn-refresh-connection' onClick={()=>{
+                                if(!statusOnline){
+                                    connectionHandlerClient.connect();
+                                }}}>
                             <div className='img-fresh-connection'/>
                         </div>  
                     </div>

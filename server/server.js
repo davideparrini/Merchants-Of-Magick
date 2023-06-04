@@ -142,9 +142,9 @@ io.on("connection", (socket) => {
         
         //Recupero l'username e lo elimino dalle strutture dati
         const username = mapSocketID_Username.get(socket.id);
-        console.log(username)
+        
         const lobbyID = mapUsername_lobbyID.get(username);
-        console.log("ssda "+lobbyID)
+        
         if(lobbyID !== undefined){
             const lobby = mapLobbyID_Lobby.get(lobbyID);
             if(lobby !== undefined){
