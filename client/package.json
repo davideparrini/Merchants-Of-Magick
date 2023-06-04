@@ -30,7 +30,7 @@
     ]
   },
   "devDependencies": {
-    "babel-preset-react-app":"@babel/plugin-proposal-private-property-in-object"
+    "babel-preset-react-app": "@babel/plugin-proposal-private-property-in-object"
   },
   "browserslist": {
     "production": [
