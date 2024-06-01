@@ -1,13 +1,14 @@
 
 
-import barbarian from '../Adventurers/barbarian.json' assert { type: "json" };
-import bountyHunter from '../Adventurers/bountyHunter.json' assert { type: "json" };
-import cleric from '../Adventurers/cleric.json' assert { type: "json" };
-import knight from '../Adventurers/knight.json' assert { type: "json" };
-import ranger from '../Adventurers/ranger.json' assert { type: "json" };
-import warrior from '../Adventurers/warrior.json' assert { type: "json" };
-import witch from '../Adventurers/witch.json' assert { type: "json" };
-import wizard from '../Adventurers/wizard.json' assert { type: "json" };
+const barbarian = require('../Adventurers/barbarian.json');
+const bountyHunter = require('../Adventurers/bountyHunter.json');
+const cleric = require('../Adventurers/cleric.json');
+const knight = require('../Adventurers/knight.json');
+const ranger = require('../Adventurers/ranger.json');
+const warrior = require('../Adventurers/warrior.json');
+const witch = require('../Adventurers/witch.json');
+const wizard = require('../Adventurers/wizard.json');
+
 
 function createGameLogic(){
     const craftingItemType = [
@@ -343,4 +344,5 @@ function createGameLogic(){
     };
 }
 
-export const gameLogic = createGameLogic(); 
+const gameLogic = createGameLogic();
+module.exports.gameLogic = gameLogic;

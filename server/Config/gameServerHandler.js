@@ -1,5 +1,5 @@
-import { gameLogic } from "./gameLogic.js";
 
+const { gameLogic } = require("./gameLogic.js");
 
 
 function createGameHandler(io, socket, mapLobbyID_Lobby, mapLobbyID_GameState){
@@ -130,4 +130,5 @@ function createGameHandler(io, socket, mapLobbyID_Lobby, mapLobbyID_GameState){
 
 
 
-export const gameHandler = createGameHandler;
+const gameHandler = createGameHandler;
+module.exports.gameHandler = gameHandler;

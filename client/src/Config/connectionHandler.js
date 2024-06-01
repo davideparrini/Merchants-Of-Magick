@@ -2,12 +2,13 @@
 import { io } from "socket.io-client";
 import momIcon from './icon-48x48.png'
 
-const serverPort = 8888;
-const serverUrl = "http://localhost:" + serverPort;
+const SERVER_PORT = 8888;
+const SERVER_DOMAIN = "https://api.distra-api.com/";
+const SERVER_URL = SERVER_DOMAIN +  ":" + SERVER_PORT;
 
 function createSocketConfig() {
 
-    const socket = io(serverUrl,{
+    const socket = io(SERVER_URL,{
         autoConnect: false,
         reconnection: false,
     });
