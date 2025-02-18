@@ -1,6 +1,4 @@
-
-import { v4 as uuid } from 'uuid';
-import { gameLogic } from './gameLogic.js';
+const { v4: uuid } = require('uuid');
 
 
 function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket, mapUsername_lobbyID, handlePlayerLeftGame ) {
@@ -111,4 +109,5 @@ function lobbyConnectionHandler(io, socket, mapLobbyID_Lobby,mapUsername_Socket,
 
 }
 
-export const lobbyHandler = lobbyConnectionHandler;
+const lobbyHandler = lobbyConnectionHandler;
+module.exports.lobbyHandler = lobbyHandler;

@@ -1,8 +1,10 @@
-import { createServer } from "http";
-import { Server } from "socket.io";
-import { lobbyHandler } from "./Config/lobbyServerHandler.js";
-import { gameHandler } from "./Config/gameServerHandler.js";
-import { gameLogic } from "./Config/gameLogic.js";
+
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const { lobbyHandler } = require("./Config/lobbyServerHandler.js");
+const { gameHandler } = require("./Config/gameServerHandler.js");
+const { gameLogic } = require("./Config/gameLogic.js");
+
 
 const PORT = 8888;
 const httpServer = createServer();

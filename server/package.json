@@ -13,7 +13,7 @@
   "main": "server.js",
   "author": "",
   "license": "ISC",
-  "type": "module",
+  "type": "commonjs",
   "description": "",
   "devDependencies": {
     "nodemon": "^2.0.22"
