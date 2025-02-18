@@ -16,8 +16,7 @@
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "swiper": "^9.3.2",
-    "uuid": "^9.0.0",
-    "nth-check": ">=2.0.1"
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -31,8 +30,7 @@
     ]
   },
   "devDependencies": {
-    "babel-preset-react-app": "@babel/plugin-proposal-private-property-in-object",
-    "nth-check": ">=2.0.1"
+    "babel-preset-react-app": "@babel/plugin-proposal-private-property-in-object"
   },
   "browserslist": {
     "production": [
