@@ -3,20 +3,31 @@ import { gameService } from '../service/game-service';
 
 const gameRouter = express.Router();
 
+
+/**
+ * Avvia la partita
+ */
+gameRouter.post("/:lobbyID/start", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const { lobbyID } = req.params;
+        const { config } = req.body;
+
+        const gameInit = await gameService.startGame(lobbyID, config);
+        res.json(gameInit);
+    } catch (error) {
+        next(error);
+    }
+});
+
 /**
  * Il giocatore termina il turno
  */
-gameRouter.post("/:lobbyID/finish-turn",async (req: Request, res: Response, next: NextFunction) => {
+gameRouter.post("/:lobbyID/finish-turn", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { lobbyID } = req.params;
-        const { username, playerGameState } = req.body;
+        const { playerGameState } = req.body;
 
-        gameService.playerFinishTurn(lobbyID, username, playerGameState, (status: string) => {
-            if (status === "ERROR") {
-                return res.status(400).json({ error: "Invalid game state" });
-            }
-            return res.json({ message: "Turn finished successfully" });
-        });
+        gameService.playerFinishTurn(lobbyID, playerGameState);
 
     } catch (error) {
         next(error);
@@ -29,15 +40,21 @@ gameRouter.post("/:lobbyID/finish-turn",async (req: Request, res: Response, next
 gameRouter.post("/:lobbyID/end-game", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { lobbyID } = req.params;
-        const { username, playerFinalReport } = req.body;
+        const {  playerFinalReport } = req.body;
 
-        gameService.playerEndGame(lobbyID, username, playerFinalReport, (status: string) => {
-            if (status === "ERROR") {
-                return res.status(400).json({ error: "Invalid game state" });
-            }
-            return res.json({ message: "Game ended successfully" });
-        });
+        gameService.playerEndGame(lobbyID,  playerFinalReport);
 
+    } catch (error) {
+        next(error);
+    }
+});
+
+gameRouter.get("/:lobbyID/archived-game", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { lobbyID } = req.params;
+
+        const achivedGame = gameService.getArchivedLobby(lobbyID);
+        res.json(achivedGame);
     } catch (error) {
         next(error);
     }

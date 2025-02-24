@@ -7,6 +7,8 @@ export const LOBBY_STATUS = {
 export const ERRORS = {
     LOBBY_NOT_FOUND: "Lobby not found",
     GAME_ALREADY_STARTED: "Game already started",
+    GAME_NOT_STARTED: "Game not started",
+    GAME_NOT_OVER: "Game not over",
     PLAYER_ALREADY_IN_LOBBY: "Player is in a lobby",
     LOBBY_FULL: "Lobby is full",
     PLAYER_NOT_FOUND: "Player not found in lobby",
@@ -53,11 +55,7 @@ export const DECK_TYPES = {
 
 export const SocketEvents = {
     // Events for the lobby
-    LOBBY_PLAYER_JOINED: "lobby-player-joined",
-    LOBBY_PLAYER_LEFT: "lobby-player-left",
-    LOBBY_CREATE: "create-lobby",
-    LOBBY_JOIN: "join-lobby",
-    LOBBY_LEAVE: "leave-lobby",
+    LOBBY_UPDATE: "update-lobby",
     LOBBY_INVITE: "invite-player",
   
     // Events for the game

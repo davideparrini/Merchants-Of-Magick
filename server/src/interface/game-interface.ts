@@ -11,6 +11,29 @@ export interface Adventurer {
   }
   
 
+
+  export interface GameState {
+    quest1: boolean;
+    quest2: boolean;
+    nPlayersEndTurn: number;
+    cards: SignedDeckCards[];
+    reports: SignedReport[];
+    finalReports: SignedFinalReport[];
+  }
+  
+  export interface SignedDeckCards{
+    username:string;
+    card1:Card;
+    card2:Card;
+    card3:Card;
+  }
+
+  export interface SignedReport {
+    username: string;
+    report: Report;
+}
+
+
 // Interfaccia per le carte nel gioco
 export interface Card {
     item: string;
@@ -20,8 +43,16 @@ export interface Card {
     inProgress: boolean;
 }
 
+export interface Report{
+    skills: string[];
+    items: string[];
+    quest1: boolean;
+    quest2: boolean;
+}
+
+
 // Interfaccia per il giocatore
-export interface PlayerGame {
+export interface PlayerStartGame {
     username: string;
     adventurer: Adventurer;
     cards: {
@@ -29,6 +60,18 @@ export interface PlayerGame {
         card2: Card;
         card3: Card;
     };
+}
+
+export interface PlayerGame {
+    username: string;
+    quest1: boolean;
+    quest2: boolean;
+    cards: {
+        card1: Card;
+        card2: Card;
+        card3: Card;
+    };
+    report: Report;
 }
 
 // Interfaccia per i tiri dei dadi
@@ -50,18 +93,10 @@ export interface GameInitConfig {
     [key: string]: any; // Dettagli di configurazione aggiuntivi
 }
 
-export interface Report {
-    username: string;
-    report: {
-        skills: string[];
-        items: string[];
-        quest1: boolean;
-        quest2: boolean;
-    }
-}
+
 
 // Interfaccia per i report finali
-export interface FinalReport {
+export interface SignedFinalReport {
     username: string;
     position: number;
     report: {

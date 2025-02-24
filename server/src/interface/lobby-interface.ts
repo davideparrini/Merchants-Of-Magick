@@ -1,4 +1,4 @@
-import { Card, Report } from './game-interface'
+import { Card, GameState, SignedReport } from './game-interface'
 
 export interface Lobby {
   id: string;
@@ -9,14 +9,7 @@ export interface Lobby {
   kickedPlayers: string[];
 }
 
-export interface GameState {
-    quest1: boolean;
-    quest2: boolean;
-    nPlayersEndTurn: number;
-    cards: Card[];
-    reports: Report[];
-  }
-  
+
   
   export interface PlayerConnection {
     username: string;

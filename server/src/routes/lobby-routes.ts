@@ -80,19 +80,6 @@ lobbyRouter.post("/:lobbyID/invite", async (req: Request, res: Response, next: N
     }
 });
 
-/**
- * Avvia la partita
- */
-lobbyRouter.post("/:lobbyID/start", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    try {
-        const { lobbyID } = req.params;
-        const { config } = req.body;
 
-        const gameInit = await lobbyService.startLobbyGame(lobbyID, config);
-        res.json(gameInit);
-    } catch (error) {
-        next(error);
-    }
-});
 
 export default lobbyRouter;
