@@ -17,7 +17,7 @@ import {
   // Import delle interfacce da 'gameInterface'
   import {
     Card,
-    Player,
+    PlayerGame,
     DiceRolls,
     Quest,
     GameInitConfig,
@@ -157,7 +157,7 @@ import {
       }));
     }
   
-    function gameInit(players: string[], config: GameInitConfig): { quests: { quest1: Quest; quest2: Quest }; dices: DiceRolls; players: Player[]; config: GameInitConfig } {
+    function gameInit(players: string[], config: GameInitConfig): { quests: { quest1: Quest; quest2: Quest }; dices: DiceRolls; players: PlayerGame[]; config: GameInitConfig } {
       const quest1Attribute = CRAFTING_ATTRIBUTES[rand(0, 2)];
       const quest2Attribute = MAGIC_ATTRIBUTES[rand(0, 2)];
   

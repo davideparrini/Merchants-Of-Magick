@@ -12,3 +12,10 @@ export const getIoInstance = (): Server => {
   }
   return io;
 };
+
+export const isSocketConnected = (socketId: string): boolean => {
+    if(!io){
+        throw new Error("Socket.io instance is not initialized.");
+    }
+    return io.sockets.sockets.has(socketId);
+  };

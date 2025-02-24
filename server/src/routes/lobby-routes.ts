@@ -1,9 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { LOBBY_STATUS, ERRORS } from '../constants/constants';
+import { LOBBY_STATUS, ERRORS, SocketEvents } from '../constants/constants';
 import { repositoryLobby } from '../repository/lobby-repository';
 import { lobbyService  } from '../service/lobby-service';
 import { GameState, Lobby } from '../interface/lobby-interface'
-import { getIoInstance } from '../socket';
+import { getIoInstance, isSocketConnected } from '../socket-utility';
 
 const router = express.Router();
 const io = getIoInstance();
@@ -13,13 +13,17 @@ const io = getIoInstance();
  * Crea una nuova lobby
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const { username } = req.body;
+    const { username, socketId } = req.body;
 
-    if (!username) {
+    if (!username || !socketId) {
         return res.status(400).json({ error: "Username is required" });
     }
-
-    const lobbyID = await repositoryLobby.createLobby(username);
+    
+    if(!isSocketConnected(socketId)){
+        return res.status(500).json({ error: "Socket not connected for socketID" });
+    }
+    
+    const lobbyID = await repositoryLobby.createLobby(username, socketId);
 
     res.json(lobbyID);
 });
@@ -28,15 +32,18 @@ router.post("/", async (req: Request, res: Response, next: NextFunction): Promis
  * Unisciti a una lobby esistente
  */
 router.post("/:lobbyID/join", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const { username } = req.body;
+    const { username, socketId} = req.body;
     const { lobbyID } = req.params; // Impostiamo un valore di default per la dimensione
 
     try {
-        const result = await lobbyService.joinLobby(lobbyID, username);
+        const result = await lobbyService.joinLobby(lobbyID, username, socketId);
 
         if (result.error) {
             return res.status(403).json({ error: result.error });
         }
+
+        io.to(lobbyID).emit(SocketEvents.LOBBY_PLAYER_JOINED, username);
+        io.sockets.sockets.get(socketId)?.join(lobbyID);
 
         res.json({ message: "Joined lobby", lobby: result.lobby });
 
@@ -56,6 +63,8 @@ router.post("/:lobbyID/start", async (req: Request, res: Response, next: NextFun
         const { config } = req.body;
 
         const gameInit = await lobbyService.startLobbyGame(lobbyID, config);
+        
+        io.to(lobbyID).emit(SocketEvents.GAME_START, gameInit);
 
         return res.json(gameInit);
     } catch (error) {
@@ -67,37 +76,20 @@ router.post("/:lobbyID/start", async (req: Request, res: Response, next: NextFun
 /**
  * Kicka un giocatore dalla lobby
  */
-router.post("/:lobbyID/kick", (req: Request, res: Response, next: NextFunction): any => {
-    const { username, leaderUsername } = req.body;
-    const { lobbyID } = req.params;
+router.post("/:lobbyID/kick", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const { username, leaderUsername } = req.body;
+        const { lobbyID } = req.params;
 
-    const lobby = mapLobbyID_Lobby.get(lobbyID) as Lobby;
-    if (!lobby) {
-        return res.status(404).json({ error: ERRORS.LOBBY_NOT_FOUND });
+        await lobbyService.kickPlayerFromLobby(lobbyID, username, leaderUsername);
+
+        // Restituisci la risposta con la lobby aggiornata
+        res.json({ message: `Player ${username} has been kicked` });
+    
+    } catch (error) {   
+        next(error); // Passa l'errore al middleware di gestione degli errori
     }
-
-    if (lobby.leaderLobby !== leaderUsername) {
-        return res.status(403).json({ error: ERRORS.NOT_LOBBY_LEADER });
-    }
-
-    const playerIndex = lobby.players.indexOf(username);
-    if (playerIndex === -1) {
-        return res.status(404).json({ error: ERRORS.PLAYER_NOT_FOUND });
-    }
-
-    lobby.players.splice(playerIndex, 1);
-
-    // Se il leader si kicka da solo, il nuovo leader diventa il primo giocatore nella lista
-    if (username === lobby.leaderLobby && lobby.players.length > 0) {
-        lobby.leaderLobby = lobby.players[0];
-    }
-
-    // Se non ci sono più giocatori, elimina la lobby
-    if (lobby.players.length === 0) {
-        mapLobbyID_Lobby.delete(lobbyID);
-    }
-
-    res.json({ message: `Player ${username} has been kicked`, lobby });
 });
+
 
 export default router;

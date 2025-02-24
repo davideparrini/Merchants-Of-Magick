@@ -47,3 +47,24 @@ export const DECK_TYPES = {
     ENCHANTMENT: "TYPE_DECK_ENCHANTMENT",
     ORIGIN: "TYPE_DECK_ORIGIN"
 } as const;
+
+
+export const SocketEvents = {
+    // Events for the lobby
+    LOBBY_PLAYER_JOINED: "lobby-player-joined",
+    LOBBY_PLAYER_LEFT: "lobby-player-left",
+    LOBBY_CREATE: "create-lobby",
+    LOBBY_JOIN: "join-lobby",
+    LOBBY_LEAVE: "leave-lobby",
+    LOBBY_INVITE: "invite-player",
+  
+    // Events for the game
+    GAME_START: "game-start",
+    GAME_START_REQUEST: "game-start-request",
+    GAME_CHANGE_TURN: "game-change-turn",
+    GAME_END: "game-end",
+    GAME_PLAYER_FINISH_TURN: "player-finish-turn",
+    GAME_PLAYER_END_GAME: "player-end-game",
+  
+  };
+  

@@ -10,9 +10,13 @@ export interface GameState {
   
   export interface Lobby {
     id: string;
-    players: string[];
+    players: Player[];
     leaderLobby: string;
     status: string;
     gameState: GameState;
   }
   
+  export interface Player {
+    username: string;
+    socketId: string;
+  }

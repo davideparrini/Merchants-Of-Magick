@@ -21,7 +21,7 @@ export interface Card {
 }
 
 // Interfaccia per il giocatore
-export interface Player {
+export interface PlayerGame {
     username: string;
     adventurer: Adventurer;
     cards: {

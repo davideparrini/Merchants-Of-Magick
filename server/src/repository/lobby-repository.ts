@@ -21,9 +21,11 @@ import {
 
 import { firebase } from '../Config/firebase-config';
 import { LOBBY_STATUS } from '../constants/constants';
-import { Lobby, GameState } from '../interface/lobby-interface';
+import { Lobby, GameState, Player } from '../interface/lobby-interface';
+import { getIoInstance } from '../socket-utility';
 
 const db = initializeFirestore(firebase, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+const io = getIoInstance();
 
 const LOBBY_COLLECTION = 'lobbies';
 
@@ -34,14 +36,13 @@ const getLobbyById = async (lobbyID: string): Promise<Lobby | null> => {
     return lobbySnap.exists() ? (lobbySnap.data() as Lobby) : null;
 };
 
-const createLobby = async (username: string): Promise<string> => {
+const createLobby = async (username: string, socketId: string): Promise<string> => {
+    const player = { username, socketId } as Player
     const lobbyRef = await addDoc(collection(db, LOBBY_COLLECTION), {
-        players: [username],
+        players: [player],
         leaderLobby: username,
         status: LOBBY_STATUS.IN_LOBBY,
         gameState: {
-            players: [username],
-            nPlayers: 1,
             quest1: false,
             quest2: false,
             nPlayersEndTurn: 0,
@@ -49,7 +50,8 @@ const createLobby = async (username: string): Promise<string> => {
             report: []
         }
     });
-
+    
+    io.sockets.sockets.get(socketId)?.join(lobbyRef.id);
     return lobbyRef.id;
 };
 
@@ -70,7 +72,7 @@ const removePlayerFromLobby = async (lobbyID: string, username: string): Promise
     const lobbySnap = await getDoc(lobbyRef);
     if (lobbySnap.exists()) {
         const lobbyData = lobbySnap.data() as Lobby;
-        const updatedPlayers = lobbyData.players.filter(player => player !== username);
+        const updatedPlayers = lobbyData.players.filter(player => player.username !== username);
         if (updatedPlayers.length === 0) {
             await deleteDoc(lobbyRef);
         } else {
@@ -91,11 +93,11 @@ const changeLobbyLeader = async (lobbyID: string, username: string): Promise<voi
   if (lobbySnap.exists()) {
       const lobbyData = lobbySnap.data() as Lobby;
 
-      if (lobbyData.players.includes(username)) {
+      if (lobbyData.players.some((player)=> player.username === username)) {
           // Rimuove il nuovo leader dall'array players e lo mette in testa
           const updatedPlayers = [
               username,
-              ...lobbyData.players.filter(player => player !== username)
+              ...lobbyData.players.filter(player => player.username !== username)
           ];
 
           await updateDoc(lobbyRef, {
