@@ -36,7 +36,7 @@ function createSocketConfig() {
 
     //Metto il socket in ascolto su namespace univoco/privato, per ricevere inviti da altri giocatori
     function registerToInvite(setInfoInviterLobby, setOpenToastNotification){
-        socket.on("invite" + socket.id,(lobbyID, usernameInviter)=>{
+        socket.on("invite-player" ,(lobbyID, usernameInviter)=>{
             const infoInviterLobby = {
                 lobbyID: lobbyID,
                 usernameInviter: usernameInviter
@@ -49,7 +49,7 @@ function createSocketConfig() {
     }  
 
     function unRegisterToInvite(){
-        socket.off("invite"+socket.id);
+        socket.off("invite-player");
     } 
     
     function registerToConnection(setStatusOnline,setInfoInviterLobby, setOpenToastNotification){

@@ -7,8 +7,10 @@ export const LOBBY_STATUS = {
 export const ERRORS = {
     LOBBY_NOT_FOUND: "Lobby not found",
     GAME_ALREADY_STARTED: "Game already started",
+    PLAYER_ALREADY_IN_LOBBY: "Player is in a lobby",
     LOBBY_FULL: "Lobby is full",
     PLAYER_NOT_FOUND: "Player not found in lobby",
+    PLAYER_KICKED: "Player was kicked in lobby",
     NOT_LOBBY_LEADER: "Only the leader can kick players"
 } as const;
 
@@ -68,3 +70,7 @@ export const SocketEvents = {
   
   };
   
+  export enum ACTION_REMOVE {
+    KICK,
+    REMOVE
+  }

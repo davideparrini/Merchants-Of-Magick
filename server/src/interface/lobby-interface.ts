@@ -1,22 +1,26 @@
 import { Card, Report } from './game-interface'
 
+export interface Lobby {
+  id: string;
+  players: PlayerConnection[];
+  leader: string;
+  status: string;
+  gameState: GameState;
+  kickedPlayers: string[];
+}
+
 export interface GameState {
     quest1: boolean;
     quest2: boolean;
     nPlayersEndTurn: number;
     cards: Card[];
-    report: Report[];
+    reports: Report[];
   }
   
-  export interface Lobby {
-    id: string;
-    players: Player[];
-    leaderLobby: string;
-    status: string;
-    gameState: GameState;
-  }
   
-  export interface Player {
+  export interface PlayerConnection {
     username: string;
-    socketId: string;
+    userID: string;
+    socketID?: string;
+    lobbyID?: string;
   }

@@ -1,95 +1,98 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { LOBBY_STATUS, ERRORS, SocketEvents } from '../constants/constants';
-import { repositoryLobby } from '../repository/lobby-repository';
-import { lobbyService  } from '../service/lobby-service';
-import { GameState, Lobby } from '../interface/lobby-interface'
-import { getIoInstance, isSocketConnected } from '../socket-utility';
+import { lobbyService } from '../service/lobby-service';
 
-const router = express.Router();
-const io = getIoInstance();
-
+const lobbyRouter = express.Router();
 
 /**
  * Crea una nuova lobby
  */
-router.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const { username, socketId } = req.body;
+lobbyRouter.post("/", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const { username } = req.body;
+        if (!username) {
+            return res.status(400).json({ error: "Username is required" });
+        }
 
-    if (!username || !socketId) {
-        return res.status(400).json({ error: "Username is required" });
+        const lobbyID = await lobbyService.createLobby(username);
+        res.json(lobbyID);
+    } catch (error) {
+        next(error);
     }
-    
-    if(!isSocketConnected(socketId)){
-        return res.status(500).json({ error: "Socket not connected for socketID" });
-    }
-    
-    const lobbyID = await repositoryLobby.createLobby(username, socketId);
-
-    res.json(lobbyID);
 });
 
 /**
  * Unisciti a una lobby esistente
  */
-router.post("/:lobbyID/join", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const { username, socketId} = req.body;
-    const { lobbyID } = req.params; // Impostiamo un valore di default per la dimensione
-
+lobbyRouter.post("/:lobbyID/join", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
-        const result = await lobbyService.joinLobby(lobbyID, username, socketId);
+        const { username } = req.body;
+        const { lobbyID } = req.params;
 
-        if (result.error) {
-            return res.status(403).json({ error: result.error });
-        }
-
-        io.to(lobbyID).emit(SocketEvents.LOBBY_PLAYER_JOINED, username);
-        io.sockets.sockets.get(socketId)?.join(lobbyID);
-
-        res.json({ message: "Joined lobby", lobby: result.lobby });
-
-    } catch (err) {
-        console.error('Error joining lobby:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        const lobby = await lobbyService.joinLobby(lobbyID, username);
+        res.json({ message: "Joined lobby", lobby });
+    } catch (error) {
+        next(error);
     }
 });
 
-
 /**
- * Avvia la partita
+ * Esci da una lobby
  */
-router.post("/:lobbyID/start", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+lobbyRouter.post("/:lobbyID/leave", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
+        const { username } = req.body;
         const { lobbyID } = req.params;
-        const { config } = req.body;
 
-        const gameInit = await lobbyService.startLobbyGame(lobbyID, config);
-        
-        io.to(lobbyID).emit(SocketEvents.GAME_START, gameInit);
-
-        return res.json(gameInit);
+        await lobbyService.leaveLobby(lobbyID, username);
+        res.json({ message: `Player ${username} has left the lobby` });
     } catch (error) {
-        next(error);  // Passa l'errore al middleware di gestione degli errori
+        next(error);
     }
-
 });
 
 /**
  * Kicka un giocatore dalla lobby
  */
-router.post("/:lobbyID/kick", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+lobbyRouter.post("/:lobbyID/kick", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
         const { username, leaderUsername } = req.body;
         const { lobbyID } = req.params;
 
         await lobbyService.kickPlayerFromLobby(lobbyID, username, leaderUsername);
-
-        // Restituisci la risposta con la lobby aggiornata
         res.json({ message: `Player ${username} has been kicked` });
-    
-    } catch (error) {   
-        next(error); // Passa l'errore al middleware di gestione degli errori
+    } catch (error) {
+        next(error);
     }
 });
 
+/**
+ * Invita un giocatore a partecipare alla lobby
+ */
+lobbyRouter.post("/:lobbyID/invite", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const { usernameToInvite, inviterUsername } = req.body;
+        const { lobbyID } = req.params;
 
-export default router;
+        await lobbyService.invitePlayer(lobbyID, usernameToInvite, inviterUsername);
+        res.json({ message: `Invitation sent to ${usernameToInvite}` });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * Avvia la partita
+ */
+lobbyRouter.post("/:lobbyID/start", async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const { lobbyID } = req.params;
+        const { config } = req.body;
+
+        const gameInit = await lobbyService.startLobbyGame(lobbyID, config);
+        res.json(gameInit);
+    } catch (error) {
+        next(error);
+    }
+});
+
+export default lobbyRouter;

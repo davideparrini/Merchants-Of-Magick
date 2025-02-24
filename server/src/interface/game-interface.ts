@@ -15,8 +15,8 @@ export interface Adventurer {
 export interface Card {
     item: string;
     gold: number;
-    enchantment: string;
-    origin: string;
+    enchantment?: string;
+    origin?: string;
     inProgress: boolean;
 }
 
