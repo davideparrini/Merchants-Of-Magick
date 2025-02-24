@@ -1,9 +1,9 @@
 
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const { lobbyHandler } = require("./Config/lobbyServerHandler.js");
-const { gameHandler } = require("./Config/gameServerHandler.js");
-const { gameLogic } = require("./Config/gameLogic.js");
+const { lobbyHandler } = require("./src/Config/lobbyServerHandler.js");
+const { gameHandler } = require("./src/Config/gameServerHandler.js");
+const { gameLogic } = require("./src/Config/gameLogic.js");
 
 
 const PORT = 8888;
