@@ -9,11 +9,12 @@ import {
   arrayRemove
 } from 'firebase/firestore';
 
-import { ACTION_REMOVE, ERRORS, LOBBY_STATUS } from '../constants/constants';
+import { ACTION_REMOVE, DECK_TYPES, ERRORS, LOBBY_STATUS, TYPE_CARDS } from '../constants/constants';
 import { Lobby, PlayerConnection } from '../interface/lobby-interface';
 import { GameState } from '../interface/game-interface';
 import { NotFoundError } from '../Errors/NotFoundError';
 import { db } from './db';
+import { gameLogicService } from '../service/game-logic-service';
 
 const LOBBY_COLLECTION = 'lobbies';
 
@@ -52,7 +53,12 @@ const createLobby = async (player: PlayerConnection): Promise<Lobby> => {
             nPlayersEndTurn: 0,
             cards: [],
             reports: [],
-            finalReports: []
+            finalReports: [],
+            decks:{
+                itemsDeck: gameLogicService.createDeck(DECK_TYPES.ITEM),
+                enchantmentDeck: gameLogicService.createDeck(DECK_TYPES.ENCHANTMENT),
+                originDeck: gameLogicService.createDeck(DECK_TYPES.ORIGIN),
+            }
         }
     } as Partial<Lobby>;
 
@@ -151,3 +157,4 @@ export const repositoryLobby = {
   leaveLobby,
   getGameState
 };
+

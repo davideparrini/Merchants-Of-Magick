@@ -19,8 +19,15 @@ export interface Adventurer {
     cards: SignedDeckCards[];
     reports: SignedReport[];
     finalReports: SignedFinalReport[];
+    decks: Decks
   }
   
+  export interface Decks {
+    itemsDeck: string[];
+    enchantmentDeck: string[];
+    originDeck: string[];
+  }
+
   export interface SignedDeckCards{
     username:string;
     card1:Card;
@@ -43,6 +50,7 @@ export interface Card {
     inProgress: boolean;
 }
 
+
 export interface Report{
     skills: string[];
     items: string[];
@@ -55,12 +63,19 @@ export interface Report{
 export interface PlayerStartGame {
     username: string;
     adventurer: Adventurer;
-    cards: {
-        card1: Card;
-        card2: Card;
-        card3: Card;
-    };
+    card1: Card;
+    card2: Card;
+    card3: Card;
 }
+
+export interface GameInitState { 
+    quest1: Quest; 
+    quest2: Quest 
+    dices: DiceRolls; 
+    players: PlayerStartGame[]; 
+    config: GameInitConfig 
+}
+
 
 export interface PlayerGame {
     username: string;

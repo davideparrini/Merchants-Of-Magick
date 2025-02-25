@@ -22,9 +22,8 @@ const startGame = async (lobbyID: string, config: any): Promise<any> => {
         throw new ForbiddenError(ERRORS.GAME_NOT_IN_LOBBY);
     }
 
-
     await repositoryLobby.changeLobbyStatus(lobbyID, LOBBY_STATUS.IN_GAME);
-    const gameInit = gameLogicService.gameInit(lobby.players.map(p => p.username), config);
+    const gameInit = gameLogicService.gameInit(lobby.players.map(p => p.username), config, lobbyID);
     
     const io = getIoInstance();
     io.to(lobbyID).emit(SocketEvents.GAME_START, gameInit);
@@ -55,13 +54,13 @@ const playerFinishTurn = async (lobbyID: string, playerGameState: PlayerGame) =>
     await repositoryLobby.updateGameState(lobbyID, gameState);
 
     if (gameState.nPlayersEndTurn === lobby.players.length) {
-        gameState.cards = gameLogicService.updateCardsTurn(gameState.cards, lobby.players.map(p => p.username));
+        gameState.cards = gameLogicService.updateCardsTurn(gameState.cards, lobby.players.map(p => p.username),gameState.decks);
         const response = {
             quest1: gameState.quest1,
             quest2: gameState.quest2,
             dices: gameLogicService.rollDices(),
             cards: gameState.cards,
-            report: gameState.reports
+            reports: gameState.reports
         };
         
         const io = getIoInstance();
