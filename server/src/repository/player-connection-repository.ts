@@ -79,8 +79,21 @@ const loginPlayerSocketID = async (username: string, socketID: string): Promise<
 /**
  * Rimuove il socket ID di un giocatore
  */
-const logoutPlayerSocketID = async (username: string): Promise<void> => {
-  await updatePlayerField(username, { socketID: deleteField() });
+const logoutPlayerSocketID = async (socketID: string): Promise<void> => {
+  const connectionsRef = collection(db, CONNECTIONS_COLLECTION);
+  const connectionQuery = query(connectionsRef, where("socketID", "==", socketID));
+  const querySnapshot = await getDocs(connectionQuery);
+
+ 
+  if (querySnapshot.empty) {
+    
+    return;
+  }
+
+  const connectionDoc = querySnapshot.docs[0];
+  await updateDoc(doc(db, CONNECTIONS_COLLECTION, connectionDoc.id), {
+    socketID: deleteField(),
+  });
 };
 
 /**
