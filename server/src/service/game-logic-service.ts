@@ -23,6 +23,7 @@ import {
     GameInitConfig,
     SignedFinalReport,
     ResolvedFinalReport,
+    SignedDeckCards,
   } from "../interface/game-interface";
   
   function createGameLogic() {
@@ -131,7 +132,7 @@ import {
       };
     }
   
-    function updateCardsTurn(cards: { username: string; card1: Card; card2: Card; card3: Card }[], players: string[]): { username: string; cards: { card1: Card; card2: Card; card3: Card } }[] {
+    function updateCardsTurn(cards: { username: string; card1: Card; card2: Card; card3: Card }[], players: string[]): SignedDeckCards[] {
       let oldListCards: Card[] = [];
       let newListCards: Card[] = [];
   
@@ -149,11 +150,9 @@ import {
   
       return players.map((username) => ({
         username,
-        cards: {
-          card1: newListCards.shift()!,
-          card2: newListCards.shift()!,
-          card3: newListCards.shift()!,
-        },
+        card1: newListCards.shift()!,
+        card2: newListCards.shift()!,
+        card3: newListCards.shift()!
       }));
     }
   

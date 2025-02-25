@@ -5,18 +5,21 @@ import {
   getDoc, 
   updateDoc, 
   deleteField,
-  persistentMultipleTabManager, 
-  persistentLocalCache, 
-  initializeFirestore
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs
 } from 'firebase/firestore';
 
 import { firebase } from '../Config/firebase-config';
 import { PlayerConnection } from '../interface/lobby-interface';
 import { ERRORS } from '../constants/constants';
+import { NotFoundError } from '../Errors/NotFoundError';
+import { db } from './db';
 
-const db = initializeFirestore(firebase, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
 
-
+const USERS_COLLECTION = "users";
 const CONNECTIONS_COLLECTION = 'connections';
 
 /**
@@ -45,7 +48,32 @@ const getPlayerByUsername = async (username: string): Promise<PlayerConnection> 
  * Aggiorna il socket ID di un giocatore
  */
 const loginPlayerSocketID = async (username: string, socketID: string): Promise<void> => {
-  await updatePlayerField(username, { socketID });
+   // 🔎 3️⃣ Controlla se il record esiste in "connections"
+   const connectionRef = doc(db, CONNECTIONS_COLLECTION, username);
+   const connectionSnap = await getDoc(connectionRef);
+
+   // 📝 4️⃣ Se non esiste, crea un nuovo record
+   if (!connectionSnap.exists()) {
+
+    const usersRef = collection(db, USERS_COLLECTION);
+    const userQuery = query(usersRef, where("username", "==", username));
+    const userSnapshot = await getDocs(userQuery);
+
+    if (userSnapshot.empty) {
+      throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
+    }
+    const userDoc = userSnapshot.docs[0];
+    const userID = userDoc.id; 
+
+     await setDoc(connectionRef, {
+       username,
+       userID,
+       socketID,
+       lobbyID: null
+     });
+   } else {
+     await updateDoc(connectionRef, { socketID });
+   }
 };
 
 /**

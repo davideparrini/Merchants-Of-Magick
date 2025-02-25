@@ -6,18 +6,14 @@ import {
   updateDoc, 
   deleteDoc, 
   arrayUnion, 
-  arrayRemove, 
-  persistentMultipleTabManager, 
-  persistentLocalCache, 
-  initializeFirestore 
+  arrayRemove
 } from 'firebase/firestore';
 
-import { firebase } from '../Config/firebase-config';
 import { ACTION_REMOVE, ERRORS, LOBBY_STATUS } from '../constants/constants';
 import { Lobby, PlayerConnection } from '../interface/lobby-interface';
 import { GameState } from '../interface/game-interface';
-
-const db = initializeFirestore(firebase, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+import { NotFoundError } from '../Errors/NotFoundError';
+import { db } from './db';
 
 const LOBBY_COLLECTION = 'lobbies';
 

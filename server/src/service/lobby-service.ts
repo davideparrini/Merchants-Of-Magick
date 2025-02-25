@@ -4,8 +4,11 @@ import { Lobby } from '../interface/lobby-interface';
 import { getIoInstance, isSocketConnected } from '../socket';
 import { MAX_CAPACITY_LOBBY } from '../Config/config';
 import { repositoryPlayer } from '../repository/player-connection-repository';
+import { SocketError } from '../Errors/SocketError';
+import { ForbiddenError } from '../Errors/ForbiddenError';
+import { NotFoundError } from '../Errors/NotFoundError';
 
-const io = getIoInstance();
+
 
 const createLobby = async (username: string): Promise<Lobby> => {
     const player = await repositoryPlayer.getPlayerByUsername(username);
@@ -17,6 +20,7 @@ const createLobby = async (username: string): Promise<Lobby> => {
     const lobby = await repositoryLobby.createLobby(player);
     await repositoryPlayer.joinLobby(username, lobby.id);
 
+    const io = getIoInstance();
     io.sockets.sockets.get(player.socketID)?.join(lobby.id);
 
     return lobby;
@@ -36,7 +40,7 @@ const joinLobby = async (lobbyID: string, username: string): Promise<Lobby> => {
     }
 
     if (lobby.status !== LOBBY_STATUS.IN_LOBBY) {
-        throw new ForbiddenError(ERRORS.GAME_ALREADY_STARTED);
+        throw new ForbiddenError(ERRORS.GAME_NOT_IN_LOBBY);
     }
 
     if (lobby.kickedPlayers.includes(player.username)) {
@@ -46,6 +50,7 @@ const joinLobby = async (lobbyID: string, username: string): Promise<Lobby> => {
     const newLobby =  await repositoryLobby.addPlayerToLobby(lobbyID, player);
     await repositoryPlayer.joinLobby(username, lobbyID);
 
+    const io = getIoInstance();
     io.to(lobbyID).emit(SocketEvents.LOBBY_UPDATE, newLobby);
     io.sockets.sockets.get(player.socketID)?.join(lobbyID);
 
@@ -66,6 +71,7 @@ const leaveLobby = async (lobbyID: string, username: string): Promise<void> => {
     const newLobby = await repositoryLobby.leaveLobby(lobbyID, lobby.players[playerIndex]);
     await repositoryPlayer.leaveLobby(username);
 
+    const io = getIoInstance();
     io.to(lobbyID).emit(SocketEvents.LOBBY_UPDATE, newLobby);
 };
 
@@ -84,6 +90,7 @@ const kickPlayerFromLobby = async (lobbyID: string, username: string, leaderUser
     const newLobby = await repositoryLobby.removePlayerFromLobby(lobbyID, lobby.players[playerIndex]);
     await repositoryPlayer.leaveLobby(username);
 
+    const io = getIoInstance();
     io.to(lobbyID).emit(SocketEvents.LOBBY_UPDATE, newLobby);
 };
 
@@ -95,7 +102,7 @@ const invitePlayer = async (lobbyID: string, usernameToInvite: string, inviterUs
     }
 
     if (lobby.status !== LOBBY_STATUS.IN_LOBBY) {
-        throw new ForbiddenError(ERRORS.GAME_ALREADY_STARTED);
+        throw new ForbiddenError(ERRORS.GAME_NOT_IN_LOBBY);
     }
 
     const player = await repositoryPlayer.getPlayerByUsername(usernameToInvite);
@@ -110,6 +117,7 @@ const invitePlayer = async (lobbyID: string, usernameToInvite: string, inviterUs
 
     await repositoryLobby.removePlayerFromKicked(lobbyID, player);
 
+    const io = getIoInstance();
     io.to(player.socketID).emit(SocketEvents.LOBBY_INVITE, { lobbyID, inviterUsername });
 };
 

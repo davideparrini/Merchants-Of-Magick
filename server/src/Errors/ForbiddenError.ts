@@ -1,5 +1,6 @@
+import { AppError } from "./AppError";
 
-class ForbiddenError extends AppError {
+export class ForbiddenError extends AppError {
     constructor(message: string) {
         super(message,403);
     }

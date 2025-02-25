@@ -16,6 +16,8 @@ const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: { origin: "*" }
 });
+// Setup WebSocket
+setupSocketServer(io);
 
 // Middleware
 app.use(logger);
@@ -29,10 +31,9 @@ app.use("/game", gameRouter);
 // Middleware gestione errori
 app.use(errorMiddleware);
 
-// Setup WebSocket
-setupSocketServer(io);
+
 
 // Avvia il server
 server.listen(PORT, () => {
-  console.log(`Server in ascolto`);
+  console.log(`Server in ascolto su ${PORT}`);
 });

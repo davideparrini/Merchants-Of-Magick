@@ -6,7 +6,7 @@ export const LOBBY_STATUS = {
 
 export const ERRORS = {
     LOBBY_NOT_FOUND: "Lobby not found",
-    GAME_ALREADY_STARTED: "Game already started",
+    GAME_NOT_IN_LOBBY: "Game not in-lobby",
     GAME_NOT_STARTED: "Game not started",
     GAME_NOT_OVER: "Game not over",
     PLAYER_ALREADY_IN_LOBBY: "Player is in a lobby",

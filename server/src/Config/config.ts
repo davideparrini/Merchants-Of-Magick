@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 
 // Carica le variabili di ambiente dal file .env
-dotenv.config();
+dotenv.config({path: "server\src\Config\.env"});
 
 
 export const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
