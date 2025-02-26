@@ -6,9 +6,10 @@ export const LOBBY_STATUS = {
 
 export const ERRORS = {
     LOBBY_NOT_FOUND: "Lobby not found",
-    GAME_NOT_IN_LOBBY: "Game not in-lobby",
+    GAME_NOT_IN_LOBBY: "Game not in lobby",
     GAME_NOT_STARTED: "Game not started",
     GAME_NOT_OVER: "Game not over",
+    GAME_OVER: "Game over",
     PLAYER_ALREADY_IN_LOBBY: "Player is in a lobby",
     LOBBY_FULL: "Lobby is full",
     PLAYER_NOT_FOUND: "Player not found in lobby",
@@ -52,21 +53,6 @@ export const DECK_TYPES = {
     ORIGIN: "TYPE_DECK_ORIGIN"
 } as const;
 
-
-export const SocketEvents = {
-    // Events for the lobby
-    LOBBY_UPDATE: "update-lobby",
-    LOBBY_INVITE: "invite-player",
-  
-    // Events for the game
-    GAME_START: "game-start",
-    GAME_START_REQUEST: "game-start-request",
-    GAME_CHANGE_TURN: "game-change-turn",
-    GAME_END: "game-end",
-    GAME_PLAYER_FINISH_TURN: "player-finish-turn",
-    GAME_PLAYER_END_GAME: "player-end-game",
-  
-  };
   
   export enum ACTION_REMOVE {
     KICK,

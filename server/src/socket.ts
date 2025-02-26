@@ -43,3 +43,16 @@ export const isSocketConnected = (player: PlayerConnection): boolean => {
     
     return io.sockets.sockets.has(player.socketID);
   };
+
+
+  export const SOCKET_EVENTS = {
+    // Events for the lobby
+    LOBBY_UPDATE: "update-lobby",
+    LOBBY_INVITE: "invite-player",
+  
+    // Events for the game
+    GAME_START: "game-start",
+    GAME_CHANGE_TURN: "game-change-turn",
+    GAME_END: "game-end"
+  
+  };

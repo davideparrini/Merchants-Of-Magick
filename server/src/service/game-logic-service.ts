@@ -8,23 +8,20 @@ import {
   ITEM_ACCESSORIES,
   ITEM_WEAPONS,
   ITEM_ARMOR,
-  DECK_TYPES,
-  LOBBY_STATUS,
+  DECK_TYPES
 } from "../constants/constants";
 
 import { ADVENTURERS } from '../constants/adventures';
 
 import {
   Card,
-  PlayerStartGame,
   DiceRolls,
-  Quest,
   GameInitConfig,
   SignedFinalReport,
   ResolvedFinalReport,
   SignedDeckCards,
   Decks,
-  GameInitState,
+  GameInitState
 } from "../interface/game-interface";
 import { repositoryLobby } from "../repository/lobby-repository";
 
@@ -175,13 +172,14 @@ const gameInit = async (players: string[], config: GameInitConfig, lobbyID: stri
   return gameInitState;
 };
 
-const compareByGold = (a: SignedFinalReport, b: SignedFinalReport): number => b.report.gold - a.report.gold;
+const compareByGold = (a: ResolvedFinalReport, b: ResolvedFinalReport): number => b.gold - a.gold;
 
-const calculateGold = (finalReport: SignedFinalReport[]): SignedFinalReport[] => finalReport.map((r) => {
+const calculateGold = (finalReport: SignedFinalReport[]): ResolvedFinalReport[] => finalReport.map((r) => {
   const newReport = {
     username: r.username,
     position: -1,
-    report: r.report,
+    gold: 0,
+    report: r.report
   };
   const renownedAccessories = r.report.renownedAccessories;
   const weaponPrestige = r.report.weaponPrestige;
@@ -190,13 +188,13 @@ const calculateGold = (finalReport: SignedFinalReport[]): SignedFinalReport[] =>
   if (r.report.shop.length > 0) {
     r.report.shop.forEach((item) => {
       if (renownedAccessories && ITEM_ACCESSORIES.includes(item)) {
-        newReport.report.gold += 2;
+        newReport.gold += 2;
       }
       if (weaponPrestige && ITEM_WEAPONS.includes(item)) {
-        newReport.report.gold += 2;
+        newReport.gold += 2;
       }
       if (eliteArmor && ITEM_ARMOR.includes(item)) {
-        newReport.report.gold += 2;
+        newReport.gold += 2;
       }
     });
   }
@@ -206,25 +204,7 @@ const calculateGold = (finalReport: SignedFinalReport[]): SignedFinalReport[] =>
 
 const winnerResolution = (finalReport: SignedFinalReport[]): ResolvedFinalReport[] => {
   const addedGoldReport = calculateGold(finalReport);
-  const sortedReport = addedGoldReport.sort(compareByGold);
-  let positionValue = 0;
-  let goldValue = Infinity;
-  return sortedReport.map((r) => {
-    const resolvedReport = {
-      username: r.username,
-      position: -1,
-      report: r.report,
-    };
-    if (r.report.gold < goldValue) {
-      resolvedReport.position = ++positionValue;
-      goldValue = r.report.gold;
-    } else if (r.report.gold === goldValue) {
-      resolvedReport.position = positionValue;
-    } else {
-      resolvedReport.position = -2;
-    }
-    return resolvedReport;
-  });
+  return addedGoldReport.sort(compareByGold);
 };
 
   

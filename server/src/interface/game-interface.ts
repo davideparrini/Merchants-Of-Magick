@@ -79,13 +79,9 @@ export interface GameInitState {
 
 export interface PlayerGame {
     username: string;
-    quest1: boolean;
-    quest2: boolean;
-    cards: {
-        card1: Card;
-        card2: Card;
-        card3: Card;
-    };
+    card1: Card;
+    card2: Card;
+    card3: Card;
     report: Report;
 }
 
@@ -105,7 +101,11 @@ export interface Quest {
 
 // Configurazione di inizio gioco
 export interface GameInitConfig {
-    [key: string]: any; // Dettagli di configurazione aggiuntivi
+    nTurn : number;
+    nPotion : number;
+    reportTime : number;
+    countdown : number;
+    dicePerTurn : number; 
 }
 
 
@@ -113,22 +113,25 @@ export interface GameInitConfig {
 // Interfaccia per i report finali
 export interface SignedFinalReport {
     username: string;
-    position: number;
-    report: {
-        gold: number;
-        renownedAccessories: boolean;
-        weaponPrestige: boolean;
-        eliteArmor: boolean;
-        shop: string[];
-    };
+    report: FinalReport;
 }
+export interface FinalReport {
+    shop: string[];
+    quest1:boolean;
+    quest2:boolean;
+    order:boolean;
+    renownedAccessories: boolean;
+    weaponPrestige: boolean;
+    eliteArmor: boolean;
+    gold: number;
+}
+
 
 // Interfaccia per il risultato finale
 export interface ResolvedFinalReport {
     username: string;
     position: number;
-    report: {
-        gold: number;
-    };
+    gold: number;
+    report: FinalReport;
 }
 

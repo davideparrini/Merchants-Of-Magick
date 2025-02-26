@@ -16,6 +16,7 @@ import SignUp from './LoginForm_SignUp/SignUp';
 import SetUsername from './SetUsername/SetUsername';
 import Winner from './Winner/Winner';
 import Home from './Home/Home';
+import { apiLobby } from './api/lobby-api';
 
 
 
@@ -91,7 +92,9 @@ function App() {
 
 
     const refreshGame = useCallback(()=>{
-        const lobbyID = lobby.id;
+        if(lobby !== -1 && lobby.id != null){
+            apiLobby.leaveLobby(lobby.id, username);
+        }
         setLobby(-1);
         setLobbyUpdated(false);
         setGameStart(false);
@@ -99,11 +102,10 @@ function App() {
         setGameOnNewTurn(-1);
         setInfoInviterLobby(-1);
         setGameEndState(-1);
-        setGameUpdated(false);
+        setGameUpdated(false); 
         setGameEnd(false);
         setSinglePlayerGame(false);
-        connectionHandlerClient.leaveLobby(username,lobbyID);
-    },[lobby.id, username])
+        },[lobby, username])
 
 
     const logOut = useCallback(()=>{
@@ -114,7 +116,7 @@ function App() {
         navigate('/');
         console.log("logged out");
         connectionHandlerClient.disconnect();
-    },[refreshGame, navigate])
+    },[refreshGame])
 
     const checkPersonalScore = useCallback((score)=>{
         if(score > recordSinglePlayer){
@@ -197,8 +199,19 @@ function App() {
                     } 
                 })
                 //Connetto l'utente al server
-                connectionHandlerClient.registerToConnection(setStatusOnline,setInfoInviterLobby, setOpenToastNotification)
-                connectionHandlerClient.connect(); 
+                connectionHandlerClient.connect(
+                    setStatusOnline,
+                    setInfoInviterLobby, 
+                    setOpenToastNotification,
+                    setLobby,
+                    setLobbyUpdated, 
+                    setGameStart, 
+                    setGameInitState, 
+                    setGameUpdated, 
+                    setGameOnNewTurn,
+                    setGameEndState,
+                    setGameEnd
+                ); 
             }
             else {
                 //utente non autenticato
@@ -207,8 +220,7 @@ function App() {
         })
         return ()=>{         
             unsub(); 
-            connectionHandlerClient.unRegisterToConnection();
-            connectionHandlerClient.unRegisterToInvite();
+            connectionHandlerClient.disconnect();
         }
     },[]);
 

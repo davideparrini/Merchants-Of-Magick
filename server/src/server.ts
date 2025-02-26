@@ -2,7 +2,7 @@ import express from "express";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import cors from "cors";
-import { setupSocketServer } from "./socket";
+import { setIoInstance, setupSocketServer } from "./socket";
 import { errorMiddleware } from "./middlewares/errors-handler";
 import { logger } from "./middlewares/logger";
 import lobbyRouter from "./routes/lobby-routes";
@@ -17,6 +17,7 @@ const io = new SocketIOServer(server, {
   cors: { origin: "*" }
 });
 // Setup WebSocket
+setIoInstance(io);
 setupSocketServer(io);
 
 // Middleware

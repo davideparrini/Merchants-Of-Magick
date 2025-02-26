@@ -12,11 +12,11 @@ import {
   getDocs
 } from 'firebase/firestore';
 
-import { firebase } from '../Config/firebase-config';
 import { PlayerConnection } from '../interface/lobby-interface';
 import { ERRORS } from '../constants/constants';
 import { NotFoundError } from '../Errors/NotFoundError';
 import { db } from './db';
+import { lobbyService } from '../service/lobby-service';
 
 
 const USERS_COLLECTION = "users";
@@ -42,6 +42,22 @@ const getPlayerByUsername = async (username: string): Promise<PlayerConnection> 
     }
 
     return userSnap.data() as PlayerConnection;
+};
+
+
+/**
+ * Ottiene un giocatore dal database tramite socketID
+ */
+const getPlayerBySocketID = async (socketID: string): Promise<PlayerConnection> => {
+  const connectionsRef = collection(db, CONNECTIONS_COLLECTION);
+  const connectionQuery = query(connectionsRef, where("socketID", "==", socketID));
+  const querySnapshot = await getDocs(connectionQuery);
+
+  if (querySnapshot.empty) {
+    throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
+  }
+
+  return querySnapshot.docs[0].data() as PlayerConnection;
 };
 
 /**
@@ -79,20 +95,28 @@ const loginPlayerSocketID = async (username: string, socketID: string): Promise<
 /**
  * Rimuove il socket ID di un giocatore
  */
+
 const logoutPlayerSocketID = async (socketID: string): Promise<void> => {
   const connectionsRef = collection(db, CONNECTIONS_COLLECTION);
   const connectionQuery = query(connectionsRef, where("socketID", "==", socketID));
   const querySnapshot = await getDocs(connectionQuery);
 
- 
   if (querySnapshot.empty) {
-    
     return;
   }
 
   const connectionDoc = querySnapshot.docs[0];
+  const connectionData = connectionDoc.data();
+
+  // Se il giocatore è in una lobby, chiama il service per gestire la rimozione
+  if (connectionData.lobbyID) {
+    await lobbyService.handlePlayerLeave(connectionData.lobbyID, connectionData.username);
+  }
+
+  // Rimuove sia socketID che lobbyID dalla connessione
   await updateDoc(doc(db, CONNECTIONS_COLLECTION, connectionDoc.id), {
     socketID: deleteField(),
+    lobbyID: deleteField(),
   });
 };
 
@@ -112,6 +136,7 @@ const leaveLobby = async (username: string): Promise<void> => {
 
 export const repositoryPlayer = {
   getPlayerByUsername,
+  getPlayerBySocketID,
   loginPlayerSocketID,   
   logoutPlayerSocketID,
   joinLobby,

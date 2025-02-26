@@ -1,16 +1,18 @@
 import { repositoryLobby } from '../repository/lobby-repository';
-import { ERRORS, LOBBY_STATUS, SocketEvents } from '../constants/constants';
-import { Lobby } from '../interface/lobby-interface';
-import { getIoInstance, isSocketConnected } from '../socket';
+import { ERRORS, LOBBY_STATUS } from '../constants/constants';
+import { Lobby, LobbyResponse } from '../interface/lobby-interface';
+import { getIoInstance, isSocketConnected, SOCKET_EVENTS } from '../socket';
 import { MAX_CAPACITY_LOBBY } from '../Config/config';
 import { repositoryPlayer } from '../repository/player-connection-repository';
 import { SocketError } from '../Errors/SocketError';
 import { ForbiddenError } from '../Errors/ForbiddenError';
 import { NotFoundError } from '../Errors/NotFoundError';
+import { gameService } from './game-service';
+import { mapper } from '../mapper';
 
 
 
-const createLobby = async (username: string): Promise<Lobby> => {
+const createLobby = async (username: string): Promise<LobbyResponse> => {
     const player = await repositoryPlayer.getPlayerByUsername(username);
     
     if (!isSocketConnected(player) || !player.socketID) {
@@ -23,10 +25,10 @@ const createLobby = async (username: string): Promise<Lobby> => {
     const io = getIoInstance();
     io.sockets.sockets.get(player.socketID)?.join(lobby.id);
 
-    return lobby;
+    return mapper.mapLobbyToLobbyResponse(lobby);
 };
 
-const joinLobby = async (lobbyID: string, username: string): Promise<Lobby> => {
+const joinLobby = async (lobbyID: string, username: string): Promise<LobbyResponse> => {
     const player = await repositoryPlayer.getPlayerByUsername(username);
 
     if (!isSocketConnected(player) || !player.socketID) {
@@ -51,29 +53,48 @@ const joinLobby = async (lobbyID: string, username: string): Promise<Lobby> => {
     await repositoryPlayer.joinLobby(username, lobbyID);
 
     const io = getIoInstance();
-    io.to(lobbyID).emit(SocketEvents.LOBBY_UPDATE, newLobby);
+    io.to(lobbyID).emit(SOCKET_EVENTS.LOBBY_UPDATE, newLobby);
     io.sockets.sockets.get(player.socketID)?.join(lobbyID);
 
-    return lobby;
+    return mapper.mapLobbyToLobbyResponse(lobby);
 };
 
-/**
- * Permette a un giocatore di uscire volontariamente dalla lobby
- */
-const leaveLobby = async (lobbyID: string, username: string): Promise<void> => {
+
+
+
+const handlePlayerLeave = async(lobbyID: string, username: string): Promise<void> => {
     const lobby = await repositoryLobby.getLobbyById(lobbyID);
 
     const playerIndex = lobby.players.findIndex((player) => player.username === username);
     if (playerIndex === -1) {
         throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
     }
-
-    const newLobby = await repositoryLobby.leaveLobby(lobbyID, lobby.players[playerIndex]);
-    await repositoryPlayer.leaveLobby(username);
-
+    const playerToLeave = lobby.players[playerIndex];
     const io = getIoInstance();
-    io.to(lobbyID).emit(SocketEvents.LOBBY_UPDATE, newLobby);
-};
+
+    if(playerToLeave.socketID)
+        io.sockets.sockets.get(playerToLeave.socketID)?.leave(lobbyID);
+    
+    switch(lobby.status){
+        case LOBBY_STATUS.IN_LOBBY:
+            const newLobby = await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
+            await repositoryPlayer.leaveLobby(username);
+
+            io.to(lobbyID).emit(SOCKET_EVENTS.LOBBY_UPDATE, newLobby);
+            break;
+        case LOBBY_STATUS.IN_GAME:
+            await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
+            gameService.checkAllPlayersFinishTurn(lobby);
+            break;
+        case LOBBY_STATUS.GAME_OVER:
+            await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
+            gameService.checkAllPlayersEndGame(lobby);
+            break;
+        default:
+            throw new ForbiddenError(ERRORS.GAME_OVER);
+    }
+    
+}
 
 const kickPlayerFromLobby = async (lobbyID: string, username: string, leaderUsername: string) => {
     const lobby = await repositoryLobby.getLobbyById(lobbyID);
@@ -91,7 +112,7 @@ const kickPlayerFromLobby = async (lobbyID: string, username: string, leaderUser
     await repositoryPlayer.leaveLobby(username);
 
     const io = getIoInstance();
-    io.to(lobbyID).emit(SocketEvents.LOBBY_UPDATE, newLobby);
+    io.to(lobbyID).emit(SOCKET_EVENTS.LOBBY_UPDATE, newLobby);
 };
 
 const invitePlayer = async (lobbyID: string, usernameToInvite: string, inviterUsername: string) => {
@@ -118,14 +139,14 @@ const invitePlayer = async (lobbyID: string, usernameToInvite: string, inviterUs
     await repositoryLobby.removePlayerFromKicked(lobbyID, player);
 
     const io = getIoInstance();
-    io.to(player.socketID).emit(SocketEvents.LOBBY_INVITE, { lobbyID, inviterUsername });
+    io.to(player.socketID).emit(SOCKET_EVENTS.LOBBY_INVITE, { lobbyID, inviterUsername });
 };
 
 
 export const lobbyService = {
     createLobby,
     joinLobby,
-    leaveLobby, 
     invitePlayer,
-    kickPlayerFromLobby
+    kickPlayerFromLobby,
+    handlePlayerLeave
 };

@@ -6,18 +6,20 @@ import ToastNotication from '../components/ToastNotification/ToastNotication';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
 import Gold from '../components/Gold/Gold';
+import { apiLobby } from '../api/lobby-api';
 
 const TYPE_GOLD_X_BIG = 'XBIG';
 
 function Logged({setLobbyUpdated}) {
 
 
-    const { username, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { username, setStatusOnline, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
     const[countdownGameStart,setCountdownGameStart] = useState(5);
+    const[isLoading,setIsLoading] = useState(false);
 
     
 
@@ -78,12 +80,15 @@ function Logged({setLobbyUpdated}) {
                     <div className='title-logged'/>
                     <div className='container-btn-logged'>
                         <button className={`logged-btn ${statusOnline && username ? '' : 'inactive-btn'}`}
-                            onClick={()=>{
+                            disabled = {isLoading}
+                            onClick={async ()=>{
+                                setIsLoading(true)
                                 refreshGame();
-                                connectionHandlerClient.createLobby(username,(lobby)=>{
-                                    setLobby(lobby);
-                                    connectionHandlerClient.updateLobby(lobby,setLobby,setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated , setGameOnNewTurn, setGameEndState, setGameEnd);
-                                })
+                                const res = await apiLobby.createLobby(username);
+                                if(res.statusCode === 200){
+                                    setLobby(res.data.lobby); 
+                                 }
+                                setIsLoading(true)
                                 
                         }}>Create New Lobby</button>
                         <button className={`logged-btn ${statusOnline && username  ? '' : 'inactive-btn'}`}
@@ -95,12 +100,12 @@ function Logged({setLobbyUpdated}) {
                                 refreshGame();
                                 const config ={
                                     config:{
-                                            nTurn : 12,
-                                            nPotion : 3,
-                                            reportTime : 5,
-                                            countdown : 150,
-                                            dicePerTurn : 2
-                                        }
+                                        nTurn : 12,
+                                        nPotion : 3,
+                                        reportTime : 5,
+                                        countdown : 150,
+                                        dicePerTurn : 2
+                                    }
                                 }
                                 window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage( {type:'start-game-single-player', data: config} )
                                 );
@@ -120,28 +125,21 @@ function Logged({setLobbyUpdated}) {
                 </div>
                 <div className={`submit-lobby-id ${openSubmitLobbyId ? 'open-submit-lobby-id' : 'closed-submit-lobby-id'}`} ref={submitLobbyIdRef}>
                     <input className='field-submit-lobby-id' placeholder={'ID LOBBY, try ask your friend!'} value={idLobbyJoin} onChange={ e => setIdLobbyJoin(e.target.value)}/>
-                    <button className='btn-submit-lobby-id' onClick={()=>{
-                        refreshGame();
-                        connectionHandlerClient.joinLobby(idLobbyJoin,username,(res,lobby)=>{
-                            switch(res){
-                                case 'OK': 
-                                    setLobby(lobby);
-                                    connectionHandlerClient.updateLobby( lobby, setLobby, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
-                                    break;
-                                case 'FULL':
-                                    alert("Lobby full!")
-                                    break;
-                                case 'ERROR':
-                                    alert("Error, wrong id!")
-                                    break;
-                                default: break;
+                    <button className='btn-submit-lobby-id' 
+                        disabled={isLoading}
+                        onClick={async()=>{
+                            refreshGame();
+                            setIsLoading(true);
+                            const res = await apiLobby.joinLobby(infoInviterLobby.lobbyID, username);
+                            if(res.statusCode === 200){
+                                setLobby(res.data.lobby);
+                                setInfoInviterLobby(-1);
                             }
-                            
-                        });
-                        
-                        
-                        
-                    }}>Join !</button>
+                            else{
+                                alert(res.data.error);
+                            }
+                            setIsLoading(false);
+                        }}>Join !</button>
                 </div>  
             </div>
             <div className='left-wrapper-logged'>
@@ -151,7 +149,19 @@ function Logged({setLobbyUpdated}) {
                             <div className={`connected-label ${statusOnline  ? 'online-label' : 'offline-label'}`}>{statusOnline  ? 'Online' : 'Offline'}</div>
                             <div className='btn-refresh-connection' onClick={()=>{
                                 if(!statusOnline){
-                                    connectionHandlerClient.connect();
+                                    connectionHandlerClient.connect(
+                                        setStatusOnline,
+                                        setInfoInviterLobby,
+                                        setOpenToastNotification,
+                                        setLobby,
+                                        setLobbyUpdated, 
+                                        setGameStart, 
+                                        setGameInitState, 
+                                        setGameUpdated, 
+                                        setGameOnNewTurn,
+                                        setGameEndState,
+                                        setGameEnd
+                                    );
                                 }}}>
                             <div className='img-fresh-connection'/>
                         </div>  
@@ -172,25 +182,17 @@ function Logged({setLobbyUpdated}) {
                         handlerNegativeRespose={()=>{
                             setInfoInviterLobby(-1);
                         }}
-                        handlerPositiveRespose={()=>{
+                        handlerPositiveRespose={async ()=>{
                             refreshGame();
-                            connectionHandlerClient.joinLobby(infoInviterLobby.lobbyID, username,(res,newLobby)=>{
-                                switch(res){
-                                    case 'OK': 
-                                        setLobby(newLobby);
-                                        connectionHandlerClient.updateLobby(newLobby, setLobby, setLobbyUpdated , setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
-                                        setInfoInviterLobby(-1);
-                                        break;
-                                    case 'FULL':
-                                        alert("Lobby full!")
-                                        break;
-                                    case 'ERROR':
-                                        alert("Error, wrong id!")
-                                        break;
-                                    default: break;
-                                }
-                                 
-                            })}}
+                            const res = await apiLobby.joinLobby(infoInviterLobby.lobbyID, username);
+                            if(res.statusCode === 200){
+                                setLobby(res.data.lobby);
+                                setInfoInviterLobby(-1);
+                            }
+                            else{
+                                alert(res.data.error);
+                            }
+                        }}
                         openState={openToastNotification}
                         setOpenState={setOpenToastNotification}
                     />

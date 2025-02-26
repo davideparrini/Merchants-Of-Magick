@@ -9,6 +9,11 @@ export interface Lobby {
   kickedPlayers: string[];
 }
 
+export interface LobbyResponse {
+  id: string;
+  players: string[];
+  leaderLobby: string;
+}
 
   
   export interface PlayerConnection {

@@ -50,11 +50,11 @@ import renownedAccessories from '../components/Skill/skillsJson/renownedAcc.json
 import weaponPrestige from '../components/Skill/skillsJson/weaponPrestige.json'
 import eliteArmor from '../components/Skill/skillsJson/eliteArmor.json'
 import { AppContext } from '../App';
-import { connectionHandlerClient } from '../Config/connectionHandler';
 import BoardCards from '../components/BoardCards/BoardCards';
 import Gold from '../components/Gold/Gold';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import ItemShop from '../components/Shop/ItemShop';
+import { apiGame } from '../api/game-api';
 
 
 
@@ -328,22 +328,18 @@ function Game() {
 
 
 
-    const finishTurn = useCallback(()=>{
+    const finishTurn = useCallback(async ()=>{
         if(!turnDone){
             if(!singlePlayerGame){
                 if(nTurn < gameInitState.config.nTurn){
-                    setTurnDone(true);
                     card1.inProgress = showCard1;
                     card2.inProgress = showCard2;
                     card3.inProgress = showCard3;
                     const playerGameState = {
-                        quest1: quest1Done,
-                        quest2: quest2Done,
-                        cards:{
-                            card1: card1,
-                            card2: card2,
-                            card3: card3
-                        },
+                        username: username,
+                        card1: card1,
+                        card2: card2,
+                        card3: card3,
                         report: {
                             skills: reportSkills, 
                             items: reportItems,
@@ -351,9 +347,14 @@ function Game() {
                             quest2: quest2Done
                         }
                     }
-                    connectionHandlerClient.finishTurn(lobby.id, username, playerGameState, (r)=>console.log(r))
+                    const res = await apiGame.finishTurn(lobby.id,playerGameState)
+                    
+                    if(res.statusCode === 200){
+                        setTurnDone(true);
+                    }
                 }else{
                     const finalReport = {
+                        username: username,
                         shop: shop,
                         quest1: quest1Done,
                         quest2: quest2Done,
@@ -363,7 +364,11 @@ function Game() {
                         eliteArmor: skillsGained.includes('elite armor'),
                         gold: currentGold
                     }
-                   connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
+                   const res = await apiGame.endGame(lobby.id,finalReport);
+                    
+                   if(res.statusCode === 200){
+                       setTurnDone(true);
+                   }
                 }
             }
             else{
@@ -468,19 +473,20 @@ function Game() {
         setShowCard2(true);
         setShowCard3(true);
 
-        if(newGameState.cards.length === 1){
-            const finalReport = {
-                shop: shop,
-                quest1: quest1Done,
-                quest2: quest2Done,
-                order: adventurerQuestDone,
-                renownedAccessories: skillsGained.includes('renowned accessories'),
-                weaponPrestige: skillsGained.includes('weapon prestige'),
-                eliteArmor: skillsGained.includes('elite armor'),
-                gold: currentGold
-            }
-           return connectionHandlerClient.endGame(lobby.id, username, finalReport, (r)=>console.log(r))
-        }
+        // if(newGameState.cards.length === 1){
+        //     const finalReport = {
+        //         username: username,
+        //         shop: shop,
+        //         quest1: quest1Done,
+        //         quest2: quest2Done,
+        //         order: adventurerQuestDone,
+        //         renownedAccessories: skillsGained.includes('renowned accessories'),
+        //         weaponPrestige: skillsGained.includes('weapon prestige'),
+        //         eliteArmor: skillsGained.includes('elite armor'),
+        //         gold: currentGold
+        //     }
+        //    return apiGame.endGame(lobby.id, finalReport);
+        // }
         
         const newBoardPlayer = [];
         let i = indexCardsCurrentPlayer + 1;

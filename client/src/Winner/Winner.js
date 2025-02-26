@@ -51,7 +51,7 @@ const TYPE_GOLD_BIG = 'BIG';
 
 function Winner() {
 
-    const { gameEndState,refreshGame, navigate, LOGGED_PAGE} = useContext(AppContext);
+    const { gameEndState, refreshGame, navigate, LOGGED_PAGE} = useContext(AppContext);
 
     return (
         <div className='Winner'>

@@ -1,11 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import './Lobby.scss'
-import { userAuth } from '../Config/auth';
-import { connectionHandlerClient } from '../Config/connectionHandler';
+import './Lobby.scss';
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
 import BackBtn from '../components/BackBtn/BackBtn';
+import { apiLobby } from '../api/lobby-api';
+import { apiGame } from '../api/game-api';
+
 
 
 function Lobby({lobbyUpdated,setLobbyUpdated}) {
@@ -14,6 +15,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
+    const[isLoading,setIsLoading] = useState(false);
     
     
     const[countdownGameStart,setCountdownGameStart] = useState(5);
@@ -104,34 +106,20 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     </div>
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
-                        <button className='btn-add-player' onClick={()=>{
-                            connectionHandlerClient.invitePlayer(lobby.id, username, playerToAdd,(res)=>{
-                                switch(res){
-                                    case 'OK': 
-                                        console.log('Ok invited');
-                                        break;
-                                    case 'FULL':
-                                        alert("Lobby full!")
-                                        break;
-                                    case 'ALREADY_IN_A_LOBBY':
-                                        alert(playerToAdd + " is already in a lobby!")
-                                    break;
-                                    case 'in-game':
-                                        alert(playerToAdd + " is alrready in game!")
-                                        break;
-                                    case 'ERROR':
-                                        alert("Error, something went wrong!")
-                                        break;
-                                    default: break;
-                                }
-                                setPlayerToAdd('');
-                            })
+                        <button className='btn-add-player' onClick={async ()=>{
+                            const res =  await apiLobby.invitePlayer(lobby.id, username, playerToAdd);
+                            if(res.statusCode !== 200){
+                                alert(res.data.error);
+                            }
+                            setPlayerToAdd('');
                         }}>Add Player</button>
                     </div>
                     <div className='container-btn-lobby'>
                         <button className= {`start-game-btn ${ lobby.leaderLobby === username && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
-                            onClick={()=>{
+                            disabled={gameStart || isLoading}
+                            onClick={async ()=>{
                                 if(!gameStart){
+                                    setIsLoading(true);
                                     const config ={
                                         nTurn : configNTurn,
                                         nPotion : configNPotion,
@@ -139,21 +127,10 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                                         countdown : configCountdown,
                                         dicePerTurn : configDicePerTurn
                                     }
-                                    connectionHandlerClient.gameStartRequest(lobby.id, config,(res)=>{
-                                        switch(res){
-                                            case 'OK': 
-                                                console.log("Game start");
-                                                break;
-                                            case 'ERROR':
-                                                alert("Error, something went wrong starting game!");
-                                                refreshGame();              
-                                                navigate(LOGGED_PAGE);
-                                                break;
-                                            default: break;
-                                        }
-                                    })
+                                    
+                                    await apiGame.startGame(lobby.id,config);
+                                    setIsLoading(false);
                                 }
-                                
                                    
                             }}
                         >{gameStart ? countdownGameStart :'Start Game'}</button>

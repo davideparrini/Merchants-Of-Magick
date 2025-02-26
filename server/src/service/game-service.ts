@@ -1,10 +1,10 @@
-import { ERRORS, LOBBY_STATUS, SocketEvents } from "../constants/constants";
+import { ERRORS, LOBBY_STATUS } from "../constants/constants";
 import { ForbiddenError } from "../Errors/ForbiddenError";
 import { NotFoundError } from "../Errors/NotFoundError";
-import { SignedFinalReport, PlayerGame, GameState } from "../interface/game-interface";
+import { SignedFinalReport, PlayerGame } from "../interface/game-interface";
 import { Lobby } from "../interface/lobby-interface";
 import { repositoryLobby } from "../repository/lobby-repository";
-import { getIoInstance } from "../socket";
+import { getIoInstance, SOCKET_EVENTS } from "../socket";
 import { gameLogicService } from "./game-logic-service";
 
 
@@ -26,7 +26,7 @@ const startGame = async (lobbyID: string, config: any): Promise<any> => {
     const gameInit = gameLogicService.gameInit(lobby.players.map(p => p.username), config, lobbyID);
     
     const io = getIoInstance();
-    io.to(lobbyID).emit(SocketEvents.GAME_START, gameInit);
+    io.to(lobbyID).emit(SOCKET_EVENTS.GAME_START, gameInit);
     return gameInit;
 };
 
@@ -40,11 +40,13 @@ const playerFinishTurn = async (lobbyID: string, playerGameState: PlayerGame) =>
 
     const gameState = await repositoryLobby.getGameState(lobbyID);
     gameState.nPlayersEndTurn++;
-    gameState.quest1 ||= playerGameState.quest1;
-    gameState.quest2 ||= playerGameState.quest2;
+    gameState.quest1 ||= playerGameState.report.quest1;
+    gameState.quest2 ||= playerGameState.report.quest2;
     gameState.cards.push({
         username: playerGameState.username,
-        ...playerGameState.cards
+        card1: playerGameState.card1,
+        card2: playerGameState.card2,
+        card3: playerGameState.card3
     });
     gameState.reports.push({
         username: playerGameState.username,
@@ -53,22 +55,26 @@ const playerFinishTurn = async (lobbyID: string, playerGameState: PlayerGame) =>
     
     await repositoryLobby.updateGameState(lobbyID, gameState);
 
-    if (gameState.nPlayersEndTurn === lobby.players.length) {
-        gameState.cards = gameLogicService.updateCardsTurn(gameState.cards, lobby.players.map(p => p.username),gameState.decks);
+    checkAllPlayersFinishTurn(lobby);
+};
+
+const checkAllPlayersFinishTurn = async (lobby: Lobby) => {
+    if (lobby.gameState.nPlayersEndTurn === lobby.players.length) {
+        lobby.gameState.cards = gameLogicService.updateCardsTurn(lobby.gameState.cards, lobby.players.map(p => p.username),lobby.gameState.decks);
         const response = {
-            quest1: gameState.quest1,
-            quest2: gameState.quest2,
+            quest1: lobby.gameState.quest1,
+            quest2: lobby.gameState.quest2,
             dices: gameLogicService.rollDices(),
-            cards: gameState.cards,
-            reports: gameState.reports
+            cards: lobby.gameState.cards,
+            reports: lobby.gameState.reports
         };
         
         const io = getIoInstance();
-        io.to(lobbyID).emit(SocketEvents.GAME_CHANGE_TURN, response);
-        Object.assign(gameState, { nPlayersEndTurn: 0, cards: [], reports: [] });
-        await repositoryLobby.updateGameState(lobbyID, gameState);
+        io.to(lobby.id).emit(SOCKET_EVENTS.GAME_CHANGE_TURN, response);
+        Object.assign(lobby.gameState, { nPlayersEndTurn: 0, cards: [], reports: [] });
+        await repositoryLobby.updateGameState(lobby.id, lobby.gameState);
     }
-};
+}
 
 const playerEndGame = async (lobbyID: string, playerFinalReport: SignedFinalReport) => {
     const lobby = await repositoryLobby.getLobbyById(lobbyID);
@@ -83,13 +89,17 @@ const playerEndGame = async (lobbyID: string, playerFinalReport: SignedFinalRepo
     gameState.finalReports.push(playerFinalReport);
     
     await repositoryLobby.updateGameState(lobbyID, gameState);
-    if (gameState.nPlayersEndTurn === lobby.players.length) {
-        await repositoryLobby.changeLobbyStatus(lobbyID, LOBBY_STATUS.GAME_OVER);
-        const winnerResolution = gameLogicService.winnerResolution(gameState.finalReports);
-        const io = getIoInstance();
-        io.to(lobbyID).emit(SocketEvents.GAME_END, winnerResolution);
-    }
+    checkAllPlayersEndGame(lobby);
 };
+
+const checkAllPlayersEndGame = async (lobby: Lobby) => {
+    if (lobby.gameState.nPlayersEndTurn === lobby.players.length) {
+        await repositoryLobby.changeLobbyStatus(lobby.id, LOBBY_STATUS.GAME_OVER);
+        const winnerResolution = gameLogicService.winnerResolution(lobby.gameState.finalReports);
+        const io = getIoInstance();
+        io.to(lobby.id).emit(SOCKET_EVENTS.GAME_END, winnerResolution);
+    }
+}
 
 const getArchivedLobby = async (lobbyID: string) => {
     const lobby = await repositoryLobby.getLobbyById(lobbyID);
@@ -105,6 +115,8 @@ const getArchivedLobby = async (lobbyID: string) => {
 export const gameService = {
     startGame,
     playerFinishTurn,
+    checkAllPlayersFinishTurn,
     playerEndGame,
+    checkAllPlayersEndGame,
     getArchivedLobby
 };

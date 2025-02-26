@@ -43,7 +43,7 @@ lobbyRouter.post("/:lobbyID/leave", async (req: Request, res: Response, next: Ne
         const { username } = req.body;
         const { lobbyID } = req.params;
 
-        await lobbyService.leaveLobby(lobbyID, username);
+        await lobbyService.handlePlayerLeave(lobbyID, username);
         res.json({ message: `Player ${username} has left the lobby` });
     } catch (error) {
         next(error);
