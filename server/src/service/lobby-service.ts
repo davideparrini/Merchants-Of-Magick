@@ -1,7 +1,7 @@
 import { repositoryLobby } from '../repository/lobby-repository';
 import { ERRORS, LOBBY_STATUS } from '../constants/constants';
 import { Lobby, LobbyResponse } from '../interface/lobby-interface';
-import { getIoInstance, isSocketConnected, SOCKET_EVENTS } from '../socket';
+import { emitLobbyUpdate, getIoInstance, isSocketConnected, SOCKET_EVENTS } from '../socket';
 import { MAX_CAPACITY_LOBBY } from '../Config/config';
 import { repositoryPlayer } from '../repository/player-connection-repository';
 import { SocketError } from '../Errors/SocketError';
@@ -23,7 +23,10 @@ const createLobby = async (username: string): Promise<LobbyResponse> => {
     await repositoryPlayer.joinLobby(username, lobby.id);
 
     const io = getIoInstance();
-    io.sockets.sockets.get(player.socketID)?.join(lobby.id);
+    const playerSocket = io.sockets.sockets.get(player.socketID);
+    if (playerSocket) {
+        playerSocket.join(lobby.id);
+    }
 
     return mapper.mapLobbyToLobbyResponse(lobby);
 };
@@ -52,18 +55,22 @@ const joinLobby = async (lobbyID: string, username: string): Promise<LobbyRespon
     const newLobby =  await repositoryLobby.addPlayerToLobby(lobbyID, player);
     await repositoryPlayer.joinLobby(username, lobbyID);
 
+    emitLobbyUpdate(newLobby);
     const io = getIoInstance();
-    io.to(lobbyID).emit(SOCKET_EVENTS.LOBBY_UPDATE, newLobby);
-    io.sockets.sockets.get(player.socketID)?.join(lobbyID);
+    const playerSocket = io.sockets.sockets.get(player.socketID);
+    if (playerSocket) {
+        playerSocket.join(lobby.id);
+    }
 
-    return mapper.mapLobbyToLobbyResponse(lobby);
+    return mapper.mapLobbyToLobbyResponse(newLobby);
 };
 
 
-
-
 const handlePlayerLeave = async(lobbyID: string, username: string): Promise<void> => {
-    const lobby = await repositoryLobby.getLobbyById(lobbyID);
+    const lobby = await repositoryLobby.getLobbyNoError(lobbyID);
+    if(!lobby){
+        return;
+    }
 
     const playerIndex = lobby.players.findIndex((player) => player.username === username);
     if (playerIndex === -1) {
@@ -72,15 +79,21 @@ const handlePlayerLeave = async(lobbyID: string, username: string): Promise<void
     const playerToLeave = lobby.players[playerIndex];
     const io = getIoInstance();
 
-    if(playerToLeave.socketID)
-        io.sockets.sockets.get(playerToLeave.socketID)?.leave(lobbyID);
+    if(playerToLeave.socketID){
+        const playerSocket = io.sockets.sockets.get(playerToLeave.socketID);
+        if (playerSocket) {
+            playerSocket.leave(lobby.id);
+        }
+    }
+
     
     switch(lobby.status){
         case LOBBY_STATUS.IN_LOBBY:
             const newLobby = await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
             await repositoryPlayer.leaveLobby(username);
-
-            io.to(lobbyID).emit(SOCKET_EVENTS.LOBBY_UPDATE, newLobby);
+            if(newLobby){
+                emitLobbyUpdate(newLobby);
+            }
             break;
         case LOBBY_STATUS.IN_GAME:
             await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
@@ -111,8 +124,9 @@ const kickPlayerFromLobby = async (lobbyID: string, username: string, leaderUser
     const newLobby = await repositoryLobby.removePlayerFromLobby(lobbyID, lobby.players[playerIndex]);
     await repositoryPlayer.leaveLobby(username);
 
-    const io = getIoInstance();
-    io.to(lobbyID).emit(SOCKET_EVENTS.LOBBY_UPDATE, newLobby);
+    if(newLobby){        
+        emitLobbyUpdate(newLobby);
+    }
 };
 
 const invitePlayer = async (lobbyID: string, usernameToInvite: string, inviterUsername: string) => {

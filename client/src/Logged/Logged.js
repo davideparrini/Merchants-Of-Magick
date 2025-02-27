@@ -10,16 +10,17 @@ import { apiLobby } from '../api/lobby-api';
 
 const TYPE_GOLD_X_BIG = 'XBIG';
 
-function Logged({setLobbyUpdated}) {
+function Logged() {
 
 
-    const { username, setStatusOnline, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { username, setLobbyUpdated,setStatusOnline, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer,  openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,gameStart,singlePlayerGame, setGameOnNewTurn, navigate, LOGGED_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
     const [openSubmitLobbyId,setOpenSubmitLobbyId] = useState(false);
     const[countdownGameStart,setCountdownGameStart] = useState(5);
     const[isLoading,setIsLoading] = useState(false);
+    const[checkOnline, setCheckOnline] = useState(false);
 
     
 
@@ -43,7 +44,7 @@ function Logged({setLobbyUpdated}) {
 
     useEffect(()=>{
         connectionHandlerClient.sendUsername(username);
-    },[username])
+    },[username,statusOnline])
 
     useEffect(()=>{
         if(lobby !== -1){
@@ -51,6 +52,13 @@ function Logged({setLobbyUpdated}) {
         }
     },[lobby])
 
+
+    useEffect(()=>{
+        if(checkOnline){
+            connectionHandlerClient.checkConnected(setStatusOnline);
+            setCheckOnline(false);
+        }
+    },[checkOnline])
 
     useEffect(()=>{
         if(singlePlayerGame){
@@ -86,7 +94,7 @@ function Logged({setLobbyUpdated}) {
                                 refreshGame();
                                 const res = await apiLobby.createLobby(username);
                                 if(res.statusCode === 200){
-                                    setLobby(res.data.lobby); 
+                                    setLobby(res.data); 
                                  }
                                 setIsLoading(true)
                                 
@@ -130,9 +138,9 @@ function Logged({setLobbyUpdated}) {
                         onClick={async()=>{
                             refreshGame();
                             setIsLoading(true);
-                            const res = await apiLobby.joinLobby(infoInviterLobby.lobbyID, username);
+                            const res = await apiLobby.joinLobby(idLobbyJoin, username);
                             if(res.statusCode === 200){
-                                setLobby(res.data.lobby);
+                                setLobby(res.data);
                                 setInfoInviterLobby(-1);
                             }
                             else{
@@ -151,7 +159,7 @@ function Logged({setLobbyUpdated}) {
                                 if(!statusOnline){
                                     connectionHandlerClient.connect(
                                         setStatusOnline,
-                                        setInfoInviterLobby,
+                                        setInfoInviterLobby, 
                                         setOpenToastNotification,
                                         setLobby,
                                         setLobbyUpdated, 
@@ -162,7 +170,9 @@ function Logged({setLobbyUpdated}) {
                                         setGameEndState,
                                         setGameEnd
                                     );
-                                }}}>
+                                }
+                                setCheckOnline(true);
+                            }}>
                             <div className='img-fresh-connection'/>
                         </div>  
                     </div>
@@ -186,7 +196,7 @@ function Logged({setLobbyUpdated}) {
                             refreshGame();
                             const res = await apiLobby.joinLobby(infoInviterLobby.lobbyID, username);
                             if(res.statusCode === 200){
-                                setLobby(res.data.lobby);
+                                setLobby(res.data);
                                 setInfoInviterLobby(-1);
                             }
                             else{

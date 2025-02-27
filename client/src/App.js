@@ -129,6 +129,8 @@ function App() {
 
 
     const valueContext = useMemo(()=>({
+        lobbyUpdated,
+        setLobbyUpdated,
         fullScreen,
         setStatusOnline,
         setFullScreen,
@@ -199,7 +201,8 @@ function App() {
                     } 
                 })
                 //Connetto l'utente al server
-                connectionHandlerClient.connect(
+                
+                connectionHandlerClient.connect( 
                     setStatusOnline,
                     setInfoInviterLobby, 
                     setOpenToastNotification,
@@ -234,8 +237,8 @@ function App() {
                     <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
                     <Route path={SET_USERNAME} element={<SetUsername />}/>
                     <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
-                    <Route path={LOGGED_PAGE} element={<Logged setLobbyUpdated={setLobbyUpdated} />}/>
-                    <Route path={LOGGED_PAGE +'/:id'} element={<Lobby lobbyUpdated={lobbyUpdated} setLobbyUpdated={setLobbyUpdated}/>}/>
+                    <Route path={LOGGED_PAGE} element={<Logged/>}/>
+                    <Route path={LOGGED_PAGE +'/:id'} element={<Lobby/>}/>
                     <Route path={GAME_PAGE +'/:id'} element={<Game />}/>
                     <Route path={WINNER_PAGE +'/:id'} element={<Winner/>} />
                 </Routes>

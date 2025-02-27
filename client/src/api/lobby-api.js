@@ -24,6 +24,16 @@ async function joinLobby(lobbyID, username) {
     return handleResponse(response);
 }
 
+// Unisciti a una lobby esistente
+async function reconnectLobby(lobbyID, username) {
+    const response = await fetch(`${URL_LOBBY}/${lobbyID}/reconnect`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+    });
+    return handleResponse(response);
+}
+
 // Esci da una lobby
 async function leaveLobby(lobbyID, username) {
     const response = await fetch(`${URL_LOBBY}/${lobbyID}/leave`, {
@@ -57,6 +67,7 @@ async function invitePlayer(lobbyID, usernameToInvite, inviterUsername) {
 export const apiLobby = {
     createLobby,
     leaveLobby,
+    reconnectLobby,
     joinLobby,
     kickPlayer,
     invitePlayer

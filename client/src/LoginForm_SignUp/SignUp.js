@@ -4,11 +4,24 @@ import './LoginForm_SignUp.scss'
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import BackBtn from '../components/BackBtn/BackBtn';
+import { connectionHandlerClient } from '../Config/connectionHandler';
 
 
 function SignUp() {
 
-    const { userAuthenticated,navigate, SIGN_UP_PAGE, LOGIN_PAGE, LOGGED_PAGE} = useContext(AppContext);
+    const { userAuthenticated,navigate, SIGN_UP_PAGE, LOGGED_PAGE,
+        setStatusOnline,
+        setInfoInviterLobby, 
+        setOpenToastNotification,
+        setLobby,
+        setLobbyUpdated, 
+        setGameStart, 
+        setGameInitState, 
+        setGameUpdated, 
+        setGameOnNewTurn,
+        setGameEndState,
+        setGameEnd
+    } = useContext(AppContext);
 
     const[email,setEmail] =useState('');
     const[password,setPassword] = useState('');
@@ -17,6 +30,18 @@ function SignUp() {
     useEffect(()=>{
         if(userAuthenticated){
             navigate(LOGGED_PAGE)
+            connectionHandlerClient.connect(setStatusOnline,
+                setInfoInviterLobby, 
+                setOpenToastNotification,
+                setLobby,
+                setLobbyUpdated, 
+                setGameStart, 
+                setGameInitState, 
+                setGameUpdated, 
+                setGameOnNewTurn,
+                setGameEndState,
+                setGameEnd
+            )
         }
         else{
             navigate(SIGN_UP_PAGE)

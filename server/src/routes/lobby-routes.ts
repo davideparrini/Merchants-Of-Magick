@@ -20,6 +20,7 @@ lobbyRouter.post("/", async (req: Request, res: Response, next: NextFunction): P
     }
 });
 
+
 /**
  * Unisciti a una lobby esistente
  */
@@ -29,7 +30,7 @@ lobbyRouter.post("/:lobbyID/join", async (req: Request, res: Response, next: Nex
         const { lobbyID } = req.params;
 
         const lobby = await lobbyService.joinLobby(lobbyID, username);
-        res.json({ message: "Joined lobby", lobby });
+        res.json(lobby);
     } catch (error) {
         next(error);
     }

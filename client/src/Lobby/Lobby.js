@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import './Lobby.scss';
 import { AppContext } from '../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
@@ -9,9 +10,25 @@ import { apiGame } from '../api/game-api';
 
 
 
-function Lobby({lobbyUpdated,setLobbyUpdated}) {
+function Lobby() {
 
-    const { username, statusOnline, lobby, gameStart,  gameInitState, setGameInitState, navigate, gameInit , refreshGame,  LOGGED_PAGE, GAME_PAGE} = useContext(AppContext);
+    const { 
+        lobbyUpdated,
+        setLobbyUpdated,
+        username, 
+        statusOnline, 
+        lobby, 
+        setLobby,
+        setInfoInviterLobby,
+        gameStart,  
+        gameInitState,
+        setGameInitState,
+        navigate, 
+        gameInit, 
+        refreshGame,  
+        LOGGED_PAGE, 
+        GAME_PAGE
+    } = useContext(AppContext);
 
     const[playerToAdd,setPlayerToAdd] = useState('');
     const[idCopied,setIdCopied] = useState(false);
@@ -28,6 +45,8 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
     const[configDicePerTurn, setConfigDicePerTurn] = useState(2);
 
 
+    const { id: lobbyID } = useParams();
+
     useEffect(()=>{
         if(lobbyUpdated){
             setLobbyUpdated(false);
@@ -35,13 +54,30 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
     },[lobbyUpdated]);
 
 
-    useEffect(()=>{
-        if(lobby === -1 || lobby === undefined || !statusOnline){
-            alert("Something went wrong or server is offline!");
-            refreshGame();
-            navigate(LOGGED_PAGE);
-        }
-    },[lobby,navigate,statusOnline]);
+    useEffect(() => {
+        (async () => {
+            if (lobby === -1 || !lobby || !lobby.id || !statusOnline) {
+                if (lobbyID) {
+                    try {
+                        const res = await apiLobby.joinLobby(lobbyID);
+                        if (res.statusCode === 200) {
+                            setLobby(res.data);
+                            setInfoInviterLobby(-1);
+                        } else {
+                            alert(res.data.error);
+                            navigate(LOGGED_PAGE);
+                        }
+                    } catch (error) {
+                        console.error("Errore nel joinLobby:", error);
+                        navigate(LOGGED_PAGE);
+                    }
+                } else {
+                    navigate(LOGGED_PAGE);
+                }
+            }
+        })();
+    }, [lobby, statusOnline, lobbyID]);
+    
 
 
     useEffect(()=>{
@@ -66,6 +102,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
 
     const handleCopy = useCallback(()=>{
         navigator.clipboard.writeText(lobby.id);
+        console.log(lobby)
     },[lobby.id]);
 
     return (
@@ -80,7 +117,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                         
                         <label className='label-id-lobby'>ID Lobby :</label>
                         <div className='container-id-btn-id'>
-                        <div className='label-id'>{lobby.id}</div>
+                        <div className='label-id'>{lobbyID}</div>
                             <div className={`btn-copy-id ${idCopied ? 'copied-id' : '' }`} onClick={()=>{setIdCopied(true); handleCopy(); console.log(lobby.players)}}>
                                 <div className={idCopied ? '' : 'img-copy'}/>
                                 {idCopied ? 'Copied!' :'Copy ID'}
@@ -96,10 +133,10 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                         <div className='box-player' id='b5'/>
                         <div className='box-player' id='b6'/>
                         <div className='box-player' id='b7'/>
-                        { 
-                            lobby.players.map((playerName,i)=>{
+                        {  lobby !== -1 && 
+                            lobby.players.map((player,i)=>{
                                 return(<div className='player-container-lobby' id={"p"+i} key={i}>
-                                    <div className={lobby.leaderLobby === playerName ? 'leader-lobby' : 'no-leader-lobby'}/>{playerName}
+                                    <div className={lobby.leader === player ? 'leader-lobby' : 'no-leader-lobby'}/>{player}
                                     </div>)
                             })
                         }        
@@ -107,7 +144,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
                         <button className='btn-add-player' onClick={async ()=>{
-                            const res =  await apiLobby.invitePlayer(lobby.id, username, playerToAdd);
+                            const res =  await apiLobby.invitePlayer(lobby.id, playerToAdd, username);
                             if(res.statusCode !== 200){
                                 alert(res.data.error);
                             }
@@ -115,7 +152,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                         }}>Add Player</button>
                     </div>
                     <div className='container-btn-lobby'>
-                        <button className= {`start-game-btn ${ lobby.leaderLobby === username && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
+                        <button className= {`start-game-btn ${ lobby.leader === username && lobby.players.length > 1  ? '' : 'inactive-btn'}`}
                             disabled={gameStart || isLoading}
                             onClick={async ()=>{
                                 if(!gameStart){
@@ -136,7 +173,7 @@ function Lobby({lobbyUpdated,setLobbyUpdated}) {
                         >{gameStart ? countdownGameStart :'Start Game'}</button>
                     </div>
                     {   
-                        lobby.leaderLobby === username &&
+                        lobby.leader === username &&
                         (
                             <div className='configs-wrapper'>
                                 <div className ='config-box'>

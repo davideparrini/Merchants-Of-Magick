@@ -28,7 +28,15 @@ const getLobbyData = async (lobbyID: string): Promise<Lobby> => {
     if (!lobbySnap.exists()) {
         throw new NotFoundError(ERRORS.LOBBY_NOT_FOUND); 
     }
-    return lobbySnap.data() as Lobby;
+    return {id: lobbyID, ...lobbySnap.data()} as Lobby;
+};
+const getLobbyNoError = async (lobbyID: string): Promise<Lobby|undefined> => {
+    const lobbyRef = getLobbyRef(lobbyID);
+    const lobbySnap = await getDoc(lobbyRef);
+    if (!lobbySnap.exists()) {
+        return;
+    }
+    return {id: lobbyID, ...lobbySnap.data()} as Lobby;
 };
 
 // Reusable function to update lobby
@@ -45,8 +53,10 @@ const getLobbyById = async (lobbyID: string): Promise<Lobby> => {
 const createLobby = async (player: PlayerConnection): Promise<Lobby> => {
     const lobbyInit = {
         players: [player],
-        leaderLobby: player.username,
+        leader: player.username,
         status: LOBBY_STATUS.IN_LOBBY,
+        kickedPlayers:[],
+        disconnectedPlayers:[],
         gameState: {
             quest1: false,
             quest2: false,
@@ -67,42 +77,37 @@ const createLobby = async (player: PlayerConnection): Promise<Lobby> => {
 };
 
 // Function to remove player from the lobby
-const removePlayerFromLobbyHelper = async (lobbyID: string, player: PlayerConnection, action: ACTION_REMOVE): Promise<Lobby> => {
-    const lobbyData = await getLobbyData(lobbyID);
+const removePlayerFromLobbyHelper = async (lobbyID: string, player: PlayerConnection, action: ACTION_REMOVE): Promise<Lobby|undefined> => {
+    const lobbyData = await getLobbyNoError(lobbyID);
+    if(!lobbyData){
+        return;
+    }
     const updatedPlayers = lobbyData.players.filter(p => p.username !== player.username);
 
     if (updatedPlayers.length === 0) {
         await deleteDoc(getLobbyRef(lobbyID));
-        throw new NotFoundError(ERRORS.LOBBY_NOT_FOUND);
     } else {
         const newLeader = player.username === lobbyData.leader ? updatedPlayers[0].username : lobbyData.leader;
         return await updateLobby(lobbyID, {
             players: updatedPlayers,
-            leaderLobby: newLeader,
-            ...(action === ACTION_REMOVE.KICK && { kickedPlayers: arrayUnion(player.username) })
+            leader: newLeader,
+            ...(action === ACTION_REMOVE.KICK ? { kickedPlayers: arrayUnion(player.username) } : {})
         });
     }
 };
 
 const addPlayerToLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby> => {
-    const lobbyRef = getLobbyRef(lobbyID);
-    const lobbySnap = await getDoc(lobbyRef);
-    if (!lobbySnap.exists()) {
-        throw new NotFoundError(ERRORS.LOBBY_NOT_FOUND);
-    }
-
-    await updateDoc(lobbyRef, {
-        players: arrayUnion(player),
+    return await updateLobby(lobbyID, {
+        players: arrayUnion(player)
     });
-
-    return await getLobbyData(lobbyID);
 };
 
-const leaveLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby> => {
-    return await removePlayerFromLobbyHelper(lobbyID, player, ACTION_REMOVE.REMOVE);
+
+const leaveLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby|undefined> => {
+    return await removePlayerFromLobbyHelper(lobbyID, player,  ACTION_REMOVE.REMOVE);
 };
 
-const removePlayerFromLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby> => {
+const removePlayerFromLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby|undefined> => {
     return await removePlayerFromLobbyHelper(lobbyID, player, ACTION_REMOVE.KICK);
 };
 
@@ -124,7 +129,7 @@ const changeLobbyLeader = async (lobbyID: string, username: string): Promise<Lob
         const player = lobbyData.players[playerIndex];
         const updatedPlayers = [player, ...lobbyData.players.filter((player) => player.username !== username)];
         return await updateLobby(lobbyID, {
-            leaderLobby: username,
+            leader: username,
             players: updatedPlayers
         });
     } else {
@@ -147,6 +152,7 @@ const getGameState = async (lobbyID: string): Promise<GameState> => {
 
 export const repositoryLobby = {
   getLobbyById,
+  getLobbyNoError,
   createLobby,
   addPlayerToLobby,
   removePlayerFromLobby,

@@ -1,4 +1,4 @@
 export async function handleResponse(response) {
     const data = await response.json();
-    return { statusCode: response.status, ...data };
+    return { statusCode: response.status, data: data };
 }

@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
-import { PlayerConnection } from './interface/lobby-interface';
+import { Lobby, PlayerConnection } from './interface/lobby-interface';
 import { repositoryPlayer } from './repository/player-connection-repository';
+import { mapper } from './mapper';
 
 let io: Server;
 
@@ -45,14 +46,24 @@ export const isSocketConnected = (player: PlayerConnection): boolean => {
   };
 
 
-  export const SOCKET_EVENTS = {
-    // Events for the lobby
-    LOBBY_UPDATE: "update-lobby",
-    LOBBY_INVITE: "invite-player",
-  
-    // Events for the game
-    GAME_START: "game-start",
-    GAME_CHANGE_TURN: "game-change-turn",
-    GAME_END: "game-end"
-  
-  };
+
+export const emitLobbyUpdate = (lobby: Lobby) =>{
+  io.to(lobby.id).emit(SOCKET_EVENTS.LOBBY_UPDATE, mapper.mapLobbyToLobbyResponse(lobby));
+}
+
+export const emitLobbyInvite = (lobby: Lobby) =>{
+  io.to(lobby.id).emit(SOCKET_EVENTS.LOBBY_UPDATE, mapper.mapLobbyToLobbyResponse(lobby));
+}
+
+
+export const SOCKET_EVENTS = {
+  // Events for the lobby
+  LOBBY_UPDATE: "update-lobby",
+  LOBBY_INVITE: "invite-player",
+
+  // Events for the game
+  GAME_START: "game-start",
+  GAME_CHANGE_TURN: "game-change-turn",
+  GAME_END: "game-end"
+
+};

@@ -7,12 +7,13 @@ export interface Lobby {
   status: string;
   gameState: GameState;
   kickedPlayers: string[];
+  disconnectedPlayers: string[]
 }
 
 export interface LobbyResponse {
   id: string;
   players: string[];
-  leaderLobby: string;
+  leader: string;
 }
 
   
