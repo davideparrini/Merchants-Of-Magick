@@ -244,8 +244,7 @@ function createGameLogic(){
             cardsBoard : cardsBoard,
             config : config
         }
-
-
+        
         return gameInitObj;
     }
 

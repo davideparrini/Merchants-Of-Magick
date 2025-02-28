@@ -1,39 +1,31 @@
-import { 
-  collection, 
-  doc, 
-  getDoc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  arrayUnion, 
-  arrayRemove
-} from 'firebase/firestore';
-
+import  admin  from 'firebase-admin';  // Firebase Admin SDK import
 import { ACTION_REMOVE, DECK_TYPES, ERRORS, LOBBY_STATUS, TYPE_CARDS } from '../constants/constants';
-import { Lobby, PlayerConnection } from '../interface/lobby-interface';
-import { GameState } from '../interface/game-interface';
+import { Lobby, PlayerConnection, SignedBackupPlayerGameState } from '../interface/lobby-interface';
+import { GameInitConfig, GameState, GameStateBackup } from '../interface/game-interface';
 import { NotFoundError } from '../Errors/NotFoundError';
-import { db } from './db';
-import { gameLogicService } from '../service/game-logic-service';
 
-const LOBBY_COLLECTION = 'lobbies';
+import { gameLogicService } from '../service/game-logic-service';
+import { db } from '../Config/db-config';
+
+const lobbiesCollection = db.collection("lobbies");
 
 // Reusable function to get a lobby document
-const getLobbyRef = (lobbyID: string) => doc(db, LOBBY_COLLECTION, lobbyID);
+const getLobbyRef = (lobbyID: string) =>lobbiesCollection.doc(lobbyID);
 
 // Reusable function to fetch lobby data and throw an error if not found
 const getLobbyData = async (lobbyID: string): Promise<Lobby> => {
     const lobbyRef = getLobbyRef(lobbyID);
-    const lobbySnap = await getDoc(lobbyRef);
-    if (!lobbySnap.exists()) {
+    const lobbySnap = await lobbyRef.get();
+    if (!lobbySnap.exists) {
         throw new NotFoundError(ERRORS.LOBBY_NOT_FOUND); 
     }
     return {id: lobbyID, ...lobbySnap.data()} as Lobby;
 };
+
 const getLobbyNoError = async (lobbyID: string): Promise<Lobby|undefined> => {
     const lobbyRef = getLobbyRef(lobbyID);
-    const lobbySnap = await getDoc(lobbyRef);
-    if (!lobbySnap.exists()) {
+    const lobbySnap = await lobbyRef.get();
+    if (!lobbySnap.exists) {
         return;
     }
     return {id: lobbyID, ...lobbySnap.data()} as Lobby;
@@ -42,7 +34,7 @@ const getLobbyNoError = async (lobbyID: string): Promise<Lobby|undefined> => {
 // Reusable function to update lobby
 const updateLobby = async (lobbyID: string, updateData: Record<string, any>): Promise<Lobby> => {
     const lobbyRef = getLobbyRef(lobbyID);
-    await updateDoc(lobbyRef, updateData);
+    await lobbyRef.update(updateData);
     return await getLobbyData(lobbyID); // Ritorna la lobby aggiornata
 };
 
@@ -55,16 +47,17 @@ const createLobby = async (player: PlayerConnection): Promise<Lobby> => {
         players: [player],
         leader: player.username,
         status: LOBBY_STATUS.IN_LOBBY,
-        kickedPlayers:[],
-        disconnectedPlayers:[],
+        kickedPlayers: [],
+        backupPlayers: [],
+        backupGameState: {} as GameStateBackup ,
         gameState: {
             quest1: false,
             quest2: false,
-            nPlayersEndTurn: 0,
             cards: [],
             reports: [],
             finalReports: [],
-            decks:{
+            orderPlayers: [],
+            decks: {
                 itemsDeck: gameLogicService.createDeck(DECK_TYPES.ITEM),
                 enchantmentDeck: gameLogicService.createDeck(DECK_TYPES.ENCHANTMENT),
                 originDeck: gameLogicService.createDeck(DECK_TYPES.ORIGIN),
@@ -72,39 +65,38 @@ const createLobby = async (player: PlayerConnection): Promise<Lobby> => {
         }
     } as Partial<Lobby>;
 
-    const lobbyRef = await addDoc(collection(db, LOBBY_COLLECTION), lobbyInit);
+    const lobbyRef = await lobbiesCollection.add(lobbyInit);
     return { id: lobbyRef.id, ...lobbyInit } as Lobby;
 };
 
 // Function to remove player from the lobby
 const removePlayerFromLobbyHelper = async (lobbyID: string, player: PlayerConnection, action: ACTION_REMOVE): Promise<Lobby|undefined> => {
     const lobbyData = await getLobbyNoError(lobbyID);
-    if(!lobbyData){
+    if (!lobbyData) {
         return;
     }
     const updatedPlayers = lobbyData.players.filter(p => p.username !== player.username);
 
     if (updatedPlayers.length === 0) {
-        await deleteDoc(getLobbyRef(lobbyID));
+        await getLobbyRef(lobbyID).delete();
     } else {
         const newLeader = player.username === lobbyData.leader ? updatedPlayers[0].username : lobbyData.leader;
         return await updateLobby(lobbyID, {
             players: updatedPlayers,
             leader: newLeader,
-            ...(action === ACTION_REMOVE.KICK ? { kickedPlayers: arrayUnion(player.username) } : {})
+            ...(action === ACTION_REMOVE.KICK ? { kickedPlayers: admin.firestore.FieldValue.arrayUnion(player.username) } : {})
         });
     }
 };
 
 const addPlayerToLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby> => {
     return await updateLobby(lobbyID, {
-        players: arrayUnion(player)
+        players: admin.firestore.FieldValue.arrayUnion(player)
     });
 };
 
-
 const leaveLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby|undefined> => {
-    return await removePlayerFromLobbyHelper(lobbyID, player,  ACTION_REMOVE.REMOVE);
+    return await removePlayerFromLobbyHelper(lobbyID, player, ACTION_REMOVE.REMOVE);
 };
 
 const removePlayerFromLobby = async (lobbyID: string, player: PlayerConnection): Promise<Lobby|undefined> => {
@@ -115,7 +107,7 @@ const removePlayerFromKicked = async (lobbyID: string, player: PlayerConnection)
     const lobbyData = await getLobbyData(lobbyID);
     if (lobbyData.kickedPlayers.includes(player.username)) {
         return await updateLobby(lobbyID, {
-            kickedPlayers: arrayRemove(player.username)
+            kickedPlayers: admin.firestore.FieldValue.arrayRemove(player.username)
         });
     }
     return lobbyData;
@@ -145,6 +137,12 @@ const updateGameState = async (lobbyID: string, newGameState: GameState): Promis
     return await updateLobby(lobbyID, { gameState: newGameState });
 };
 
+const updateBackupGameState = async (lobbyID: string, backupPlayer: SignedBackupPlayerGameState): Promise<Lobby> => {
+    return await updateLobby(lobbyID, { 
+        backupPlayers: admin.firestore.FieldValue.arrayUnion(backupPlayer)
+     });
+};
+
 const getGameState = async (lobbyID: string): Promise<GameState> => {
   const lobbyData = await getLobbyData(lobbyID);
   return lobbyData.gameState;
@@ -158,9 +156,10 @@ export const repositoryLobby = {
   removePlayerFromLobby,
   changeLobbyLeader,
   changeLobbyStatus,
+  updateLobby,
   updateGameState,
+  updateBackupGameState,
   removePlayerFromKicked,
   leaveLobby,
   getGameState
 };
-

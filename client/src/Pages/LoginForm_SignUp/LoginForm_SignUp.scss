@@ -1,0 +1,171 @@
+@use '../../variables'  as v;
+
+.LoginSignUpForm{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+}
+.login-sign-up-form-wrap{
+    display: grid;
+    grid-template-areas: 'form bar logwith';
+    grid-template-columns: 1fr 180px 1fr;
+    height: 60%;
+    width: 50%;
+}
+.title-login-sign-up-form{
+    position: relative;
+    right: 370px;
+    top: 90px;
+    color: #ffffff;
+    font-size: 70px;
+    font-weight: 700;
+    justify-self: flex-end;
+}
+.login-sign-up-form-container{
+    grid-area: form;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    row-gap: 50px;
+}
+.label-field-container{
+    width: 95%;
+}
+
+.label-login-sign-up-form{
+    color: white;
+    font-size: 20px;
+    font-weight: 600
+}
+.field-login-sign-up-form{
+    height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 20px;
+    padding-left: 10px;
+}
+.btn-log-sig-up-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+.btn-form{
+    height: 60px;
+    width: 50%;
+    color: white;
+    border-radius: 15px;
+    font-size: 21px;
+    text-shadow: v.$text-shadow-stroke;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    cursor: pointer;
+
+}
+
+.btn-log-in{
+    background: v.$bg-color-3;
+    border-color: v.$skill-table-color;
+}
+.btn-log-in:active{
+    background-color: v.$skill-table-color;
+}
+.btn-sign-up{
+ 
+    background: v.$primary-color-4;
+    border-color: v.$primary-color;
+}
+.btn-sign-up:active{
+    background-color: v.$primary-color;
+}
+.divider{
+    grid-area: bar;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}   
+.bar{
+    background: #9b9dad;
+    height: 100%;
+    width: 3px;
+    z-index: 1;
+}
+.divider-or{
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    font-size: 25px;
+    font-weight: 700;
+    border: 2px solid #9b9dad;
+    color: #c7cae0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2 ;
+    background-color: v.$bg-color-0;
+}
+
+.log-with-form-container{
+    grid-area: logwith;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+
+}
+.log-with-form{
+    border: 1px solid #818391;
+    height: 50px;
+    width: 350px;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 21px;
+    cursor: pointer;
+}
+.log-with-form:focus,.log-with-form:active{
+    background-color: #221616;
+}
+
+.facebook{
+    background-color: #036ce5;
+}
+
+.facebook::before{
+    content: url(./facebook.png);
+    position: relative;
+    margin: 15px;
+    top: 2px;
+    
+}
+.google{
+    background-color: #ffffff;
+    color: black;
+}
+.google::before{
+    content: url(./google.png);
+    position: relative;
+    margin: 15px;
+    top: 2px;
+    
+}
+.github{
+    background: #161b22;
+
+}
+.github::before{
+    content: url(./github.png);
+    position: relative;
+    margin: 15px;
+    top: 2px;
+    
+}

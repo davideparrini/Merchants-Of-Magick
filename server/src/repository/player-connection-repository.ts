@@ -1,57 +1,46 @@
-
-
-import { 
-  doc, 
-  getDoc, 
-  updateDoc, 
-  deleteField,
-  setDoc,
-  collection,
-  query,
-  where,
-  getDocs
-} from 'firebase/firestore';
-
+import * as admin from 'firebase-admin';
 import { PlayerConnection } from '../interface/lobby-interface';
 import { ERRORS } from '../constants/constants';
 import { NotFoundError } from '../Errors/NotFoundError';
-import { db } from './db';
 import { lobbyService } from '../service/lobby-service';
+import { BadRequestError } from '../Errors/BadRequestError';
+import { db } from '../Config/db-config';
 
-
-const USERS_COLLECTION = "users";
-const CONNECTIONS_COLLECTION = 'connections';
+// Costanti per le collezioni
+const usersCollection = db.collection("users");
+const connectionsCollection = db.collection("connections");
 
 /**
  * Helper per aggiornare un campo di un giocatore
  */
 const updatePlayerField = async (username: string, field: Partial<Record<keyof PlayerConnection, any>>): Promise<void> => {
-  const userRef = doc(db, CONNECTIONS_COLLECTION, username);
-  await updateDoc(userRef, field);
+  const userRef = connectionsCollection.doc(username);
+  await userRef.update(field);
 };
 
 /**
  * Ottiene un giocatore dal database tramite username
  */
 const getPlayerByUsername = async (username: string): Promise<PlayerConnection> => {
-    const userRef = doc(db, CONNECTIONS_COLLECTION, username);
-    const userSnap = await getDoc(userRef);
+    if (!username) {
+      throw new BadRequestError("Username required");
+    }
+    const userRef = connectionsCollection.doc(username);
+    const userSnap = await userRef.get(); // `get()` in `firebase-admin`
 
-    if (!userSnap.exists()) {
+    if (!userSnap.exists) {
       throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
     }
 
     return userSnap.data() as PlayerConnection;
 };
 
-
 /**
  * Ottiene un giocatore dal database tramite socketID
  */
 const getPlayerBySocketID = async (socketID: string): Promise<PlayerConnection> => {
-  const connectionsRef = collection(db, CONNECTIONS_COLLECTION);
-  const connectionQuery = query(connectionsRef, where("socketID", "==", socketID));
-  const querySnapshot = await getDocs(connectionQuery);
+  const connectionQuery = connectionsCollection.where("socketID", "==", socketID);
+  const querySnapshot = await connectionQuery.get(); // `get()` in `firebase-admin`
 
   if (querySnapshot.empty) {
     throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
@@ -64,42 +53,37 @@ const getPlayerBySocketID = async (socketID: string): Promise<PlayerConnection> 
  * Aggiorna il socket ID di un giocatore
  */
 const loginPlayerSocketID = async (username: string, socketID: string): Promise<void> => {
-   // 🔎 3️⃣ Controlla se il record esiste in "connections"
-   const connectionRef = doc(db, CONNECTIONS_COLLECTION, username);
-   const connectionSnap = await getDoc(connectionRef);
+   const connectionRef = connectionsCollection.doc(username);
+   const connectionSnap = await connectionRef.get();
 
-   // 📝 4️⃣ Se non esiste, crea un nuovo record
-   if (!connectionSnap.exists()) {
+   if (!connectionSnap.exists) {
+     const userQuery = usersCollection.where("username", "==", username);
+     const userSnapshot = await userQuery.get();
 
-    const usersRef = collection(db, USERS_COLLECTION);
-    const userQuery = query(usersRef, where("username", "==", username));
-    const userSnapshot = await getDocs(userQuery);
+     if (userSnapshot.empty) {
+       throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
+     }
 
-    if (userSnapshot.empty) {
-      throw new NotFoundError(ERRORS.PLAYER_NOT_FOUND);
-    }
-    const userDoc = userSnapshot.docs[0];
-    const userID = userDoc.id; 
+     const userDoc = userSnapshot.docs[0];
+     const userID = userDoc.id;
 
-     await setDoc(connectionRef, {
+     await connectionRef.set({
        username,
        userID,
        socketID,
        lobbyID: null
      });
    } else {
-     await updateDoc(connectionRef, { socketID });
+     await connectionRef.update({ socketID });
    }
 };
 
 /**
  * Rimuove il socket ID di un giocatore
  */
-
 const logoutPlayerSocketID = async (socketID: string): Promise<void> => {
-  const connectionsRef = collection(db, CONNECTIONS_COLLECTION);
-  const connectionQuery = query(connectionsRef, where("socketID", "==", socketID));
-  const querySnapshot = await getDocs(connectionQuery);
+  const connectionQuery = connectionsCollection.where("socketID", "==", socketID);
+  const querySnapshot = await connectionQuery.get();
 
   if (querySnapshot.empty) {
     return;
@@ -108,15 +92,15 @@ const logoutPlayerSocketID = async (socketID: string): Promise<void> => {
   const connectionDoc = querySnapshot.docs[0];
   const connectionData = connectionDoc.data();
 
-  // Se il giocatore è in una lobby, chiama il service per gestire la rimozione
+  // Se il giocatore è in una lobby, gestisci la rimozione
   if (connectionData.lobbyID) {
     await lobbyService.handlePlayerLeave(connectionData.lobbyID, connectionData.username);
   }
 
-  // Rimuove sia socketID che lobbyID dalla connessione
-  await updateDoc(doc(db, CONNECTIONS_COLLECTION, connectionDoc.id), {
-    socketID: deleteField(),
-    lobbyID: deleteField(),
+  // Rimuove socketID e lobbyID dalla connessione
+  await connectionDoc.ref.update({
+    socketID: admin.firestore.FieldValue.delete(),
+    lobbyID: admin.firestore.FieldValue.delete(),
   });
 };
 
@@ -131,7 +115,7 @@ const joinLobby = async (username: string, lobbyID: string): Promise<void> => {
  * Rimuove un giocatore dalla lobby
  */
 const leaveLobby = async (username: string): Promise<void> => {
-  await updatePlayerField(username, { lobbyID: deleteField() });
+  await updatePlayerField(username, { lobbyID: admin.firestore.FieldValue.delete() });
 };
 
 export const repositoryPlayer = {

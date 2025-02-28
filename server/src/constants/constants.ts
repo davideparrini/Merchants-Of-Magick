@@ -6,16 +6,19 @@ export const LOBBY_STATUS = {
 
 export const ERRORS = {
     LOBBY_NOT_FOUND: "Lobby not found",
-    GAME_NOT_IN_LOBBY: "Game not in lobby",
-    GAME_NOT_STARTED: "Game not started",
-    GAME_NOT_OVER: "Game not over",
+    GAME_CONTINUED: "Game continued without you",
+    LOBBY_STARTED: "The lobby started the game",
+    GAME_NOT_STARTED: "Game has not started yet",
+    GAME_NOT_OVER: "Game is still in progress",
     GAME_OVER: "Game over",
-    PLAYER_ALREADY_IN_LOBBY: "Player is in a lobby",
+    PLAYER_ALREADY_IN_LOBBY: "Player is already in a lobby",
     LOBBY_FULL: "Lobby is full",
-    PLAYER_NOT_FOUND: "Player not found in lobby",
-    PLAYER_KICKED: "Player was kicked in lobby",
-    NOT_LOBBY_LEADER: "Only the leader can kick players"
+    PLAYER_NOT_FOUND: "Player is no longer in the lobby",
+    PLAYER_NOT_JOINED_LOBBY: "Player has never joined this lobby", 
+    PLAYER_KICKED: "Player was kicked from the lobby",
+    NOT_LOBBY_LEADER: "Only the lobby leader can kick players"
 } as const;
+
 
 export const CRAFTING_ITEM_TYPES = [
     "backpack", "scroll", "ring", "grimoire",

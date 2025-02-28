@@ -1,0 +1,87 @@
+@use '../../variables'  as v;
+
+
+.box-set-user-name{
+    height: 100%;
+    width: 100%;
+    background: v.$black-bg;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.box-set-user-name.inactive-set-username{
+    visibility: hidden;
+    display: none;
+}
+.label-set-username{
+    color: white;
+    font-size: 40px;
+    font-weight: 60;
+    position: relative;
+    right: 120px;
+}
+.field-set-username{
+    height: 60px;
+    width: 400px;
+    border-radius: 10px;
+    font-size: 35px;
+    padding-left: 10px;
+    background: white;
+}
+.field-set-username.valid-username{
+    background: #b5ffcd;
+    color: #003a13;
+}
+
+.field-set-username.invalid-username{
+    background: #ffabab;
+    color: v.$primary-color;
+}
+
+.ico-field-set-username{
+    position: relative;
+    left: 170px;
+    bottom: 58px;
+    height: 50px;
+    width: 50px;
+    background: transparent;
+}
+
+.ico-field-set-username.ico-valid-username{
+    background-image: url(./valid.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.ico-field-set-username.ico-invalid-username{
+    background-image: url(./invalid.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.btn-submit-username{
+    height: 60px;
+    width: 250px;
+    border-radius: 15px;
+    font-size: 26px;
+    text-shadow: v.$text-shadow-stroke;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    cursor: pointer;
+    background: v.$bg-color-3;
+    border-color: v.$skill-table-color;
+    color: white;
+}
+.btn-submit-username:active{
+    filter: brightness(0.5);
+}
+
+.btn-invalid-username{
+    pointer-events: none;
+    filter: grayscale(0.9);
+    color: rgb(199, 199, 199);
+    text-shadow: 1px 1px 4px #080808;
+}

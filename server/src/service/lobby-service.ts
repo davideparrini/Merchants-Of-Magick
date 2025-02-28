@@ -11,7 +11,6 @@ import { gameService } from './game-service';
 import { mapper } from '../mapper';
 
 
-
 const createLobby = async (username: string): Promise<LobbyResponse> => {
     const player = await repositoryPlayer.getPlayerByUsername(username);
     
@@ -45,7 +44,7 @@ const joinLobby = async (lobbyID: string, username: string): Promise<LobbyRespon
     }
 
     if (lobby.status !== LOBBY_STATUS.IN_LOBBY) {
-        throw new ForbiddenError(ERRORS.GAME_NOT_IN_LOBBY);
+        throw new ForbiddenError(ERRORS.LOBBY_STARTED);
     }
 
     if (lobby.kickedPlayers.includes(player.username)) {
@@ -96,12 +95,16 @@ const handlePlayerLeave = async(lobbyID: string, username: string): Promise<void
             }
             break;
         case LOBBY_STATUS.IN_GAME:
-            await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
-            gameService.checkAllPlayersFinishTurn(lobby);
+            const newLobby1 = await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
+            if(newLobby1){
+                gameService.checkAllPlayersFinishTurn(newLobby1);
+            }
             break;
         case LOBBY_STATUS.GAME_OVER:
-            await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
-            gameService.checkAllPlayersEndGame(lobby);
+            const newLobby2 =await repositoryLobby.leaveLobby(lobbyID, playerToLeave);
+            if(newLobby2){
+                gameService.checkAllPlayersEndGame(newLobby2.id, newLobby2.gameState, newLobby2.players.length);
+            }
             break;
         default:
             throw new ForbiddenError(ERRORS.GAME_OVER);
@@ -137,7 +140,7 @@ const invitePlayer = async (lobbyID: string, usernameToInvite: string, inviterUs
     }
 
     if (lobby.status !== LOBBY_STATUS.IN_LOBBY) {
-        throw new ForbiddenError(ERRORS.GAME_NOT_IN_LOBBY);
+        throw new ForbiddenError(ERRORS.LOBBY_STARTED);
     }
 
     const player = await repositoryPlayer.getPlayerByUsername(usernameToInvite);

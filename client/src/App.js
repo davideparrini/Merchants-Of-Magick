@@ -8,15 +8,17 @@ import { connectionHandlerClient } from './Config/connectionHandler';
 
 import './App.scss'
 
-import LoginForm from './LoginForm_SignUp/LoginForm';
-import Lobby from './Lobby/Lobby';
-import Game from './Game/Game';
-import Logged from './Logged/Logged'
-import SignUp from './LoginForm_SignUp/SignUp';
-import SetUsername from './SetUsername/SetUsername';
-import Winner from './Winner/Winner';
-import Home from './Home/Home';
+import LoginForm from './Pages/LoginForm_SignUp/LoginForm';
+import Lobby from './Pages/Lobby/Lobby';
+import Game from './Pages/Game/Game';
+import Logged from './Pages/Logged/Logged'
+import SignUp from './Pages/LoginForm_SignUp/SignUp';
+import SetUsername from './Pages/SetUsername/SetUsername';
+import Winner from './Pages/Winner/Winner';
+import Home from './Pages/Home/Home';
 import { apiLobby } from './api/lobby-api';
+import { gameInitMock } from './Config/constants';
+import ErrorBoundary from './errorHandler/ErrorBoundary';
 
 
 
@@ -25,7 +27,8 @@ import { apiLobby } from './api/lobby-api';
 const LOGIN_PAGE = '/login';
 const SET_USERNAME =  '/setusername';
 const SIGN_UP_PAGE = '/signup';
-const LOGGED_PAGE = '/lobby';
+const LOGGED_PAGE = '/logged';
+const LOBBY_PAGE = '/lobby';
 const GAME_PAGE = '/game';
 const WINNER_PAGE = '/winner';
 
@@ -44,13 +47,13 @@ function App() {
     const[recordSinglePlayer, setRecordSinglePlayer] = useState(-1);
     const[openToastNotification,setOpenToastNotification] = useState(false);
     const[infoInviterLobby, setInfoInviterLobby] = useState(-1);
-
+    const[socketID,setSocketID] = useState(-1);
     const[lobby, setLobby] = useState(-1);
    
     const[lobbyUpdated,setLobbyUpdated] = useState(false);
 
     const[gameStart, setGameStart] = useState(false);
-    const[gameInitState, setGameInitState] = useState(-1);
+    const[gameInitState, setGameInitState] = useState(gameInitMock);
     const[gameUpdated,setGameUpdated] = useState(false);
     const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
     const[gameEnd,setGameEnd] = useState(false);
@@ -62,7 +65,6 @@ function App() {
     
     
     const gameInit = useCallback(()=>{
-
         const indexCardsCurrentPlayer = gameInitState.players.findIndex((p)=> p.username === username);
         const thisPlayer = gameInitState.players[indexCardsCurrentPlayer];
         const newBoardPlayer = [];
@@ -79,12 +81,11 @@ function App() {
         }
 
         const init = {
-            adventurer: thisPlayer.adventurer,
-            cards: thisPlayer.cards,
-            quest1: gameInitState.quests.quest1,
-            quest2: gameInitState.quests.quest2,
+            player: thisPlayer,
+            quest1: gameInitState.quest1,
+            quest2: gameInitState.quest2,
             dices: gameInitState.dices,
-            players : newBoardPlayer,
+            otherPlayers : newBoardPlayer,
             config : gameInitState.config
         }
         return init;
@@ -98,7 +99,7 @@ function App() {
         setLobby(-1);
         setLobbyUpdated(false);
         setGameStart(false);
-        setGameInitState(-1);
+        setGameInitState(gameInitMock);
         setGameOnNewTurn(-1);
         setInfoInviterLobby(-1);
         setGameEndState(-1);
@@ -123,7 +124,6 @@ function App() {
             dbFirestore.updateRecord(userID,score);
             setRecordSinglePlayer(score);
         }
-            
     },[recordSinglePlayer, userID])
     
 
@@ -158,11 +158,14 @@ function App() {
         gameEnd,
         setGameEnd,
         navigate,
+        socketID,
+        setSocketID,
         singlePlayerGame,
         setSinglePlayerGame,
         LOGIN_PAGE, 
         SIGN_UP_PAGE, 
         LOGGED_PAGE, 
+        LOBBY_PAGE,
         SET_USERNAME,
         GAME_PAGE,
         WINNER_PAGE,
@@ -173,7 +176,7 @@ function App() {
         gameInit,
         refreshGame
     
-    }),[fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
+    }),[lobbyUpdated, fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, socketID, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
 
 
 
@@ -186,6 +189,7 @@ function App() {
                 //Utente autenticato
                 setUserAuthenticated(true);
                 setUserID(user.uid);
+
                 //Faccio un check dell'username
                 //hasUsername true -> Ottengo l'username da firestore
                 //false -> L'utente non ha ancora registrato un username (unico), lo forzo a settare un username se vuole procedere 
@@ -195,26 +199,30 @@ function App() {
                     }
                     else{ 
                         dbFirestore.getUserData(user.uid).then((res) =>{
-                            setUsername(res.username);
+                            setUsername(()=>res.username);
                             setRecordSinglePlayer(res.record === undefined ? 0 : res.record)
                         } );
                     } 
                 })
                 //Connetto l'utente al server
+                if(username){
+                    connectionHandlerClient.connect( 
+                        setStatusOnline, 
+                        setInfoInviterLobby, 
+                        setOpenToastNotification, 
+                        setLobby, 
+                        setLobbyUpdated, 
+                        setGameStart, 
+                        setGameInitState, 
+                        setGameUpdated, 
+                        setGameOnNewTurn, 
+                        setGameEndState, 
+                        setGameEnd, 
+                        setSocketID,
+                        username
+                    ); 
+                }
                 
-                connectionHandlerClient.connect( 
-                    setStatusOnline,
-                    setInfoInviterLobby, 
-                    setOpenToastNotification,
-                    setLobby,
-                    setLobbyUpdated, 
-                    setGameStart, 
-                    setGameInitState, 
-                    setGameUpdated, 
-                    setGameOnNewTurn,
-                    setGameEndState,
-                    setGameEnd
-                ); 
             }
             else {
                 //utente non autenticato
@@ -225,27 +233,26 @@ function App() {
             unsub(); 
             connectionHandlerClient.disconnect();
         }
-    },[]);
+    },[username]);
 
 
 
     return (    
         <div className='App'>
             <AppContext.Provider value={valueContext}>
-                <Routes>
-                    <Route path={'/'} element={<Home/>}/>
-                    <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
-                    <Route path={SET_USERNAME} element={<SetUsername />}/>
-                    <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
-                    <Route path={LOGGED_PAGE} element={<Logged/>}/>
-                    <Route path={LOGGED_PAGE +'/:id'} element={<Lobby/>}/>
-                    <Route path={GAME_PAGE +'/:id'} element={<Game />}/>
-                    <Route path={WINNER_PAGE +'/:id'} element={<Winner/>} />
-                </Routes>
-                
+                <ErrorBoundary>
+                    <Routes>
+                        <Route path={'/'} element={<Home/>}/>
+                        <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
+                        <Route path={SET_USERNAME} element={<SetUsername />}/>
+                        <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
+                        <Route path={LOGGED_PAGE} element={<Logged/>}/>
+                        <Route path={LOBBY_PAGE +'/:id'} element={<Lobby/>}/>
+                        <Route path={GAME_PAGE +'/:id'} element={<Game />}/>
+                        <Route path={WINNER_PAGE +'/:id'} element={<Winner/>} />
+                    </Routes>
+                </ErrorBoundary>
             </AppContext.Provider>
-            
-            
         </div>
     )
 }

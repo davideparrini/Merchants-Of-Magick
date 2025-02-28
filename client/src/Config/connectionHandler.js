@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import momIcon from './icon-48x48.png';
 import { SOCKET_EVENTS } from "./constants";
+import { apiMOM } from "../api/mom-api";
 
 const serverPort = 8888;
 const serverUrl = `http://localhost:${serverPort}`;
@@ -39,17 +40,18 @@ const createSocketConfig = () => {
     /** 🏠 Registra i listener degli eventi della lobby e del gioco */
     const registerToGameEvents = (setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd) => {
         socket.on(SOCKET_EVENTS.LOBBY_UPDATE, lobby => {
-            console.log("UPDATE LOBBY", lobby);
             setLobby(lobby);
             setLobbyUpdated(true);
         });
 
         socket.on(SOCKET_EVENTS.GAME_START, res => {
+            console.log(res)
             setGameInitState(res);
             setGameStart(true);
         });
 
         socket.on(SOCKET_EVENTS.GAME_CHANGE_TURN, res => {
+            console.log("CAMBIO TURNO : " , res);
             setGameOnNewTurn(res);
             setGameUpdated(true);
         });
@@ -61,19 +63,26 @@ const createSocketConfig = () => {
     };
 
     /** 🚀 Connetti e registra tutti gli eventi */
-    const connect = (setStatusOnline, setInfoInviterLobby, setOpenToastNotification, setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd) => {
+    const connect = (setStatusOnline, setInfoInviterLobby, setOpenToastNotification, setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd, setSocketID ,username) => {
         socket.connect();
 
         // Stato online
-        socket.on("connect", () => setStatusOnline(true));
+        socket.on("connect", async () => {
+            setSocketID(socket.id);
+            const res = await apiMOM.sendUsername(username, socket.id);
+            if(res.statusCode === 200){
+                setStatusOnline(true)
+                // Registra tutti gli eventi necessari
+                registerToInvite(setInfoInviterLobby, setOpenToastNotification);
+                registerToGameEvents(setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
+            }
+        });
         socket.on("disconnect", () => {
             setStatusOnline(false);
             unregisterAllEvents();
         });
 
-        // Registra tutti gli eventi necessari
-        registerToInvite(setInfoInviterLobby, setOpenToastNotification);
-        registerToGameEvents(setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
+        
     };
 
     /** ❌ Unregister da tutti gli eventi */
@@ -98,15 +107,11 @@ const createSocketConfig = () => {
         setStatusOnline(socket.connected);
     };
 
-    /** 📤 Invia il proprio username al server */
-    const sendUsername = (username) => {
-        socket.emit("username", username);
-    };
+  
 
     return {
         connect,
         disconnect,
-        sendUsername,
         checkConnected,
         socket,
     };

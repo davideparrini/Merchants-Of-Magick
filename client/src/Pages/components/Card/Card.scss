@@ -1,0 +1,247 @@
+@use '../../../variables' as v;
+
+$sizeNormal:1;
+$sizeSmall:0.7;
+
+
+.card{
+    width: calc(220px * $sizeNormal);
+    height: calc(v.$height-card-normal-size * $sizeNormal);
+    display: grid;
+    grid-template-columns: 40% 20% 40%;
+    grid-template-rows: 30% 40% 30%;
+    grid-template-areas: 
+        'imgE t1 goldItem'
+        '. t2 .'
+        '. t3 imgO';   
+    border: 5px solid v.$primary-color;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
+    z-index: 2;
+}
+
+.text-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    font-family: Georgia, serif;
+    font-size: calc(25px * $sizeNormal);
+    color: #ffffff;
+    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    font-weight: 700;
+    font-variant: small-caps;
+    width: 120px;
+    margin-top: 20px;
+    z-index: 4;
+}
+.goldContainerCard{
+    grid-area: goldItem;
+    position: relative;
+    left: 25px;
+    top: 3px;
+}
+
+.img-card{
+    grid-area: t2;
+    justify-self: center;
+    align-self: center;
+    width: calc(200px * $sizeNormal);
+    height: calc(200px * $sizeNormal);
+    opacity: 0.9;
+    z-index: 2;
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+}
+
+.img-origin-card{
+    grid-area: imgO;
+    position: relative;
+    bottom: 13px;
+    right: 5px;
+    height: calc(100px * $sizeNormal);
+    width: calc(100px * $sizeNormal);
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.img-enchantment-card{
+    grid-area: imgE;
+    height: calc(100px * $sizeNormal);
+    width: calc(100px * $sizeNormal);
+
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+///////////////////////////////////SMALL VERSION//////////////////////////////////////////////
+.card-small{
+    width: calc(220px * $sizeSmall);
+    height: calc(290px * $sizeSmall);
+}
+
+.text-card-small{
+    font-size: calc(25px * $sizeSmall);
+    width: 120px; 
+}
+
+.img-card-small{
+    width: calc(200px * $sizeSmall);
+    height: calc(200px * $sizeSmall);
+}
+
+.img-origin-card-small{
+    height: calc(100px * $sizeSmall);
+    width: calc(100px * $sizeSmall);
+}
+
+.img-enchantment-card-small{
+    height: calc(100px * $sizeSmall);
+    width: calc(100px * $sizeSmall);
+}
+
+///////////////////////
+
+
+.showed{
+    background: v.$card-color-0;
+}
+.no-showed{
+    background: url(./image/backCard6_darker.png);
+    background-size: cover;
+    background-repeat:no-repeat ;
+    transform: rotateY(180deg);
+    transition: transform 1s;
+}
+
+.t1{
+    grid-area: t1;
+}
+.t2{
+    grid-area: t2;
+}
+.t3{
+    grid-area: t3;
+}
+.no-visible{
+    visibility: hidden;
+}
+.img-card.backpack{
+    background-image: url(./image/backpack4.png);
+}
+
+.img-card.scroll{
+    background-image: url(./image/scroll1.png);
+}
+
+.img-card.ring{
+    background-image: url(./image/ring1.png);
+    
+}
+
+.img-card.grimoire{
+    background-image: url(./image/grimoire3.png);
+}
+
+.img-card.sword{
+    background-image: url(./image/sword4.png);
+    scale: (1.1);
+    position: relative;
+    left: 15px;
+    top: 10px;
+}
+
+.img-card.staff{
+    background-image: url(./image/staff2.png); 
+}
+
+.img-card.crossbow{
+    background-image: url(./image/crossbow2.png);
+}
+
+.img-card.warhammer{
+    background-image: url(./image/warhammer.png);
+}
+
+.img-card.bracers{
+    background-image: url(./image/bracers1.png);
+    scale: (0.9);
+}
+
+.img-card-small.bracers{
+    position: relative;
+    left: 8px;
+}
+
+.img-card.helmet{
+    background-image: url(./image/helmet1.png);
+}
+
+.img-card.greaves{
+    background-image: url(./image/greaves1.png);
+}
+
+.img-card.plateArmor{
+    background-image: url(./image/platearmor4.png);
+    position: relative;
+    left: 35px;
+    top: 15px;
+    scale: (1.1);
+}
+
+.img-card-small.plateArmor{
+    position: relative;
+    left: 25px;
+    top: 10px;
+}
+
+.img-enchantment-card.fiery{
+     background-image:url(./image/fiery1.png); 
+}
+.img-enchantment-card.shocking{
+    background-image: url(./image/shocking3.png);
+}
+
+.img-enchantment-card.everlasting{
+    background-image: url(./image/everlasting4.png);
+}
+
+.img-enchantment-card.divine{
+    background-image: url(./image/divine2.png); 
+}
+
+.img-origin-card.elves{
+    background-image: url(./image/elves_white.png);
+}
+
+.img-origin-card.dwarves{
+    background-image: url(./image/dwarves_white.png);
+}
+
+.img-origin-card.orcs{
+    background-image: url(./image/orcs_white.png); 
+    position: relative;
+    bottom: 10px;
+    scale: (0.9);
+}
+.img-origin-card.dragons{
+   background-image: url(./image/dragons_white.png);
+}
+.img-origin-card.no-origin{
+    background-image: url(./image/no-origin1.png);
+    position: relative;
+    right: 17px;
+    bottom: 17px;
+    scale: (1.1);
+}
+.img-enchantment-card.no-enchantment{
+    background-image: url(./image/no-enchantment1.png);
+    position: relative;
+    scale:(1.1);
+    left: 5px;
+    top: 5px;
+}

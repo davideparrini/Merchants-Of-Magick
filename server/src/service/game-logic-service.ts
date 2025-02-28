@@ -120,11 +120,15 @@ const rollDices = (): DiceRolls => ({
   d12: rand(1, 12),
 });
 
-const updateCardsTurn = (cards: SignedDeckCards[], players: string[], decks: Decks): SignedDeckCards[] => {
+const updateCardsTurn = (cards: SignedDeckCards[], players: string[], decks: Decks, orderPlayers: string[]): SignedDeckCards[] => {
   let oldListCards: Card[] = [];
   let newListCards: Card[] = [];
 
-  players.forEach((username) => {
+  const sortedPlayers = players
+    .filter(username => orderPlayers.includes(username))
+    .sort((a, b) => orderPlayers.indexOf(a) - orderPlayers.indexOf(b));
+  
+  sortedPlayers.forEach((username) => {
     let indexPlayer = cards.findIndex((u) => u.username === username);
     oldListCards.push(cards[indexPlayer].card1, cards[indexPlayer].card2, cards[indexPlayer].card3);
   });
@@ -136,7 +140,7 @@ const updateCardsTurn = (cards: SignedDeckCards[], players: string[], decks: Dec
   const cardSlip = newListCards.shift();
   newListCards.push(cardSlip!);
 
-  return players.map((username) => ({
+  return sortedPlayers.map((username) => ({
     username,
     card1: newListCards.shift()!,
     card2: newListCards.shift()!,
@@ -146,6 +150,7 @@ const updateCardsTurn = (cards: SignedDeckCards[], players: string[], decks: Dec
 
 const gameInit = async (players: string[], config: GameInitConfig, lobbyID: string): Promise<GameInitState> => {
   
+  const shuffledPlayers = shuffle(players);
   const gameState = await repositoryLobby.getGameState(lobbyID);
   
   const quest1Attribute = CRAFTING_ATTRIBUTES[rand(0, 2)];
@@ -157,7 +162,7 @@ const gameInit = async (players: string[], config: GameInitConfig, lobbyID: stri
     quest2: { attribute: quest2Attribute, gold: 8 },
     
     dices: rollDices(),
-    players: players.map((username, i) => ({
+    players: shuffledPlayers.map((username, i) => ({
       username,
       adventurer: adventures[i],
       card1: createNewCard(TYPE_CARDS.NO_ENCHANTMENT, gameState.decks),
@@ -166,7 +171,7 @@ const gameInit = async (players: string[], config: GameInitConfig, lobbyID: stri
     })),
     config,
   };
-
+  gameState.orderPlayers = shuffledPlayers;
   await repositoryLobby.updateGameState(lobbyID, gameState);
 
   return gameInitState;
@@ -177,7 +182,7 @@ const compareByGold = (a: ResolvedFinalReport, b: ResolvedFinalReport): number =
 const calculateGold = (finalReport: SignedFinalReport[]): ResolvedFinalReport[] => finalReport.map((r) => {
   const newReport = {
     username: r.username,
-    position: -1,
+    position: 1,
     gold: 0,
     report: r.report
   };
@@ -202,9 +207,32 @@ const calculateGold = (finalReport: SignedFinalReport[]): ResolvedFinalReport[] 
   return newReport;
 });
 
+const calculatePositions = (sortedReport: ResolvedFinalReport[]): ResolvedFinalReport[] => {
+  let currentPosition = 1; // La posizione iniziale è 1
+  let previousGold = sortedReport[0].gold; // Il gold del primo giocatore
+  sortedReport[0].position = currentPosition; // Assegniamo la posizione al primo giocatore
+
+  for (let i = 1; i < sortedReport.length; i++) {
+    const currentReport = sortedReport[i];
+    if (currentReport.gold === previousGold) {
+      // Se il gold è uguale a quello del giocatore precedente, manteniamo la stessa posizione
+      currentReport.position = currentPosition;
+    } else {
+      // Se il gold è diverso, incrementiamo la posizione
+      currentPosition = i + 1; // La posizione è l'indice + 1
+      currentReport.position = currentPosition;
+    }
+    // Aggiorniamo il gold precedente per il prossimo confronto
+    previousGold = currentReport.gold;
+  }
+
+  return sortedReport;
+};
+
 const winnerResolution = (finalReport: SignedFinalReport[]): ResolvedFinalReport[] => {
   const addedGoldReport = calculateGold(finalReport);
-  return addedGoldReport.sort(compareByGold);
+  const sortedReport = addedGoldReport.sort(compareByGold);
+  return calculatePositions(sortedReport);
 };
 
   

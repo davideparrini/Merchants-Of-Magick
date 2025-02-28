@@ -1,4 +1,4 @@
-import { Card, GameState, SignedReport } from './game-interface'
+import { BackupPlayer, Card, GameState, GameStateBackup, SignedReport } from './game-interface'
 
 export interface Lobby {
   id: string;
@@ -6,8 +6,9 @@ export interface Lobby {
   leader: string;
   status: string;
   gameState: GameState;
+  backupGameState: GameStateBackup;
   kickedPlayers: string[];
-  disconnectedPlayers: string[]
+  backupPlayers: SignedBackupPlayerGameState[];
 }
 
 export interface LobbyResponse {
@@ -23,3 +24,8 @@ export interface LobbyResponse {
     socketID?: string;
     lobbyID?: string;
   }
+
+export interface SignedBackupPlayerGameState{
+  username: string;
+  backup: BackupPlayer;
+}

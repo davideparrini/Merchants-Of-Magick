@@ -15,12 +15,22 @@ export interface Adventurer {
   export interface GameState {
     quest1: boolean;
     quest2: boolean;
-    nPlayersEndTurn: number;
     cards: SignedDeckCards[];
     reports: SignedReport[];
     finalReports: SignedFinalReport[];
-    decks: Decks
+    decks: Decks;
+    orderPlayers: string[];
   }
+
+  export interface GameStateBackup {
+    lastGameState: GameState;
+    lastTurnPlayed: number;
+    lastDiceRolls: DiceRolls;
+    quest1: Quest; 
+    quest2: Quest;
+    initConfig: GameInitConfig;
+  }
+  
   
   export interface Decks {
     itemsDeck: string[];
@@ -70,7 +80,7 @@ export interface PlayerStartGame {
 
 export interface GameInitState { 
     quest1: Quest; 
-    quest2: Quest 
+    quest2: Quest;
     dices: DiceRolls; 
     players: PlayerStartGame[]; 
     config: GameInitConfig 
@@ -135,3 +145,38 @@ export interface ResolvedFinalReport {
     report: FinalReport;
 }
 
+
+export interface BackupPlayer {
+    nTurn: number;
+    currentGold: number;
+    nPotion: number;
+    shop: Card[]; 
+    skillsTree: Map<number, SkillTree>; 
+    skillsGained: string[];
+    freeUpgrade: number;
+    adventurerQuestDone: boolean;
+    nAttributeGained_QuestCrafting: number;
+    nAttributeGained_QuestMagicResearch: number;
+    quest1Done: boolean;
+    quest2Done: boolean;
+    extraDiceUsed: {
+      ed1: boolean;
+      ed2: boolean;
+      ed3: boolean;
+      ed4: boolean;
+      ed5: boolean;
+      ed6: boolean;
+    };
+}
+
+
+export interface BackupResponse {
+    backupPlayer: BackupPlayer,
+    backupGameState: GameStateBackup
+}
+
+interface SkillTree {
+    attribute1: boolean,
+    attribute2: boolean,
+    attribute3: boolean
+}

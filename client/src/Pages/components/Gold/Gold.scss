@@ -1,0 +1,55 @@
+@use '../../../variables' as v;
+
+$perc-size-x-big: 2;
+$perc-size-big:1.2;
+$perc-size-normal:1;
+$perc-size-small:0.8;
+$perc-size-x-small:0.6;
+
+.gold{
+    background-image: url(./gold4.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    z-index: 4;
+    height: calc(40px * $perc-size-normal);
+    width: calc(40px * $perc-size-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px -1px 4px #000000, -1px -1px 4px #000000,-1px 1px 4px #000000,1px 1px 4px #000000;
+    border-radius: 50%;
+    font-weight: 700;
+    color: #e0e0e0;
+    filter: drop-shadow(1px 1px 3px #180202);
+}
+.gold-no-active{
+    filter: grayscale(0.8);
+}
+
+.x-small-size-gold{
+    height: calc(40px * $perc-size-x-small);
+    width: calc(40px * $perc-size-x-small);
+    font-size: calc(20px * $perc-size-x-small);;
+}
+.small-size-gold{
+    height: calc(40px * $perc-size-small);
+    width: calc(40px * $perc-size-small);
+    font-size: calc(20px * $perc-size-small);;
+}
+.medium-size-gold{
+    height: calc(40px * $perc-size-normal);
+    width: calc(40px * $perc-size-normal);
+    font-size: calc(18px * $perc-size-normal);;
+}
+.big-size-gold{
+    height: calc(40px * $perc-size-big);
+    width: calc(40px * $perc-size-big);
+    font-size: calc(20px * $perc-size-big);;
+}
+
+.x-big-size-gold{
+    height: calc(40px * $perc-size-x-big);
+    width: calc(40px * $perc-size-x-big);
+    font-size: calc(20px * 1.5);;
+}

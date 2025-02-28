@@ -1,0 +1,314 @@
+@use '../../variables'  as v;
+.Lobby{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.opacity-lobby{
+    height: 100%;
+    width: 100%;
+    background: #00000098;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.container-lobby{
+    height: 70%;
+    width: 60%;
+    background: v.$bg-color;
+    border-radius: 15px;
+    display: grid;
+    grid-template-areas:
+        'idLobby .'
+        'players config'
+        'players config'
+        'addPlayer btnStart';
+    grid-template-columns: 1fr 1fr ;
+    grid-template-rows: repeat(4,0.5fr);
+}
+.container-players-lobby{
+    grid-area: players;
+    height: 100%;
+    width: 90%;
+    padding: 5px;
+    background: v.$label-color-0;
+    border-radius: 15px;
+    border: v.$border-primary-4px;
+    justify-self: center;
+    align-self: flex-end;
+    display: grid;
+    grid-template-areas: 
+    'player1 player5'
+    'player2 player6'
+    'player3 player7'
+    'player4 player8';
+    grid-template-columns: repeat(2,49%);
+    grid-template-rows: repeat(4,24%);
+    gap:5px;
+}
+
+.box-player{
+    z-index: 1;
+    background: v.$label-color-3;
+    border: 4px solid v.$primary-color;
+    border-radius: 15px;
+    height: 80%;
+    width: 95%;
+    opacity: 0.4;
+}
+
+.player-container-lobby{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5px;
+    background: #9c4848;
+    border: v.$border-primary-4px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0px 0px 7px 5px #3b0707; 
+    box-shadow: 0px 0px 3px 1px #3b0707;
+    height: 80%;
+    width: 95%;
+    z-index: 2;
+    color: white;
+    font-size: 22px;
+    font-family: Tahoma, Geneva, sans-serif;
+    
+    text-shadow: v.$text-shadow-stroke;
+}
+.leader-lobby{
+    background-image: url(./crown.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0px 0px 10px v.$primary-color);
+    height: 30px;
+    width: 30px;
+    position: relative;
+    right: 5px;
+    animation: strech  2s ease-out 0;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+.no-leader-lobby{
+    display: none;
+}
+#p0, #b0{
+    grid-area: player1;
+}
+#p1, #b1{
+    grid-area: player2;
+}
+#p2, #b2{
+    grid-area: player3;
+}
+#p3, #b3{
+    grid-area: player4;
+}
+#p4, #b4{
+    grid-area: player5;
+}
+#p5, #b5{
+    grid-area: player6;
+}
+#p6, #b6{
+    grid-area: player7;
+}
+
+#p7, #b7{
+    grid-area: player8;
+}
+
+
+.container-add-player{
+    grid-area: addPlayer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: auto;
+    gap: 5px;
+
+}
+.field-add-player{
+    height: 30px;
+    width: 330px;
+    border-radius: 10px;
+    border: 3px solid v.$primary-color;
+    font-size: 30px;
+    padding: 10px;
+}
+.btn-add-player{
+    height: 40px;
+    width: 350px;
+    border-radius: 15px;
+    color: white;
+    background: v.$bg-color-3;
+    border: 2px solid v.$primary-color;
+    font-size: 20px;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
+}
+.btn-add-player:active{
+    filter: brightness(0.5);
+}
+.container-btn-lobby{
+    grid-area: btnStart;
+    align-self: flex-end;
+    display: flex;
+    height: 100%;
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.start-game-btn{
+    z-index: 3;
+    height: 100px;
+    width: 350px;
+    border-radius: 15px;
+    background-color: v.$primary-color;
+    border: 3px solid;
+    border-color: v.$primary-color-4;
+    color: white;
+    font-size: 35px;
+    word-spacing: 3px;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
+}
+.start-game-btn:active{
+    filter: brightness(0.5);
+}
+
+.start-game-btn.inactive-btn{
+    filter: grayscale(0.9);
+    color: rgb(190, 190, 190);
+    pointer-events: none;
+}
+
+
+.container-id-lobby{
+    grid-area: idLobby;
+    display: grid;
+    grid-template-areas: 
+    'idLabel .'
+    'id id';
+    grid-template-columns: 80% 20%;
+    gap: 10px;
+    margin: 30px;
+    color: white;
+}
+.label-id-lobby{
+    grid-area: idLabel;
+    font-size: 30px;
+    font-family: Impact, Charcoal, sans-serif;    
+    text-shadow: v.$text-shadow-primarycolor3;
+}
+.container-id-btn-id{
+    grid-area: id;  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.label-id{
+    
+    user-select:text; /* supported by Chrome and Opera */
+    -webkit-user-select: text; /* Safari */
+    -khtml-user-select: text; /* Konqueror HTML */
+    -moz-user-select: text; /* Firefox */
+    -ms-user-select: text; /* Internet Explorer/Edge */
+    cursor: text;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    line-break:anywhere;
+    letter-spacing: 2px;
+    width: 60%;
+}
+
+.btn-copy-id{
+    width: 100px;
+    height: 30px;
+    background: v.$primary-color-4;
+    border: v.$border-primary2-2px;
+    border-radius: 10px;
+    color: #dadada;
+    text-shadow: v.$text-shadow-stroke;
+    font-size: 15px;
+    font-family: "Lucida Console", Monaco, monospace; 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap:5px;
+    padding: 5px;
+    -webkit-box-shadow: 0px 0px 5px 2px #000000; 
+    box-shadow: 0px 0px 5px 2px #000000;
+    cursor: pointer;
+}
+.btn-copy-id:active, .btn-copy-id:focus{
+    filter: brightness(0.6);
+}
+.btn-copy-id.copied-id{
+    background: v.$primary-color-2;
+}
+.img-copy{
+    background-image: url(./copy.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: drop-shadow(1px -1px 3px #000000);
+    height: 30px;
+    width: 30px;
+    border-radius: 30%;
+}
+
+.configs-wrapper{
+    grid-area: config;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px ;
+}
+.config-box{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    width: 50%;
+    gap: 10px;
+}
+.label-config{
+    color: white;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    word-spacing: 2px;
+}
+.select-config{
+    background: v.$primary-color-1-2;
+    border: v.$border-primary-2px;
+    border-radius: 8px;
+    color: white;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke2;
+    padding: 7px;
+    padding-left: 15px;
+    cursor: pointer;
+}

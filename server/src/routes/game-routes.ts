@@ -25,10 +25,25 @@ gameRouter.post("/:lobbyID/start", async (req: Request, res: Response, next: Nex
 gameRouter.post("/:lobbyID/finish-turn", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { lobbyID } = req.params;
-        const { playerGameState } = req.body;
+        const { playerGameState, backupPlayer } = req.body;
 
-        gameService.playerFinishTurn(lobbyID, playerGameState);
+        await gameService.playerFinishTurn(lobbyID, playerGameState, backupPlayer);
+        res.json({});
+    } catch (error) {
+        next(error);
+    }
+});
 
+/**
+ * Il giocatore termina il turno
+ */
+gameRouter.post("/:lobbyID/reconnect", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { lobbyID } = req.params;
+        const { username} = req.body;
+
+        const backupPlayer = await gameService.reconnect(lobbyID, username);
+        res.json(backupPlayer);
     } catch (error) {
         next(error);
     }
@@ -42,8 +57,8 @@ gameRouter.post("/:lobbyID/end-game", async (req: Request, res: Response, next: 
         const { lobbyID } = req.params;
         const {  playerFinalReport } = req.body;
 
-        gameService.playerEndGame(lobbyID,  playerFinalReport);
-
+        await gameService.playerEndGame(lobbyID,  playerFinalReport);
+        res.json({});
     } catch (error) {
         next(error);
     }
@@ -53,7 +68,7 @@ gameRouter.get("/:lobbyID/archived-game", async (req: Request, res: Response, ne
     try {
         const { lobbyID } = req.params;
 
-        const achivedGame = gameService.getArchivedLobby(lobbyID);
+        const achivedGame =  await gameService.getArchivedLobby(lobbyID);
         res.json(achivedGame);
     } catch (error) {
         next(error);
