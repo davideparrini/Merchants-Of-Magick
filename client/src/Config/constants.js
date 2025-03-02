@@ -18,6 +18,13 @@ export const DICE = {
     d12:"d12"
 }
   
+export const ATTRIBUTE_SKILL = {
+    attribute1:"attribute1",
+    attribute2:"attribute2",
+    attribute3:"attribute3"
+}
+
+
 export  const gameInitMock = {
     mock:true,
     quest1: {

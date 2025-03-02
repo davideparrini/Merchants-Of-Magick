@@ -4,21 +4,21 @@
 
 
 .btn-turn{
-    width: 150px;
-    height: 90px;
+    width: 9.5vw;
+    height: 9.5vh;
     color: #fff;
     background: hsl(0, 100%, 60%);
-    border-radius: 5px;
+    border-radius: 1.3vh;
     margin: auto;
     font-weight: 700;
     cursor: pointer;
     text-align: center;
-    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-    7px 7px 20px 0px rgba(0,0,0,.1),
-    4px 4px 5px 0px rgba(0,0,0,.1);
-    font-size: 20px;
-    letter-spacing: 2px;
-    padding: 20px;
+    box-shadow:inset 0.05vh 0.05vh 0.05vh 0px rgba(255,255,255,.5),
+    0.07vh 0.07vh 0.1vh 0px rgba(0,0,0,.1),
+    0.03vh 0.03vh 0.05vh 0px rgba(0,0,0,.1);
+    font-size: 1.1vw;
+    letter-spacing: 0.1vw;
+    padding: 1vw;
     font-family: "Lucida Console", Monaco, monospace;
     text-shadow: v.$text-shadow-stroke;
     display: flex;

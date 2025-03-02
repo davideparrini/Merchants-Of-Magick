@@ -3,7 +3,7 @@ import { DICE } from '../Config/constants';
 
 
 
-export function useDice(initialDices) {
+export function useDiceState(initialDices) {
     const [dices, setDices] = useState({
         d6: { value: initialDices.d6, startValue: initialDices.d6, isUsed: false, isTouched: false, type: DICE.d6 },
         d8: { value: initialDices.d8, startValue: initialDices.d8, isUsed: false, isTouched: false, type: DICE.d8  },
@@ -18,12 +18,12 @@ export function useDice(initialDices) {
         }));
     };
 
-    const resetDices = (newValues) => {
+    const resetDices = (newDicesRoll) => {
         setDices({
-            d6: { value: newValues.d6, startValue: newValues.d6, isUsed: false, isTouched: false, type: DICE.d6  },
-            d8: { value: newValues.d8, startValue: newValues.d8, isUsed: false, isTouched: false, type: DICE.d8  },
-            d10: { value: newValues.d10, startValue: newValues.d10, isUsed: false, isTouched: false, type: DICE.d10  },
-            d12: { value: newValues.d12, startValue: newValues.d12, isUsed: false, isTouched: false, type: DICE.d12  },
+            d6: { value: newDicesRoll.d6, startValue: newDicesRoll.d6, isUsed: false, isTouched: false, type: DICE.d6  },
+            d8: { value: newDicesRoll.d8, startValue: newDicesRoll.d8, isUsed: false, isTouched: false, type: DICE.d8  },
+            d10: { value: newDicesRoll.d10, startValue: newDicesRoll.d10, isUsed: false, isTouched: false, type: DICE.d10  },
+            d12: { value: newDicesRoll.d12, startValue: newDicesRoll.d12, isUsed: false, isTouched: false, type: DICE.d12  },
         });
     };
 

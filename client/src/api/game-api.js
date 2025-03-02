@@ -40,6 +40,23 @@ async function finishTurn(lobbyID, playerGameState, backupPlayer) {
     
 }
 
+// Il giocatore termina il turno
+async function reconnectGame(lobbyID, username) {
+    try{
+        const headers = await getHeaders();
+        const response = await fetch(`${URL_GAME}/${lobbyID}/reconnect`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify({ username })
+        });
+        return handleResponse(response);
+    }
+    catch(error){
+        console.error(error);
+        return {statusCode : 500};
+    }
+    
+}
 // Il giocatore termina la partita
 async function endGame(lobbyID, playerFinalReport) {
     try{
@@ -79,5 +96,6 @@ export const apiGame = {
     startGame,
     finishTurn,
     endGame,
-    getArchivedGame
+    getArchivedGame,
+    reconnectGame
 };

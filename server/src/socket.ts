@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 import { Lobby, PlayerConnection } from './interface/lobby-interface';
 import { repositoryPlayer } from './repository/player-connection-repository';
 import { mapper } from './mapper';
+import { ServerSocketError } from './Errors/ServerSocketError';
 
 let io: Server;
 
@@ -23,14 +24,14 @@ export const setIoInstance = (socketInstance: Server) => {
 
 export const getIoInstance = (): Server => {
   if (!io) {
-    throw new Error("Socket.io instance is not initialized.");
+    throw new ServerSocketError();
   }
   return io;
 };
 
 export const isSocketConnected = (player: PlayerConnection): boolean => {
     if(!io){
-        throw new Error("Socket.io instance is not initialized.");
+        throw new ServerSocketError();
     }
     if(!player.socketID)
       return false;

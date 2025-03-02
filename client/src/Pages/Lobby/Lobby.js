@@ -65,13 +65,16 @@ function Lobby() {
                     if (lobbyID) {
                         try {
                             const res = await apiLobby.joinLobby(lobbyID, username);
-                            if (res.statusCode === 200) {
-                                setLobby(res.data);
-                                setInfoInviterLobby(-1);
-                            } else {
-                                alert(res.data.error);
-                                navigate(LOGGED_PAGE);
+                            switch(res.statusCode){
+                                case 200:
+                                    setLobby(res.data);
+                                    setInfoInviterLobby(-1);
+                                    break;
+                                default:
+                                    alert(res.data.error);
+                                    navigate(LOGGED_PAGE);
                             }
+
                         } catch (error) {
                             console.error("Errore nel joinLobby:", error);
                             navigate(LOGGED_PAGE);

@@ -1,8 +1,8 @@
 @use '../../../variables' as v;
 
 
-$width_dropdownshop: 350px;
-$text_shadow_px: 1px;
+$width_dropdownshop: 20vw;
+$text_shadow_px: 0.1vh;
 
 
 .shop{
@@ -18,8 +18,8 @@ $text_shadow_px: 1px;
     background-size: contain;
     border-radius: 50%;
     border: none;
-    height: 80px;
-    width: 80px;
+    height: 9vh;
+    width: 4.5vw;
     cursor: pointer;
 }
 
@@ -51,12 +51,12 @@ $text_shadow_px: 1px;
 .title-shop{
     font-family: "Ubuntu Mono", monospace;
     text-align: center;
-    font-size: 26px;
+    font-size: 3vh;
     letter-spacing: 3px;
     color: rgb(255, 255, 255);
     background-color: v.$primary-color;
     height: min-content;
-    width: $width_dropdownshop + 47px;
+    width:  22.3vw;
     align-self: self-start;
     text-shadow: rgb(0, 0, 0) 3px 1px 1px;
     border-radius: 10px;
@@ -68,12 +68,12 @@ $text_shadow_px: 1px;
 .dropdown-shop{
 
     background-color: #242220;
-    border: 4px solid v.$primary-color;
-    border-radius: 10px;
-    padding: 10px 20px;
-    width: $width_dropdownshop;
+    border: 0.5vh solid v.$primary-color;
+    border-radius: 0.9vh;
+    padding: 0.4vh 0.9vw;
+    width: 20vw;
     height: 100%;
-    max-height: 270px;
+    max-height: 40vh;
     z-index: 4;
     display: flex;
     flex-direction: column;
@@ -84,17 +84,17 @@ $text_shadow_px: 1px;
     
 }
 .dropdown-shop::-webkit-scrollbar {
-    width: 10px;
+    width: 2vh;
   }
 
 
 .dropdown-shop::-webkit-scrollbar-thumb {
     background: #242220;
-    border-radius: 20px;
+    border-radius:2vh;
 }
 .dropdown-shop::-webkit-scrollbar-track {
     background: #242220;
-    border-radius: 20px;
+    border-radius: 2vh;
 }
 
 .item-container{
@@ -103,39 +103,39 @@ $text_shadow_px: 1px;
     align-items: center;
     justify-items: center;
     justify-content: center;
-    width: $width_dropdownshop;
+    width: 20vw;
     height: 100%;
     font-variant: small-caps;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1.4vh;
     color: rgb(243, 243, 243);
     letter-spacing: 0.8px;
     text-shadow: v.$text-shadow-stroke2;
-    gap: 4px;
+    gap: 1vh;
 }
 .title-category{
     font-weight: 700;
-    font-size: 20px;
+    font-size: 2vh;
 }
 .shop-category{
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1.4vh;
     color: rgb(243, 243, 243);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 4px;
-    margin-bottom: 10px;
+    gap: 1vh;
+    margin-bottom: 1vh;
 }
 .item-shop{
     background-color: #7e6868;
-    border: 3px solid v.$primary-color;
-    border-radius: 8px;
-    height: 30px;
-    width: $width_dropdownshop;
-    padding-left: 10px;
-    padding-right: 10px;
+    border: 0.3vh solid v.$primary-color;
+    border-radius: 1vh;
+    height: 2.7vh;
+    width: 18.5vw;
+    padding-left: 0.6vw;
+    padding-right: 0.8vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -143,16 +143,16 @@ $text_shadow_px: 1px;
     font-variant: small-caps;
     text-transform: capitalize;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1.6vh;
     color: rgb(243, 243, 243);
-    letter-spacing: 0.4px;
-    text-shadow: v.$text-shadow-stroke2;
+    letter-spacing: 0.3vh;
+    text-shadow: 0.07vw -0.07vw 0.07vw #000000, -0.07vw -0.07vw 0.07vw #000000,-0.07vw 0.07vw 0.07vw #000000,0.07vw 0.07vw 0.07vw #000000;
 }
 .item-shop::before{
     content: '';
     position: relative;
-    height: 10px;
-    width: 10px;
+    height: 0.8vh;
+    width: 0.4vw;
     background: v.$primary-color;
     transform: rotate(45deg);
 }

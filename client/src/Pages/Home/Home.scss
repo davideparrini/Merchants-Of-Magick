@@ -19,7 +19,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 6vw;
     z-index: 2;
 }
 .wrapper-right-home{
@@ -27,25 +27,25 @@
     flex-direction: column;
     justify-content: center;
     
-    gap: 70px;
+    gap: 7vh;
     
 }
 .btn-home-container{
     display: flex;
     flex-direction: row;
-    width: 100%;
-    gap: 10px;
+    width: 30vw;
+    gap: 1vw;
 }
 
 
 .btn-home{
-    height: 80px;
-    width: 300px;
+    height: 8vh;
+    width: 17vw;
     color: white;
-    border-radius: 15px;
-    font-size: 30px;
+    border-radius: 1.2vw;
+    font-size: 1.7vw;
     text-shadow: v.$text-shadow-stroke;
-    word-spacing: 3px;
+    word-spacing: 0.3vw;
     font-family: Impact, Charcoal, sans-serif;
     cursor: pointer;
 
@@ -73,11 +73,10 @@
     background-image: url(./home3.png);
     background-size: cover;
     background-repeat: no-repeat;
-    border-radius: 15px;
+    border-radius: 1.6vh;
     aspect-ratio: 16/9;
     height: 70%;
     width: 35%;
-    border-radius: 20px;
 }
 .wrapper-title{
     display: flex;
@@ -89,26 +88,26 @@
     background-image: url(../../images/title-merchants-of-magick.png);
     background-size: contain;
     background-repeat: no-repeat;
-    height: 300px;
+    height: 28vh;
     width: 100%;
 }
 .credit-home{
     background-image: url(../../images/clarance-simpson.png);
     background-size: contain;
     background-repeat: no-repeat;
-    height:40px;
+    height:4vh;
     width: 50%;
     position: relative;
-    bottom: 30px;
+    bottom: 0.8vh;
 }
 .crafted-by{
     position: absolute;
-    bottom: 10px;
-    left: 20px;
+    bottom: 1vh;
+    left: 2vw;
     background-image: url(../../images/crafted-by.png);
     background-size: contain;
     background-repeat: no-repeat;
-    height:50px;
-    width: 400px;
+    height:5vh;
+    width: 20vw;
     z-index: 3;
 }

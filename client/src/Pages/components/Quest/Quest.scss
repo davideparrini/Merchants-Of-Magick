@@ -1,13 +1,13 @@
 @use '../../../variables' as v;
 
-$quest-height: 85px;
+$quest-height: 9vh;
 
 
 .container-quest{
     width: v.$width-order_quest;
     height: $quest-height;
     background-color: v.$bg-color-5;
-    border-radius: 12px;
+    border-radius: 1.4vh;
     border: v.$border-primary-4px;
     display: flex;
     flex-direction: row;
@@ -23,7 +23,7 @@ $quest-height: 85px;
     position: absolute;
     height: $quest-height;
     width: v.$width-order_quest;
-    border-radius: 10px;
+    border-radius:1.4vh;
     
 }
 
@@ -32,7 +32,7 @@ $quest-height: 85px;
     height: 100%;
     max-width: 100%;
     background-color: v.$primary-color-4;
-    border-radius: 7px;
+    border-radius: 0.6vh;
     transition: width 0.5s ease-out;
     
 }
@@ -49,7 +49,7 @@ $quest-height: 85px;
     width: 100%;
     font-variant: small-caps;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 0.9vw;
     color: rgb(255, 255, 255);
     text-shadow: v.$text-shadow-primarycolor2;
     z-index: 3;
@@ -57,10 +57,10 @@ $quest-height: 85px;
 .quest-text::before{
     content: '';
     position: relative;
-    left: 4px;
-    bottom: 30px;
-    height: 8px;
-    width: 14px;
+    left: 0.3vw;
+    bottom: 3.3vh;
+    height: 1vh;
+    width: 0.7vw;
     background: v.$primary-color;
     transform: rotate(45deg);
     z-index: 3;

@@ -1,9 +1,9 @@
 .log-out{
     position: absolute;
-    right: 40px;
-    top: 40px;
-    height: 50px;
-    width: 50px;
+    right: 1.3vw;
+    top: 4vh;
+    height: 8vh;
+    width: 2.5vw;
     background-image: url(./logout.webp);
     background-size: contain;
     background-repeat: no-repeat;
@@ -13,7 +13,9 @@
 .log-out-label{
     color: white;
     position: relative;
-    top:48px    
+    top:6vh;  
+    right: 0.2vw;
+    font-size: 1.7vh;
 }
 .log-out:focus,.log-out:active{
     filter: contrast(0.4);

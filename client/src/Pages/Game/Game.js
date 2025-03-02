@@ -55,9 +55,11 @@ import Gold from '../components/Gold/Gold';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import ItemShop from '../components/Shop/ItemShop';
 import { apiGame } from '../../api/game-api';
-import { useDice } from '../../hooks/useDice';
+import { useDiceState } from '../../hooks/useDiceState';
 import { DICE } from '../../Config/constants';
 import { useGameState } from '../../hooks/useGameState';
+import { useParams } from 'react-router-dom';
+import { usePlayerState } from '../../hooks/usePlayerState';
 
 
 
@@ -110,6 +112,19 @@ const skillListMagicResearch = [
     eliteArmor
 ]
 
+function createSkillMap(skills) {
+    const skillMap = new Map();
+
+    skills.forEach(skill => {
+        skillMap.set(skill.id, {
+            attribute1: skill.attribute1 === 0 || skill.attribute1 == null,
+            attribute2: skill.attribute2 === 0 || skill.attribute2 == null,
+            attribute3: skill.attribute3 === 0 || skill.attribute3 == null
+        });
+    });
+
+    return skillMap;
+}
 
 //numero pozioni necessarie per usare gl'eDice
 const nPotion_extraDice1 = 0;
@@ -123,9 +138,10 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { fullScreen, refreshGame, checkPersonalScore, singlePlayerGame, username, lobby, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
+    const { socketID, fullScreen, refreshGame, userAuthenticated,checkPersonalScore, singlePlayerGame, username, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
     
     
+    const { id: lobbyID } = useParams();
 
     //Ref al area dello table, Close on out-click
     let skillTableRef = useRef();
@@ -139,10 +155,12 @@ function Game() {
     //Ref per mantenere il valore del dado toccato
     let valueTouchedDiceRef = useRef();
 
-    const { gameCurrentState } = useGameState(gameInitState.config);
+    const { gameCurrentState } = useGameState(gameInitState.config, createSkillMap([...skillListCraftingItem, ...skillListMagicResearch]));
 
     //valori dei dadi
-    const { d6, d8, d10, d12, resetDices, resetTouchedDices} = useDice(gameInitState.dices);
+    const { d6, d8, d10, d12, resetDices, resetTouchedDices} = useDiceState(gameInitState.dices);
+
+    const { quest1, quest2, adventurer, updatePlayerState } = usePlayerState(gameInitState.quest1, gameInitState.quest2, gameInitState.player.adventurer);
 
     const[goldFromSkills, setGoldFromSkills] = useState(0);
 
@@ -268,7 +286,63 @@ function Game() {
         if(!gameCurrentState.extraDiceUsed.ed6 && extraDiceUsedTempList.includes(TYPE_EXTRADICE6)) return gameCurrentState.getSetExtraDiceUsed(TYPE_EXTRADICE6);
     },[extraDiceUsedTempList, gameCurrentState])
 
+    const restoreBackupState = (backupResponse) => {
 
+        const { backupGameState, backupPlayer } = backupResponse;
+        gameCurrentState.setGameState(backupPlayer);
+        const lastGameState = backupGameState.lastGameState;
+
+
+        setTurnDone(false);
+        setGameRestart(true);
+        setOpenReport(false);
+        setReportSkills([]);
+        setReportItems([]);
+        setReportEndTurn([]);
+        setReportTime(backupGameState.initConfig.reportTime);
+        setNDiceLeft_toUse(backupGameState.initConfig.dicePerTurn);
+        setTotalPossibleDice_toUse(backupGameState.initConfig.dicePerTurn);
+        setNDiceLeft_Used(0);
+        setExtraDiceUsedTempList([]);
+
+        resetDices(backupGameState.lastDiceRolls);
+
+        //Cerco il mio index nell'array di tutte le carte , cella array -> mazzo di carte di un giocatore + username
+        console.log(backupResponse)
+        const indexCardsCurrentPlayer = lastGameState.cards.findIndex((p)=> p.username === username );
+        const cardsCurrentPlayer = lastGameState.cards[indexCardsCurrentPlayer];
+
+        const adventurerCurrentPlayer = backupGameState.playerAdventurers[indexCardsCurrentPlayer];
+
+        updatePlayerState(backupGameState.quest1, backupGameState.quest2, adventurerCurrentPlayer.adventurer);
+
+        //setto le mie carte 
+        setCard1(cardsCurrentPlayer.card1);
+        setCard2(cardsCurrentPlayer.card2);
+        setCard3(cardsCurrentPlayer.card3);
+        setShowCard1(true);
+        setShowCard2(true);
+        setShowCard3(true);
+
+        const newBoardPlayer = [];
+        let i = indexCardsCurrentPlayer + 1;
+        while(i < lastGameState.cards.length){
+            newBoardPlayer.push(lastGameState.cards[i]);
+            i++;
+        }
+        let j = 0;
+        while(j < indexCardsCurrentPlayer){
+            newBoardPlayer.push(lastGameState.cards[j]);
+            j++;
+        }
+        //setto le carte remanenti come carte nella board
+        setBoardListPlayers(newBoardPlayer);
+
+        setQuest1Reward(backupGameState.quest1.gold);
+        setQuest2Reward(backupGameState.quest2.gold);
+        setOpenScoreSinglePlayer(false);
+    };
+    
 
     const finishTurn = useCallback(async ()=>{
         if(!turnDone){
@@ -293,10 +367,13 @@ function Game() {
                         username: username,
                         backup: gameCurrentState
                     }
-                    const res = await apiGame.finishTurn(lobby.id, playerGameState, backupPlayer)
+                    const res = await apiGame.finishTurn(lobbyID, playerGameState, backupPlayer)
                     
-                    if(res.statusCode === 200){
-                        setTurnDone(true);
+                    switch(res.statusCode){
+                        case 200:
+                            setTurnDone(true);
+                            break;
+                        default:
                     }
                 }else{
                     const finalReport = {
@@ -312,11 +389,14 @@ function Game() {
                             gold: gameCurrentState.currentGold
                         }
                     }
-                   const res = await apiGame.endGame(lobby.id,finalReport);
+                   const res = await apiGame.endGame(lobbyID,finalReport);
                     
-                   if(res.statusCode === 200){
-                       setTurnDone(true);
-                   }
+                   switch(res.statusCode){
+                    case 200:
+                        setTurnDone(true);
+                        break;
+                    default:
+                }
                 }
             }
             else{
@@ -368,7 +448,7 @@ function Game() {
             
             
         }
-    },[boardCards, card1, card2, card3, checkPersonalScore, gameCurrentState, gameInitState.config.nTurn, lobby.id, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, showCard1, showCard2, showCard3, singlePlayerGame, turnDone, username]);
+    },[boardCards, card1, card2, card3, checkPersonalScore, gameCurrentState, gameInitState.config.nTurn, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, showCard1, showCard2, showCard3, singlePlayerGame, turnDone, username]);
 
     
     
@@ -517,12 +597,26 @@ function Game() {
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
 
-    useEffect(()=>{
-        if(gameInitState.mock){
-            alert("Mi spiace ma ti sei disconnesso dal gioco");
-            navigate(LOGGED_PAGE);
-        }
-    },[gameInitState])
+    useEffect(() => {
+        const checkReconnection = async () => {
+            if (gameInitState.mock &&  userAuthenticated && username !== "" && socketID !== -1) {
+
+                const res = await apiGame.reconnectGame(lobbyID, username);
+                
+                switch(res.statusCode){
+                    case 200:
+                        restoreBackupState(res.data);
+                        break;
+                    default:
+                        alert("Mi spiace ma ti sei disconnesso e il gioco è andato avanti, non è possibile riunirsi al game");
+                        navigate(LOGGED_PAGE);
+                }
+                
+            }
+        };
+        checkReconnection();
+    }, [gameInitState, userAuthenticated, username, socketID]);
+    
     
 
     //Skilltable useEffect, se tocco un Dice rimanete attivo fino a che non clicko un altra parte dello schermo che non sia skilltable 
@@ -560,7 +654,7 @@ function Game() {
     useEffect(()=>{
         if(gameEnd){
             if(!singlePlayerGame){
-                navigate(`${WINNER_PAGE}/${lobby.id}`);
+                navigate(`${WINNER_PAGE}/${lobbyID}`);
             }else{
                 setOpenScoreSinglePlayer(true);
             }
@@ -842,6 +936,8 @@ function Game() {
                         skillListCraftingItem.map((s,i)=>{
                                 return (
                                     <Skill skill = {s} key={i} 
+                                        skillTree={gameCurrentState.getSkillById(s.id)}
+                                        setSkillTree={gameCurrentState.getSkillAttributeSetter(s.id)}
                                         setNPotion={gameCurrentState.setNPotion}
                                         setSkillsGained={gameCurrentState.setSkillsGained}
                                         setReportSkills={setReportSkills}
@@ -877,6 +973,8 @@ function Game() {
                         skillListMagicResearch.map((s,i)=>{
                                 return (
                                     <Skill skill = {s} key={i} 
+                                        skillTree={gameCurrentState.getSkillById(s.id)}
+                                        setSkillTree={gameCurrentState.getSkillAttributeSetter(s.id)}
                                         setNPotion={gameCurrentState.setNPotion}
                                         setSkillsGained={gameCurrentState.setSkillsGained}
                                         setReportSkills={setReportSkills}
@@ -906,11 +1004,11 @@ function Game() {
                 </div>
                 <div className='container-order-quests'>
                     <div className='container-quests'>
-                        <Quest questAttribute={gameInitState.quest1.attribute} questRequest={6} goldReward={quest1Reward} questDone={gameCurrentState.quest1Done} setQuestDone={gameCurrentState.setQuest1Done} progress={nAttributeGained_QuestCrafting} setCurrentGold={gameCurrentState.setCurrentGold}/>
-                        <Quest questAttribute={gameInitState.quest2.attribute} questRequest={8} goldReward={quest2Reward} questDone={gameCurrentState.quest2Done} setQuestDone={gameCurrentState.setQuest2Done} progress={nAttributeGained_QuestMagicResearch} setCurrentGold={gameCurrentState.setCurrentGold}/>
+                        <Quest questAttribute={quest1.attribute} questRequest={6} goldReward={quest1Reward} questDone={gameCurrentState.quest1Done} setQuestDone={gameCurrentState.setQuest1Done} progress={nAttributeGained_QuestCrafting} setCurrentGold={gameCurrentState.setCurrentGold}/>
+                        <Quest questAttribute={quest2.attribute} questRequest={8} goldReward={quest2Reward} questDone={gameCurrentState.quest2Done} setQuestDone={gameCurrentState.setQuest2Done} progress={nAttributeGained_QuestMagicResearch} setCurrentGold={gameCurrentState.setCurrentGold}/>
                     </div>
                     <div className='container-order'>
-                        <OrdersContainer order={gameInitState.player.adventurer} setAdventurerQuestDone={gameCurrentState.setAdventurerQuestDone} skillsGained={gameCurrentState.skillsGained} setNPotion={gameCurrentState.setNPotion} setFreeUpgrade={gameCurrentState.setFreeUpgrade} setCurrentGold ={gameCurrentState.setCurrentGold}/>
+                        <OrdersContainer order={adventurer} setAdventurerQuestDone={gameCurrentState.setAdventurerQuestDone} skillsGained={gameCurrentState.skillsGained} setNPotion={gameCurrentState.setNPotion} setFreeUpgrade={gameCurrentState.setFreeUpgrade} setCurrentGold ={gameCurrentState.setCurrentGold}/>
                     </div>
                 </div>
                 

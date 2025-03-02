@@ -9,7 +9,10 @@ export interface Adventurer {
     order3: string;
     gold: number;
   }
-  
+  export interface SignedAdventurer {
+    adventurer: Adventurer;
+    username: string;
+  }
 
 
   export interface GameState {
@@ -28,6 +31,7 @@ export interface Adventurer {
     lastDiceRolls: DiceRolls;
     quest1: Quest; 
     quest2: Quest;
+    playerAdventurers: SignedAdventurer[];
     initConfig: GameInitConfig;
   }
   
@@ -146,7 +150,7 @@ export interface ResolvedFinalReport {
 }
 
 
-export interface BackupPlayer {
+export interface  BackupPlayer {
     nTurn: number;
     currentGold: number;
     nPotion: number;
@@ -179,4 +183,9 @@ interface SkillTree {
     attribute1: boolean,
     attribute2: boolean,
     attribute3: boolean
+}
+
+export interface ArchivedGame {
+    lobbyID:string,
+    finalReports: ResolvedFinalReport[]
 }

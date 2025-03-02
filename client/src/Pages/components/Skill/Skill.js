@@ -7,16 +7,13 @@ import elementalImg from './iconsAttribute/elemental.png'
 import arcaneImg from './iconsAttribute/arcane.png'
 import wildImg from './iconsAttribute/wild.png'
 import Gold from '../Gold/Gold'
+import { ATTRIBUTE_SKILL, DICE } from '../../../Config/constants'
 
 
 const TYPE_GOLD_SMALL = 'SMALL';
 
 
-//Tipi dado
-const TYPE_D6 = 'd6';
-const TYPE_D8 = 'd8';
-const TYPE_D10 = 'd10';
-const TYPE_D12 = 'd12';
+
 
 //Tipi attributi
 
@@ -31,10 +28,6 @@ const TYPE_WILD = 'wild';
 const typeCraftingItem = ['Accessories', 'Weapons', 'Armor'];
 
 
-function isThereAttribute(attValue) {
-    return (attValue === 0 || attValue == null);
-}
-
 function checkNoImg(attValue) {
     if (attValue === 0 || attValue == null) {
         return 'no-img';
@@ -45,19 +38,26 @@ function checkNoImg(attValue) {
 
 function matchTypeDice_Attribute(typeAtt, typeDice) {
     switch (typeAtt) {
-        case TYPE_STEEL: return typeDice === TYPE_D6;
-        case TYPE_WOOD: return typeDice === TYPE_D6 || typeDice === TYPE_D8;
-        case TYPE_LEATHER: return typeDice === TYPE_D6 || typeDice === TYPE_D8 || typeDice === TYPE_D10;
-        case TYPE_ELEMENTAL: return typeDice === TYPE_D8 || typeDice === TYPE_D10 || typeDice === TYPE_D12;
-        case TYPE_ARCANE: return typeDice === TYPE_D10 || typeDice === TYPE_D12;
-        case TYPE_WILD: return typeDice === TYPE_D12;
+        case TYPE_STEEL: return typeDice === DICE.d6;
+        case TYPE_WOOD: return typeDice === DICE.d6 || typeDice === DICE.d8;
+        case TYPE_LEATHER: return typeDice === DICE.d6 || typeDice === DICE.d8 || typeDice === DICE.d10;
+        case TYPE_ELEMENTAL: return typeDice === DICE.d8 || typeDice === DICE.d10 || typeDice === DICE.d12;
+        case TYPE_ARCANE: return typeDice === DICE.d10 || typeDice === DICE.d12;
+        case TYPE_WILD: return typeDice === DICE.d12;
         default: return false;
     }
 }
 
+function closureSetSkillAttribute(setter, attributeName){
+    return (value) => {
+        setter(attributeName, value);
+    }
+} 
 
 function Skill({ 
-            skill, 
+            skill,
+            skillTree,
+            setSkillTree,
             setNPotion, 
             setReportSkills, 
             setSkillsGained, 
@@ -82,9 +82,7 @@ function Skill({
         }) {
 
     const [hasSkill, setHasSkill] = useState(false);
-    const [att1, setAtt1] = useState(isThereAttribute(skill.attribute1));
-    const [att2, setAtt2] = useState(isThereAttribute(skill.attribute2));
-    const [att3, setAtt3] = useState(isThereAttribute(skill.attribute3));
+    
 
 
 
@@ -205,7 +203,7 @@ function Skill({
 
     //useEffect di check, se tutti gli attributi sono stati acquisiti allora ottengo la Skill
     useEffect(() => {
-        if (att1 && att2 && att3) {
+        if (skillTree.attribute1 && skillTree.attribute2 && skillTree.attribute3) {
             setHasSkill(true);
             setSkillsGained((l) => [...l, skill.name]);
             setReportSkills((l) => [...l, skill.name])
@@ -216,7 +214,7 @@ function Skill({
                 setNPotion((n) => (n + 4));
             }
         }
-    }, [att1, att2, att3])
+    }, [skillTree])
 
 
 
@@ -225,17 +223,20 @@ function Skill({
             <button className={hasSkill ? 'number-circle gold-skill' : 'number-circle grey-skill'}>{skill.gold}</button>
             <p className='skill-name'>{skill.name}</p>
             <img src={typeCraftingItem.includes(skill.typeItem) ? steelImg : elementalImg} alt='Wood' className={checkNoImg(skill.attribute1) + ' img1'}></img>
-            <button className={checkNoButton(skill.attribute1, att1, (typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL)) + ' btn1'} onClick={() => upgradeAttribute(skill.attribute1, (typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL), setAtt1)}>
+            <button className={
+                checkNoButton(skill.attribute1, 
+                skillTree.attribute1, 
+                (typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL)) + ' btn1'} onClick={() => upgradeAttribute(skill.attribute1, (typeCraftingItem.includes(skill.typeItem) ? TYPE_STEEL : TYPE_ELEMENTAL), closureSetSkillAttribute(setSkillTree, ATTRIBUTE_SKILL.attribute1))}>
                 {skill.attribute1}
                 <div className={getCappuccio()}>{getCappuccio()}</div>
             </button>
             <img src={typeCraftingItem.includes(skill.typeItem) ? woodImg : arcaneImg} alt='Wood' className={checkNoImg(skill.attribute2) + ' img2'}></img>
-            <button className={checkNoButton(skill.attribute2, att2, (typeCraftingItem.includes(skill.typeItem) ? TYPE_WOOD : TYPE_ARCANE)) + ' btn2'} onClick={() => upgradeAttribute(skill.attribute2, (typeCraftingItem.includes(skill.typeItem) ? TYPE_WOOD : TYPE_ARCANE), setAtt2)}>
+            <button className={checkNoButton(skill.attribute2, skillTree.attribute2, (typeCraftingItem.includes(skill.typeItem) ? TYPE_WOOD : TYPE_ARCANE)) + ' btn2'} onClick={() => upgradeAttribute(skill.attribute2, (typeCraftingItem.includes(skill.typeItem) ? TYPE_WOOD : TYPE_ARCANE), closureSetSkillAttribute(setSkillTree, ATTRIBUTE_SKILL.attribute2))}>
                 {skill.attribute2}
                 <div className={getCappuccio()}>{getCappuccio()}</div>
             </button>
             <img src={typeCraftingItem.includes(skill.typeItem) ? leatherImg : wildImg} alt='Wood' className={checkNoImg(skill.attribute3) + ' img3'}></img>
-            <button className={checkNoButton(skill.attribute3, att3, (typeCraftingItem.includes(skill.typeItem) ? TYPE_LEATHER : TYPE_WILD)) + ' btn3'} onClick={() => upgradeAttribute(skill.attribute3, (typeCraftingItem.includes(skill.typeItem) ? TYPE_LEATHER : TYPE_WILD), setAtt3)}>
+            <button className={checkNoButton(skill.attribute3, skillTree.attribute3, (typeCraftingItem.includes(skill.typeItem) ? TYPE_LEATHER : TYPE_WILD)) + ' btn3'} onClick={() => upgradeAttribute(skill.attribute3, (typeCraftingItem.includes(skill.typeItem) ? TYPE_LEATHER : TYPE_WILD), closureSetSkillAttribute(setSkillTree, ATTRIBUTE_SKILL.attribute3))}>
                 {skill.attribute3}
                 <div className={getCappuccio()}>{getCappuccio()}</div>
             </button>

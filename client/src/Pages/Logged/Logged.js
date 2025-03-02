@@ -81,9 +81,18 @@ function Logged() {
                                 setIsLoading(true)
                                 refreshGame();
                                 const res = await apiLobby.createLobby(username);
-                                if(res.statusCode === 200){
-                                    setLobby(res.data); 
-                                 }
+                                
+                                switch(res.statusCode){
+                                    case 200:
+                                        setLobby(res.data); 
+                                        break;
+                                    case 408:
+                                        alert(res.data.error);
+                                        window.location.reload();
+                                        break;
+                                    default:
+                                }
+                            
                                 setIsLoading(true)
                                 
                         }}>Create New Lobby</button>
@@ -103,8 +112,7 @@ function Logged() {
                                         dicePerTurn : 2
                                     }
                                 }
-                                window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage( {type:'start-game-single-player', data: config} )
-                                );
+                                window.navigator.serviceWorker.ready.then( ( registration ) => 'active' in registration && registration.active.postMessage( {type:'start-game-single-player', data: config} ));
                                 window.navigator.serviceWorker.onmessage = event => {
                                     const message = event.data;
                                     if(message && message.type === 'start-game-single-player'){
@@ -127,12 +135,18 @@ function Logged() {
                             refreshGame();
                             setIsLoading(true);
                             const res = await apiLobby.joinLobby(idLobbyJoin, username);
-                            if(res.statusCode === 200){
-                                setLobby(res.data);
-                                setInfoInviterLobby(-1);
-                            }
-                            else{
-                                alert(res.data.error);
+                            
+                            switch(res.statusCode){
+                                case 200:
+                                    setLobby(res.data);
+                                    setInfoInviterLobby(-1);
+                                    break;
+                                case 408:
+                                    alert(res.data.error);
+                                    window.location.reload();
+                                    break;
+                                default:
+                                    alert(res.data.error);
                             }
                             setIsLoading(false);
                         }}>Join !</button>
@@ -186,12 +200,17 @@ function Logged() {
                         handlerPositiveRespose={async ()=>{
                             refreshGame();
                             const res = await apiLobby.joinLobby(infoInviterLobby.lobbyID, username);
-                            if(res.statusCode === 200){
-                                setLobby(res.data);
-                                setInfoInviterLobby(-1);
-                            }
-                            else{
-                                alert(res.data.error);
+                            switch(res.statusCode){
+                                case 200:
+                                    setLobby(res.data);
+                                    setInfoInviterLobby(-1);
+                                    break;
+                                case 408:
+                                    alert(res.data.error);
+                                    window.location.reload();
+                                    break;
+                                default:
+                                    alert(res.data.error);
                             }
                         }}
                         openState={openToastNotification}

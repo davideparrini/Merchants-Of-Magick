@@ -45,13 +45,11 @@ const createSocketConfig = () => {
         });
 
         socket.on(SOCKET_EVENTS.GAME_START, res => {
-            console.log(res)
             setGameInitState(res);
             setGameStart(true);
         });
 
         socket.on(SOCKET_EVENTS.GAME_CHANGE_TURN, res => {
-            console.log("CAMBIO TURNO : " , res);
             setGameOnNewTurn(res);
             setGameUpdated(true);
         });
@@ -68,7 +66,6 @@ const createSocketConfig = () => {
 
         // Stato online
         socket.on("connect", async () => {
-            setSocketID(socket.id);
             const res = await apiMOM.sendUsername(username, socket.id);
             if(res.statusCode === 200){
                 setStatusOnline(true)
@@ -76,6 +73,7 @@ const createSocketConfig = () => {
                 registerToInvite(setInfoInviterLobby, setOpenToastNotification);
                 registerToGameEvents(setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
             }
+            setSocketID(socket.id);
         });
         socket.on("disconnect", () => {
             setStatusOnline(false);

@@ -4,6 +4,8 @@ import { NotFoundError } from "../Errors/NotFoundError";
 import { SocketError } from "../Errors/SocketError";
 import { SignedFinalReport, PlayerGame, GameState, BackupPlayer, GameInitConfig, GameStateBackup, BackupResponse } from "../interface/game-interface";
 import { Lobby, SignedBackupPlayerGameState } from "../interface/lobby-interface";
+import { mapper } from "../mapper";
+import { repositoryArchivedGame } from "../repository/archived-game-repository";
 import { repositoryLobby } from "../repository/lobby-repository";
 import { repositoryPlayer } from "../repository/player-connection-repository";
 import { getIoInstance, isSocketConnected, SOCKET_EVENTS } from "../socket";
@@ -52,7 +54,7 @@ const startGame = async (lobbyID: string, config: GameInitConfig): Promise<any> 
         lastGameState: {
             quest1: false,  
             quest2: false,
-            cards: [],
+            cards: mapper.mapPlayersGameStartToSignedDecks(gameInit.players),
             reports: [],
             finalReports: [],
             decks: lobby.gameState.decks,
@@ -62,6 +64,7 @@ const startGame = async (lobbyID: string, config: GameInitConfig): Promise<any> 
         lastDiceRolls: gameInit.dices,
         quest1: gameInit.quest1,
         quest2: gameInit.quest2,
+        playerAdventurers:  mapper.mapPlayersGameStartToSignedAdventurers(gameInit.players),
         initConfig: config
     };
     
@@ -97,9 +100,9 @@ const playerFinishTurn = async (lobbyID: string, playerGameState: PlayerGame, ba
     });
     
     await repositoryLobby.updateGameState(lobbyID, gameState);
-    await repositoryLobby.updateBackupGameState(lobbyID, backupPlayer);
+    const lobbyUpdated = await repositoryLobby.updateBackupGameState(lobbyID, backupPlayer);
     incrementGameCount(lobbyID, playerGameState.username);
-    checkAllPlayersFinishTurn(lobby);
+    checkAllPlayersFinishTurn(lobbyUpdated);
 };
 
 const reconnect = async (lobbyID: string, username: string) : Promise<BackupResponse> => {
@@ -110,29 +113,66 @@ const reconnect = async (lobbyID: string, username: string) : Promise<BackupResp
         throw new SocketError();
     }
 
+    
     const lobby = await repositoryLobby.getLobbyById(lobbyID);
     if (lobby.status !== LOBBY_STATUS.IN_GAME) {
         throw new ForbiddenError(ERRORS.GAME_NOT_STARTED);
     }
-    const indexPlayerBackup = lobby.backupPlayers.findIndex(b => b.username === username);
-    if(indexPlayerBackup === -1){
-        throw new ForbiddenError(ERRORS.PLAYER_NOT_JOINED_LOBBY);
-    }
-
-    const playerBackup = lobby.backupPlayers[indexPlayerBackup];
+    
+    let playerBackup: BackupPlayer;
     const backupGameState = lobby.backupGameState;
 
-    if(playerBackup.backup.nTurn !== backupGameState.lastTurnPlayed){
+    if(lobby.backupGameState.lastTurnPlayed !== 0){
+        const indexPlayerBackup = lobby.backupPlayers.findIndex(b => b.username === username);
+        if(indexPlayerBackup === -1){
+            throw new ForbiddenError(ERRORS.PLAYER_NOT_JOINED_LOBBY);
+        }
+        playerBackup = lobby.backupPlayers[indexPlayerBackup].backup;
+    }
+    else{
+        playerBackup = {
+            nTurn: 0,
+            currentGold: 0,
+            nPotion: backupGameState.initConfig.nPotion,
+            shop: [],
+            skillsTree: new Map(),
+            skillsGained: [],
+            freeUpgrade: 0,
+            adventurerQuestDone: false,
+            nAttributeGained_QuestCrafting: 0,
+            nAttributeGained_QuestMagicResearch: 0,
+            quest1Done: false,
+            quest2Done: false,
+            extraDiceUsed: {
+                ed1: false,
+                ed2: false,
+                ed3: false,
+                ed4: false,
+                ed5: false,
+                ed6: false
+            }
+        }
+    }
+
+    if(playerBackup.nTurn !== backupGameState.lastTurnPlayed){
         throw new ForbiddenError(ERRORS.GAME_CONTINUED);
     }
     
     await repositoryLobby.addPlayerToLobby(lobbyID, player);
     await repositoryPlayer.joinLobby(username, lobbyID);
-    
+
+    const io = getIoInstance();
+    const playerSocket = io.sockets.sockets.get(player.socketID);
+    if (playerSocket) {
+        playerSocket.join(lobbyID);
+    }
+
+    playerBackup.nTurn++;
     const res : BackupResponse = {
-        backupPlayer : playerBackup.backup,
+        backupPlayer : playerBackup,
         backupGameState : backupGameState
     }
+    
     return res;
 }
 
@@ -187,23 +227,18 @@ const playerEndGame = async (lobbyID: string, playerFinalReport: SignedFinalRepo
 
 const checkAllPlayersEndGame = async (lobbyID: string, gameState: GameState, nPlayers:number) => {
     if (getGameCount(lobbyID)  === nPlayers) {
-        await repositoryLobby.changeLobbyStatus(lobbyID, LOBBY_STATUS.GAME_OVER);
         const winnerResolution = gameLogicService.winnerResolution(gameState.finalReports);
         gameCounter.delete(lobbyID);
+        await repositoryArchivedGame.insertArchivedGame(lobbyID, winnerResolution);
+        repositoryLobby.deleteLobby(lobbyID);
         const io = getIoInstance();
         io.to(lobbyID).emit(SOCKET_EVENTS.GAME_END, winnerResolution);
     }
 }
 
 const getArchivedLobby = async (lobbyID: string) => {
-    const lobby = await repositoryLobby.getLobbyById(lobbyID);
-    if (lobby.status !== LOBBY_STATUS.GAME_OVER) {
-        throw new ForbiddenError(ERRORS.GAME_NOT_OVER);
-    }
-    return {
-        finalReports: lobby.gameState.finalReports,
-        winnerResolution: gameLogicService.winnerResolution(lobby.gameState.finalReports)
-    };
+    const archivedGame = await repositoryArchivedGame.getArchivedGame(lobbyID);
+    return archivedGame.finalReports;
 };
 
 export const gameService = {

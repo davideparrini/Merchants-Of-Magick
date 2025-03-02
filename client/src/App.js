@@ -199,7 +199,7 @@ function App() {
                     }
                     else{ 
                         dbFirestore.getUserData(user.uid).then((res) =>{
-                            setUsername(()=>res.username);
+                            setUsername(res.username);
                             setRecordSinglePlayer(res.record === undefined ? 0 : res.record)
                         } );
                     } 
@@ -231,6 +231,7 @@ function App() {
         })
         return ()=>{         
             unsub(); 
+            setUserAuthenticated(false);
             connectionHandlerClient.disconnect();
         }
     },[username]);

@@ -7,17 +7,17 @@
     align-self: center;
     // background: v.$card-color-0;
     background: v.$bg-color-1;
-    border-radius: 15px;
+    border-radius: 1.3vh;
     border: v.$border-primary-4px;
     
-    padding: 5px;
+    padding: 0.4vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    padding-top: 10px;
+    padding-top: 1vh;
     height: 100%;
-    width: calc(v.$width-order_quest - 10px);
+    width: 13vw;
     
 }
 .order-done{
@@ -32,25 +32,25 @@
     position: relative;
     z-index: 3;
     width: 100%;
-    top: 20px;
+    top: 1.4vh;
     font-family: 'Shizuru', cursive;
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
     font-weight: 700;
-    font-size: 30px;
+    font-size: 1.5vw;
 }
 .order-gold{
     position: relative;
-    left: 105px;
-    bottom: 15%; 
+    left: 5.4vw;
+    bottom: 5.5vh; 
 }
 
 .order-img{
     position: absolute;
     justify-self: center;
     align-self: center;
-    height: 270px;
-    width: 270px;
+    height: 29vh;
+    width: 14vw;
     z-index: 0;
     background-size: cover;
     background-repeat: no-repeat;
@@ -94,46 +94,46 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 15px;
+    border-radius: 2vh;
     border: v.$border-primary-2px;
     background-color: v.$primary-color-2;
     z-index: 2;
     width: 90%;
-    height: 30px;
+    height: 3vh;
     color: white;
-    font-size: 18px;
+    font-size: 1.6vh;
     font-weight: 600;
     text-shadow: v.$text-shadow-stroke;
-    margin: 4px;
+    margin: 0.3vh;
     text-transform: capitalize;
 }
 .bar-order{
     position: absolute;
     align-self: center;
     width: 90%;
-    height: 3px;
+    height: 0.3vh;
     background: v.$primary-color;
-    filter: drop-shadow(0px 0px 5px red)
+    filter: drop-shadow(0px 0px 0.2vh red)
 }
 .reward-orders{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 90%;
-    height: 30px;
+    height: 3vh;
     background-color: hsl(0, 11%, 9%);
-    border-radius: 15px;
-    border: 2px solid black;
+    border-radius: 2vh;
+    border: 0.3vh solid black;
     color: white;
     text-align: center;
-    font-size: 14px;
+    font-size: 1.5vh;
     font-weight: 600;
     text-shadow: v.$text-shadow-stroke;
-    margin: 4px;
+    margin: 0.3vh;
     z-index:2;
 }
 *.req-done{
-    filter: drop-shadow(0px 0px 5px red)
+    filter: drop-shadow(0px 0px 0.3vw red)
 }
 .reward-orders.req-done{
     background: v.$primary-color;

@@ -148,6 +148,10 @@ const getGameState = async (lobbyID: string): Promise<GameState> => {
   return lobbyData.gameState;
 };
 
+const deleteLobby = async (lobbyID: string): Promise<void> => {
+    await getLobbyRef(lobbyID).delete();
+};
+
 export const repositoryLobby = {
   getLobbyById,
   getLobbyNoError,
@@ -161,5 +165,6 @@ export const repositoryLobby = {
   updateBackupGameState,
   removePlayerFromKicked,
   leaveLobby,
-  getGameState
+  getGameState,
+  deleteLobby
 };

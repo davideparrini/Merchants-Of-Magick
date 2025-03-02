@@ -23,7 +23,7 @@ function ContainerDice({typeTouchedDiceRef, valueTouchedDiceRef, nPotion, setnPo
 	const incDice = useCallback(()=>{
         if(nPotion >0 && dice.value < 12 && nActions > 0 && !dice.isUsed){
             setnPotion(nPotion+((dice.value+1) > dice.startValue ? -1 : 1));
-            dice.setValue(prev => 1+prev);
+            dice.setValue(dice.value+1);
             if(dice.type === typeTouchedDiceRef.current){
                 valueTouchedDiceRef.current++;
             }
@@ -31,7 +31,7 @@ function ContainerDice({typeTouchedDiceRef, valueTouchedDiceRef, nPotion, setnPo
         else{
             if(nPotion ===0 && dice.value < 12 && nActions > 0 && !dice.isUsed && (dice.value < dice.startValue)){
                 setnPotion(nPotion+1);
-                dice.setValue(prev => 1+prev);
+                dice.setValue(dice.value+1);
                 if(dice.type === typeTouchedDiceRef.current){
                     valueTouchedDiceRef.current++;
                 }
@@ -42,15 +42,15 @@ function ContainerDice({typeTouchedDiceRef, valueTouchedDiceRef, nPotion, setnPo
     const decDice = useCallback(()=>{
         if(nPotion >0 && dice.value > 1 && nActions > 0 && !dice.isUsed){
             setnPotion(nPotion+((dice.value-1) < dice.startValue ? -1 : 1));
-            dice.setValue(prev => prev-1);
+            dice.setValue(dice.value-1);
             if(dice.type === typeTouchedDiceRef.current){
                 valueTouchedDiceRef.current--;
             }
         }
         else{
             if(nPotion ===0 && dice.value > 1 && nActions > 0 && !dice.isUsed && (dice.value > dice.startValue) ){
-                setnPotion(prev => prev+1);
-                dice.setValue(prev => prev-1);
+                setnPotion(nPotion+1);
+                dice.setValue(dice.value-1);
                 if(dice.type === typeTouchedDiceRef.current){
                     valueTouchedDiceRef.current--;
                 }

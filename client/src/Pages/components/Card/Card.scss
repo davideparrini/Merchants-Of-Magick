@@ -5,7 +5,7 @@ $sizeSmall:0.7;
 
 
 .card{
-    width: calc(220px * $sizeNormal);
+    width: calc(11.6vw * $sizeNormal);
     height: calc(v.$height-card-normal-size * $sizeNormal);
     display: grid;
     grid-template-columns: 40% 20% 40%;
@@ -14,8 +14,8 @@ $sizeSmall:0.7;
         'imgE t1 goldItem'
         '. t2 .'
         '. t3 imgO';   
-    border: 5px solid v.$primary-color;
-    border-radius: 15px;
+    border: 0.3vw solid v.$primary-color;
+    border-radius: 2vh;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);   
     z-index: 2;
@@ -27,33 +27,33 @@ $sizeSmall:0.7;
     justify-content: center;
     justify-self: center;
     font-family: Georgia, serif;
-    font-size: calc(25px * $sizeNormal);
+    font-size: calc(1.2vw * $sizeNormal);
     color: #ffffff;
-    text-shadow: 0 -1px 4px #000000, 0 -2px 5px rgb(56, 56, 10), 0 -3px 10px #42270c, 0 -4px 10px rgb(80, 19, 19);
+    text-shadow: 0 -1px 4px #000000, 0 -0.2vh 0.8vh rgb(56, 56, 10), 0 -3px 0.30vh #42270c, 0 -0.20vh 0.30vh rgb(80, 19, 19);
     font-weight: 700;
     font-variant: small-caps;
-    width: 120px;
-    margin-top: 20px;
+    width: 10vw;
+    margin-top: 2vh;
     z-index: 4;
 }
 .goldContainerCard{
     grid-area: goldItem;
     position: relative;
-    left: 25px;
-    top: 3px;
+    left: 1.1vw;
+    top: 0.7vh;
 }
 
 .img-card{
     grid-area: t2;
     justify-self: center;
     align-self: center;
-    width: calc(200px * $sizeNormal);
-    height: calc(200px * $sizeNormal);
+    width: calc(10vw * $sizeNormal);
+    height: calc(20vh * $sizeNormal);
     opacity: 0.9;
     z-index: 2;
     background-size: contain;
     background-repeat: no-repeat;
-    filter: drop-shadow(0.1px 0.1px 0.1px #180202) drop-shadow(-0.1px 0.1px 0.1px #180202) drop-shadow(0.1px -0.1px 0.1px #180202) drop-shadow(-0.1px -0.1px 0.1px #180202);
+    filter: drop-shadow(0.01vw 0.01vw 0.01vw #180202) drop-shadow(-0.01vw 0.01vw 0.01vw #180202) drop-shadow(0.01vw -0.01vw 0.01vw #180202) drop-shadow(-0.01vw -0.01vw 0.01vw #180202);
 }
 
 .img-origin-card{
@@ -61,8 +61,8 @@ $sizeSmall:0.7;
     position: relative;
     bottom: 13px;
     right: 5px;
-    height: calc(100px * $sizeNormal);
-    width: calc(100px * $sizeNormal);
+    height: calc(5vw * $sizeNormal);
+    width: calc(10vh * $sizeNormal);
     z-index: 1;
     background-size: contain;
     background-repeat: no-repeat;
@@ -70,8 +70,8 @@ $sizeSmall:0.7;
 
 .img-enchantment-card{
     grid-area: imgE;
-    height: calc(100px * $sizeNormal);
-    width: calc(100px * $sizeNormal);
+    height: calc(5vw * $sizeNormal);
+    width: calc(10vh * $sizeNormal);
 
     z-index: 1;
     background-size: contain;
@@ -80,28 +80,28 @@ $sizeSmall:0.7;
 
 ///////////////////////////////////SMALL VERSION//////////////////////////////////////////////
 .card-small{
-    width: calc(220px * $sizeSmall);
-    height: calc(290px * $sizeSmall);
+    width: calc(11.52vw * $sizeSmall);
+    height: calc(32vh * $sizeSmall);
 }
 
 .text-card-small{
-    font-size: calc(25px * $sizeSmall);
-    width: 120px; 
+    font-size: calc(3vh * $sizeSmall);
+    width: 7vw; 
 }
 
 .img-card-small{
-    width: calc(200px * $sizeSmall);
-    height: calc(200px * $sizeSmall);
+    width: calc(10vw * $sizeSmall);
+    height: calc(20vh * $sizeSmall);
 }
 
 .img-origin-card-small{
-    height: calc(100px * $sizeSmall);
-    width: calc(100px * $sizeSmall);
+    height: calc(10vh * $sizeSmall);
+    width: calc(5vw * $sizeSmall);
 }
 
 .img-enchantment-card-small{
-    height: calc(100px * $sizeSmall);
-    width: calc(100px * $sizeSmall);
+    height: calc(10vh * $sizeSmall);
+    width: calc(5vw * $sizeSmall);
 }
 
 ///////////////////////
@@ -151,8 +151,8 @@ $sizeSmall:0.7;
     background-image: url(./image/sword4.png);
     scale: (1.1);
     position: relative;
-    left: 15px;
-    top: 10px;
+    left: 0.5vw;
+    top: 1vh;
 }
 
 .img-card.staff{
@@ -174,7 +174,7 @@ $sizeSmall:0.7;
 
 .img-card-small.bracers{
     position: relative;
-    left: 8px;
+    left: 0.2vw;
 }
 
 .img-card.helmet{
@@ -188,15 +188,15 @@ $sizeSmall:0.7;
 .img-card.plateArmor{
     background-image: url(./image/platearmor4.png);
     position: relative;
-    left: 35px;
-    top: 15px;
+    left: 2vw;
+    top: 2vh;
     scale: (1.1);
 }
 
 .img-card-small.plateArmor{
     position: relative;
-    left: 25px;
-    top: 10px;
+    left: 1.5vw;
+    top: 2vh;
 }
 
 .img-enchantment-card.fiery{
@@ -225,7 +225,7 @@ $sizeSmall:0.7;
 .img-origin-card.orcs{
     background-image: url(./image/orcs_white.png); 
     position: relative;
-    bottom: 10px;
+    bottom: 1vh;
     scale: (0.9);
 }
 .img-origin-card.dragons{
@@ -234,14 +234,14 @@ $sizeSmall:0.7;
 .img-origin-card.no-origin{
     background-image: url(./image/no-origin1.png);
     position: relative;
-    right: 17px;
-    bottom: 17px;
+    right: 0.7vw;
+    bottom: 1vh;
     scale: (1.1);
 }
 .img-enchantment-card.no-enchantment{
     background-image: url(./image/no-enchantment1.png);
     position: relative;
     scale:(1.1);
-    left: 5px;
-    top: 5px;
+    left: 0.4vw;
+    top: 0.6vh;
 }

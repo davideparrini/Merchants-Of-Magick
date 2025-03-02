@@ -3,8 +3,6 @@
     height: 100%;
     width: 100%;
     position: absolute;
-    top: 0px;
-    right: 0px;
 }
 .opacity-logged{
     height: 100%;
@@ -19,7 +17,7 @@
     height: 70%;
     width: 60%;
     background: v.$bg-color;
-    border-radius: 15px;
+    border-radius: 1.3vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -56,16 +54,16 @@
 }
 .logged-btn{
     z-index: 2;
-    height: 100px;
-    width: 400px;
-    border-radius: 15px;
+    height: 13vh;
+    width: 21vw;
+    border-radius: 1.3vh;
     background-color: v.$primary-color;
-    border: 3px solid;
+    border: 0.4vh solid;
     border-color: v.$primary-color-4;
     cursor: pointer;
     color: white;
-    font-size: 35px;
-    word-spacing: 3px;
+    font-size: 2vw;
+    word-spacing: 0.2vw;
     font-family: Impact, Charcoal, sans-serif;
     text-shadow: v.$text-shadow-stroke;
     
@@ -83,14 +81,14 @@
 
 .submit-lobby-id{
     position: absolute;
-    right: 150px;
-    bottom: 240px;
-    height: 100px;
-    width: 550px;
-    border-radius: 15px;
+    right: 5vw;
+    bottom: 38vh;
+    height: 10vh;
+    width: 33vw;
+    border-radius: 1.3vh;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 0.7vh;
     justify-content: center;
     align-items: center;
 }
@@ -110,21 +108,21 @@
 
 .field-submit-lobby-id{
     width: 75%;
-    height: 30px;
-    border-radius: 15px;
-    font-size: 25px;
-    padding: 15px;
+    height: 3vh;
+    border-radius: 1.5vh;
+    font-size: 2.7vh;
+    padding: 1.3vh;
 }
 .btn-submit-lobby-id{
-    height: 50px;
-    width: 100px;
+    height: 5.7vh;
+    width: 4.5vw;
     border-radius: 20px;
     background-color: v.$bg-color-3;
-    border: 2px solid;
+    border: 0.3vh solid;
     border-color: v.$bg-color-4;
-    letter-spacing: 1px;
+    letter-spacing: 0.1vh;
     color: white;
-    font-size: 24px;
+    font-size: 3vh;
     font-family: Impact, Charcoal, sans-serif;
     text-shadow: v.$text-shadow-stroke;
     cursor: pointer;
@@ -154,17 +152,17 @@
 .username-logged{
     color: white;
     display: flex;
-    height: 300px;
-    width: 240px;
+    height: 35vh;
+    width: 12vw;
     flex-direction: column;
-    gap: 10px;
+    gap: 1vh;
     justify-content: center;
 }
 
 .user-logged{
-    height: 50px;
-    width: 250px;
-    font-size: 40px;
+    height: 7vh;
+    width: 10vw;
+    font-size: 2.5vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -173,11 +171,11 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    gap: 5px;
+    gap: 1vh;
 }
 .connected-label{
-    font-size: 25px;
-    letter-spacing: 2px;
+    font-size: 1.5vw;
+    letter-spacing: 0.1vw;
 }
 .online-label{
     color:rgb(113, 255, 47);
@@ -186,13 +184,13 @@
     color:rgb(255, 47, 47);
 }
 .btn-refresh-connection{
-    height: 20px;
-    width: 20px;
+    height: 2vh;
+    width: 1vw;
     background: #b84141;
     border-radius: 50%;
-    padding: 5px;
+    padding: 0.6vh;
     background-color: v.$primary-color;
-    border: 2px solid;
+    border: 0.2vh solid;
     border-color: v.$primary-color-4;
     cursor: pointer;
 
@@ -212,15 +210,15 @@
 
 .record-single-player{
     font-family: Tahoma, Geneva, sans-serif;
-    letter-spacing: 2px;
+    letter-spacing: 0.2vh;
     color: white;
     text-shadow: v.$text-shadow-primarycolor3;
-    font-size: 28px;
+    font-size: 3vh;
     display: flex;
     flex-direction: row;
     align-items: center;
     position: relative;
-    width: 400px;
-    bottom: 30px;
-    left: 30px;
+    width: 21vw;
+    bottom: 3vh;
+    left: 2.5vw;
 }

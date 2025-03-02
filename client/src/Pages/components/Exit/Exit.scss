@@ -2,10 +2,10 @@
 
 .exit-btn{
     position: absolute;
-    right: 40px;
-    top: 40px;
-    height: 50px;
-    width: 50px;
+    right: 1.2vw;
+    top: 1.2vw;
+    height: 2.5vw;
+    width: 2.5vw;
     background-image: url(../LogOut/logout.webp);
     background-size: contain;
     background-repeat: no-repeat;
@@ -16,7 +16,9 @@
 .exit-label{
     color: white;
     position: relative;
-    top:48px    
+    font-size: 0.9vw;
+    left: 0.3vw;
+    top:5.5vh    
 }
 .exit-game:focus,.log-out-game:active{
     filter: contrast(0.4);
@@ -36,11 +38,11 @@
 .exit-window{
     position: absolute;
     background: v.$bg-color-1-2;
-    height: 300px;
-    width: 600px;
+    height: 18vw;
+    width: 35vw;
     border-radius: 15px;
     color: v.$bg-color-4;
-    font-size: 40px;
+    font-size: 2vw;
     font-weight: 700;
     text-shadow: v.$text-shadow-primarycolor;
     border: v.$border-primary-4px;
@@ -55,8 +57,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 50px;
-    margin-top: 60px;
+    gap: 3vw;
+    margin-top: 2.5vw;
 }
 .no-showed-window{
     visibility: hidden;
@@ -64,11 +66,11 @@
 }
 
 .btn-exit{
-    height: 70px;
-    width: 150px;
-    border-radius: 15px;
+    height: 7vh;
+    width: 10vw;
+    border-radius: 0.5vw;
     color: v.$bg-color-4;
-    font-size: 40px;
+    font-size: 2vw;
     font-weight: 700;
     text-shadow: v.$text-shadow-primarycolor;
     border: v.$border-primary-4px;

@@ -3,8 +3,8 @@
 .e-dice{
     background-image: url(./extraDice.png);
     background-size: cover;
-    height: 55px;
-    width: 55px;
+    height: 5.7vh;
+    width: 3vw;
     display: flex;
     align-items: center;
     justify-items: center;
@@ -26,9 +26,9 @@
     color: rgb(247, 242, 242);
     text-shadow: v.$text-shadow-stroke2;
     font-weight: 600;
-    font-size: large;
-    height: 28px;
-    width: 23px;
+    font-size: 0.9vw;
+    height: 2.95vh;
+    width: 1.25vw;
     cursor: pointer;
 }
 

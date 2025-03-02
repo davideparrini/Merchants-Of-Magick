@@ -7,21 +7,21 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 50px;
+    gap: 6vh;
 }
 .login-sign-up-form-wrap{
     display: grid;
     grid-template-areas: 'form bar logwith';
-    grid-template-columns: 1fr 180px 1fr;
+    grid-template-columns: 1fr 11vw 1fr;
     height: 60%;
     width: 50%;
 }
 .title-login-sign-up-form{
     position: relative;
-    right: 370px;
-    top: 90px;
+    right: 23vw;
+    top: 11vh;
     color: #ffffff;
-    font-size: 70px;
+    font-size: 8vh;
     font-weight: 700;
     justify-self: flex-end;
 }
@@ -31,7 +31,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    row-gap: 50px;
+    row-gap: 6vh;
 }
 .label-field-container{
     width: 95%;
@@ -39,30 +39,31 @@
 
 .label-login-sign-up-form{
     color: white;
-    font-size: 20px;
+    font-size: 2.7vh;
     font-weight: 600
 }
 .field-login-sign-up-form{
-    height: 50px;
+    height: 6vh;
     width: 100%;
-    border-radius: 10px;
-    font-size: 20px;
-    padding-left: 10px;
+    border-radius: 1.3vh;
+    font-size: 2.2vh;
+    padding-left: 0.7vw;
 }
 .btn-log-sig-up-container{
     display: flex;
     flex-direction: row;
     width: 100%;
-    gap: 10px;
+    gap: 0.5vw;
 }
 .btn-form{
-    height: 60px;
+    height: 6vh;
     width: 50%;
     color: white;
-    border-radius: 15px;
-    font-size: 21px;
+    border-radius: 1.3vh;
+    font-size: 2.4vh;
     text-shadow: v.$text-shadow-stroke;
-    word-spacing: 3px;
+    word-spacing: 0.3vh;
+    letter-spacing: 0.2vh;
     font-family: Impact, Charcoal, sans-serif;
     cursor: pointer;
 
@@ -92,16 +93,16 @@
 .bar{
     background: #9b9dad;
     height: 100%;
-    width: 3px;
+    width: 0.1vw;
     z-index: 1;
 }
 .divider-or{
     position: absolute;
-    height: 60px;
-    width: 60px;
-    font-size: 25px;
+    height: 6vh;
+    width: 3vw;
+    font-size: 2.8vh;
     font-weight: 700;
-    border: 2px solid #9b9dad;
+    border: 0.3vh solid #9b9dad;
     color: #c7cae0;
     display: flex;
     align-items: center;
@@ -116,20 +117,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 3vh;
     
 
 }
 .log-with-form{
-    border: 1px solid #818391;
-    height: 50px;
-    width: 350px;
+    border: 0.1vh solid #818391;
+    height: 5vh;
+    width: 18vw;
     color: white;
-    border-radius: 5px;
+    border-radius: 1vh;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    font-size: 21px;
+    font-size: 2.1vh;
     cursor: pointer;
 }
 .log-with-form:focus,.log-with-form:active{
@@ -141,31 +142,44 @@
 }
 
 .facebook::before{
-    content: url(./facebook.png);
+    content: "";
+    background-image: url(./facebook.png);
+    background-size: contain;
+    background-repeat: no-repeat;
     position: relative;
-    margin: 15px;
-    top: 2px;
-    
+    margin: 0.5vw;
+    margin-left: 1vw;
+    width: 2vw;
+    height: 3vh; 
+
 }
 .google{
     background-color: #ffffff;
     color: black;
 }
 .google::before{
-    content: url(./google.png);
+    content: "";
+    background-image: url(./google.png);
+    background-size: contain;
+    background-repeat: no-repeat;
     position: relative;
-    margin: 15px;
-    top: 2px;
-    
+    margin: 0.5vw;
+    margin-left: 1vw;
+    width: 2vw;
+    height: 3vh; 
 }
 .github{
     background: #161b22;
 
 }
 .github::before{
-    content: url(./github.png);
+    content: "";
+    background-image: url(./github.png);
+    background-size: contain;
+    background-repeat: no-repeat;
     position: relative;
-    margin: 15px;
-    top: 2px;
-    
+    margin: 0.5vw;
+    margin-left: 1vw;
+    width: 2vw;
+    height: 3vh; 
 }

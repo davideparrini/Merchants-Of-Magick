@@ -12,6 +12,15 @@ import { authenticationHandler } from "./middlewares/authentication-handler";
 import genericRouter from "./routes/generic-routes";
 
 
+process.on("uncaughtException", (err) => {
+  console.error("❌ Errore fatale non catturato:", err);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("⚠️ Promise rifiutata senza gestione:", reason);
+});
+
+
 // Inizializzazione Express
 const app = express();
 const server = http.createServer(app);

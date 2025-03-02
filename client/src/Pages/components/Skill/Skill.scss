@@ -4,16 +4,16 @@
     display: grid;
     align-items:  center;
     justify-items: center;
-    gap: 4px;
-    grid-template-rows: 30px;
-    grid-template-columns: 34px 131px repeat(3,8px 34px);
+    gap: 0.5vh;
+    grid-template-rows: 3.2vh;
+    grid-template-columns: 2vw 7vw repeat(3, 0.3vw 1.8vw);
     grid-template-areas: 'goldArea name img1 bt1 img2 bt2 img3 bt3';
     background: rgb(221, 207, 124);
-    width: 320px;
-    height: 30px;
-    border-radius: 15px;
-    padding: 5px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    width: 17vw;
+    height: 3.3vh;
+    border-radius: 1.3vh;
+    padding: 0.5vh;
+    box-shadow: 0 0 0.8vh 0 rgba(0, 0, 0, 0.2), 0 0.5vh 0.5vh 0 rgba(0, 0, 0, 0.24);
 }
 
 
@@ -29,13 +29,13 @@
 .number-circle{
     position: relative;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 1.7vw;
+    height: 3.4vh;
     text-align: center;
     background: #fff;
-    border: 2px solid #666;
+    border: 0.3vh solid #666;
     color: #666;
-    font: 18px Arial, sans-serif;
+    font: 1vw Arial, sans-serif;
     font-weight: 700;
     z-index: 0;
 
@@ -43,29 +43,27 @@
 
 .ᨈ{
     position: absolute;
-    font-size: small;
-    top: -8.5px;
-    left: 9.5px;
+    font-size: 1.3vh;
+    top: -0.9vh;
+    left: 0.48vw;
 
 }
 .ᨆ{
     position: absolute;
-    font-size: small;
-    top: 13px;
-    left: 9.5px;
+    font-size: 1.3vh;
+    top: 1.4vh;
+    left: 0.5vw;
 
 }
 .no-img{
-    height: 20px;
-    width: 20x;
     z-index: -1;
     visibility: hidden;
 }
 .attribute-img{
     position: relative;
-    right: 4px;
-    height: 24px;
-    width: 24px;
+    right: 0.2vw;
+    height: 2.4vh;
+    width: 1.2vw;
     z-index: 1;
     justify-self: start;
     
@@ -92,7 +90,7 @@
 
 .gold-skill{
     background: gold;
-    border: 2px solid #f7fda7;
+    border: 0.3vh solid #f7fda7;
     -webkit-box-shadow: #FFF 0 -1px 4px, #ff0 0 -2px 10px, #ff8000 0 -10px 20px, red 0 -18px 40px, 0px 0px 30px 2px rgba(0,0,0,0); 
     box-shadow: #FFF 0 -1px 4px, #ff0 0 -2px 10px, #ff8000 0 -10px 20px, red 0 -18px 40px, 0px 0px 30px 2px rgba(0,0,0,0);  
     -moz-transform: scale(1.1);
@@ -116,7 +114,7 @@
     font-family: 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 15.5px;
+    font-size: 1.7vh;
     text-align: center;
     grid-area: name;
 }
@@ -138,7 +136,7 @@
 .btn1:active,.btn2:active,
 .btn3:active{
     background: #fbfd91;
-    border: 2px solid #f7fda7;
+    border: 0.3vh solid #f7fda7;
     -webkit-box-shadow: #FFF 0 -1px 4px, #ff0 0 -2px 10px, #ff8000 0 -10px 20px, red 0 -18px 40px, 0px 0px 30px 2px rgba(0,0,0,0); 
     box-shadow: #FFF 0 -1px 4px, #ff0 0 -2px 10px, #ff8000 0 -10px 20px, red 0 -18px 40px, 0px 0px 30px 2px rgba(0,0,0,0);  
     -moz-transform: scale(1.1);
@@ -170,7 +168,7 @@
 .upgradable{
     -webkit-box-shadow: 0px 0px 10px 5px rgba(255,149,5,1);
     box-shadow: 0px 0px 10px 5px rgba(255,149,5,1);
-    border: 1px solid v.$primary-color;
+    border: 0.1vh solid v.$primary-color;
     color: white;
     background: v.$primary-color-2;
     animation: strech 2s ease-out 0;
@@ -179,18 +177,18 @@
 }
 .charms-helper{
     position: relative;
-    left: 311px;
-    bottom: 31.5px;
+    left: 16.6vw;
+    bottom: 3vh;
     border-radius: 50%;
-    height: 24px;
-    width: 24px;
+    height: 2.2vh;
+    width: 1.1vw;
     background: v.$primary-color-4;
     border: v.$border-primary-2px;
     color: white;
     display: flex;
     justify-content: center;
     align-self: center;
-    font-size: 14px;
+    font-size: 1.4vh;
     font-weight: 600;
     cursor: pointer;
 }
@@ -203,15 +201,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    height: 40px;
-    width: 312px;
-    border-radius: 15px;
-    border: v.$border-primary-4px;
+    gap: 1vh;
+    height: 3.5vh;
+    width: 17vw;
+    border-radius: 3vh;
+    border: v.$border-primary-2px;
     background: v.$primary-color-4;
     z-index: 2;
     color: #FFF;
-    font-size: 18px;
+    font-size: 2vh;
     text-shadow: v.$text-shadow-stroke;
 }
 .no-gold-helper{

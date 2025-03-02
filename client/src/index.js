@@ -16,6 +16,17 @@ Notification.requestPermission(permission => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
+window.onerror = function (message, source, lineno, colno, error) {
+    console.error("Errore globale catturato:", message, error);
+    window.location.href = "/"; 
+};
+  
+window.addEventListener("unhandledrejection", (event) => {
+    console.error("Promise rifiutata senza gestione:", event.reason);
+    window.location.href = "/";
+});
+  
+
 root.render(
     <React.StrictMode>
         <BrowserRouter>
