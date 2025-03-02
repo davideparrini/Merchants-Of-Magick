@@ -609,7 +609,7 @@ function Game() {
 
     useEffect(() => {
         const checkReconnection = async () => {
-            if(singlePlayerGame){
+            if(gameInitState.mock && singlePlayerGame){
                 alert("Mi spiace ma ti sei disconnesso");
                 navigate(LOGGED_PAGE);
                 refreshGame();

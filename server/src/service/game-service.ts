@@ -2,7 +2,7 @@ import { ERRORS, LOBBY_STATUS } from "../constants/constants";
 import { ForbiddenError } from "../Errors/ForbiddenError";
 import { NotFoundError } from "../Errors/NotFoundError";
 import { SocketError } from "../Errors/SocketError";
-import { SignedFinalReport, PlayerGame, GameState, BackupPlayer, GameInitConfig, GameStateBackup, BackupResponse } from "../interface/game-interface";
+import { SignedFinalReport, PlayerGame, GameState, BackupPlayer, GameInitConfig, GameStateBackup, BackupResponse, GameInitState } from "../interface/game-interface";
 import { Lobby, SignedBackupPlayerGameState } from "../interface/lobby-interface";
 import { mapper } from "../mapper";
 import { repositoryArchivedGame } from "../repository/archived-game-repository";
@@ -39,7 +39,7 @@ const checkPlayerInLobby = (lobby: Lobby, playerUsername: string) => {
     }
 };
 
-const startGame = async (lobbyID: string, config: GameInitConfig): Promise<any> => {
+const startGame = async (lobbyID: string, config: GameInitConfig): Promise<GameInitState> => {
     const lobby = await repositoryLobby.getLobbyById(lobbyID);
     if (lobby.status !== LOBBY_STATUS.IN_LOBBY) {
         throw new ForbiddenError(ERRORS.LOBBY_STARTED);

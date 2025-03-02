@@ -3,58 +3,58 @@
 
 .container-toast{
     position: absolute;
-    right: 100px;
-    bottom: 100px;
+    right: 5vw;
+    bottom: 6vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 250px;
-    width: 300px;
-    border-radius: 15px;
+    height: 28vh;
+    width: 17vw;
+    border-radius: 1.6vh;
     border: v.$border-primary-6px;
     background: v.$bg-color-2;
     z-index: 11;
 }
 
 .question-toast{
-    height:  50%;
-    width: 80%;
+    height:  13vh;
+    width: 14vw;
     background: v.$label-color;
     color: v.$primary-color;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 7px;
-    font-size: 20px;
+    margin-top: 1vh;
+    margin-bottom: 1vb;
+    border-radius: 1.3vh;
+    font-size: 2.2vh;
     font-weight: 700;
-    padding: 10px;
+    padding: 1vh;
     border: v.$border-primary-4px;
     display: flex;
     font-family: "Lucida Console", Monaco, monospace;
     justify-content: center;
     align-items: center;
     text-align: center;
-    gap:2px;
+    gap:0.5vh;
 
 }
 .container-btn-toast{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    gap: 5px;
+    gap:0.5vh
 }
 
 .btn-toast{
-    height: 50px;
-    width: 120px;
-    border-radius: 10px;
+    height: 5vh;
+    width: 6vw;
+    border-radius: 1.3vh;
     border:v.$border-primary-4px;
     color: white;
-    font-size: 24px;
-    letter-spacing: 2px;
+    font-size: 2.5vh;
+    letter-spacing: 0.3vh;
     font-family: Impact, Charcoal, sans-serif;
     text-shadow: v.$text-shadow-stroke;
-    margin-bottom: 10px;
+    margin-bottom: 1vh;
     cursor: pointer;
 }
 

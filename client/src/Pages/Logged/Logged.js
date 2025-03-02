@@ -118,6 +118,7 @@ function Logged() {
                                     if(message && message.type === 'start-game-single-player'){
                                         setGameInitState(message.data);
                                         setSinglePlayerGame(true);
+                                        console.log(message.data)
                                         console.log("Start single player game")
                                     }
                                 };

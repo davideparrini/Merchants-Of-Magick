@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 30px;
+    gap: 2vh;
     z-index: 10;
 
 }
@@ -19,7 +19,7 @@
 .title-report-player{
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
-    font-size: 60px;
+    font-size: 9vh;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
@@ -27,7 +27,7 @@
     height: 70%;
     width: 80%;
     border: v.$border-primary-6px;
-    border-radius: 10px;
+    border-radius: 1.3vh;
     background: v.$bg-color-1-2;
     display: grid;
     grid-template-areas: 
@@ -35,18 +35,18 @@
     'pr1 pr3 pr5 pr7';
     grid-template-columns: repeat(4,24%);
     grid-template-rows: repeat(2, 48%);
-    gap: 20px;
-    padding: 30px;
+    gap: 2vh;
+    padding: 4vh;
 }
 .bg-img-report{
     position: absolute;
     top: 13.5%;
-    border-radius: 10px;
+    border-radius: 1.3vh;
     background-image: url(./bg.png);
     background-size: cover;
-    height: 70%;
-    width: 80%;
-    padding: 30px;
+    height: 71vh;
+    width: 80.5vw;
+    padding: 4vh;
     opacity: 0.1;
     z-index: 1;
 }
@@ -56,13 +56,13 @@
     justify-content: center;
     align-items: flex-start;
     background: v.$card-color-0;
-    padding: 15px;
-    border-radius: 15px;
+    padding: 3vh;
+    border-radius: 1.3vh;
     border: v.$border-primary-4px;
     font-weight: 550;
     color: rgb(212, 212, 212);
     text-shadow: v.$text-shadow-stroke2;
-    font-size: 14px;
+    font-size: 1.6vh;
     font-family: Tahoma, Geneva, sans-serif;
     z-index: 3;
     
@@ -96,29 +96,29 @@
 .player-report-username{
     color: v.$primary-color-6;
     text-shadow: v.$text-shadow-stroke2;
-    font-size: 33px;
+    font-size: 4vh;
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 0.3vh;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 .player-report-title{
-    margin-top: 5px;
+    margin-top: 1vh;
     font-weight: 550;
     color: v.$primary-color-5;
     text-shadow: v.$text-shadow-stroke2;
-    font-size: 16px;
+    font-size: 1.7vh;
     font-family: Verdana, Geneva, sans-serif;
 }
 .player-report-skill{
     color: white;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 1.7vh;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;
 }
 .player-report-item{
     color: white;
-    font-size: 14px;
+    font-size: 1.7vh;
     font-weight: 500;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;
@@ -126,18 +126,18 @@
 .timer-restart-game{
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
-    font-size: 40px;
+    font-size: 6vh;
 }
 .player-report-title.quest-report{
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 1vh;
 }
 
 .player-report-quest{
     color: v.$blue-btn-5;
-    font-size: 12px;
+    font-size: 1.7vh;
     font-weight: 500;
     font-family: Verdana, Geneva, sans-serif;
     text-transform: capitalize;
