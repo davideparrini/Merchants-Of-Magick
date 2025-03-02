@@ -19,6 +19,7 @@ import Home from './Pages/Home/Home';
 import { apiLobby } from './api/lobby-api';
 import { gameInitMock } from './Config/constants';
 import ErrorBoundary from './errorHandler/ErrorBoundary';
+import { useServiceWorkerStatus } from './hooks/useServiceWorkenStatus';
 
 
 
@@ -61,6 +62,8 @@ function App() {
 
     const[singlePlayerGame, setSinglePlayerGame] = useState(false);
     
+    const isSWActive = useServiceWorkerStatus();
+
     const navigate = useNavigate();
     
     
@@ -174,9 +177,10 @@ function App() {
         gameUpdated,
         setGameUpdated,
         gameInit,
-        refreshGame
+        refreshGame,
+        isSWActive
     
-    }),[lobbyUpdated, fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, socketID, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame]);
+    }),[lobbyUpdated, fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, socketID, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame, isSWActive]);
 
 
 

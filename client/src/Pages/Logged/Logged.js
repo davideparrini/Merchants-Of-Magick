@@ -14,7 +14,7 @@ const TYPE_GOLD_X_BIG = 'XBIG';
 function Logged() {
 
 
-    const { username, setLobbyUpdated,setStatusOnline, setSocketID, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer, LOGGED_PAGE, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,singlePlayerGame, setGameOnNewTurn, navigate, LOBBY_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { isSWActive , username, setLobbyUpdated,setStatusOnline, setSocketID, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer, LOGGED_PAGE, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,singlePlayerGame, setGameOnNewTurn, navigate, LOBBY_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -99,7 +99,7 @@ function Logged() {
                         <button className={`logged-btn ${statusOnline && username  ? '' : 'inactive-btn'}`}
                             onClick={()=>setOpenSubmitLobbyId(true)}
                         >Join A Lobby</button>
-                        <button className='logged-btn'
+                        <button className= {`logged-btn ${isSWActive ? '' : 'inactive-btn' }`}
                         onClick={()=>{
                             if(!singlePlayerGame){
                                 refreshGame();

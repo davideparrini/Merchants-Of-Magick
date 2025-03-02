@@ -454,7 +454,7 @@ function Game() {
     
     //Cambio stato aggiornando il turno, facendo un refresh delle struttere dati
     //seguendo la logica del gioco
-    const newTurn = useCallback((newGameState)=>{
+    const newTurn = useCallback(async (newGameState)=>{
 
         //aumento il turno
         gameCurrentState.setNTurn((n)=>(n+1));
@@ -490,20 +490,30 @@ function Game() {
         setShowCard2(true);
         setShowCard3(true);
 
-        // if(newGameState.cards.length === 1){
-        //     const finalReport = {
-        //         username: username,
-        //         shop: shop,
-        //         quest1: quest1Done,
-        //         quest2: quest2Done,
-        //         order: adventurerQuestDone,
-        //         renownedAccessories: skillsGained.includes('renowned accessories'),
-        //         weaponPrestige: skillsGained.includes('weapon prestige'),
-        //         eliteArmor: skillsGained.includes('elite armor'),
-        //         gold: currentGold
-        //     }
-        //    return apiGame.endGame(lobby.id, finalReport);
-        // }
+        if(newGameState.cards.length === 1){
+            const finalReport = {
+                username: username,
+                report:{
+                    shop: gameCurrentState.shop,
+                    quest1: gameCurrentState.quest1Done,
+                    quest2: gameCurrentState.quest2Done,
+                    order: gameCurrentState.adventurerQuestDone,
+                    renownedAccessories: gameCurrentState.skillsGained.includes('renowned accessories'),
+                    weaponPrestige: gameCurrentState.skillsGained.includes('weapon prestige'),
+                    eliteArmor: gameCurrentState.skillsGained.includes('elite armor'),
+                    gold: gameCurrentState.currentGold
+                }
+            }
+            const res = await apiGame.endGame(lobbyID,finalReport);
+                    
+            switch(res.statusCode){
+             case 200:
+                 setTurnDone(true);
+                 return;
+             default:
+                return;
+            }     
+        }  
         
         const newBoardPlayer = [];
         let i = indexCardsCurrentPlayer + 1;
@@ -599,6 +609,11 @@ function Game() {
 
     useEffect(() => {
         const checkReconnection = async () => {
+            if(singlePlayerGame){
+                alert("Mi spiace ma ti sei disconnesso");
+                navigate(LOGGED_PAGE);
+                refreshGame();
+            }
             if (gameInitState.mock &&  userAuthenticated && username !== "" && socketID !== -1) {
 
                 const res = await apiGame.reconnectGame(lobbyID, username);
@@ -636,19 +651,22 @@ function Game() {
     },[typeTouchedDiceRef]);
 
 
-    useEffect(()=>{
-        if(turnDone && gameUpdated){
-            if(singlePlayerGame){
-                newTurnSinglePlayer(gameOnNewTurn);
-            }
-            else{
+    useEffect(() => {
+        const checkFinishTurn = async ()=>{
+            if(turnDone && gameUpdated){
+                if(singlePlayerGame){
+                    newTurnSinglePlayer(gameOnNewTurn);
+                }
+                else{
+                    
+                    await newTurn(gameOnNewTurn);
+                }
                 
-                newTurn(gameOnNewTurn);
+                setGameUpdated(false);
             }
-            
-            setGameUpdated(false);
-        }
-    },[turnDone, gameUpdated])
+        };
+        checkFinishTurn()
+    } ,[turnDone, gameUpdated])
 
 
     useEffect(()=>{
