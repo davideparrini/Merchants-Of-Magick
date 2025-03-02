@@ -227,10 +227,11 @@ function createGameLogic(){
             origin: '',
             inProgress: true
         }     
-        const cards ={
+        const player ={
             card1: c1,
             card2:  createNewCard(typeCard_NO_ENCHANTMENT),
-            card3:  createNewCard(typeCard_NO_ORIGIN)
+            card3:  createNewCard(typeCard_NO_ORIGIN),
+            adventurer: adventurer
         }
           
         
@@ -239,8 +240,7 @@ function createGameLogic(){
             quest1: quest1,
             quest2: quest2,
             dices : dices,
-            adventurer : adventurer,
-            cards: cards,
+            player: player,
             cardsBoard : cardsBoard,
             config : config
         }
