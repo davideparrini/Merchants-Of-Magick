@@ -25,4 +25,5 @@ yarn-error.log*
 
 /src/Config/admin-key.json
 /src/Config/.env
-/tsconfig.json
+.vscode
+/TODO.txt

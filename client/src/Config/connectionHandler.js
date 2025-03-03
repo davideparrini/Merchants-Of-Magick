@@ -1,13 +1,12 @@
 import { io } from "socket.io-client";
 import momIcon from './icon-48x48.png';
-import { SOCKET_EVENTS } from "./constants";
+import { BASE_URL_SERVER, SOCKET_EVENTS } from "./constants";
 import { apiMOM } from "../api/mom-api";
 
-const serverPort = 8888;
-const serverUrl = `http://localhost:${serverPort}`;
+
 
 const createSocketConfig = () => {
-    const socket = io(serverUrl, {
+    const socket = io(BASE_URL_SERVER, {
         autoConnect: false,
         reconnection: false,
         transports: ["websocket"]

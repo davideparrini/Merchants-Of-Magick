@@ -46,7 +46,8 @@ function Lobby() {
     const[configReportTime, setConfigReportTime] = useState(10);
     const[configCountdown, setConfigCountdown] = useState(300);
     const[configDicePerTurn, setConfigDicePerTurn] = useState(2);
-
+    const[sendJoin, setSendJoin] = useState(false);
+    
 
     const { id: lobbyID } = useParams();
 
@@ -59,20 +60,23 @@ function Lobby() {
    
 
     useEffectOnPage( LOBBY_PAGE ,() => {
-        if(username !== "" && socketID !== -1){
+        if(username !== "" && socketID !== -1 && !sendJoin){
             (async () => {
                 if (lobby === -1 || !lobby || !lobby.id || !statusOnline) {
                     if (lobbyID) {
+                        setSendJoin(true);
                         try {
                             const res = await apiLobby.joinLobby(lobbyID, username);
                             switch(res.statusCode){
                                 case 200:
                                     setLobby(res.data);
                                     setInfoInviterLobby(-1);
+                                    setSendJoin(false);
                                     break;
                                 default:
                                     alert(res.data.error);
                                     navigate(LOGGED_PAGE);
+                                    setSendJoin(false);
                             }
 
                         } catch (error) {

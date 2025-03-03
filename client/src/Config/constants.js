@@ -128,4 +128,6 @@ export const ERRORS = {
     NOT_LOBBY_LEADER: "Only the leader can kick players"
 } ;
 
+// const ip = "13.60.115.231";
+// export const BASE_URL_SERVER = `http://${ip}:8888`; 
   export const BASE_URL_SERVER = "http://localhost:8888"; 
