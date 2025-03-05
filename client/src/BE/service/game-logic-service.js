@@ -175,7 +175,7 @@ const calculateGold = (finalReport) => finalReport.map((r) => {
   const newReport = {
     username: r.username,
     position: 1,
-    gold: 0,
+    gold: r.report,
     report: r.report
   };
   const renownedAccessories = r.report.renownedAccessories;

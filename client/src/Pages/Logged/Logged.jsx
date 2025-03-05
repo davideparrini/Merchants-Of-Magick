@@ -14,7 +14,7 @@ const TYPE_GOLD_X_BIG = 'XBIG';
 function Logged() {
 
 
-    const { userID, isSWActive , username, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer, LOGGED_PAGE, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,singlePlayerGame, setGameOnNewTurn, navigate, LOBBY_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { userID, isSWActive , lobbyID, setLobbyID, username, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer, LOGGED_PAGE, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameStartState, setGameEndState, setGameEnd,singlePlayerGame, setGameOnNewTurn, navigate, LOBBY_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -42,10 +42,10 @@ function Logged() {
     });
 
     useEffectOnPage(LOGGED_PAGE,()=>{
-        if(lobby !== -1){
-            navigate(`${LOBBY_PAGE}/${lobby.id}`);
+        if(lobbyID !== -1){
+            navigate(`${LOBBY_PAGE}/${lobbyID}`);
         }
-    },[lobby])
+    },[lobbyID])
 
 
     useEffect(()=>{
@@ -83,6 +83,7 @@ function Logged() {
                                 try {
                                     const res = await lobbyService.createLobby(username, userID);
                                     setLobby(res)
+                                    setLobbyID(res.id);
                                 } catch (error) {
                                     alert(error);
                                     console.error(error)
@@ -111,7 +112,7 @@ function Logged() {
                                 window.navigator.serviceWorker.onmessage = event => {
                                     const message = event.data;
                                     if(message && message.type === 'start-game-single-player'){
-                                        setGameInitState(message.data);
+                                        setGameStartState(message.data);
                                         setSinglePlayerGame(true);
                                         console.log(message.data)
                                         console.log("Start single player game")
@@ -133,6 +134,7 @@ function Logged() {
                             try {
                                 const res = await lobbyService.joinLobby(idLobbyJoin, username, userID);
                                 setLobby(res);
+                                setLobbyID(res.id);
                             } catch (error) {
                                 alert(error);
                                 console.error(error);

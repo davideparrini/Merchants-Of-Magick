@@ -41,7 +41,7 @@ const startGame = async (lobbyID, config) => {
         lastDiceRolls: gameInit.dices
     };
     
-    await repositoryLobby.updateLobby(lobbyID, { status: LOBBY_STATUS.IN_GAME, backupGameState });
+    await repositoryLobby.updateLobby(lobbyID, { status: LOBBY_STATUS.IN_GAME, backupGameState, gameInitState: gameInit });
     
     return gameInit;
 };
@@ -54,6 +54,10 @@ const playerFinishTurn = async (lobbyID, playerGameState, backupPlayer, setGameO
     checkPlayerInLobby(lobby, playerGameState.username);
 
     const gameState = await repositoryLobby.getGameState(lobbyID);
+    if(gameState.cards.some(c => c.username === playerGameState.username) ){
+        console.log("????")
+        return;
+    }
     gameState.quest1 ||= playerGameState.report.quest1;
     gameState.quest2 ||= playerGameState.report.quest2;
     gameState.nPlayerFinishTurn++;
@@ -68,9 +72,8 @@ const playerFinishTurn = async (lobbyID, playerGameState, backupPlayer, setGameO
         report: playerGameState.report
     });
     
-    await repositoryLobby.updateGameState(lobbyID, gameState);
-    const lobbyUpdated = await repositoryLobby.updateBackupGameState(lobbyID, backupPlayer);
-    checkAllPlayersFinishTurn(lobbyUpdated, setGameOnNewTurn, setGameUpdated, lobbyUpdated.leader);
+    
+     await repositoryLobby.updateGameNewTurn(lobbyID, gameState, backupPlayer);
 };
 
 const reconnect = async (lobbyID, username, userID) => {
@@ -135,10 +138,11 @@ const reconnect = async (lobbyID, username, userID) => {
     return res;
 };
 
-const checkAllPlayersFinishTurn = async (lobby, setGameOnNewTurn, setGameUpdated, lobbyLeader) => {
+const checkAllPlayersFinishTurn = async (lobby, lobbyID, setGameOnNewTurn, setGameUpdated) => {
     const gameState = lobby.gameState;
-    const playersName = lobby.players.map(p => p.username);
+    const playersName = lobby.players;
 
+    console.log("CHECK_ALL_PLAYERS_FINISH_TURN, gameState.nPlayerFinishTurn "  +gameState.nPlayerFinishTurn+ " playersName.length " + playersName.length )
     if (gameState.nPlayerFinishTurn >= playersName.length) {
         gameState.cards = gameLogicService.updateCardsTurn(gameState.cards, playersName, gameState.decks, lobby.gameState.orderPlayers);
         const rolledDices = gameLogicService.rollDices();
@@ -153,7 +157,7 @@ const checkAllPlayersFinishTurn = async (lobby, setGameOnNewTurn, setGameUpdated
         setGameOnNewTurn(response);
         setGameUpdated(true);
         
-        if(lobbyLeader){
+        if(lobby.leader){
             const backupGameState = lobby.backupGameState;
         
             Object.assign(gameState, { nPlayerFinishTurn:0 , cards: [], reports: [] });
@@ -162,7 +166,7 @@ const checkAllPlayersFinishTurn = async (lobby, setGameOnNewTurn, setGameUpdated
                 lastTurnPlayed: backupGameState.lastTurnPlayed + 1,
                 lastDiceRolls: rolledDices
             });
-            await repositoryLobby.updateLobby(lobby.id, { gameState, backupGameState });
+            await repositoryLobby.updateLobby(lobbyID, { gameState, backupGameState });
         }
         
     }
@@ -180,8 +184,6 @@ const playerEndGame = async (lobbyID, playerFinalReport, username, setGameEndSta
     gameState.finalReports.push(playerFinalReport);
     gameState.nPlayerFinishTurn++;
     await repositoryLobby.updateGameState(lobbyID, gameState);
-    
-    checkAllPlayersEndGame(lobbyID, gameState, lobby.players.length, lobby.leader === username, setGameEndState, setGameEnd);
 };
 
 const checkAllPlayersEndGame = async (lobbyID, gameState, nPlayers, lobbyLeader, setGameEndState, setGameEnd) => {

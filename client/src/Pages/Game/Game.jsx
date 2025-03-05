@@ -64,7 +64,7 @@ import { gameService } from '../../BE/service/game-service';
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = false;
+const testActive = true;
 
 
 const TYPE_GOLD_X_BIG = 'XBIG';
@@ -138,7 +138,7 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { fullScreen, refreshGame, userAuthenticated,checkPersonalScore, singlePlayerGame, username, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate, setGameEndState } = useContext(AppContext);
+    const { fullScreen, refreshGame, userAuthenticated,checkPersonalScore, singlePlayerGame, username, gameStartState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate, setGameEndState } = useContext(AppContext);
     
     
     const { id: lobbyID } = useParams();
@@ -155,12 +155,12 @@ function Game() {
     //Ref per mantenere il valore del dado toccato
     let valueTouchedDiceRef = useRef();
 
-    const { gameCurrentState } = useGameState(gameInitState.config, createSkillMap([...skillListCraftingItem, ...skillListMagicResearch]));
+    const { gameCurrentState } = useGameState(gameStartState.config, createSkillMap([...skillListCraftingItem, ...skillListMagicResearch]));
 
     //valori dei dadi
-    const { d6, d8, d10, d12, resetDices, resetTouchedDices} = useDiceState(gameInitState.dices);
+    const { d6, d8, d10, d12, resetDices, resetTouchedDices} = useDiceState(gameStartState.dices);
 
-    const { quest1, quest2, adventurer, updatePlayerState } = usePlayerState(gameInitState.quest1, gameInitState.quest2, gameInitState.player.adventurer);
+    const { quest1, quest2, adventurer, updatePlayerState } = usePlayerState(gameStartState.quest1, gameStartState.quest2, gameStartState.player.adventurer);
 
     const[goldFromSkills, setGoldFromSkills] = useState(0);
 
@@ -183,13 +183,13 @@ function Game() {
     const[reportEndTurn, setReportEndTurn ] = useState([]);
 
     //report timer
-    const[reportTime,setReportTime] = useState(gameInitState.config.reportTime);
+    const[reportTime,setReportTime] = useState(gameStartState.config.reportTime);
 
     //numero di dadi rimanenti da usare (variabile incrementabile e decrementabile usando un extra dice(temporanamente), E decrementata ogni volta che usiamo un dado)
-    const [nDiceLeft_toUse,setNDiceLeft_toUse] = useState(gameInitState.config.dicePerTurn);
+    const [nDiceLeft_toUse,setNDiceLeft_toUse] = useState(gameStartState.config.dicePerTurn);
 
     //numero dadi che sono possibili giocare nel turno attuale (variabile incrementabile e decrementabile usando  un extra dice(temporanamente))
-    const [totalPossibleDice_toUse,setTotalPossibleDice_toUse] = useState(gameInitState.config.dicePerTurn);
+    const [totalPossibleDice_toUse,setTotalPossibleDice_toUse] = useState(gameStartState.config.dicePerTurn);
 
     //numero dadi usati
     const [nDiceLeft_Used,setNDiceLeft_Used] = useState(0);
@@ -197,12 +197,12 @@ function Game() {
     //lista di extra-dice usati temporaneamente
     const [extraDiceUsedTempList,setExtraDiceUsedTempList] = useState([]);
     
-    const [boardListPlayers,setBoardListPlayers] = useState(singlePlayerGame ?  null : gameInitState.otherPlayers);
-    const [boardCards,setBoardListCards] = useState(singlePlayerGame ? gameInitState.cardsBoard :  null);
+    const [boardListPlayers,setBoardListPlayers] = useState(singlePlayerGame ?  null : gameStartState.otherPlayers);
+    const [boardCards,setBoardListCards] = useState(singlePlayerGame ? gameStartState.cardsBoard :  null);
 
-    const [card1,setCard1] = useState(gameInitState.player.card1);
-    const [card2,setCard2] = useState(gameInitState.player.card2);
-    const [card3,setCard3] = useState(gameInitState.player.card3);
+    const [card1,setCard1] = useState(gameStartState.player.card1);
+    const [card2,setCard2] = useState(gameStartState.player.card2);
+    const [card3,setCard3] = useState(gameStartState.player.card3);
 
     //bool carta girata, showCard(false) -> carta girata
     const[showCard1,setShowCard1] = useState(true);
@@ -213,8 +213,8 @@ function Game() {
     const [nAttributeGained_QuestCrafting,setnAttributeGained_QuestCrafting] = useState(0);
     const [nAttributeGained_QuestMagicResearch,setnAttributeGained_QuestMagicResearch] = useState(0);
     
-    const[quest1Reward ,setQuest1Reward] = useState(gameInitState.quest1.gold);
-    const[quest2Reward ,setQuest2Reward] = useState(gameInitState.quest2.gold);
+    const[quest1Reward ,setQuest1Reward] = useState(gameStartState.quest1.gold);
+    const[quest2Reward ,setQuest2Reward] = useState(gameStartState.quest2.gold);
     
     const[openScoreSinglePlayer, setOpenScoreSinglePlayer] = useState(false);
     
@@ -248,10 +248,10 @@ function Game() {
     //funzione che restituisce la fun per cambiare lo state di DiceUsed relativa al dado toccato
     const choose_fun_setDiceUsed = useCallback(()=>{
         switch(typeTouchedDiceRef.current){
-            case DICE.d6: return d6.setIsTouched;
-            case DICE.d8: return d8.setIsTouched;
-            case DICE.d10: return d10.setIsTouched;
-            case DICE.d12: return d12.setIsTouched;     
+            case DICE.d6: return d6.setIsUsed;
+            case DICE.d8: return d8.setIsUsed;
+            case DICE.d10: return d10.setIsUsed;
+            case DICE.d12: return d12.setIsUsed;     
             default: return;
         }
     },[])
@@ -347,7 +347,7 @@ function Game() {
     const finishTurn = useCallback(async ()=>{
         if(!turnDone){
             if(!singlePlayerGame){
-                if(gameCurrentState.nTurn < gameInitState.config.nTurn){
+                if(gameCurrentState.nTurn === gameStartState.config.nTurn){
                     card1.inProgress = showCard1;
                     card2.inProgress = showCard2;
                     card3.inProgress = showCard3;
@@ -363,9 +363,24 @@ function Game() {
                             quest2: gameCurrentState.quest2Done
                         }
                     }
+                    const backupGameState = {
+                        nTurn: gameCurrentState.nTurn,
+                        currentGold:gameCurrentState.currentGold,
+                        nPotion: gameCurrentState.nPotion,
+                        shop: gameCurrentState.shop,
+                        skillsTree: Object.fromEntries(gameCurrentState.skillsTree),
+                        skillsGained: gameCurrentState.skillsGained,
+                        freeUpgrade:gameCurrentState.freeUpgrade,
+                        adventurerQuestDone: gameCurrentState.adventurerQuestDone,
+                        nAttributeGained_QuestCrafting: gameCurrentState.nAttributeGained_QuestCrafting,
+                        nAttributeGained_QuestMagicResearch: gameCurrentState.nAttributeGained_QuestMagicResearch,
+                        quest1: gameCurrentState.quest1Done,
+                        quest2: gameCurrentState.quest2Done
+
+                    }
                     const backupPlayer = {
                         username: username,
-                        backup: gameCurrentState
+                        backup: backupGameState
                     }
                     try {
                         await gameService.playerFinishTurn(lobbyID, playerGameState, backupPlayer, setGameOnNewTurn, setGameUpdated)
@@ -400,7 +415,7 @@ function Game() {
                 }
             }
             else{
-                if(gameCurrentState.nTurn < gameInitState.config.nTurn){
+                if(gameCurrentState.nTurn < gameStartState.config.nTurn){
                     setTurnDone(true);
                     card1.inProgress = showCard1;
                     card2.inProgress = showCard2;
@@ -448,7 +463,7 @@ function Game() {
             
             
         }
-    },[boardCards, card1, card2, card3, checkPersonalScore, gameCurrentState, gameInitState.config.nTurn, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, showCard1, showCard2, showCard3, singlePlayerGame, turnDone, username]);
+    },[boardCards, card1, card2, card3, checkPersonalScore, gameCurrentState, gameStartState.config.nTurn, reportItems, reportSkills, setGameEnd, setGameOnNewTurn, setGameUpdated, showCard1, showCard2, showCard3, singlePlayerGame, turnDone, username]);
 
     
     
@@ -540,12 +555,12 @@ function Game() {
         setGameRestart(true);
 
         //Setto il timer del report di fine turno
-        setReportTime(gameInitState.config.reportTime);
+        setReportTime(gameStartState.config.reportTime);
 
         //Apro il report di fine turno
         setOpenReport(true);
 
-    },[gameCurrentState, resetDices, gameInitState.config.reportTime, username]);
+    },[gameCurrentState, resetDices, gameStartState.config.reportTime, username]);
 
 
 
@@ -594,24 +609,24 @@ function Game() {
         setGameRestart(true);
 
         //Setto il timer del report di fine turno
-        setReportTime(gameInitState.config.reportTime);
+        setReportTime(gameStartState.config.reportTime);
 
         //Apro il report di fine turno
         setOpenReport(true);
 
-    },[gameCurrentState, gameInitState.config.reportTime, reportItems, reportSkills, resetDices, username])
+    },[gameCurrentState, gameStartState.config.reportTime, reportItems, reportSkills, resetDices, username])
 
     ////////////////////////////////////    USE EFFECT   //////////////////////////////////////////////////////////////
 
 
     useEffect(() => {
         const checkReconnection = async () => {
-            if(gameInitState.mock && singlePlayerGame){
+            if(gameStartState.mock && singlePlayerGame){
                 alert("Mi spiace ma ti sei disconnesso");
                 navigate(LOGGED_PAGE);
                 refreshGame();
             }
-            if (gameInitState.mock &&  userAuthenticated && username !== "" ) {
+            if (gameStartState.mock &&  userAuthenticated && username !== "" ) {
 
                 // const res = await apiGame.reconnectGame(lobbyID, username);
                 
@@ -627,7 +642,7 @@ function Game() {
             }
         };
         checkReconnection();
-    }, [gameInitState, userAuthenticated, username]);
+    }, [gameStartState, userAuthenticated, username]);
     
     
 
@@ -655,7 +670,7 @@ function Game() {
                     newTurnSinglePlayer(gameOnNewTurn);
                 }
                 else{
-                    
+                    console.log("GAME ON NEW TURN", gameOnNewTurn)
                     await newTurn(gameOnNewTurn);
                 }
                 
@@ -702,7 +717,7 @@ function Game() {
                                 <div className='gold-score-end-game'>Gold from skills : <Gold value={goldFromSkills} size={TYPE_GOLD_MEDIUM} active={true}/></div>
                                 <div className='gold-score-end-game'>Quest 1 : {gameCurrentState.quest1Done ? <Gold value={8} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
                                 <div className='gold-score-end-game'>Quest 2 : {gameCurrentState.quest2Done ? <Gold value={8} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
-                                <div className='gold-score-end-game'>Adventurer quest : {gameCurrentState.adventurerQuestDone ? <Gold value={gameInitState.player.adventurer.gold} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
+                                <div className='gold-score-end-game'>Adventurer quest : {gameCurrentState.adventurerQuestDone ? <Gold value={gameStartState.player.adventurer.gold} size={TYPE_GOLD_MEDIUM} active={true}/>: <Gold value={0} size={TYPE_GOLD_MEDIUM} active={true}/>}</div>
                                 <div className='gold-score-end-game'>Bonus Renowned Accessories : { gameCurrentState.skillsGained.includes('renowned accessories') ? ' Yes' : ' No'}</div>
                                 <div className='gold-score-end-game'>Bonus Weapon Prestige : { gameCurrentState.skillsGained.includes('weapon prestige') ? ' Yes' : ' No'}</div>
                                 <div className='gold-score-end-game'>Bonus Elite Armor : { gameCurrentState.skillsGained.includes('elite armor') ? ' Yes' : ' No'}</div>
@@ -822,10 +837,10 @@ function Game() {
                     
                     <div className='container-turn'>
                         <img src={titleNTurn} alt='NTURN TITLE' className='upper-container-titles' ></img>
-                        <div className='n-turn-label'>{gameCurrentState.nTurn +'/'+ gameInitState.config.nTurn}</div>
+                        <div className='n-turn-label'>{gameCurrentState.nTurn +'/'+ gameStartState.config.nTurn}</div>
                     </div>
                     
-                    <div className='timer-container'><Timer timerCountdown={gameInitState.config.countdown} finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart}/></div>
+                    <div className='timer-container'><Timer timerCountdown={gameStartState.config.countdown} finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart}/></div>
 
                 </div>
                 <div className='legend-container'><Legend/></div>
@@ -967,8 +982,8 @@ function Game() {
                                         setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                                         setNAttrQuest1={setnAttributeGained_QuestCrafting}
                                         setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                        typeAttrQuest1={gameInitState.quest1.attribute}
-                                        typeAttrQuest2={gameInitState.quest2.attribute}
+                                        typeAttrQuest1={gameStartState.quest1.attribute}
+                                        typeAttrQuest2={gameStartState.quest2.attribute}
                                         freeUpgrade={gameCurrentState.freeUpgrade > 0}
                                         setFreeUpgrade={gameCurrentState.setFreeUpgrade}
                                         setCurrentGold={gameCurrentState.setCurrentGold}
@@ -1004,8 +1019,8 @@ function Game() {
                                         setExtraDiceUsed={choose_fun_setExtraDiceUsed()}
                                         setNAttrQuest1={setnAttributeGained_QuestCrafting}
                                         setNAttrQuest2={setnAttributeGained_QuestMagicResearch}
-                                        typeAttrQuest1={gameInitState.quest1.attribute}
-                                        typeAttrQuest2={gameInitState.quest2.attribute}
+                                        typeAttrQuest1={gameStartState.quest1.attribute}
+                                        typeAttrQuest2={gameStartState.quest2.attribute}
                                         freeUpgrade={gameCurrentState.freeUpgrade > 0}
                                         setFreeUpgrade={gameCurrentState.setFreeUpgrade}
                                         setCurrentGold={gameCurrentState.setCurrentGold}

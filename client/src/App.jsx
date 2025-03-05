@@ -50,11 +50,13 @@ function App() {
     const[infoInviterLobby, setInfoInviterLobby] = useState(new Map());
     
     const[lobby, setLobby] = useState(-1);
+    const[lobbyID, setLobbyID] = useState(-1);
    
     const[lobbyUpdated,setLobbyUpdated] = useState(false);
 
     const[gameStart, setGameStart] = useState(false);
-    const[gameInitState, setGameInitState] = useState(gameInitMock);
+    const[gameInitState, setGameInitState] = useState(-1);
+    const[gameStartState, setGameStartState] = useState(gameInitMock);
     const[gameUpdated,setGameUpdated] = useState(false);
     const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
     const[gameEnd,setGameEnd] = useState(false);
@@ -67,39 +69,41 @@ function App() {
     const navigate = useNavigate();
     
     
-    const gameInit = useCallback(()=>{
-        const indexCardsCurrentPlayer = gameInitState.players.findIndex((p)=> p === username);
-        const thisPlayer = gameInitState.players[indexCardsCurrentPlayer];
+    const gameInit = useCallback((gis, username)=>{
+        const indexCardsCurrentPlayer = gis.players.findIndex((p)=> p.username === username);
+        const thisPlayer = gis.players[indexCardsCurrentPlayer];
         const newBoardPlayer = [];
 
         let i = indexCardsCurrentPlayer + 1;
-        while(i < gameInitState.players.length){
-            newBoardPlayer.push(gameInitState.players[i]);
+        while(i < gis.players.length){
+            newBoardPlayer.push(gis.players[i]);
             i++;
         }
         let j = 0;
         while(j < indexCardsCurrentPlayer){
-            newBoardPlayer.push(gameInitState.players[j]);
+            newBoardPlayer.push(gis.players[j]);
             j++;
         }
 
         const init = {
             player: thisPlayer,
-            quest1: gameInitState.quest1,
-            quest2: gameInitState.quest2,
-            dices: gameInitState.dices,
+            quest1: gis.quest1,
+            quest2: gis.quest2,
+            dices: gis.dices,
             otherPlayers : newBoardPlayer,
-            config : gameInitState.config
+            config : gis.config
         }
         return init;
-    },[gameInitState,username])
+    },[])
 
 
     const refreshGame = useCallback(()=>{
         setLobby(-1);
+        setLobbyID(-1);
         setLobbyUpdated(false);
         setGameStart(false);
-        setGameInitState(gameInitMock);
+        setGameInitState(-1);
+        setGameStartState(gameInitMock);
         setGameOnNewTurn(-1);
         setInfoInviterLobby(new Map());
         setGameEndState(-1);
@@ -142,6 +146,10 @@ function App() {
         recordSinglePlayer,
         setRecordSinglePlayer,
         lobby, 
+        lobbyID,
+        gameStartState,
+        setGameStartState,
+        setLobbyID,
         setLobby, 
         statusOnline,
         openToastNotification,
@@ -217,13 +225,17 @@ function App() {
 
 
     useEffect(()=>{
-        if(username !== "" && userID !== -1 && lobby !== -1){
+        if(username !== "" && userID !== -1 && lobbyID !== -1){
             // rtdb.resetInvite(userID);
+            console.log("QUANTE VOLTE ENTRO")
             repositoryLobby.subscribeToLobby(
-                lobby, 
+                lobby,
+                lobbyID,
+                gameInitState,
                 username, 
                 setLobby,
-                setLobbyUpdated, 
+                setLobbyID, 
+                setLobbyUpdated,
                 setGameStart, 
                 setGameInitState, 
                 setGameUpdated, 
@@ -240,7 +252,7 @@ function App() {
             // )
         }
        
-    },[username, userID, lobby, infoInviterLobby])
+    },[username, userID, lobbyID, gameInitState])
 
     useEffect(() => {
         // const handleBeforeUnload = (event) => {

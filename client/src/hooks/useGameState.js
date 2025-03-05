@@ -81,6 +81,7 @@ export const useGameState = (config, skillsTreeInit) => {
       getSkillById,
       getSkillAttributeSetter,
       skillsGained,
+      skillsTree,
       setSkillsGained,
       freeUpgrade,
       setFreeUpgrade,

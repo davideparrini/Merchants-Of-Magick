@@ -28,9 +28,14 @@ const getLobbyNoError = async (lobbyID) => {
 
 // Reusable function to update lobby
 const updateLobby = async (lobbyID, updateData) => {
-    const lobbyRef = doc(dbFirestore, "lobbies", lobbyID);
-    await updateDoc(lobbyRef, updateData)
-    return await getLobbyData(lobbyID); // Return the updated lobby
+    try {
+        const lobbyRef = doc(dbFirestore, "lobbies", lobbyID);
+        await updateDoc(lobbyRef, updateData);
+        return await getLobbyData(lobbyID); // Return the updated lobby
+    } catch (error) {
+        console.error("Error updating lobby:", error);
+        throw error;
+    }
 };
 
 const getLobbyById = async (lobbyID) => {
@@ -46,6 +51,7 @@ const createLobby = async (player) => {
         disconnectedPlayers: [],
         backupPlayers: [],
         backupGameState: {},
+        gameInitState:{},
         gameState: {
             quest1: false,
             quest2: false,
@@ -139,6 +145,13 @@ const changeLobbyStatus = async (lobbyID, status) => {
     return await updateLobby(lobbyID, { status });
 };
 
+const updateGameNewTurn = async (lobbyID, newGameState, backupPlayer) => {
+    return await updateLobby(lobbyID, { 
+        gameState: newGameState ,
+        backupPlayers: arrayUnion(backupPlayer)
+
+    });
+};
 const updateGameState = async (lobbyID, newGameState) => {
     return await updateLobby(lobbyID, { gameState: newGameState });
 };
@@ -161,12 +174,15 @@ const deleteLobby = async (lobbyID) => {
 
 
 let unsubscribe = null;
-
+let nSub = 0;
 
 const subscribeToLobby = (
     lobby, 
+    lobbyID,
+    gameInitState,
     username,
     setLobby, 
+    setLobbyID,
     setLobbyUpdated, 
     setGameStart, 
     setGameInitState, 
@@ -175,12 +191,17 @@ const subscribeToLobby = (
     setGameEndState, 
     setGameEnd
 ) => {
-    
-  if (!lobby || !lobby.id) {
+    console.log("Numero Sub",nSub++)
+    console.log("Sub lobby :", lobby)
+    console.log("Sub Game init state :", gameInitState)
+  if (lobby === -1 || lobbyID === -1) {
+    if (unsubscribe) {
+        unsubscribe();
+    }
     return;
   }
 
-  const lobbyRef = doc(dbFirestore, "lobbies", lobby.id);
+  const lobbyRef = doc(dbFirestore, "lobbies", lobbyID);
 
   if (unsubscribe) {
     unsubscribe();
@@ -190,43 +211,51 @@ const subscribeToLobby = (
     if (!docSnapshot.exists()) return;
     
     const newData = docSnapshot.data();
-    console.log("CAMBIATO QUALCOSA", newData);
     
+    if(!newData.players.includes(username)){
+        setLobby(-1);
+        setLobbyID(-1);
+        unsubscribe();
+        return;
+    }
+
     switch (newData.status) {
       case LOBBY_STATUS.IN_LOBBY:
         if (lobby.players.length !== newData.players.length) {
-            setLobby({id: lobbyRef.id , ...newData});
+            setLobby({id: lobbyRef.id, ...newData});
             setLobbyUpdated(true);
-        }
-        if(lobby.gameInitState !== newData.gameInitState){
-            setGameInitState(newData.gameInitState);
-            setGameStart(true);
         }
         break;
 
       case LOBBY_STATUS.IN_GAME:
-        if (JSON.stringify(lobby.players) !== JSON.stringify(newData.players)) {
-            if(newData.gameState.cards.length !== 0)
-               await gameService.checkAllPlayersFinishTurn(newData, setGameOnNewTurn, setGameUpdated);
-        
-            if(newData.gameState.finalReports.length !== 0)
-                await gameService.checkAllPlayersEndGame(newData.id, newData.gameState, newData.players.length, newData.leader === username, setGameEndState, setGameEnd);
+        if(gameInitState === -1 && JSON.stringify(lobby.gameInitState) !== JSON.stringify(newData.gameInitState)){
+            setGameInitState(newData.gameInitState);
+            setGameStart(true);
+        }else {
+            if (lobby.players.length !== newData.players.length) {
+                if(newData.gameState.cards.length !== 0)
+                   await gameService.checkAllPlayersFinishTurn(newData, lobbyRef.id, setGameOnNewTurn, setGameUpdated);
             
+                if(newData.gameState.finalReports.length !== 0)
+                    await gameService.checkAllPlayersEndGame(lobbyRef.id, newData.gameState, newData.players.length, newData.leader === username, setGameEndState, setGameEnd);
+                
+            }
+            if (newData.gameState.cards.length > lobby.gameState.cards.length) {
+                await gameService.checkAllPlayersFinishTurn(newData, lobbyRef.id, setGameOnNewTurn, setGameUpdated);
+            }
+            if (newData.gameState.finalReports.length > lobby.gameState.finalReports.length) {
+                await gameService.checkAllPlayersEndGame(lobbyRef.id, newData.gameState, newData.players.length, newData.leader === username, setGameEndState, setGameEnd);
+            }
         }
-
-        if (newData.gameState.cards.length > lobby.gameState.cards.length) {
-            await gameService.checkAllPlayersFinishTurn(newData, setGameOnNewTurn, setGameUpdated);
-        }
-        if (newData.gameState.playerFinalReport.length > lobby.gameState.playerFinalReport.length) {
-            await gameService.checkAllPlayersEndGame(newData.id, newData.gameState, newData.players.length, newData.leader === username, setGameEndState, setGameEnd);
-        }
+        
         break;
-
-      default:
-        console.log(`⚠️ Stato ${newData.status} non monitorato.`);
-    }
-
-    setLobby({id: lobbyRef.id , ...newData});
+        
+        default:
+            console.log(`⚠️ Stato ${newData.status} non monitorato.`);
+        }
+        
+        setLobby({id: lobbyRef.id, ...newData});
+    
   });
   
 }
@@ -247,5 +276,6 @@ export const repositoryLobby = {
     getGameState,
     deleteLobby,
     disconnectPlayerFromLobby,
-    subscribeToLobby
+    subscribeToLobby,
+    updateGameNewTurn
 };

@@ -4,7 +4,7 @@ $perc-size-x-big: 2;
 $perc-size-big:1.2;
 $perc-size-normal:1;
 $perc-size-small:0.9;
-$perc-size-x-small:0.6;
+$perc-size-x-small:0.7;
 
 .gold{
     background-image: url(./gold4.png);
@@ -30,7 +30,8 @@ $perc-size-x-small:0.6;
 .x-small-size-gold{
     height: calc(4vh * $perc-size-x-small);
     width: calc(2vw * $perc-size-x-small);
-    font-size: calc(0.9vw * $perc-size-x-small);;
+    font-size: calc(1.3vw * $perc-size-x-small);
+    padding-left: 0.1vw;
 }
 .small-size-gold{
     height: calc(4.2vh * $perc-size-small);
@@ -45,7 +46,8 @@ $perc-size-x-small:0.6;
 .big-size-gold{
     height: calc(4vh * $perc-size-big);
     width: calc(2vw * $perc-size-big);
-    font-size: calc(0.9vw * $perc-size-big);;
+    font-size: calc(0.9vw * $perc-size-big);
+    padding-left: 0.1vw;
 }
 
 .x-big-size-gold{

@@ -1,4 +1,4 @@
-import { doc, getDoc } from '@firebase/firestore';
+import { doc, getDoc, setDoc } from '@firebase/firestore';
 import { dbFirestore } from '../../Config/FirebaseConfig';
 import { NotFoundError } from '../Errors/NotFoundError';
 
@@ -6,8 +6,8 @@ import { ERRORS } from '../constants/constants';
 
 
 const insertArchivedGame = async (lobbyID, finalReports) => {
-    const archivedGameRef = doc(dbFirestore, "archived-games",lobbyID);
-    await archivedGameRef.set({ finalReports });
+    const archivedGameRef = doc(dbFirestore, "archived-games", lobbyID);
+    await setDoc(archivedGameRef, {finalReports});
 };
 
 const getArchivedGame = async (lobbyID) => {

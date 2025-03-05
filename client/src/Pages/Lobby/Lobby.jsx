@@ -8,6 +8,7 @@ import BackBtn from '../components/BackBtn/BackBtn';
 import useEffectOnPage from '../../hooks/useEffectOnPage';
 import { lobbyService } from '../../BE/service/lobby-service';
 import { gameService } from '../../BE/service/game-service';
+import { repositoryLobby } from '../../BE/repository/lobby-repository';
 
 
 
@@ -24,6 +25,7 @@ function Lobby() {
         gameStart,  
         gameInitState,
         setGameInitState,
+        setGameStartState,
         navigate, 
         gameInit, 
         refreshGame,  
@@ -48,7 +50,7 @@ function Lobby() {
     const[sendJoin, setSendJoin] = useState(false);
     
 
-    const { id: lobbyID } = useParams();
+    const { id: lobbyIDParam } = useParams();
 
     useEffect(()=>{
         if(lobbyUpdated){
@@ -58,36 +60,16 @@ function Lobby() {
 
    
 
-    // useEffectOnPage( LOBBY_PAGE ,() => {
-    //     if(username !== "" && !sendJoin){
-    //         (async () => {
-    //             if (lobby === -1) {
-    //                 if (lobbyID) {
-    //                     setSendJoin(true);
-    //                     try {
-    //                         const res = await lobbyService.joinLobby(lobbyID, username, userID);   
-    //                         console.log(res)
-    //                         setLobby(res);
-    //                         setSendJoin(false);
-                        
-    //                     } catch (error) {
-    //                         console.error(error)
-    //                         alert(error);
-    //                         navigate(LOGGED_PAGE);
-    //                         setSendJoin(false);
-    //                     }
-    //                 } else {
-    //                     navigate(LOGGED_PAGE);
-    //                 }
-    //             }
-    //         })();
-    //     }
+    useEffectOnPage( LOBBY_PAGE ,() => {
+        if(lobby === -1){
+            navigate(LOGGED_PAGE);
+        }
         
-    // }, [lobby, username, sendJoin]);
+    }, [lobby]);
     
 
 
-    useEffect(()=>{
+    useEffectOnPage( LOBBY_PAGE ,()=>{
         if(gameStart){
             if(countdownGameStart > 0){
                 const intervalId = setInterval(() => {
@@ -97,8 +79,8 @@ function Lobby() {
                 
             }
             else{ 
-                const gI = gameInit();
-                setGameInitState(gI);
+                const gI = gameInit(gameInitState, username);
+                setGameStartState(gI);
                 
                 navigate(`${GAME_PAGE}/${lobby.id}`)
                 setCountdownGameStart(5);
@@ -108,7 +90,7 @@ function Lobby() {
     },[gameStart, countdownGameStart,gameInitState])
 
     const handleCopy = useCallback(()=>{
-        navigator.clipboard.writeText(lobbyID);
+        navigator.clipboard.writeText(lobbyIDParam);
     },[lobby.id]);
 
     return (
@@ -123,7 +105,7 @@ function Lobby() {
                         
                         <label className='label-id-lobby'>ID Lobby :</label>
                         <div className='container-id-btn-id'>
-                        <div className='label-id'>{lobbyID}</div>
+                        <div className='label-id'>{lobbyIDParam}</div>
                             <div className={`btn-copy-id ${idCopied ? 'copied-id' : '' }`} onClick={()=>{setIdCopied(true); handleCopy(); }}>
                                 <div className={idCopied ? '' : 'img-copy'}/>
                                 {idCopied ? 'Copied!' :'Copy ID'}
@@ -149,9 +131,9 @@ function Lobby() {
                     </div>
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
-                        <button className='btn-add-player' onClick={async ()=>{
+                        <button className='btn-add-player inactive-btn' onClick={async ()=>{
                             try {
-                                const res =  await lobbyService.invitePlayer(lobbyID, playerToAdd, username);
+                                const res =  await lobbyService.invitePlayer(lobbyIDParam, playerToAdd, username);
                                 if(!res){
                                     alert("Il player invitato non è online");
                                 }
@@ -265,7 +247,10 @@ function Lobby() {
                     </div>
                 </div>
             </div>
-            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={refreshGame} message={'Are you sure to leave the lobby?'} alert={true}/>
+            <BackBtn pageToBack={LOGGED_PAGE} actionToDo={()=>{
+                refreshGame();
+                repositoryLobby.leaveLobby(lobby.id, username);
+                }} message={'Are you sure to leave the lobby?'} alert={true}/>
             <LogOut/>
             <FullScreenBtn/>
         </div>
