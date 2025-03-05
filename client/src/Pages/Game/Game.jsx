@@ -64,7 +64,7 @@ import { gameService } from '../../BE/service/game-service';
 
 
 //SE TEST TRUE SI POSSONO GIOCARE INFINITI DADI
-const testActive = true;
+const testActive = false;
 
 
 const TYPE_GOLD_X_BIG = 'XBIG';
@@ -347,7 +347,7 @@ function Game() {
     const finishTurn = useCallback(async ()=>{
         if(!turnDone){
             if(!singlePlayerGame){
-                if(gameCurrentState.nTurn === gameStartState.config.nTurn){
+                if(gameCurrentState.nTurn < gameStartState.config.nTurn){
                     card1.inProgress = showCard1;
                     card2.inProgress = showCard2;
                     card3.inProgress = showCard3;
