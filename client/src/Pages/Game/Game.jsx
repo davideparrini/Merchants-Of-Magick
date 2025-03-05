@@ -54,12 +54,12 @@ import BoardCards from '../components/BoardCards/BoardCards';
 import Gold from '../components/Gold/Gold';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import ItemShop from '../components/Shop/ItemShop';
-import { apiGame } from '../../api/game-api';
 import { useDiceState } from '../../hooks/useDiceState';
 import { DICE } from '../../Config/constants';
 import { useGameState } from '../../hooks/useGameState';
 import { useParams } from 'react-router-dom';
 import { usePlayerState } from '../../hooks/usePlayerState';
+import { gameService } from '../../BE/service/game-service';
 
 
 
@@ -138,7 +138,7 @@ const nPotion_extraDice6 = 4;
 function Game() {
 
 
-    const { socketID, fullScreen, refreshGame, userAuthenticated,checkPersonalScore, singlePlayerGame, username, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate } = useContext(AppContext);
+    const { fullScreen, refreshGame, userAuthenticated,checkPersonalScore, singlePlayerGame, username, gameInitState, gameOnNewTurn,setGameOnNewTurn, gameUpdated, setGameUpdated, gameEnd, setGameEnd, WINNER_PAGE, LOGGED_PAGE,navigate, setGameEndState } = useContext(AppContext);
     
     
     const { id: lobbyID } = useParams();
@@ -367,14 +367,13 @@ function Game() {
                         username: username,
                         backup: gameCurrentState
                     }
-                    const res = await apiGame.finishTurn(lobbyID, playerGameState, backupPlayer)
-                    
-                    switch(res.statusCode){
-                        case 200:
-                            setTurnDone(true);
-                            break;
-                        default:
+                    try {
+                        await gameService.playerFinishTurn(lobbyID, playerGameState, backupPlayer, setGameOnNewTurn, setGameUpdated)
+                        setTurnDone(true);
+                    } catch (error) {
+                        console.error(error);
                     }
+                    
                 }else{
                     const finalReport = {
                         username: username,
@@ -389,14 +388,15 @@ function Game() {
                             gold: gameCurrentState.currentGold
                         }
                     }
-                   const res = await apiGame.endGame(lobbyID,finalReport);
-                    
-                   switch(res.statusCode){
-                    case 200:
+                 
+                   try {
+                        await gameService.playerEndGame(lobbyID,finalReport, username, setGameEndState, setGameEnd);
                         setTurnDone(true);
-                        break;
-                    default:
-                }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                  
+                
                 }
             }
             else{
@@ -504,15 +504,12 @@ function Game() {
                     gold: gameCurrentState.currentGold
                 }
             }
-            const res = await apiGame.endGame(lobbyID,finalReport);
-                    
-            switch(res.statusCode){
-             case 200:
-                 setTurnDone(true);
-                 return;
-             default:
-                return;
-            }     
+            try {
+                await gameService.playerEndGame(lobbyID,finalReport, setGameEndState, setGameEnd);
+                setTurnDone(true);
+            } catch (error) {
+                console.error(error);
+            }
         }  
         
         const newBoardPlayer = [];
@@ -614,23 +611,23 @@ function Game() {
                 navigate(LOGGED_PAGE);
                 refreshGame();
             }
-            if (gameInitState.mock &&  userAuthenticated && username !== "" && socketID !== -1) {
+            if (gameInitState.mock &&  userAuthenticated && username !== "" ) {
 
-                const res = await apiGame.reconnectGame(lobbyID, username);
+                // const res = await apiGame.reconnectGame(lobbyID, username);
                 
-                switch(res.statusCode){
-                    case 200:
-                        restoreBackupState(res.data);
-                        break;
-                    default:
-                        alert("Mi spiace ma ti sei disconnesso e il gioco è andato avanti, non è possibile riunirsi al game");
-                        navigate(LOGGED_PAGE);
-                }
+                // switch(res.statusCode){
+                //     case 200:
+                //         restoreBackupState(res.data);
+                //         break;
+                //     default:
+                //         alert("Mi spiace ma ti sei disconnesso e il gioco è andato avanti, non è possibile riunirsi al game");
+                //         navigate(LOGGED_PAGE);
+                // }
                 
             }
         };
         checkReconnection();
-    }, [gameInitState, userAuthenticated, username, socketID]);
+    }, [gameInitState, userAuthenticated, username]);
     
     
 

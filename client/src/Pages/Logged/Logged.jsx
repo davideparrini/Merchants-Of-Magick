@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useRef, useState} from 'react'
 import './Logged.scss'
-import { connectionHandlerClient } from '../../Config/connectionHandler';
 import { AppContext } from '../../App';
 import ToastNotication from '../components/ToastNotification/ToastNotication';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
 import Gold from '../components/Gold/Gold';
-import { apiLobby } from '../../api/lobby-api';
 import useEffectOnPage from '../../hooks/useEffectOnPage';
+import { lobbyService } from '../../BE/service/lobby-service';
+import { repositoryUsers } from '../../BE/repository/users-repository.js';
 
 const TYPE_GOLD_X_BIG = 'XBIG';
 
 function Logged() {
 
 
-    const { isSWActive , username, setLobbyUpdated,setStatusOnline, setSocketID, setGameStart, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer, LOGGED_PAGE, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,singlePlayerGame, setGameOnNewTurn, navigate, LOBBY_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
+    const { userID, isSWActive , username, infoInviterLobby, setInfoInviterLobby, setSinglePlayerGame, recordSinglePlayer, LOGGED_PAGE, openToastNotification, setOpenToastNotification, statusOnline ,lobby, setLobby, setGameUpdated, setGameInitState, setGameEndState, setGameEnd,singlePlayerGame, setGameOnNewTurn, navigate, LOBBY_PAGE, refreshGame,GAME_PAGE} = useContext(AppContext);
 
     
     const [idLobbyJoin, setIdLobbyJoin] = useState('');
@@ -80,17 +80,12 @@ function Logged() {
                             onClick={async ()=>{
                                 setIsLoading(true)
                                 refreshGame();
-                                const res = await apiLobby.createLobby(username);
-                                
-                                switch(res.statusCode){
-                                    case 200:
-                                        setLobby(res.data); 
-                                        break;
-                                    case 408:
-                                        alert(res.data.error);
-                                        window.location.reload();
-                                        break;
-                                    default:
+                                try {
+                                    const res = await lobbyService.createLobby(username, userID);
+                                    setLobby(res)
+                                } catch (error) {
+                                    alert(error);
+                                    console.error(error)
                                 }
                             
                                 setIsLoading(true)
@@ -135,20 +130,14 @@ function Logged() {
                         onClick={async()=>{
                             refreshGame();
                             setIsLoading(true);
-                            const res = await apiLobby.joinLobby(idLobbyJoin, username);
-                            
-                            switch(res.statusCode){
-                                case 200:
-                                    setLobby(res.data);
-                                    setInfoInviterLobby(-1);
-                                    break;
-                                case 408:
-                                    alert(res.data.error);
-                                    window.location.reload();
-                                    break;
-                                default:
-                                    alert(res.data.error);
+                            try {
+                                const res = await lobbyService.joinLobby(idLobbyJoin, username, userID);
+                                setLobby(res);
+                            } catch (error) {
+                                alert(error);
+                                console.error(error);
                             }
+
                             setIsLoading(false);
                         }}>Join !</button>
                 </div>  
@@ -161,21 +150,7 @@ function Logged() {
                             <div className='btn-refresh-connection' onClick={()=>{
                                 if(!statusOnline){
                                     if(username){
-                                        connectionHandlerClient.connect(
-                                            setStatusOnline, 
-                                            setInfoInviterLobby, 
-                                            setOpenToastNotification, 
-                                            setLobby, 
-                                            setLobbyUpdated, 
-                                            setGameStart, 
-                                            setGameInitState, 
-                                            setGameUpdated, 
-                                            setGameOnNewTurn, 
-                                            setGameEndState, 
-                                            setGameEnd, 
-                                            setSocketID,
-                                            username
-                                        );
+                                      
                                     }
                                 }
                             }}>
@@ -190,29 +165,28 @@ function Logged() {
             </div>
             
             { 
-                infoInviterLobby !== -1 && (
+                infoInviterLobby > 0 && (
                     <ToastNotication 
                         question={`You are invited in a lobby by ${infoInviterLobby.usernameInviter}.  Would you like to join him?`}
                         positiveRespose={'Yes'}
                         negativeRespose={'No'}
-                        handlerNegativeRespose={()=>{
-                            setInfoInviterLobby(-1);
+                        handlerNegativeRespose={async ()=>{
+                            
+                            // await repositoryUsers.removeInvite(userID, infoInviterLobby.usernameInviter)
+                            // setInfoInviterLobby(prev => prev.delete(infoInviterLobby.usernameInviter))
                         }}
                         handlerPositiveRespose={async ()=>{
-                            refreshGame();
-                            const res = await apiLobby.joinLobby(infoInviterLobby.lobbyID, username);
-                            switch(res.statusCode){
-                                case 200:
-                                    setLobby(res.data);
-                                    setInfoInviterLobby(-1);
-                                    break;
-                                case 408:
-                                    alert(res.data.error);
-                                    window.location.reload();
-                                    break;
-                                default:
-                                    alert(res.data.error);
-                            }
+                            // refreshGame();
+                            // try {
+                            //     const res = await lobbyService.joinLobby(infoInviterLobby.lobbyID, username, userID);
+                            //     setLobby(res);
+                            //     await repositoryUsers.removeInvite(userID, infoInviterLobby.usernameInviter)
+                            //     setInfoInviterLobby(prev => prev.delete(infoInviterLobby.usernameInviter))
+                            // } catch (error) {
+                            //     alert(error);
+                            //     console.error(error);
+                            // }
+                            
                         }}
                         openState={openToastNotification}
                         setOpenState={setOpenToastNotification}

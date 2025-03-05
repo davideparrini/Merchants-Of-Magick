@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
-import { auth } from './Config/auth';
+import { auth } from './BE/auth';
 import { onAuthStateChanged } from 'firebase/auth';
-import { dbFirestore} from './Config/firestoreDB';
-import { connectionHandlerClient } from './Config/connectionHandler';
+import { repositoryUsers} from './BE/repository/users-repository.js';
+import { repositoryLobby } from './BE/repository/lobby-repository';
 
 import './App.scss'
 
@@ -16,10 +16,10 @@ import SignUp from './Pages/LoginForm_SignUp/SignUp';
 import SetUsername from './Pages/SetUsername/SetUsername';
 import Winner from './Pages/Winner/Winner';
 import Home from './Pages/Home/Home';
-import { apiLobby } from './api/lobby-api';
 import { gameInitMock } from './Config/constants';
 import ErrorBoundary from './errorHandler/ErrorBoundary';
 import { useServiceWorkerStatus } from './hooks/useServiceWorkenStatus';
+// import { rtdb } from './BE/repository/rtdb.js';
 
 
 
@@ -43,12 +43,12 @@ function App() {
 
     const[userAuthenticated,setUserAuthenticated] = useState(false);
     const[userID, setUserID] = useState(-1);
-    const[statusOnline, setStatusOnline] = useState(false);
+    const[statusOnline, setStatusOnline] = useState(navigator.onLine);
     const[username,setUsername] = useState('');
     const[recordSinglePlayer, setRecordSinglePlayer] = useState(-1);
     const[openToastNotification,setOpenToastNotification] = useState(false);
-    const[infoInviterLobby, setInfoInviterLobby] = useState(-1);
-    const[socketID,setSocketID] = useState(-1);
+    const[infoInviterLobby, setInfoInviterLobby] = useState(new Map());
+    
     const[lobby, setLobby] = useState(-1);
    
     const[lobbyUpdated,setLobbyUpdated] = useState(false);
@@ -68,7 +68,7 @@ function App() {
     
     
     const gameInit = useCallback(()=>{
-        const indexCardsCurrentPlayer = gameInitState.players.findIndex((p)=> p.username === username);
+        const indexCardsCurrentPlayer = gameInitState.players.findIndex((p)=> p === username);
         const thisPlayer = gameInitState.players[indexCardsCurrentPlayer];
         const newBoardPlayer = [];
 
@@ -96,15 +96,12 @@ function App() {
 
 
     const refreshGame = useCallback(()=>{
-        if(lobby !== -1 && lobby.id != null){
-            apiLobby.leaveLobby(lobby.id, username);
-        }
         setLobby(-1);
         setLobbyUpdated(false);
         setGameStart(false);
         setGameInitState(gameInitMock);
         setGameOnNewTurn(-1);
-        setInfoInviterLobby(-1);
+        setInfoInviterLobby(new Map());
         setGameEndState(-1);
         setGameUpdated(false); 
         setGameEnd(false);
@@ -119,12 +116,11 @@ function App() {
         setUserID(-1);
         navigate('/');
         console.log("logged out");
-        connectionHandlerClient.disconnect();
     },[refreshGame])
 
     const checkPersonalScore = useCallback((score)=>{
         if(score > recordSinglePlayer){
-            dbFirestore.updateRecord(userID,score);
+            repositoryUsers.updateRecord(userID,score);
             setRecordSinglePlayer(score);
         }
     },[recordSinglePlayer, userID])
@@ -161,8 +157,6 @@ function App() {
         gameEnd,
         setGameEnd,
         navigate,
-        socketID,
-        setSocketID,
         singlePlayerGame,
         setSinglePlayerGame,
         LOGIN_PAGE, 
@@ -180,7 +174,7 @@ function App() {
         refreshGame,
         isSWActive
     
-    }),[lobbyUpdated, fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, socketID, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame, isSWActive]);
+    }),[lobbyUpdated, fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame, isSWActive]);
 
 
 
@@ -192,40 +186,22 @@ function App() {
             if(user){
                 //Utente autenticato
                 setUserAuthenticated(true);
-                setUserID(user.uid);
-
+                setUserID(()=>user.uid);
+                // rtdb.setOnline(user.uid,true );
                 //Faccio un check dell'username
                 //hasUsername true -> Ottengo l'username da firestore
                 //false -> L'utente non ha ancora registrato un username (unico), lo forzo a settare un username se vuole procedere 
-                dbFirestore.hasUsername(user.uid).then(hasUsername =>{
+                repositoryUsers.hasUsername(user.uid).then(hasUsername =>{
                     if(!hasUsername){
                         navigate(SET_USERNAME);
                     }
                     else{ 
-                        dbFirestore.getUserData(user.uid).then((res) =>{
-                            setUsername(res.username);
+                        repositoryUsers.getUserData(user.uid).then((res) =>{
+                            setUsername(()=>res.username);
                             setRecordSinglePlayer(res.record === undefined ? 0 : res.record)
                         } );
                     } 
                 })
-                //Connetto l'utente al server
-                if(username){
-                    connectionHandlerClient.connect( 
-                        setStatusOnline, 
-                        setInfoInviterLobby, 
-                        setOpenToastNotification, 
-                        setLobby, 
-                        setLobbyUpdated, 
-                        setGameStart, 
-                        setGameInitState, 
-                        setGameUpdated, 
-                        setGameOnNewTurn, 
-                        setGameEndState, 
-                        setGameEnd, 
-                        setSocketID,
-                        username
-                    ); 
-                }
                 
             }
             else {
@@ -236,11 +212,67 @@ function App() {
         return ()=>{         
             unsub(); 
             setUserAuthenticated(false);
-            connectionHandlerClient.disconnect();
         }
     },[username]);
 
 
+    useEffect(()=>{
+        if(username !== "" && userID !== -1 && lobby !== -1){
+            // rtdb.resetInvite(userID);
+            repositoryLobby.subscribeToLobby(
+                lobby, 
+                username, 
+                setLobby,
+                setLobbyUpdated, 
+                setGameStart, 
+                setGameInitState, 
+                setGameUpdated, 
+                setGameOnNewTurn, 
+                setGameEndState, 
+                setGameEnd
+            )
+
+            // rtdb.subscribeToInvite(
+            //     userID,
+            //     setInfoInviterLobby,
+            //     infoInviterLobby,
+            //     setOpenToastNotification
+            // )
+        }
+       
+    },[username, userID, lobby, infoInviterLobby])
+
+    useEffect(() => {
+        // const handleBeforeUnload = (event) => {
+        //     event.preventDefault();
+        //     event.returnValue = ''; 
+        //     console.log("Tentativo di chiusura della finestra");
+        // };
+    
+        const handleOnline = () => {
+            console.log("Sei online!");
+            setStatusOnline(true);
+        };
+    
+        const handleOffline = () => {
+            console.log("Sei offline!");
+            setStatusOnline(false);
+        };
+    
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        // window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        return () => {
+            // window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, [setStatusOnline]); // Dipendenza per assicurarsi che lo stato venga aggiornato
+    
+
+
+    
 
     return (    
         <div className='App'>

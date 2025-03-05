@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import './SetUsername.scss'
-import { dbFirestore} from '../../Config/firestoreDB';
+import { repositoryUsers} from '../../BE/repository/users-repository.js';
 import { AppContext } from '../../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
@@ -18,7 +18,7 @@ function SetUsername() {
             <label className='label-set-username'>Username</label>
             <input className={`field-set-username ${validUsername === null ? '' : (validUsername ? 'valid-username' : 'invalid-username')}`} value={nickname} maxLength={15} type='text' 
                     onChange={e =>{
-                        dbFirestore.checkUsername(e.target.value).then(b =>{
+                        repositoryUsers.checkUsername(e.target.value).then(b =>{
                             if(b && e.target.value.length >= 4){
                                 setValidUsername(true);
                             }
@@ -32,7 +32,7 @@ function SetUsername() {
             <button className={`btn-submit-username ${validUsername ? '' : 'btn-invalid-username'}`} 
                 onClick={()=>{
                     if(validUsername){
-                        dbFirestore.setUsername(userID, nickname);
+                        repositoryUsers.setUsername(userID, nickname);
                         setUsername(nickname);
                         setRecordSinglePlayer(0);
                         setNickname('');

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { userAuth } from '../../../Config/auth';
+import { userAuth } from '../../../BE/auth';
 import './LogOut.css'
 
 function LogOut() {

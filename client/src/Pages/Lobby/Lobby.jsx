@@ -5,28 +5,27 @@ import { AppContext } from '../../App';
 import FullScreenBtn from '../components/FullScreenBtn/FullScreenBtn';
 import LogOut from '../components/LogOut/LogOut';
 import BackBtn from '../components/BackBtn/BackBtn';
-import { apiLobby } from '../../api/lobby-api';
-import { apiGame } from '../../api/game-api';
 import useEffectOnPage from '../../hooks/useEffectOnPage';
+import { lobbyService } from '../../BE/service/lobby-service';
+import { gameService } from '../../BE/service/game-service';
 
 
 
 function Lobby() {
 
     const { 
+        userID,
         lobbyUpdated,
         setLobbyUpdated,
         username, 
         statusOnline, 
         lobby, 
         setLobby,
-        setInfoInviterLobby,
         gameStart,  
         gameInitState,
         setGameInitState,
         navigate, 
         gameInit, 
-        socketID,
         refreshGame,  
         LOGGED_PAGE, 
         LOBBY_PAGE,
@@ -59,38 +58,32 @@ function Lobby() {
 
    
 
-    useEffectOnPage( LOBBY_PAGE ,() => {
-        if(username !== "" && socketID !== -1 && !sendJoin){
-            (async () => {
-                if (lobby === -1 || !lobby || !lobby.id || !statusOnline) {
-                    if (lobbyID) {
-                        setSendJoin(true);
-                        try {
-                            const res = await apiLobby.joinLobby(lobbyID, username);
-                            switch(res.statusCode){
-                                case 200:
-                                    setLobby(res.data);
-                                    setInfoInviterLobby(-1);
-                                    setSendJoin(false);
-                                    break;
-                                default:
-                                    alert(res.data.error);
-                                    navigate(LOGGED_PAGE);
-                                    setSendJoin(false);
-                            }
-
-                        } catch (error) {
-                            console.error("Errore nel joinLobby:", error);
-                            navigate(LOGGED_PAGE);
-                        }
-                    } else {
-                        navigate(LOGGED_PAGE);
-                    }
-                }
-            })();
-        }
+    // useEffectOnPage( LOBBY_PAGE ,() => {
+    //     if(username !== "" && !sendJoin){
+    //         (async () => {
+    //             if (lobby === -1) {
+    //                 if (lobbyID) {
+    //                     setSendJoin(true);
+    //                     try {
+    //                         const res = await lobbyService.joinLobby(lobbyID, username, userID);   
+    //                         console.log(res)
+    //                         setLobby(res);
+    //                         setSendJoin(false);
+                        
+    //                     } catch (error) {
+    //                         console.error(error)
+    //                         alert(error);
+    //                         navigate(LOGGED_PAGE);
+    //                         setSendJoin(false);
+    //                     }
+    //                 } else {
+    //                     navigate(LOGGED_PAGE);
+    //                 }
+    //             }
+    //         })();
+    //     }
         
-    }, [lobby, statusOnline, lobbyID, username]);
+    // }, [lobby, username, sendJoin]);
     
 
 
@@ -115,7 +108,7 @@ function Lobby() {
     },[gameStart, countdownGameStart,gameInitState])
 
     const handleCopy = useCallback(()=>{
-        navigator.clipboard.writeText(lobby.id);
+        navigator.clipboard.writeText(lobbyID);
     },[lobby.id]);
 
     return (
@@ -157,10 +150,16 @@ function Lobby() {
                     <div className='container-add-player'>
                         <input className='field-add-player' value={playerToAdd} maxLength={15} type='text' onChange={e => setPlayerToAdd(e.target.value)}/>
                         <button className='btn-add-player' onClick={async ()=>{
-                            const res =  await apiLobby.invitePlayer(lobby.id, playerToAdd, username);
-                            if(res.statusCode !== 200){
-                                alert(res.data.error);
+                            try {
+                                const res =  await lobbyService.invitePlayer(lobbyID, playerToAdd, username);
+                                if(!res){
+                                    alert("Il player invitato non è online");
+                                }
+                            } catch (error) {
+                                alert(error);
+                                console.error(error);
                             }
+            
                             setPlayerToAdd('');
                         }}>Add Player</button>
                     </div>
@@ -178,7 +177,7 @@ function Lobby() {
                                         dicePerTurn : configDicePerTurn
                                     }
                                     
-                                    await apiGame.startGame(lobby.id,config);
+                                    await gameService.startGame(lobby.id,config);
                                     setIsLoading(false);
                                 }
                                    

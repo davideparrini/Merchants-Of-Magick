@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import momIcon from './icon-48x48.png';
+
 import { BASE_URL_SERVER, SOCKET_EVENTS } from "./constants";
 import { apiMOM } from "../api/mom-api";
 
@@ -13,26 +13,13 @@ const createSocketConfig = () => {
     });
 
     /** 🔔 Invia una notifica desktop */
-    const sendNotification = (message) => {
-        if (!("Notification" in window)) {
-            alert("This browser does not support desktop notifications");
-        } else if (Notification.permission === "granted") {
-            new Notification(message, { icon: momIcon });
-        } else if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    new Notification(message, { icon: momIcon });
-                }
-            });
-        }
-    };
+    
 
     /** 📩 Registra il listener per gli inviti */
     const registerToInvite = (setInfoInviterLobby, setOpenToastNotification) => {
         socket.on(SOCKET_EVENTS.LOBBY_INVITE, ({ lobbyID, usernameInviter }) => {
             setInfoInviterLobby({ lobbyID, usernameInviter });
             setOpenToastNotification(true);
-            sendNotification(`You are invited to a lobby by ${usernameInviter}.`);
         });
     };
 

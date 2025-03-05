@@ -1,4 +1,4 @@
-import { auth } from "../Config/auth";
+import { auth } from "../BE/auth";
 
 
 export async function getHeaders(extraHeaders = {}) {
