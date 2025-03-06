@@ -1,6 +1,6 @@
 @use '../../../variables' as v;
 
-$quest-height: 9vh;
+$quest-height: 9vmin;
 
 
 .container-quest{
@@ -23,7 +23,7 @@ $quest-height: 9vh;
     position: absolute;
     height: $quest-height;
     width: v.$width-order_quest;
-    border-radius:1.4vh;
+    border-radius:1.4vmin;
     
 }
 
@@ -32,7 +32,7 @@ $quest-height: 9vh;
     height: 100%;
     max-width: 100%;
     background-color: v.$primary-color-4;
-    border-radius: 0.6vh;
+    border-radius: 0.6vmin;
     transition: width 0.5s ease-out;
     
 }
@@ -45,11 +45,11 @@ $quest-height: 9vh;
     align-content: center;
 
     background-color: transparent;
-    height: 80px;
+    height: 80vmin;
     width: 100%;
     font-variant: small-caps;
     font-weight: 700;
-    font-size: 0.9vw;
+    font-size: 2vmin;
     color: rgb(255, 255, 255);
     text-shadow: v.$text-shadow-primarycolor2;
     z-index: 3;
@@ -57,10 +57,10 @@ $quest-height: 9vh;
 .quest-text::before{
     content: '';
     position: relative;
-    left: 0.3vw;
-    bottom: 3.3vh;
-    height: 1vh;
-    width: 0.7vw;
+    left: 0.6vmin;
+    bottom: 3.3vmin;
+    height: 0.8vmin;
+    width: 1.5vmin;
     background: v.$primary-color;
     transform: rotate(45deg);
     z-index: 3;
@@ -68,5 +68,5 @@ $quest-height: 9vh;
 
 .gold-container-quest{
     position: relative;
-    right:10px;
+    right:0.4vmin;
 }

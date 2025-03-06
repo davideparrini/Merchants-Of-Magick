@@ -7,17 +7,17 @@
     align-self: center;
     // background: v.$card-color-0;
     background: v.$bg-color-1;
-    border-radius: 1.3vh;
+    border-radius: 1.3vmin;
     border: v.$border-primary-4px;
     
-    padding: 0.4vw;
+    padding: 0.8vmin;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    padding-top: 1vh;
+    padding-top: 1vmin;
     height: 100%;
-    width: 13vw;
+    width: 26vmin;
     
 }
 .order-done{
@@ -32,25 +32,25 @@
     position: relative;
     z-index: 3;
     width: 100%;
-    top: 1.4vh;
+    top: 1.4vmin;
     font-family: 'Shizuru', cursive;
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
     font-weight: 700;
-    font-size: 1.5vw;
+    font-size: 3vmin;
 }
 .order-gold{
-    position: relative;
-    left: 5.4vw;
-    bottom: 5.5vh; 
+    position: absolute;
+    left: 23.5vmin;
+    top: 1.5vmin; 
 }
 
 .order-img{
     position: absolute;
     justify-self: center;
     align-self: center;
-    height: 29vh;
-    width: 14vw;
+    height: 29vmin;
+    width: 28vmin;
     z-index: 0;
     background-size: cover;
     background-repeat: no-repeat;
@@ -99,19 +99,19 @@
     background-color: v.$primary-color-2;
     z-index: 2;
     width: 90%;
-    height: 3vh;
+    height: 3vmin;
     color: white;
-    font-size: 1.6vh;
+    font-size: 1.6vmin;
     font-weight: 600;
     text-shadow: v.$text-shadow-stroke;
-    margin: 0.3vh;
+    margin: 0.3vmin;
     text-transform: capitalize;
 }
 .bar-order{
     position: absolute;
     align-self: center;
     width: 90%;
-    height: 0.3vh;
+    height: 0.3vmin;
     background: v.$primary-color;
     filter: drop-shadow(0px 0px 0.2vh red)
 }
@@ -120,13 +120,13 @@
     justify-content: center;
     align-items: center;
     width: 90%;
-    height: 3vh;
+    height: 3vmin;
     background-color: hsl(0, 11%, 9%);
     border-radius: 2vh;
     border: 0.3vh solid black;
     color: white;
     text-align: center;
-    font-size: 1.5vh;
+    font-size: 1.5vmin;
     font-weight: 600;
     text-shadow: v.$text-shadow-stroke;
     margin: 0.3vh;

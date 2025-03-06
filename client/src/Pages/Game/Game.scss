@@ -38,18 +38,19 @@
    position: relative;
    right: 4vmin;
    .container-dices-potion{
-        left: 1vmin;
+        left: 0.1vmin;
     }
     .players-table{
-        right: 3vmin;
+        right: 6vmin;
+        bottom: 2vmin;
     }
     .skills-table{
         position: relative;
-        left: -1vmin;
+        left: -3.5vmin;
     }
     .container-order-quests{
         position: relative;
-        right: 9.8vmin;
+        right: 12.5vmin;
     }
 
     .btn-turn-container{
@@ -60,6 +61,11 @@
     .legend-container{
         position: relative;
         left: 1vmin;
+    }
+    .cards-container{
+        position: relative;
+        left: 0vmin;
+        bottom: 2vmin;
     }
     
 
@@ -110,8 +116,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    height:10vh;
-    width: 10vw;
+    height:10vmin;
+    width: 20vmin;
 }
 
 .no-active{

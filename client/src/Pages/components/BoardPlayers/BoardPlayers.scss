@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0.6vw;
+    gap: 1vmin;
     border-top-left-radius: 1vh;
     border-top-right-radius: 1vh;
     align-items: center;
@@ -30,7 +30,7 @@
     align-items: center;
     background: v.$card-color--1;
     height: 70%;
-    width: 10vw;
+    width: 30vmin;
     border-radius: 3vh;
     color: white;
     font-size: 1.8vmin;
@@ -88,10 +88,10 @@
     height: 80%;
     display: flex;
     flex-direction: row;
-    gap: 1vw;
+    gap: 2vmin;
     justify-content: center;
     align-items: flex-end;
-    margin-bottom: 1vh;
+    margin-bottom: 1vmin;
 }
 .container-card1-BP{
     display: flex;
@@ -102,7 +102,7 @@
 }
 .container-card1-nc-BP{
     height: 100%;
-    width: 8.2vw;
+    width: 16.6vmin;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -117,11 +117,11 @@
 }
 .box-card1-BP{
     position: relative;
-    right: 0.2vw;
+    right: 0.5vmin;
 }
 .next-card{
     z-index: 4;
-    font-size: 1.6vh;
+    font-size: 1.6vmin;
     font-weight: 600;
     color: antiquewhite;
     text-shadow: v.$text-shadow-stroke;
