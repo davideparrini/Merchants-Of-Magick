@@ -1,9 +1,11 @@
 @use '../../../variables' as v;
 
 .btn-crafting{
-    height: 6vh;
-    width: 3vw;
+    height: 5.2vmin;
+    width: 5.2vmin;
     border-radius: 50%;
+    position: relative;
+    right: 0.5vmin;
     border: 0.5vh solid v.$primary-color;
     background-image: url(./craftingIcon1.png);
     background-size: cover;

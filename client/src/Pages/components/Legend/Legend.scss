@@ -4,12 +4,12 @@
 
 .legend-btn{
     border-radius: 50%;
-    height: 5vh;
-    width: 2.5vw;
+    height: 5.5vmin;
+    width: 5.5vmin;
     background-color: v.$primary-color;
     border: v.$border-primary2-2px;
     color: white;
-    font-size: 1.4vw;
+    font-size: 3.2vmin;
     font-weight: 550;
     cursor: pointer;
 
@@ -44,30 +44,29 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 26vh;
-    width: 16vw;
-    margin-top: 0.2vh;
+    height: 26vmin;
+    width: 35vmin;
 }
 .title-legend{
     font-family: "Ubuntu Mono", monospace;
     text-align: center;
-    font-size: 1.3vw;
+    font-size: 3vmin;
     letter-spacing: 0.2vw;
     color: rgb(255, 255, 255);
     background-color: v.$primary-color;
     height: min-content;
-    width: 16vw;
+    width: 35.3vmin;
     padding: auto;
     align-self: flex-end;
     text-shadow: rgb(0, 0, 0) 3px 1px 1px;
     border-radius: 1vh;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     text-align: center;
-    margin-top: 0.4vh;
+    margin-top: 0.2vmin;
 }
 .row-legend-attribute{
     height: auto;
-    width: 7vw;
+    width: 15.7vmin;
     display: grid;
     grid-template-areas: 
         'attributeLegend attributeLegend imgAttributeLegend'
@@ -82,7 +81,7 @@
 }
 
 .row-legend-item{
-    width: 15vw;
+    width: 33.5vmin;
     padding: 0.25vw;
     background-color: rgb(224, 195, 194);
     border-radius: 1.2vh;

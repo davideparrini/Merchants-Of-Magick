@@ -12,8 +12,8 @@ $perc-size-x-small:0.7;
     background-repeat: no-repeat;
     background-clip: content-box;
     z-index: 4;
-    height: calc(1vh * $perc-size-normal);
-    width: calc(1vw * $perc-size-normal);
+    height: calc(1vmin * $perc-size-normal);
+    width: calc(1vmin * $perc-size-normal);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,29 +28,29 @@ $perc-size-x-small:0.7;
 }
 
 .x-small-size-gold{
-    height: calc(4vh * $perc-size-x-small);
-    width: calc(2vw * $perc-size-x-small);
-    font-size: calc(1.3vw * $perc-size-x-small);
+    height: calc(4vmin * $perc-size-x-small);
+    width: calc(4vmin * $perc-size-x-small);
+    font-size: calc(1.8vmin * $perc-size-x-small);
     padding-left: 0.1vw;
 }
 .small-size-gold{
-    height: calc(4.2vh * $perc-size-small);
-    width: calc(2.2vw * $perc-size-small);
-    font-size: calc(1.04vw * $perc-size-small);
+    height: calc(4vmin * $perc-size-small);
+    width: calc(4vmin * $perc-size-small);
+    font-size: calc(1.8vmin* $perc-size-small);
 }
 .medium-size-gold{
-    height: calc(4vh * $perc-size-normal);
-    width: calc(2vw * $perc-size-normal);
-    font-size: calc(0.9vw * $perc-size-normal);;
+    height: calc(4vmin * $perc-size-normal);
+    width: calc(4vmin * $perc-size-normal);
+    font-size: calc(1.8vmin * $perc-size-normal);;
 }
 .big-size-gold{
-    height: calc(4vh * $perc-size-big);
-    width: calc(2vw * $perc-size-big);
-    font-size: calc(0.9vw * $perc-size-big);
+    height: calc(4vmin * $perc-size-big);
+    width: calc(4vmin * $perc-size-big);
+    font-size: calc(1.8vmin * $perc-size-big);
 }
 
 .x-big-size-gold{
     height: calc(4vh * $perc-size-x-big);
     width: calc(2vw * $perc-size-x-big);
-    font-size: calc(0.9vw * 1.5);;
+    font-size: calc(1.8vmin * 1.5);;
 }

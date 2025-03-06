@@ -5,7 +5,7 @@ $sizeSmall:0.7;
 
 
 .card{
-    width: calc(11.6vw * $sizeNormal);
+    width: calc(23vmin * $sizeNormal);
     height: calc(v.$height-card-normal-size * $sizeNormal);
     display: grid;
     grid-template-columns: 40% 20% 40%;

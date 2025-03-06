@@ -26,16 +26,17 @@
 .timer{
     background-image: url(./clock.png);
     background-size: cover;
-    height: 12.8vh;
-    width: 6.8vw;
+    height: 13.5vmin;
+    width: 13.5vmin;
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgb(0, 0, 0);
     text-shadow: 2px 2px 1px #b1b1b1;
     font-family: "Times New Roman", Times, serif;
-    padding-top: 0.1vh;
-    font-size: 2.7vw;
+    padding-top: 0.1vmin;
+    padding-left: 0.2vmin;
+    font-size: 5.5vmin;
     font-weight: 700;
   }
   .working{

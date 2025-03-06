@@ -740,6 +740,10 @@ function Game() {
             <ReportBoard reports={reportEndTurn} setReports={setReportEndTurn} endTurn={openReport} setEndTurn={setOpenReport} setGameRestart={setGameRestart} setTurnDone={setTurnDone} reportTime={reportTime} setReportTime={setReportTime}/>
             <div className={`game-container ${fullScreen ? 'fullscreen' : ''} ${turnDone  ? 'wait-state-game' :''}`}>   
                 <div className='upper-container'>
+                <div className='container-potion'>
+                        <img src={potionImg} className='potion-img' alt='POTION'></img>
+                        <div className='potion-label'>{gameCurrentState.nPotion}</div>
+                    </div>
                     <div className='container-extra-dices'>
                         <img src={titleExtraDices} alt='EXTRA DICES' className='upper-container-titles-extra-dices' ></img>
                         <div className='extra-dices'>
@@ -841,14 +845,14 @@ function Game() {
                     </div>
                     
                     <div className='timer-container'><Timer timerCountdown={gameStartState.config.countdown} finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart}/></div>
-
-                </div>
-                <div className='legend-container'><Legend/></div>
-                <div className='container-dices-potion' ref={dicesRef} >
-                    <div className='container-potion'>
-                        <img src={potionImg} className='potion-img' alt='POTION'></img>
-                        <div className='potion-label'>{gameCurrentState.nPotion}</div>
+                    <div className='shop-container'>
+                        <Shop shop={gameCurrentState.shop}/>
                     </div>
+                    <div className='legend-container'><Legend/></div>
+                
+                </div>
+                <div className='container-dices-potion' ref={dicesRef} >
+                    
                     <ContainerDice  
                         nPotion={gameCurrentState.nPotion} 
                         setnPotion={gameCurrentState.setNPotion} 
@@ -1046,9 +1050,7 @@ function Game() {
                     <ButtonTurnDone finishTurn={finishTurn} turnDone={turnDone} gameRestart={gameRestart} nDiceLeft_toUse={nDiceLeft_toUse} />
                 </div>
                 
-                <div className='shop-container'>
-                    <Shop shop={gameCurrentState.shop}/>
-                </div>
+                
                 
             </div>
             <Exit/>

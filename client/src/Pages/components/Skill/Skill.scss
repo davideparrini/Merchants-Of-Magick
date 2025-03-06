@@ -4,15 +4,15 @@
     display: grid;
     align-items:  center;
     justify-items: center;
-    gap: 0.5vh;
-    grid-template-rows: 3.2vh;
-    grid-template-columns: 2vw 7vw repeat(3, 0.3vw 1.8vw);
+    gap: 0.3vmin;
+    grid-template-rows: 3.2vmin;
+    grid-template-columns: 3vmin 15vmin repeat(3, 0.3vmin 3.7vmin);
     grid-template-areas: 'goldArea name img1 bt1 img2 bt2 img3 bt3';
     background: rgb(221, 207, 124);
-    width: 17vw;
-    height: 3.3vh;
+    width: 32vmin;
+    height: 3.3vmin;
     border-radius: 1.3vh;
-    padding: 0.5vh;
+    padding: 0.5vmin;
     box-shadow: 0 0 0.8vh 0 rgba(0, 0, 0, 0.2), 0 0.5vh 0.5vh 0 rgba(0, 0, 0, 0.24);
 }
 
@@ -29,13 +29,13 @@
 .number-circle{
     position: relative;
     border-radius: 50%;
-    width: 1.75vw;
-    height: 3.3vh;
+    width: 3.3vmin;
+    height: 3.3vmin;
     text-align: center;
     background: #fff;
     border: 0.3vh solid #666;
     color: #666;
-    font: 0.9vw Arial, sans-serif;
+    font: 1.75vmin Arial, sans-serif;
     font-weight: 700;
     z-index: 0;
 
@@ -43,7 +43,7 @@
 
 .ᨈ{
     position: absolute;
-    font-size: 0.64vw;
+    font-size: 1.3vmin;
     font-weight: 1300;
     top: -0.76vh;
     left: 0.48vw;
@@ -51,10 +51,10 @@
 }
 .ᨆ{
     position: absolute;
-    font-size:0.65vw;
+    font-size:1.3vmin;
     font-weight: 1300;
-    top: 1.4vh;
-    left: 0.5vw;
+    top: 1.3vmin;
+    left: 1vmin;
 
 }
 .no-img{
@@ -63,9 +63,9 @@
 }
 .attribute-img{
     position: relative;
-    right: 0.2vw;
-    height: 2.4vh;
-    width: 1.2vw;
+    right: 0.7vmin;
+    height: 2.4vmin;
+    width: 2.4vmin;
     z-index: 1;
     justify-self: start;
     
@@ -116,7 +116,7 @@
     font-family: 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 0.85vw;
+    font-size: 1.6vmin;
     text-align: center;
     grid-area: name;
 }
@@ -179,18 +179,18 @@
 }
 .charms-helper{
     position: relative;
-    left: 16.6vw;
-    bottom: 3vh;
+    left: 31.7vmin;
+    bottom: 2.9vmin;
     border-radius: 50%;
-    height: 2.2vh;
-    width: 1.1vw;
+    height: 2.2vmin;
+    width:  2.2vmin;
     background: v.$primary-color-4;
     border: v.$border-primary-2px;
     color: white;
     display: flex;
     justify-content: center;
     align-self: center;
-    font-size: 1.4vh;
+    font-size: 1.4vmin;
     font-weight: 600;
     cursor: pointer;
 }
@@ -203,15 +203,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1vh;
+    gap: 1vmin;
     height: 3.5vh;
-    width: 17vw;
+    width: 32vmin;
     border-radius: 3vh;
     border: v.$border-primary-2px;
     background: v.$primary-color-4;
     z-index: 2;
     color: #FFF;
-    font-size: 2vh;
+    font-size: 2vmin;
     text-shadow: v.$text-shadow-stroke;
 }
 .no-gold-helper{

@@ -1,5 +1,5 @@
-$label-height: 5.4vh;
-$label-width: 2.8vw;
+$label-height: 5.5vmin;
+$label-width: 5.5vmin;
 $label-border-radius: 1.3vh;
 $label-font: 1.36vw Arial, sans-serif;
 $label-color: hsl(56, 54%, 70%);
@@ -55,7 +55,7 @@ $text-shadow-primarycolor2: 0.15vw -0.15vw 0.25vw $primary-color-1, -0.155vw -0.
 $text-shadow-primarycolor3: 0.1vw -0.1vw 0.2vw $primary-color-1, -0.1vw -0.1vw 0.2vw $primary-color-1,-0.1vw 0.1vw 0.2vw $primary-color-1,0.1vw 0.1vw 0.2vw $primary-color-1,
 0.2vw -0.2vw 0.1vw #000000, -0.2vw -0.2vw 0.1vw #000000,-0.2vw 0.2vw 0.1vw #000000,0.2vw 0.2vw 0.1vw #000000;
 $text-shadow-stroke-white: 0px 0px 4px white;
-$height-card-normal-size: 32vh;
+$height-card-normal-size: 32vmin;
 $blue-btn: hsl(220, 70%, 35%);
 $blue-btn-0: hsl(220, 70%, 10%);
 $blue-btn-1: hsl(220, 70%, 20%);

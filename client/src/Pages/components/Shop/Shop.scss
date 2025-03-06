@@ -18,8 +18,8 @@ $text_shadow_px: 0.1vh;
     background-size: cover;
     border-radius: 50%;
     border: none;
-    height: 7.6vh;
-    width: 4.5vw;
+    height: 7vmin;
+    width: 7vmin;
     cursor: pointer;
 }
 
@@ -37,7 +37,7 @@ $text_shadow_px: 0.1vh;
     visibility: visible;
     transform: translateY(0);
     transition: 500ms ease;
-    z-index: 4;
+    z-index: 7;
 }
 
 .box-container-title-shop.inactive-shop{
