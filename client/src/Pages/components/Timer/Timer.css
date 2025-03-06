@@ -25,15 +25,16 @@
 
 .timer{
     background-image: url(./clock.png);
-    background-size: contain;
-    height: 12.5vh;
-    width: 6vw;
+    background-size: cover;
+    height: 12.8vh;
+    width: 6.8vw;
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgb(0, 0, 0);
     text-shadow: 2px 2px 1px #b1b1b1;
     font-family: "Times New Roman", Times, serif;
+    padding-top: 0.1vh;
     font-size: 2.7vw;
     font-weight: 700;
   }

@@ -46,11 +46,11 @@ const shuffle = (array) => {
 const createDeck = (typeDeck) => {
   switch (typeDeck) {
     case DECK_TYPES.ITEM:
-      return shuffle([...CRAFTING_ITEM_TYPES, ...CRAFTING_ITEM_TYPES, ...CRAFTING_ITEM_TYPES]);
+      return shuffle([...CRAFTING_ITEM_TYPES, ...CRAFTING_ITEM_TYPES]);
     case DECK_TYPES.ENCHANTMENT:
-      return shuffle([...ENCHANTMENT_TYPES, ...ENCHANTMENT_TYPES, ...ENCHANTMENT_TYPES]);
+      return shuffle([...ENCHANTMENT_TYPES, ...ENCHANTMENT_TYPES]);
     case DECK_TYPES.ORIGIN:
-      return shuffle([...ORIGIN_TYPES, ...ORIGIN_TYPES, ...ORIGIN_TYPES]);
+      return shuffle([...ORIGIN_TYPES, ...ORIGIN_TYPES]);
     default:
       return [];
   }

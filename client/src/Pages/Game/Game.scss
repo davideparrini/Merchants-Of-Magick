@@ -26,11 +26,9 @@
 }
 
 .fullscreen{
-    top: 60px;
-    left: 10px;
-    row-gap:10px;
+   
 }
-.wait-state-game{
+.wait-state-game{ 
     pointer-events: none;
 }
 
@@ -54,14 +52,12 @@
     
 }
 
-.timer{
+.timer-container{
+    width: 7vw;
+    height: 13vh;
     display: flex;
-    align-content: center;
+    align-items: center;
     justify-content: center;
-    text-align: center;
-    font-size: 70px;
-    font-weight: 700;
-    color: #ffffff;
 }
 
 .container-extra-dices{
@@ -261,48 +257,6 @@
     z-index: 0;
 }
 
-// .skills-table{
-//     grid-area: skillTable;
-//     display: flex;
-//     flex-direction: row;
-//     flex-wrap: wrap;
-//     min-width: fit-content;
-//     max-width: max-content;
-//     min-height: 330px;
-//     height: 80%;
-//     background: v.$skill-table-color;
-//     padding: 10px;
-//     margin: 5px;
-//     border-radius: 15px;
-//     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-//     position: relative;
-//     left: 30px;
-// }
-
-// .container-title-skills{
-//     display: flex;
-//     flex-direction: column;
-//     width: 50%;
-//     height: 100%;
-//     max-height: 290px;
-// }
-
-// .title-skills{
-//     align-self: center;
-//     height: 60px;
-//     width: 365px;
-//     margin-bottom: 20px;
-// }
-// .skills-container{
-//     display: flex;
-//     flex-direction: column;
-//     flex-wrap: wrap;
-//     height: 100%;
-//     width: 100%;
-//     row-gap: 10px;
-//     pointer-events: all;
-// }
-
 
 .skills-table{
     grid-area: skillTable;
@@ -313,14 +267,13 @@
     grid-template-rows: 10% 85%;
     grid-template-columns: 50% 50%;
     row-gap: 2vh;
-    width: 71vw;
+    width: 73vw;
     height: 40vh;
     background: v.$skill-table-color;
     padding: 0.6vw;
     padding-right: 1vw;
     padding-top: 2vh;
     margin: 0.5vh;
-    margin-right: 2vw;
     border-radius: 1.3vh;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     justify-self: center;

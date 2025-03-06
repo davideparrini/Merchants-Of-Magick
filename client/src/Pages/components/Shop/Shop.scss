@@ -15,10 +15,10 @@ $text_shadow_px: 0.1vh;
 
 .btn-shop{
     background: url(./shop.png);
-    background-size: contain;
+    background-size: cover;
     border-radius: 50%;
     border: none;
-    height: 9vh;
+    height: 7.6vh;
     width: 4.5vw;
     cursor: pointer;
 }

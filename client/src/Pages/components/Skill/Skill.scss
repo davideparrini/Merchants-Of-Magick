@@ -29,13 +29,13 @@
 .number-circle{
     position: relative;
     border-radius: 50%;
-    width: 1.7vw;
-    height: 3.4vh;
+    width: 1.75vw;
+    height: 3.3vh;
     text-align: center;
     background: #fff;
     border: 0.3vh solid #666;
     color: #666;
-    font: 1vw Arial, sans-serif;
+    font: 0.9vw Arial, sans-serif;
     font-weight: 700;
     z-index: 0;
 
@@ -43,14 +43,16 @@
 
 .ᨈ{
     position: absolute;
-    font-size: 1.3vh;
-    top: -0.9vh;
+    font-size: 0.64vw;
+    font-weight: 1300;
+    top: -0.76vh;
     left: 0.48vw;
 
 }
 .ᨆ{
     position: absolute;
-    font-size: 1.3vh;
+    font-size:0.65vw;
+    font-weight: 1300;
     top: 1.4vh;
     left: 0.5vw;
 
@@ -114,7 +116,7 @@
     font-family: 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 1.7vh;
+    font-size: 0.85vw;
     text-align: center;
     grid-area: name;
 }
