@@ -1,15 +1,19 @@
 @use '../../variables' as v;
 
 .Game{
-    height: 100%;
-    width: 100%;
+    height: 95vh;
+    width: 95vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
 .game-container {
-    height: 100%;
+    height: 95vh;
     // max-height: 1050px;
-    width: 100%;
+    width: 95vw;
+    aspect-ratio: 16/9;
     display: grid;   //btnTurn btnTurn btnShop
     grid-template-areas:
     'containerDices_Potion containerDices_Potion legenda upperContainer upperContainer upperContainer  upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer upperContainer .  btnShop . . . . .'
@@ -26,7 +30,7 @@
 }
 
 .fullscreen{
-   
+   margin-top: 1vh;
 }
 .wait-state-game{ 
     pointer-events: none;
@@ -139,15 +143,11 @@
 }
 
 .container-potion{
-    position: relative;
-    // left: 10px;
-    bottom: 1vh;
-    
+    position: relative;    
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: row;
-    
     width: 9.3vw;
 }   
 
