@@ -14,25 +14,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-end;
     padding-top: 1vmin;
     height: 100%;
     width: 26vmin;
+    gap: 0.9vmin;
     
 }
 .order-done{
     filter: v.$drop-show-order-quest-Done;
 }
 .order-title{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-self: center;
+    position: absolute;
+    top: 5.5vmin;
     text-align: center;
-    position: relative;
     z-index: 3;
     width: 100%;
-    top: 1.4vmin;
     font-family: 'Shizuru', cursive;
     color: white;
     text-shadow: v.$text-shadow-primarycolor;
@@ -47,10 +44,9 @@
 
 .order-img{
     position: absolute;
-    justify-self: center;
-    align-self: center;
-    height: 29vmin;
-    width: 28vmin;
+    bottom: 5vmin;
+    height: 27vmin;
+    width: 27vmin;
     z-index: 0;
     background-size: cover;
     background-repeat: no-repeat;
@@ -126,7 +122,7 @@
     border: 0.3vh solid black;
     color: white;
     text-align: center;
-    font-size: 1.5vmin;
+    font-size: 1.3vmin;
     font-weight: 600;
     text-shadow: v.$text-shadow-stroke;
     margin: 0.3vh;
