@@ -7,7 +7,7 @@ import { errorMiddleware } from "./middlewares/errors-handler";
 import { logger } from "./middlewares/logger";
 import lobbyRouter from "./routes/lobby-routes";
 import gameRouter from "./routes/game-routes";
-import { API_PRIVATE, PORT } from "./Config/config";
+import { API_PRIVATE, API_PUBLIC, PORT } from "./Config/config";
 import { authenticationHandler } from "./middlewares/authentication-handler";
 import genericRouter from "./routes/generic-routes";
 
@@ -38,7 +38,7 @@ app.use(express.json());
 app.use(API_PRIVATE, authenticationHandler);
 
 // Router
-app.use(`${API_PRIVATE}`, genericRouter);
+app.use(`${API_PUBLIC}`, genericRouter);
 app.use(`${API_PRIVATE}/lobby`, lobbyRouter);
 app.use(`${API_PRIVATE}/game`, gameRouter);
 
