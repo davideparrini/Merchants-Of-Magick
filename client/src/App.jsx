@@ -69,35 +69,34 @@ function App() {
     const navigate = useNavigate();
     
     
-    const gameInit = useCallback((gis, username)=>{
-        const indexCardsCurrentPlayer = gis.players.findIndex((p)=> p.username === username);
+    const gameInit = useCallback((gis, username) => {
+        const indexCardsCurrentPlayer = gis.players.findIndex((p) => p.username === username);
         const thisPlayer = gis.players[indexCardsCurrentPlayer];
         const newBoardPlayer = [];
 
         let i = indexCardsCurrentPlayer + 1;
-        while(i < gis.players.length){
+        while (i < gis.players.length) {
             newBoardPlayer.push(gis.players[i]);
             i++;
         }
         let j = 0;
-        while(j < indexCardsCurrentPlayer){
+        while (j < indexCardsCurrentPlayer) {
             newBoardPlayer.push(gis.players[j]);
             j++;
         }
 
-        const init = {
+        return {
             player: thisPlayer,
             quest1: gis.quest1,
             quest2: gis.quest2,
             dices: gis.dices,
-            otherPlayers : newBoardPlayer,
-            config : gis.config
-        }
-        return init;
-    },[])
+            otherPlayers: newBoardPlayer,
+            config: gis.config
+        };
+    }, []);
 
 
-    const refreshGame = useCallback(()=>{
+    const refreshGame = useCallback(() => {
         setLobby(-1);
         setLobbyID(-1);
         setLobbyUpdated(false);
@@ -107,54 +106,53 @@ function App() {
         setGameOnNewTurn(-1);
         setInfoInviterLobby(new Map());
         setGameEndState(-1);
-        setGameUpdated(false); 
+        setGameUpdated(false);
         setGameEnd(false);
         setSinglePlayerGame(false);
-        },[lobby, username])
+    }, []);
 
 
-    const logOut = useCallback(()=>{
+    const logOut = useCallback(() => {
         refreshGame();
         setUsername('');
         setUserAuthenticated(false);
         setUserID(-1);
         navigate('/');
-        console.log("logged out");
-    },[refreshGame])
+    }, [refreshGame, navigate]);
 
-    const checkPersonalScore = useCallback((score)=>{
-        if(score > recordSinglePlayer){
-            repositoryUsers.updateRecord(userID,score);
+    const checkPersonalScore = useCallback((score) => {
+        if (score > recordSinglePlayer) {
+            repositoryUsers.updateRecord(userID, score);
             setRecordSinglePlayer(score);
         }
-    },[recordSinglePlayer, userID])
+    }, [recordSinglePlayer, userID]);
     
 
 
-    const valueContext = useMemo(()=>({
+    const valueContext = useMemo(() => ({
         lobbyUpdated,
         setLobbyUpdated,
         fullScreen,
         setStatusOnline,
         setFullScreen,
-        userAuthenticated, 
-        setUserAuthenticated, 
+        userAuthenticated,
+        setUserAuthenticated,
         userID,
-        username, 
-        setUsername, 
+        username,
+        setUsername,
         checkPersonalScore,
         recordSinglePlayer,
         setRecordSinglePlayer,
-        lobby, 
+        lobby,
         lobbyID,
         gameStartState,
         setGameStartState,
         setLobbyID,
-        setLobby, 
+        setLobby,
         statusOnline,
         openToastNotification,
         setOpenToastNotification,
-        infoInviterLobby, 
+        infoInviterLobby,
         setInfoInviterLobby,
         gameInitState,
         setGameInitState,
@@ -167,61 +165,62 @@ function App() {
         navigate,
         singlePlayerGame,
         setSinglePlayerGame,
-        LOGIN_PAGE, 
-        SIGN_UP_PAGE, 
-        LOGGED_PAGE, 
+        LOGIN_PAGE,
+        SIGN_UP_PAGE,
+        LOGGED_PAGE,
         LOBBY_PAGE,
         SET_USERNAME,
         GAME_PAGE,
         WINNER_PAGE,
         gameStart,
-        setGameStart, 
+        setGameStart,
         gameUpdated,
         setGameUpdated,
         gameInit,
         refreshGame,
         isSWActive
-    
-    }),[lobbyUpdated, fullScreen, userAuthenticated, userID, username, checkPersonalScore, recordSinglePlayer, lobby, statusOnline, openToastNotification, infoInviterLobby, gameInitState, gameOnNewTurn, gameEndState, gameEnd, navigate, singlePlayerGame, gameStart, gameUpdated, gameInit, refreshGame, isSWActive]);
+    }), [
+        lobbyUpdated, fullScreen, userAuthenticated, userID, username,
+        checkPersonalScore, recordSinglePlayer, lobby, lobbyID,
+        gameStartState, statusOnline, openToastNotification,
+        infoInviterLobby, gameInitState, gameOnNewTurn,
+        gameEndState, gameEnd, navigate, singlePlayerGame,
+        gameStart, gameUpdated, gameInit, refreshGame, isSWActive
+    ]);
 
 
 
 
 
-    useEffect(()=>{
-        //Controllo lo stato di autenticazione dell'utente, e mi registro ai cambiamenti di tale stato
-        const unsub = onAuthStateChanged(auth, (user)=>{
-            if(user){
-                //Utente autenticato
+    useEffect(() => {
+        const unsub = onAuthStateChanged(auth, async (user) => {
+            if (user) {
                 setUserAuthenticated(true);
-                setUserID(()=>user.uid);
-                // rtdb.setOnline(user.uid,true );
-                //Faccio un check dell'username
-                //hasUsername true -> Ottengo l'username da firestore
-                //false -> L'utente non ha ancora registrato un username (unico), lo forzo a settare un username se vuole procedere 
-                repositoryUsers.hasUsername(user.uid).then(hasUsername =>{
-                    if(!hasUsername){
-                        navigate(SET_USERNAME);
-                    }
-                    else{ 
-                        repositoryUsers.getUserData(user.uid).then((res) =>{
-                            setUsername(()=>res.username);
-                            setRecordSinglePlayer(res.record === undefined ? 0 : res.record)
-                        } );
-                    } 
-                })
+                setUserID(user.uid);
                 
+                try {
+                    const hasUsername = await repositoryUsers.hasUsername(user.uid);
+                    if (!hasUsername) {
+                        navigate(SET_USERNAME);
+                    } else {
+                        const userData = await repositoryUsers.getUserData(user.uid);
+                        setUsername(userData.username);
+                        setRecordSinglePlayer(userData.record ?? 0);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    // Handle error appropriately
+                }
+            } else {
+                logOut();
             }
-            else {
-                //utente non autenticato
-                logOut();   
-            }
-        })
-        return ()=>{         
-            unsub(); 
+        });
+
+        return () => {
+            unsub();
             setUserAuthenticated(false);
-        }
-    },[username]);
+        };
+    }, [navigate, logOut]);
 
 
     useEffect(()=>{
