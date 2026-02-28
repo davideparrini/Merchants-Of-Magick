@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome against localhost",
+        "url": "http://localhost:3000",  // Assicurati che il tuo server React sia su questa porta
+        "webRoot": "${workspaceFolder}/src",  // Imposta il root del progetto
+        "sourceMaps": true,  // Abilita i source maps per il debugging
+        "skipFiles": [
+          "node_modules/**/*.js"  // Salta i file delle dipendenze
+        ]
+      }
+    ]
+  }
+  

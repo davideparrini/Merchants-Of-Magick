@@ -1,0 +1,158 @@
+@use '../../../variables' as v;
+
+
+$width_dropdownshop: 20vw;
+$text_shadow_px: 0.1vh;
+
+
+.shop{
+    background-color: #ffffff;
+    border-radius: 50%;
+    border: v.$border-primary-6px;
+}
+
+
+
+.btn-shop{
+    background: url(./shop.png);
+    background-size: cover;
+    border-radius: 50%;
+    border: none;
+    height: 7vmin;
+    width: 7vmin;
+    cursor: pointer;
+}
+
+.btn-shop:active{
+    filter: contrast(0.7);
+}
+.box-container-title-shop{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    
+}
+.box-container-title-shop.active-shop{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 500ms ease;
+    z-index: 7;
+}
+
+.box-container-title-shop.inactive-shop{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+
+.title-shop{
+    font-family: "Ubuntu Mono", monospace;
+    text-align: center;
+    font-size: 3vh;
+    letter-spacing: 3px;
+    color: rgb(255, 255, 255);
+    background-color: v.$primary-color;
+    height: min-content;
+    width:  22.3vw;
+    align-self: self-start;
+    text-shadow: rgb(0, 0, 0) 3px 1px 1px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    text-align: center;
+    
+}
+
+.dropdown-shop{
+
+    background-color: #242220;
+    border: 0.5vh solid v.$primary-color;
+    border-radius: 0.9vh;
+    padding: 0.4vh 0.9vw;
+    width: 20vw;
+    height: 100%;
+    max-height: 40vh;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: v.$primary-color grey;
+    overflow-x: hidden
+    
+}
+.dropdown-shop::-webkit-scrollbar {
+    width: 2vh;
+  }
+
+
+.dropdown-shop::-webkit-scrollbar-thumb {
+    background: #242220;
+    border-radius:2vh;
+}
+.dropdown-shop::-webkit-scrollbar-track {
+    background: #242220;
+    border-radius: 2vh;
+}
+
+.item-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    width: 20vw;
+    height: 100%;
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: 1.4vh;
+    color: rgb(243, 243, 243);
+    letter-spacing: 0.8px;
+    text-shadow: v.$text-shadow-stroke2;
+    gap: 1vh;
+}
+.title-category{
+    font-weight: 700;
+    font-size: 2vh;
+}
+.shop-category{
+    font-weight: 500;
+    font-size: 1.4vh;
+    color: rgb(243, 243, 243);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1vh;
+    margin-bottom: 1vh;
+}
+.item-shop{
+    background-color: #7e6868;
+    border: 0.3vh solid v.$primary-color;
+    border-radius: 1vh;
+    height: 2.7vh;
+    width: 18.5vw;
+    padding-left: 0.6vw;
+    padding-right: 0.8vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-variant: small-caps;
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 1.6vh;
+    color: rgb(243, 243, 243);
+    letter-spacing: 0.3vh;
+    text-shadow: 0.07vw -0.07vw 0.07vw #000000, -0.07vw -0.07vw 0.07vw #000000,-0.07vw 0.07vw 0.07vw #000000,0.07vw 0.07vw 0.07vw #000000;
+}
+.item-shop::before{
+    content: '';
+    position: relative;
+    height: 0.8vh;
+    width: 0.4vw;
+    background: v.$primary-color;
+    transform: rotate(45deg);
+}

@@ -1,0 +1,308 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
+
+import { auth } from './BE/auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import { repositoryUsers} from './BE/repository/users-repository.js';
+import { repositoryLobby } from './BE/repository/lobby-repository';
+
+import './App.scss'
+
+import LoginForm from './Pages/LoginForm_SignUp/LoginForm';
+import Lobby from './Pages/Lobby/Lobby';
+import Game from './Pages/Game/Game';
+import Logged from './Pages/Logged/Logged'
+import SignUp from './Pages/LoginForm_SignUp/SignUp';
+import SetUsername from './Pages/SetUsername/SetUsername';
+import Winner from './Pages/Winner/Winner';
+import Home from './Pages/Home/Home';
+import { gameInitMock } from './Config/constants';
+import ErrorBoundary from './errorHandler/ErrorBoundary';
+import { useServiceWorkerStatus } from './hooks/useServiceWorkenStatus';
+// import { rtdb } from './BE/repository/rtdb.js';
+
+
+
+
+
+const LOGIN_PAGE = '/login';
+const SET_USERNAME =  '/setusername';
+const SIGN_UP_PAGE = '/signup';
+const LOGGED_PAGE = '/logged';
+const LOBBY_PAGE = '/lobby';
+const GAME_PAGE = '/game';
+const WINNER_PAGE = '/winner';
+
+
+
+export const AppContext = React.createContext();
+
+function App() {
+
+    const[fullScreen,setFullScreen] = useState(false);
+
+    const[userAuthenticated,setUserAuthenticated] = useState(false);
+    const[userID, setUserID] = useState(-1);
+    const[statusOnline, setStatusOnline] = useState(navigator.onLine);
+    const[username,setUsername] = useState('');
+    const[recordSinglePlayer, setRecordSinglePlayer] = useState(-1);
+    const[openToastNotification,setOpenToastNotification] = useState(false);
+    const[infoInviterLobby, setInfoInviterLobby] = useState(new Map());
+    
+    const[lobby, setLobby] = useState(-1);
+    const[lobbyID, setLobbyID] = useState(-1);
+   
+    const[lobbyUpdated,setLobbyUpdated] = useState(false);
+
+    const[gameStart, setGameStart] = useState(false);
+    const[gameInitState, setGameInitState] = useState(-1);
+    const[gameStartState, setGameStartState] = useState(gameInitMock);
+    const[gameUpdated,setGameUpdated] = useState(false);
+    const[gameOnNewTurn, setGameOnNewTurn] = useState(-1);
+    const[gameEnd,setGameEnd] = useState(false);
+    const[gameEndState,setGameEndState] = useState(-1);
+
+    const[singlePlayerGame, setSinglePlayerGame] = useState(false);
+    
+    const isSWActive = useServiceWorkerStatus();
+
+    const navigate = useNavigate();
+    
+    
+    const gameInit = useCallback((gis, username) => {
+        const indexCardsCurrentPlayer = gis.players.findIndex((p) => p.username === username);
+        const thisPlayer = gis.players[indexCardsCurrentPlayer];
+        const newBoardPlayer = [];
+
+        let i = indexCardsCurrentPlayer + 1;
+        while (i < gis.players.length) {
+            newBoardPlayer.push(gis.players[i]);
+            i++;
+        }
+        let j = 0;
+        while (j < indexCardsCurrentPlayer) {
+            newBoardPlayer.push(gis.players[j]);
+            j++;
+        }
+
+        return {
+            player: thisPlayer,
+            quest1: gis.quest1,
+            quest2: gis.quest2,
+            dices: gis.dices,
+            otherPlayers: newBoardPlayer,
+            config: gis.config
+        };
+    }, []);
+
+
+    const refreshGame = useCallback(() => {
+        setLobby(-1);
+        setLobbyID(-1);
+        setLobbyUpdated(false);
+        setGameStart(false);
+        setGameInitState(-1);
+        setGameStartState(gameInitMock);
+        setGameOnNewTurn(-1);
+        setInfoInviterLobby(new Map());
+        setGameEndState(-1);
+        setGameUpdated(false);
+        setGameEnd(false);
+        setSinglePlayerGame(false);
+    }, []);
+
+
+    const logOut = useCallback(() => {
+        refreshGame();
+        setUsername('');
+        setUserAuthenticated(false);
+        setUserID(-1);
+        navigate('/');
+    }, [refreshGame, navigate]);
+
+    const checkPersonalScore = useCallback((score) => {
+        if (score > recordSinglePlayer) {
+            repositoryUsers.updateRecord(userID, score);
+            setRecordSinglePlayer(score);
+        }
+    }, [recordSinglePlayer, userID]);
+    
+
+
+    const valueContext = useMemo(() => ({
+        lobbyUpdated,
+        setLobbyUpdated,
+        fullScreen,
+        setStatusOnline,
+        setFullScreen,
+        userAuthenticated,
+        setUserAuthenticated,
+        userID,
+        username,
+        setUsername,
+        checkPersonalScore,
+        recordSinglePlayer,
+        setRecordSinglePlayer,
+        lobby,
+        lobbyID,
+        gameStartState,
+        setGameStartState,
+        setLobbyID,
+        setLobby,
+        statusOnline,
+        openToastNotification,
+        setOpenToastNotification,
+        infoInviterLobby,
+        setInfoInviterLobby,
+        gameInitState,
+        setGameInitState,
+        gameOnNewTurn,
+        setGameOnNewTurn,
+        gameEndState,
+        setGameEndState,
+        gameEnd,
+        setGameEnd,
+        navigate,
+        singlePlayerGame,
+        setSinglePlayerGame,
+        LOGIN_PAGE,
+        SIGN_UP_PAGE,
+        LOGGED_PAGE,
+        LOBBY_PAGE,
+        SET_USERNAME,
+        GAME_PAGE,
+        WINNER_PAGE,
+        gameStart,
+        setGameStart,
+        gameUpdated,
+        setGameUpdated,
+        gameInit,
+        refreshGame,
+        isSWActive
+    }), [
+        lobbyUpdated, fullScreen, userAuthenticated, userID, username,
+        checkPersonalScore, recordSinglePlayer, lobby, lobbyID,
+        gameStartState, statusOnline, openToastNotification,
+        infoInviterLobby, gameInitState, gameOnNewTurn,
+        gameEndState, gameEnd, navigate, singlePlayerGame,
+        gameStart, gameUpdated, gameInit, refreshGame, isSWActive
+    ]);
+
+
+
+
+
+    useEffect(() => {
+        const unsub = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                setUserAuthenticated(true);
+                setUserID(user.uid);
+                
+                try {
+                    const hasUsername = await repositoryUsers.hasUsername(user.uid);
+                    if (!hasUsername) {
+                        navigate(SET_USERNAME);
+                    } else {
+                        const userData = await repositoryUsers.getUserData(user.uid);
+                        setUsername(userData.username);
+                        setRecordSinglePlayer(userData.record ?? 0);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    // Handle error appropriately
+                }
+            } else {
+                logOut();
+            }
+        });
+
+        return () => {
+            unsub();
+            setUserAuthenticated(false);
+        };
+    }, [navigate, logOut]);
+
+
+    useEffect(()=>{
+        if(username !== "" && userID !== -1 && lobbyID !== -1){
+            // rtdb.resetInvite(userID);
+            console.log("QUANTE VOLTE ENTRO")
+            repositoryLobby.subscribeToLobby(
+                lobby,
+                lobbyID,
+                gameInitState,
+                username, 
+                setLobby,
+                setLobbyID, 
+                setLobbyUpdated,
+                setGameStart, 
+                setGameInitState, 
+                setGameUpdated, 
+                setGameOnNewTurn, 
+                setGameEndState, 
+                setGameEnd
+            )
+
+            // rtdb.subscribeToInvite(
+            //     userID,
+            //     setInfoInviterLobby,
+            //     infoInviterLobby,
+            //     setOpenToastNotification
+            // )
+        }
+       
+    },[username, userID, lobbyID, gameInitState])
+
+    useEffect(() => {
+        // const handleBeforeUnload = (event) => {
+        //     event.preventDefault();
+        //     event.returnValue = ''; 
+        //     console.log("Tentativo di chiusura della finestra");
+        // };
+    
+        const handleOnline = () => {
+            console.log("Sei online!");
+            setStatusOnline(true);
+        };
+    
+        const handleOffline = () => {
+            console.log("Sei offline!");
+            setStatusOnline(false);
+        };
+    
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        // window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        return () => {
+            // window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, [setStatusOnline]); // Dipendenza per assicurarsi che lo stato venga aggiornato
+    
+
+
+    
+
+    return (    
+        <div className='App'>
+            <AppContext.Provider value={valueContext}>
+                <ErrorBoundary>
+                    <Routes>
+                        <Route path={'/'} element={<Home/>}/>
+                        <Route path={LOGIN_PAGE} element={<LoginForm/>}/>
+                        <Route path={SET_USERNAME} element={<SetUsername />}/>
+                        <Route path={SIGN_UP_PAGE} element={<SignUp/>}/>
+                        <Route path={LOGGED_PAGE} element={<Logged/>}/>
+                        <Route path={LOBBY_PAGE +'/:id'} element={<Lobby/>}/>
+                        <Route path={GAME_PAGE +'/:id'} element={<Game />}/>
+                        <Route path={WINNER_PAGE +'/:id'} element={<Winner/>} />
+                    </Routes>
+                </ErrorBoundary>
+            </AppContext.Provider>
+        </div>
+    )
+}
+
+export default App

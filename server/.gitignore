@@ -22,3 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
+/src/Config/admin-key.json
+/src/Config/.env
+.vscode
+/TODO.txt

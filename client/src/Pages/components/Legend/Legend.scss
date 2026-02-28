@@ -1,0 +1,140 @@
+@use '../../../variables' as  v;
+
+
+
+.legend-btn{
+    border-radius: 50%;
+    height: 5.5vmin;
+    width: 5.5vmin;
+    background-color: v.$primary-color;
+    border: v.$border-primary2-2px;
+    color: white;
+    font-size: 3.2vmin;
+    font-weight: 550;
+    cursor: pointer;
+
+}
+.legend-btn:active{
+    background: v.$primary-color-2;
+}
+.box-container-legend{
+    position: absolute;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.box-container-legend.active-legend{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 500ms ease;
+    
+}
+
+.box-container-legend.inactive-legend{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+
+.legend-attributes{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 26vmin;
+    width: 35vmin;
+}
+.title-legend{
+    font-family: "Ubuntu Mono", monospace;
+    text-align: center;
+    font-size: 3vmin;
+    letter-spacing: 0.2vw;
+    color: rgb(255, 255, 255);
+    background-color: v.$primary-color;
+    height: min-content;
+    width: 35.3vmin;
+    padding: auto;
+    align-self: flex-end;
+    text-shadow: rgb(0, 0, 0) 3px 1px 1px;
+    border-radius: 1vh;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    text-align: center;
+    margin-top: 0.2vmin;
+}
+.row-legend-attribute{
+    height: auto;
+    width: 15.7vmin;
+    display: grid;
+    grid-template-areas: 
+        'attributeLegend attributeLegend imgAttributeLegend'
+        'diceLegend1 diceLegend2 diceLegend3';
+    padding: 0.25vw;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2,1fr);
+    background-color: rgb(224, 195, 194);
+    border-radius: 1.2vh;
+    border: 0.5vh solid v.$primary-color;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.row-legend-item{
+    width: 33.5vmin;
+    padding: 0.25vw;
+    background-color: rgb(224, 195, 194);
+    border-radius: 1.2vh;
+    border: 0.5vh solid v.$primary-color;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+}
+
+.type-item-legend{
+    font-family: "Ubuntu Mono", monospace;
+    font-weight: 900;
+    text-align: center;
+    font-size: 1.1vw;
+    color: rgb(0, 0, 0);
+    text-shadow: rgb(145, 142, 142) 1px 1px 1px ;
+    margin: auto;
+}
+
+.item-legend{
+    font-family: "Ubuntu Mono", monospace;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.8vw;
+    color: rgb(46, 43, 43);
+    text-shadow: rgb(145, 142, 142) 1px 1px 1px ;
+    margin: auto;
+}
+
+.img-legend{
+    width: 1.6vw;
+    height: 3.4vh;
+    margin: auto;
+    
+}
+.attribute-legend{
+    grid-area: attributeLegend;
+    font-family: "Ubuntu Mono", monospace;
+    font-weight: 700;
+    text-align: center;
+    font-size: 0.9vw;
+    color: rgb(46, 43, 43);
+    text-shadow: rgb(145, 142, 142) 1px 1px 1px ;
+    margin: auto;
+}
+.img-attribute-legend{
+    grid-area: imgAttributeLegend;
+}
+.dice1-legenda{
+    grid-area: diceLegend1;
+}
+.dice2-legenda{
+    grid-area: diceLegend2;
+}
+.dice3-legenda{
+    grid-area: diceLegend3;
+}

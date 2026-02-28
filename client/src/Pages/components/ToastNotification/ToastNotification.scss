@@ -1,0 +1,69 @@
+
+@use '../../../variables' as  v;
+
+.container-toast{
+    position: absolute;
+    right: 5vw;
+    bottom: 6vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 28vh;
+    width: 17vw;
+    border-radius: 1.6vh;
+    border: v.$border-primary-6px;
+    background: v.$bg-color-2;
+    z-index: 11;
+}
+
+.question-toast{
+    height:  13vh;
+    width: 14vw;
+    background: v.$label-color;
+    color: v.$primary-color;
+    margin-top: 1vh;
+    margin-bottom: 1vb;
+    border-radius: 1.3vh;
+    font-size: 2.2vh;
+    font-weight: 700;
+    padding: 1vh;
+    border: v.$border-primary-4px;
+    display: flex;
+    font-family: "Lucida Console", Monaco, monospace;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap:0.5vh;
+
+}
+.container-btn-toast{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap:0.5vh
+}
+
+.btn-toast{
+    height: 5vh;
+    width: 6vw;
+    border-radius: 1.3vh;
+    border:v.$border-primary-4px;
+    color: white;
+    font-size: 2.5vh;
+    letter-spacing: 0.3vh;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    margin-bottom: 1vh;
+    cursor: pointer;
+}
+
+.btn-toast:active{
+    filter: brightness(0.7);
+}
+.btn-toast.positive-btn{
+    background:  v.$blue-btn;
+}
+.btn-toast.negative-btn{
+    background: #b91b1b;
+}

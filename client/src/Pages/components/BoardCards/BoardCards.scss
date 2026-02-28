@@ -1,0 +1,49 @@
+@use '../../../variables' as v;
+
+.board-cards{
+    background-color: v.$card-color--2;
+    border-radius: 1.3vh;
+    border: v.$border-primary-4px;
+    height: v.$height-card-normal-size;
+    width: 18vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+.next-card-bc{
+    position: absolute;
+    bottom: 4vh;
+    left: 0.5vw;
+    height: 3vh;
+    width: 1.5vw;
+    border: v.$border-primary-4px;
+    border-radius: 50%;
+    z-index: 4;
+    background-color: v.$primary-color-4;
+    font-size: 1vh;
+    font-weight: 600;
+    color: antiquewhite;
+    text-shadow: v.$text-shadow-stroke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.my-swiper{
+    height: 74.5%;
+    width: 55%;   
+}
+.swiper-slide{
+    border-radius: 1.4vh;
+}
+
+.bg-board-cards{
+    position: absolute;
+    background-image: url(./boardCards.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 10vh;
+    width: 5vw;
+    opacity: 0.7;
+}

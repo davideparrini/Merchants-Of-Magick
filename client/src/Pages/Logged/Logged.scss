@@ -1,0 +1,224 @@
+@use '../../variables'  as v;
+.Logged{
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+}
+.opacity-logged{
+    height: 100vh;
+    width: 100vw;
+    background: v.$black-bg;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.container-logged{
+    height: 70vh;
+    width: 60vw;
+    background: v.$bg-color;
+    border-radius: 1.3vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.title-logged{
+    background-image: url(../../images/title-merchants-of-magick.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 50%;
+    width: 50%;
+    z-index: 2;
+}
+.bg-img{
+    position: absolute;
+    background-image: url(./bg2.jpg);
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    // aspect-ratio: 4/3;
+    height: 70%;
+    width: 60%;
+    opacity: 0.2;
+    z-index: 2;
+
+}
+.container-btn-logged{
+    display: flex;
+    height: 70%;
+    width: auto;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.logged-btn{
+    z-index: 2;
+    height: 13vh;
+    width: 21vw;
+    border-radius: 1.3vh;
+    background-color: v.$primary-color;
+    border: 0.4vh solid;
+    border-color: v.$primary-color-4;
+    cursor: pointer;
+    color: white;
+    font-size: 2vw;
+    word-spacing: 0.2vw;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    
+}
+.logged-btn:active{
+    filter: brightness(0.6);
+}
+.inactive-btn{
+    filter: grayscale(0.9);
+    color:rgb(136, 136, 136);
+    pointer-events: none;
+}
+
+
+
+.submit-lobby-id{
+    position: absolute;
+    right: 5vw;
+    bottom: 38vh;
+    height: 10vh;
+    width: 33vw;
+    border-radius: 1.3vh;
+    display: flex;
+    flex-direction: row;
+    gap: 0.7vh;
+    justify-content: center;
+    align-items: center;
+}
+.submit-lobby-id.open-submit-lobby-id{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 500ms ease;
+    z-index: 3;
+}
+.submit-lobby-id.closed-submit-lobby-id{
+    opacity: 1;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+.field-submit-lobby-id{
+    width: 75%;
+    height: 3vh;
+    border-radius: 1.5vh;
+    font-size: 2.7vh;
+    padding: 1.3vh;
+}
+.btn-submit-lobby-id{
+    height: 5.7vh;
+    width: 4.5vw;
+    border-radius: 20px;
+    background-color: v.$bg-color-3;
+    border: 0.3vh solid;
+    border-color: v.$bg-color-4;
+    letter-spacing: 0.1vh;
+    color: white;
+    font-size: 3vh;
+    font-family: Impact, Charcoal, sans-serif;
+    text-shadow: v.$text-shadow-stroke;
+    cursor: pointer;
+}
+
+.btn-submit-lobby-id:active{
+    filter: brightness(0.6);
+}
+
+
+
+
+
+.left-wrapper-logged{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.username-logged{
+    color: white;
+    display: flex;
+    height: 35vh;
+    width: 12vw;
+    flex-direction: column;
+    gap: 1vh;
+    justify-content: center;
+}
+
+.user-logged{
+    height: 7vh;
+    width: 10vw;
+    font-size: 2.5vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.connection-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1vh;
+}
+.connected-label{
+    font-size: 1.5vw;
+    letter-spacing: 0.1vw;
+}
+.online-label{
+    color:rgb(113, 255, 47);
+}
+.offline-label{
+    color:rgb(255, 47, 47);
+}
+.btn-refresh-connection{
+    height: 2vh;
+    width: 1vw;
+    background: #b84141;
+    border-radius: 50%;
+    padding: 0.6vh;
+    background-color: v.$primary-color;
+    border: 0.2vh solid;
+    border-color: v.$primary-color-4;
+    cursor: pointer;
+
+}
+.btn-refresh-connection:active, .btn-refresh-connection:focus{
+    filter: brightness(0.5);
+}
+.img-fresh-connection{
+    height: 100%;
+    width: 100%;
+    background-image: url(./refresh.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(1px 1px 1px black);
+}
+
+
+.record-single-player{
+    font-family: Tahoma, Geneva, sans-serif;
+    letter-spacing: 0.2vh;
+    color: white;
+    text-shadow: v.$text-shadow-primarycolor3;
+    font-size: 3vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    width: 25vw;
+    bottom: 5vh;
+    left: 6vw;
+}

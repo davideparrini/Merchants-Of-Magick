@@ -4,13 +4,13 @@
   }
 
 html{
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     
 }
 #root{
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     user-select: none; /* supported by Chrome and Opera */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
@@ -21,11 +21,11 @@ body{
     background-image: url(./images/background6.png);
     overflow: hidden;
     overscroll-behavior: none;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     
 } 
 .App{
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 }

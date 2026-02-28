@@ -1,206 +1,104 @@
-
 import { io } from "socket.io-client";
-import momIcon from './icon-48x48.png'
 
-const serverPort = 8888;
-const serverUrl = "http://localhost:" + serverPort;
+import { BASE_URL_SERVER, SOCKET_EVENTS } from "./constants";
+import { apiMOM } from "../api/mom-api";
 
-function createSocketConfig() {
 
-    const socket = io(serverUrl,{
+
+const createSocketConfig = () => {
+    const socket = io(BASE_URL_SERVER, {
         autoConnect: false,
         reconnection: false,
+        transports: ["websocket"]
     });
+
+    /** 🔔 Invia una notifica desktop */
     
-    function sendNotification(message) {
-        if (!("Notification" in window)) {
-          alert("This browser does not support desktop notification");
-        } else if (Notification.permission === "granted") {
-          const notification = new Notification(message,{
-            icon: momIcon,
- 
-          });
-        } else if (Notification.permission !== "denied") {
-          // We need to ask the user for permission
-          Notification.requestPermission().then((permission) => {
-            // If the user accepts, let's create a notification
-            if (permission === "granted") {
-              const notification = new Notification(message,{
-                icon: momIcon
-              });
-            }
-          });
-        }
-      }
 
-
-    //Metto il socket in ascolto su namespace univoco/privato, per ricevere inviti da altri giocatori
-    function registerToInvite(setInfoInviterLobby, setOpenToastNotification){
-        socket.on("invite" + socket.id,(lobbyID, usernameInviter)=>{
-            const infoInviterLobby = {
-                lobbyID: lobbyID,
-                usernameInviter: usernameInviter
-            }
-            setInfoInviterLobby(infoInviterLobby);
+    /** 📩 Registra il listener per gli inviti */
+    const registerToInvite = (setInfoInviterLobby, setOpenToastNotification) => {
+        socket.on(SOCKET_EVENTS.LOBBY_INVITE, ({ lobbyID, usernameInviter }) => {
+            setInfoInviterLobby({ lobbyID, usernameInviter });
             setOpenToastNotification(true);
-            const message = `You are invited in a lobby by ${usernameInviter}.  Would you like to join him?`;
-            sendNotification(message);
         });
-    }  
+    };
 
-    function unRegisterToInvite(){
-        socket.off("invite"+socket.id);
-    } 
-    
-    function registerToConnection(setStatusOnline,setInfoInviterLobby, setOpenToastNotification){
-        socket.on("connect", () => {
-            setStatusOnline(true);
-            registerToInvite(setInfoInviterLobby, setOpenToastNotification);
-            console.log("CONNECTED"); 
-          });
-        socket.on("disconnect", () => {
-            setStatusOnline(false);
-            unRegisterToInvite();
-            console.log("DISCONNECTED")
-           
-        });
-    }
-    function unRegisterToConnection(){
-        socket.off("connect");
-        socket.off("disconnect");
-    }
-
-    //connetti
-    function connect(){
-        socket.connect();
-    }
-
-    //disconnetti e disiscriviti dal namespace "privato"
-    function disconnect(){
-        socket.disconnect();
-        socket.off("invite" + socket.id);
-        socket.off("connect");
-        socket.off("disconnect");
-    }
-    
-    //invia l'username al server
-    function sendUsername(username){
-        socket.emit("username",username);
-    }
-
-    //crea una nuova lobby
-    function createLobby(username,cb){
-        socket.emit("create-lobby", username,cb);    
-
-    }
-
-    //joina una lobby tramite ID
-    function joinLobby(lobbyID,username,cb){
-        socket.emit("join-lobby",lobbyID,username,cb);
-    }
-
-   //esci dalla lobby corrente e smetti di ascoltare i "canali" della lobby
-    function leaveLobby(username,lobbyID){
-        socket.emit("leave-lobby",username, lobbyID);
-        socket.off("lobby-player-joined");
-        socket.off("lobby-player-left");
-        socket.off("countdown-game-start");
-        socket.off("game-start");
-        socket.off("game-change-turn");
-        socket.off("game-end");
-    }
-
-   //invita un player tramite username
-    function invitePlayer(lobbyID ,usernameInviter ,usernameToInvite, cb){
-        socket.emit("invite-player",lobbyID, usernameInviter,usernameToInvite,cb);
-    }
-
-    
-   //Mi iscrivo ai cambiamenti che succedono nella lobby e passaggio di stato da lobby a game
-    function updateLobby(
-                    lobby,
-                    setLobby,
-                    setLobbyUpdated, 
-                    setGameStart, 
-                    setGameInitState, 
-                    setGameUpdated, 
-                    setGameOnNewTurn,
-                    setGameEndState,
-                    setGameEnd
-                ){
-        
-        //Aggiorno lobby se ha joinato qualcuno
-        socket.on("lobby-player-joined",(username)=>{
-            lobby.players.push(username);
+    /** 🏠 Registra i listener degli eventi della lobby e del gioco */
+    const registerToGameEvents = (setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd) => {
+        socket.on(SOCKET_EVENTS.LOBBY_UPDATE, lobby => {
             setLobby(lobby);
             setLobbyUpdated(true);
-            console.log("Player " + username + " join");
         });
 
-        //Aggiorno lobby se qualche player è uscito dalla lobby
-        socket.on("lobby-player-left",(username)=>{
-            const indexUsernameLeft = lobby.players.findIndex((u)=> u === username);
-            lobby.players.splice(indexUsernameLeft,1);
-            lobby.leaderLobby = lobby.players[0]; 
-            setLobby(lobby);
-            setLobbyUpdated(true); 
-            console.log("Player " + username + " left");
-        });
-
-        //Mi metto in ascolto ai cambi di stato (Lobby State -> Game State)
-        socket.on("game-start",(res)=>{
+        socket.on(SOCKET_EVENTS.GAME_START, res => {
             setGameInitState(res);
             setGameStart(true);
-        })
+        });
 
-        //Mi metto in ascolto sui cambiamenti che ci sono stati nel gioco
-        socket.on("game-change-turn",(res)=>{
+        socket.on(SOCKET_EVENTS.GAME_CHANGE_TURN, res => {
             setGameOnNewTurn(res);
             setGameUpdated(true);
-        })
+        });
 
-        //Mi metto in ascolto per la fine del gioco
-        socket.on("game-end",(res)=>{
-            console.log("END STATE "+res)
+        socket.on(SOCKET_EVENTS.GAME_END, res => {
             setGameEndState(res);
             setGameEnd(true);
-        })
-    }
+        });
+    };
 
+    /** 🚀 Connetti e registra tutti gli eventi */
+    const connect = (setStatusOnline, setInfoInviterLobby, setOpenToastNotification, setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd, setSocketID ,username) => {
+        socket.connect();
 
-    //Manda una richiesta al server di iniziare il game
-    function gameStartRequest(lobbyID, config, cb){
-        socket.emit("game-start-request",lobbyID, config, cb);
-    }
+        // Stato online
+        socket.on("connect", async () => {
+            const res = await apiMOM.sendUsername(username, socket.id);
+            if(res.statusCode === 200){
+                setStatusOnline(true)
+                // Registra tutti gli eventi necessari
+                registerToInvite(setInfoInviterLobby, setOpenToastNotification);
+                registerToGameEvents(setLobby, setLobbyUpdated, setGameStart, setGameInitState, setGameUpdated, setGameOnNewTurn, setGameEndState, setGameEnd);
+            }
+            setSocketID(socket.id);
+        });
+        socket.on("disconnect", () => {
+            setStatusOnline(false);
+            unregisterAllEvents();
+        });
 
+        
+    };
 
-    //Avviso il server che ho finito il turno
-    function finishTurn(lobbyID, username,playerGameState, cb){
-        socket.emit("player-finish-turn", lobbyID, username, playerGameState, cb);
-    }
+    /** ❌ Unregister da tutti gli eventi */
+    const unregisterAllEvents = () => {
+        socket.off("connect");
+        socket.off("disconnect");
+        socket.off(SOCKET_EVENTS.LOBBY_INVITE);
+        socket.off(SOCKET_EVENTS.LOBBY_UPDATE);
+        socket.off(SOCKET_EVENTS.GAME_START);
+        socket.off(SOCKET_EVENTS.GAME_CHANGE_TURN);
+        socket.off(SOCKET_EVENTS.GAME_END);
+    };
 
+    /** 📴 Disconnetti e rimuovi i listener */
+    const disconnect = () => {
+        unregisterAllEvents();
+        socket.disconnect();
+    };
 
-    function endGame(lobbyID, username,finalReport, cb){
-        socket.emit("player-end-game", lobbyID, username, finalReport, cb);
-    }
+    /** 🔗 Controlla se il socket è connesso */
+    const checkConnected = (setStatusOnline) => {
+        setStatusOnline(socket.connected);
+    };
 
-    return{
+  
+
+    return {
         connect,
         disconnect,
-        registerToConnection,
-        unRegisterToConnection,
-        sendUsername,
-        createLobby,
-        joinLobby,
-        leaveLobby,
-        updateLobby,
-        invitePlayer,
-        unRegisterToInvite,
-        gameStartRequest,
-        finishTurn,
-        endGame,
-        socket
-    }
-}
+        checkConnected,
+        socket,
+    };
+};
 
 export const connectionHandlerClient = createSocketConfig();
